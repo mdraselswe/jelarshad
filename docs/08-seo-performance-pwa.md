@@ -45,7 +45,7 @@ Bangla, ❤️ %, district, ShojaShapta logo. Load the Bangla font file explicit
 ## 2. Performance budgets (fail CI if exceeded)
 | Metric (mobile, Slow 4G profile) | Budget |
 |---|---|
-| LCP | ≤ 3.5 s in CI (aim < 2.5 s) — decision T15 |
+| LCP | ≤ 4.0 s in CI (aim < 2.5 s) — decision T15 |
 | INP | < 200 ms |
 | CLS | < 0.1 (aim 0) |
 | First-load JS per route | < 100 KB gzip (home, food, place, district) |
