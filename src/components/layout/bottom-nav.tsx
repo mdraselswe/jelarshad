@@ -24,7 +24,7 @@ function isActive(pathname: string, href: string) {
 
 /**
  * Floating bottom navigation (docs/06-design-system.md §6): 16px from the edges, 66px tall,
- * translucent card with blur; the center "যোগ" is the primary pill. Thumb-reachable on 360px.
+ * card pill (no backdrop blur); the center "যোগ" is the primary pill. Thumb-reachable on 360px.
  */
 export function BottomNav() {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label={t("nav.label")}
-      className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto grid h-[66px] max-w-md grid-cols-4 items-center rounded-card-lg border border-border bg-card/88 px-1.5 shadow-floating backdrop-blur-lg lg:hidden"
+      className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto grid h-[66px] max-w-md grid-cols-4 items-center rounded-full border border-border bg-card px-2 shadow-floating lg:hidden"
     >
       {ITEMS.map(({ href, label, icon: Icon, primary }) => {
         const active = isActive(pathname, href);
@@ -41,7 +41,7 @@ export function BottomNav() {
             key={href}
             href={href}
             aria-current={active ? "page" : undefined}
-            className="flex h-11 press items-center gap-1.5 justify-self-center rounded-full bg-primary px-3.5 text-sm font-semibold text-primary-foreground"
+            className="flex h-11 press items-center gap-1.5 justify-self-center rounded-full bg-primary bg-grad-action px-4 text-sm font-semibold text-primary-foreground"
           >
             <Icon className="size-[18px]" strokeWidth={2.6} aria-hidden />
             {t(label)}
@@ -53,7 +53,7 @@ export function BottomNav() {
             aria-current={active ? "page" : undefined}
             className={cn(
               "flex h-full press flex-col items-center justify-center gap-px text-nav",
-              active ? "font-semibold text-foreground" : "text-muted-foreground",
+              active ? "font-semibold text-primary-text" : "text-muted-foreground",
             )}
           >
             <Icon className="size-[22px]" strokeWidth={active ? 2.4 : 2} aria-hidden />

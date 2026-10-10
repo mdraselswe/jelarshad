@@ -1,3 +1,4 @@
+import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
 import type { DistrictHeader } from "@/services/catalog-service";
@@ -9,24 +10,24 @@ export function DistrictHero({
 }) {
   const t = getT();
   return (
-    <section className="page-x pt-1 lg:pt-5">
+    <HeroBand tone="district">
       <h1 className="text-title-1">{district.nameBn}</h1>
-      <p className="mt-1 text-meta text-muted-foreground">
+      <p className="mt-1 text-meta text-on-hero/85">
         {t("search.districtMeta", { division: district.divisionBn })}
       </p>
-    </section>
+    </HeroBand>
   );
 }
 
 export function DistrictHeroSkeleton() {
   return (
-    <section className="page-x pt-1 lg:pt-5">
+    <HeroBand tone="district">
       <div className="text-title-1">
         <SkeletonText className="w-1/2" />
       </div>
       <div className="mt-1 text-meta">
         <SkeletonText className="w-1/3" />
       </div>
-    </section>
+    </HeroBand>
   );
 }

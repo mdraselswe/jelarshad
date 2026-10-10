@@ -24,7 +24,7 @@ export async function DistrictPlacesSection({ districtId }: { districtId: number
               key={place.slug}
               href={routes.place(place.slug)}
               leading={
-                <ListTile>
+                <ListTile tone="place">
                   <StoreIcon />
                 </ListTile>
               }

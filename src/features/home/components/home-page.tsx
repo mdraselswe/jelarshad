@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { LegalLinks } from "@/features/legal/components/legal-links";
 
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { LoadingRegion } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -16,10 +17,10 @@ import { FamousFoodsSection, FamousFoodsSectionSkeleton } from "./famous-foods-s
 function HomeHero() {
   const t = getT();
   return (
-    <section className="page-x pt-3 lg:pt-12">
+    <HeroBand tone="home">
       <h1 className="text-title-1">{t("home.title")}</h1>
-      <SearchEntry className="mt-3.5 lg:mt-5 lg:h-16 lg:max-w-[760px] lg:text-lg" />
-    </section>
+      <SearchEntry className="mt-4 border-0 shadow-floating lg:mt-6 lg:h-16 lg:max-w-[760px] lg:text-lg" />
+    </HeroBand>
   );
 }
 

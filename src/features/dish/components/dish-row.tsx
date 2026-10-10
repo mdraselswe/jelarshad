@@ -48,7 +48,8 @@ export function DishRow({
     <ListRow
       href={href}
       leading={
-        leading ?? (rank ? <RankBadge rank={rank} /> : <ListTile>{title.slice(0, 1)}</ListTile>)
+        leading ??
+        (rank ? <RankBadge rank={rank} /> : <ListTile seed={title}>{title.slice(0, 1)}</ListTile>)
       }
       title={title}
       meta={meta || " "}

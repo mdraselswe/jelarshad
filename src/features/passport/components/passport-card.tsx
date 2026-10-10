@@ -23,12 +23,12 @@ export function PassportCard({
   const t = getT();
   const recent = summary.stamps.filter((stamp) => stamp.kind === "visit").slice(-3);
   return (
-    <div className="rounded-card-lg border border-border bg-card p-4">
+    <div className="rounded-card-lg bg-grad-reward p-4 text-on-reward shadow-card">
       <Link href={routes.me()} className="flex items-center gap-3.5">
-        <PassportRing value={summary.unlockedCount} total={summary.totalDistricts} />
+        <PassportRing value={summary.unlockedCount} total={summary.totalDistricts} onReward />
         <span className="min-w-0 flex-1">
           <span className="block font-display text-lg font-bold">{t("reward.passportTitle")}</span>
-          <span className="block text-meta text-muted-foreground">
+          <span className="block text-meta opacity-85">
             {summary.unlockedCount > 0
               ? t("reward.passportHint", { count: formatNumber(summary.unlockedCount) })
               : t("reward.nothingYet")}
@@ -47,18 +47,18 @@ export function PassportCard({
         </span>
       </Link>
       {summary.next && (
-        <div className="mt-3.5 flex items-center gap-3 border-t border-divider pt-3.5">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-border text-muted-foreground">
+        <div className="mt-3.5 flex items-center gap-3 border-t border-on-reward/20 pt-3.5">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-on-reward/40">
             <LockIcon className="size-4" aria-hidden />
           </span>
           <span className="min-w-0 flex-1 text-meta leading-snug">
-            <span className="block text-muted-foreground">{t("reward.next")}</span>
+            <span className="block opacity-85">{t("reward.next")}</span>
             <b>{summary.next.district.nameBn}</b>:{" "}
             {t("reward.nextCta", { food: summary.next.food.nameBn })}
           </span>
           <Link
             href={routes.districtFood(summary.next.district.slug, summary.next.food.slug)}
-            className="flex h-9 shrink-0 press items-center rounded-full bg-primary px-3.5 text-sm font-semibold text-primary-foreground"
+            className="flex h-9 shrink-0 press items-center rounded-full bg-on-reward px-3.5 text-sm font-semibold text-reward-soft"
           >
             {t("reward.where")}
           </Link>

@@ -29,7 +29,7 @@ export function DesktopNav() {
         <DesktopNavLinks />
         <Link
           href={routes.add()}
-          className="ml-auto flex h-11 press items-center gap-1.5 rounded-full bg-primary px-5 font-semibold text-primary-foreground"
+          className="ml-auto flex h-11 press items-center gap-1.5 rounded-full bg-primary bg-grad-action px-5 font-semibold text-primary-foreground shadow-card"
         >
           <PlusIcon className="size-4" strokeWidth={2.6} aria-hidden />
           {t("nav.add")}

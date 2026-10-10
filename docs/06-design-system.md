@@ -118,6 +118,23 @@ from `themes/light.css` exist, and computes contrast for the pairs: foreground/b
 foreground/card, muted-foreground/card, primary-foreground/primary, primary-text/background,
 reward-foreground/reward, *-soft-fg/*-soft, logo-mark/background (≥ 3:1).
 
+## 2c. Colorful layer ("রংধনু", approved Oct 2026)
+
+The calm base (indigo action, gold reward) stays. On top of it:
+
+- **Ground** is a faint lavender (`--background #F4F3FF`), borders and dividers are tinted to match.
+- **Gradients** (tokens `--gradient-*`, utilities `bg-grad-*`): `hero` (home), `food`, `place`, `district`
+  for the `<HeroBand>` banner with white text; `action` for the primary button, rank #1 and the "যোগ" pill;
+  `reward` (gold, text `--on-reward`) for the passport card.
+- **Category tones** (`--cat-<coral|pink|violet|sky|amber|teal|green>-soft/-fg`): soft tiles for food letters,
+  district chips and list tiles. `toneClass(seed)` picks one from a slug so an item keeps its color;
+  `KIND_TONE_CLASS` fixes food = coral, place = violet, district = teal.
+- **Cards**: radius 24 (`rounded-card-lg`) with `--shadow-soft`; bottom nav is a full pill.
+- Rules unchanged: primary is never a status color, status is icon + text, every pair passes AA
+  (`pnpm test:themes` also checks the category pairs).
+
+Approved screens: the "ShojaShapta নতুন ডিজাইন" canvas (mobile and desktop).
+
 ## 3. Fonts — perfect Bangla + English
 
 Self-hosted **static per-weight files** (decision D12), not `next/font/google`:
@@ -168,7 +185,7 @@ are 44–57 KB each and a page downloads only the weights it uses. Changing a fo
 - **Rank badge**: 32px rounded square; #1 primary/white, others muted.
 - **Score pill**: `৯২%` on success-soft. "নতুন"/few experiences → muted pill.
 - **Segmented control**: muted track, white selected segment with small shadow (search tabs, verify ✅/⚠️/❌).
-- **Floating bottom nav**: 16px from edges, 66px tall, translucent white + blur, 4 items; center item "যোগ" is a primary pill.
+- **Floating bottom nav**: 16px from edges, 66px tall, white pill (no backdrop blur: it is costly to paint), 4 items; center item "যোগ" is a primary pill.
 - **Bottom sheet** for verify, login and filters: scrim `rgb(22 22 29 / .45)`, handle bar, radius 28.
 - **Empty state** = invitation: dashed primary-soft box + one primary button + reward hint (`+২০`).
 

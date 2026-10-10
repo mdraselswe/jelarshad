@@ -26,7 +26,11 @@ export async function PlaceDishesSection({ placeId }: { placeId: string }) {
               price={dish.price}
               experienceCount={dish.experienceCount}
               display={dish.display}
-              leading={<ListTile>{(dish.displayName ?? dish.food.nameBn).slice(0, 1)}</ListTile>}
+              leading={
+                <ListTile seed={dish.food.slug}>
+                  {(dish.displayName ?? dish.food.nameBn).slice(0, 1)}
+                </ListTile>
+              }
             />
           ))}
         </GroupedList>

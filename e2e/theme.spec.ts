@@ -41,7 +41,7 @@ test.describe("theme", () => {
     await page.addInitScript(() => localStorage.setItem("ss-theme", "removed-theme"));
     await page.goto("/");
     expect(await page.evaluate(() => document.documentElement.dataset.theme)).toBeUndefined();
-    expect(await backgroundOf(page)).toBe("rgb(246, 246, 248)");
+    expect(await backgroundOf(page)).toBe("rgb(244, 243, 255)");
   });
 
   test("switcher on /dev/themes changes and remembers the theme", async ({ page }) => {

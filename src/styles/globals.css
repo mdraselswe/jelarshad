@@ -59,6 +59,23 @@
   --color-stamp-3: var(--stamp-3);
   --color-stamp-4: var(--stamp-4);
 
+  --color-on-hero: var(--on-hero);
+  --color-on-reward: var(--on-reward);
+  --color-cat-coral-soft: var(--cat-coral-soft);
+  --color-cat-coral-fg: var(--cat-coral-fg);
+  --color-cat-pink-soft: var(--cat-pink-soft);
+  --color-cat-pink-fg: var(--cat-pink-fg);
+  --color-cat-violet-soft: var(--cat-violet-soft);
+  --color-cat-violet-fg: var(--cat-violet-fg);
+  --color-cat-sky-soft: var(--cat-sky-soft);
+  --color-cat-sky-fg: var(--cat-sky-fg);
+  --color-cat-amber-soft: var(--cat-amber-soft);
+  --color-cat-amber-fg: var(--cat-amber-fg);
+  --color-cat-teal-soft: var(--cat-teal-soft);
+  --color-cat-teal-fg: var(--cat-teal-fg);
+  --color-cat-green-soft: var(--cat-green-soft);
+  --color-cat-green-fg: var(--cat-green-fg);
+
   /* Names shadcn/ui primitives expect, mapped onto our tokens (one meaning per color). */
   --color-card-foreground: var(--foreground);
   --color-popover: var(--card);
@@ -90,6 +107,7 @@
   --radius-sheet: 28px;
 
   --shadow-floating: var(--shadow-float);
+  --shadow-card: var(--shadow-soft);
   --shadow-toast: 0 12px 32px rgb(22 22 29 / 0.25);
   --shadow-segment: 0 1px 3px rgb(22 22 29 / 0.12);
 
@@ -239,6 +257,77 @@
   font-size: 12px;
   line-height: 1.4;
   font-weight: 500;
+}
+
+/* Gradient fills (docs/06-design-system.md §2c): hero bands, the primary action, rewards. */
+@utility bg-grad-hero {
+  background-image: var(--gradient-hero);
+}
+@utility bg-grad-food {
+  background-image: var(--gradient-food);
+}
+@utility bg-grad-place {
+  background-image: var(--gradient-place);
+}
+@utility bg-grad-district {
+  background-image: var(--gradient-district);
+}
+@utility bg-grad-reward {
+  background-image: var(--gradient-reward);
+}
+@utility bg-grad-action {
+  background-image: var(--gradient-action);
+}
+
+/* Hero bands: the gradient plus two soft circles painted as backgrounds (one layer, no extra
+   elements to clip). */
+@utility bg-hero-home {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-hero);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-hero);
+  }
+}
+@utility bg-hero-food {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-food);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-food);
+  }
+}
+@utility bg-hero-place {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-place);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-place);
+  }
+}
+@utility bg-hero-district {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-district);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-district);
+  }
 }
 
 /* Press feedback for anything tappable (§7.1). */

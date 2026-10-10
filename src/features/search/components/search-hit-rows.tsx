@@ -13,7 +13,7 @@ export function FoodHitRow({ hit }: { hit: FoodHit }) {
     <ListRow
       href={routes.food(hit.slug)}
       leading={
-        <ListTile>
+        <ListTile tone="food">
           <UtensilsIcon />
         </ListTile>
       }
@@ -30,7 +30,7 @@ export function PlaceHitRow({ hit, t }: { hit: PlaceHit; t: T }) {
     <ListRow
       href={routes.place(hit.slug)}
       leading={
-        <ListTile>
+        <ListTile tone="place">
           <StoreIcon />
         </ListTile>
       }
@@ -45,7 +45,7 @@ export function DistrictHitRow({ hit, t }: { hit: DistrictHit; t: T }) {
     <ListRow
       href={routes.district(hit.slug)}
       leading={
-        <ListTile>
+        <ListTile tone="district">
           <MapPinIcon />
         </ListTile>
       }

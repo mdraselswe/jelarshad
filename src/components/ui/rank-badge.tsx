@@ -10,7 +10,9 @@ export function RankBadge({ rank }: { rank: number }) {
     <span
       className={cn(
         RANK_BADGE_CLASS,
-        rank === 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+        rank === 1
+          ? "bg-primary bg-grad-action text-primary-foreground"
+          : "bg-muted text-muted-foreground",
       )}
     >
       {toBnDigits(rank)}

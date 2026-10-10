@@ -4,13 +4,14 @@ import type { ReactNode } from "react";
 
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
+import { KIND_TONE_CLASS, toneClass, type Tone } from "@/lib/tone";
 
 // Grouped list card (docs/06-design-system.md §6): one white card, rows separated by --divider,
 // instead of many separate cards.
 
 // `split`: one card on phones and tablets, a two-column grid of separate cards on desktop.
 const SPLIT_CLASS =
-  "lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:[&>li]:overflow-hidden lg:[&>li]:rounded-card lg:[&>li]:border lg:[&>li]:border-border lg:[&>li]:bg-card";
+  "lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:[&>li]:overflow-hidden lg:[&>li]:rounded-card-lg lg:[&>li]:border lg:[&>li]:border-border lg:[&>li]:bg-card";
 
 export function GroupedList({
   children,
@@ -24,7 +25,7 @@ export function GroupedList({
   return (
     <ul
       className={cn(
-        "divide-y divide-divider overflow-hidden rounded-card border border-border bg-card",
+        "divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card",
         split && SPLIT_CLASS,
         className,
       )}
@@ -59,12 +60,31 @@ function ListRowBody({
   );
 }
 
-/** 44px rounded tile that holds an icon or a letter. */
-export function ListTile({ children }: { children: ReactNode }) {
+/**
+ * 44px rounded tile that holds an icon or a letter. `tone` colors it by kind (food, place, district),
+ * `seed` colors a letter tile from the item's name; without either it is neutral.
+ */
+export function ListTile({
+  children,
+  tone,
+  seed,
+}: {
+  children: ReactNode;
+  tone?: Tone;
+  seed?: string;
+}) {
+  const color = tone
+    ? KIND_TONE_CLASS[tone]
+    : seed
+      ? toneClass(seed)
+      : "bg-muted text-muted-foreground";
   return (
     <span
       aria-hidden
-      className="flex size-11 shrink-0 items-center justify-center rounded-thumb bg-muted text-muted-foreground [&_svg]:size-5"
+      className={cn(
+        "flex size-11 shrink-0 items-center justify-center rounded-thumb font-display font-bold [&_svg]:size-5",
+        color,
+      )}
     >
       {children}
     </span>

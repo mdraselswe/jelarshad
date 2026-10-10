@@ -107,6 +107,9 @@ const PAIRS: ReadonlyArray<readonly [string, string, number]> = [
   ["--danger-fg", "--danger-soft", 4.5],
   ["--stale-fg", "--stale", 4.5],
   ["--toast-fg", "--toast", 4.5],
+  ...["coral", "pink", "violet", "sky", "amber", "teal", "green"].map(
+    (tone) => [`--cat-${tone}-fg`, `--cat-${tone}-soft`, 4.5] as const,
+  ),
   ["--logo-mark", "--background", 3],
   ["--logo-mark", "--card", 3],
 ];

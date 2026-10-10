@@ -18,7 +18,7 @@ export function DistrictFamousSection({ district }: { district: DistrictHeader }
             key={food.slug}
             href={routes.districtFood(district.slug, food.slug)}
             leading={
-              <ListTile>
+              <ListTile tone="food">
                 <UtensilsIcon />
               </ListTile>
             }
