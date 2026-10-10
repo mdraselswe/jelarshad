@@ -279,6 +279,57 @@
   background-image: var(--gradient-action);
 }
 
+/* Hero bands: the gradient plus two soft circles painted as backgrounds (one layer, no extra
+   elements to clip). */
+@utility bg-hero-home {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-hero);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-hero);
+  }
+}
+@utility bg-hero-food {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-food);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-food);
+  }
+}
+@utility bg-hero-place {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-place);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-place);
+  }
+}
+@utility bg-hero-district {
+  background-image:
+    radial-gradient(circle at 94% -6%, rgb(255 255 255 / 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 36% 118%, rgb(245 158 11 / 0.22) 0 70px, transparent 71px),
+    var(--gradient-district);
+  @media (min-width: 64rem) {
+    background-image:
+      radial-gradient(circle at 96% -10%, rgb(255 255 255 / 0.12) 0 170px, transparent 171px),
+      radial-gradient(circle at 36% 120%, rgb(245 158 11 / 0.22) 0 120px, transparent 121px),
+      var(--gradient-district);
+  }
+}
+
 /* Press feedback for anything tappable (§7.1). */
 @utility press {
   transition: transform var(--duration-fast) var(--ease-out);
