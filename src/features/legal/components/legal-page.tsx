@@ -1,3 +1,4 @@
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { routes } from "@/config/routes";
@@ -26,21 +27,25 @@ export function LegalPage({ kind }: { kind: "about" | "policy" }) {
   const lead = t(kind === "about" ? "legal.about.lead" : "legal.policy.lead");
   return (
     <PageShell header={<SubPageBar backHref={routes.home()} crumbs={[{ label: title }]} />}>
-      <article className="max-w-2xl page-x pt-2 lg:pt-8">
-        <h1 className="text-title-1">{title}</h1>
-        <p className="mt-3 text-body text-muted-foreground">{lead}</p>
-        {sections.map(([heading, body]) => (
-          <section key={heading} className="mt-6">
-            <h2 className="text-heading">{heading}</h2>
-            <p className="mt-1.5 text-body leading-relaxed">{body}</p>
-          </section>
-        ))}
-        {kind === "policy" && siteConfig.contactEmail ? (
-          <p className="mt-6 text-body font-semibold">
-            {t("legal.policy.contact", { email: siteConfig.contactEmail })}
-          </p>
-        ) : null}
-      </article>
+      <div className="max-w-3xl">
+        <HeroBand tone="home">
+          <h1 className="text-title-1">{title}</h1>
+          <p className="mt-3 text-body text-on-hero/90">{lead}</p>
+        </HeroBand>
+        <article className="flex flex-col gap-3 page-x pt-4 lg:pt-6">
+          {sections.map(([heading, body]) => (
+            <section key={heading} className="rounded-card-lg border border-border bg-card p-5">
+              <h2 className="text-heading">{heading}</h2>
+              <p className="mt-1.5 text-body leading-relaxed">{body}</p>
+            </section>
+          ))}
+          {kind === "policy" && siteConfig.contactEmail ? (
+            <p className="mt-2 text-body font-semibold">
+              {t("legal.policy.contact", { email: siteConfig.contactEmail })}
+            </p>
+          ) : null}
+        </article>
+      </div>
     </PageShell>
   );
 }

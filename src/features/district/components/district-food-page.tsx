@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { LoadingRegion, SkeletonText } from "@/components/ui/skeleton";
@@ -35,18 +36,18 @@ export function DistrictFoodPage({ data }: { data: DistrictFoodData }) {
         />
       }
     >
-      <section className="page-x pt-1 lg:pt-5">
+      <HeroBand tone="food">
         <h1 className="text-title-1">
           {t("district.titleFood", { district: district.nameBn, food: food.nameBn })}
         </h1>
         {about ? <p className="mt-2 text-body">{about}</p> : null}
         <Link
           href={routes.food(food.slug)}
-          className="mt-2 inline-block text-meta font-semibold text-primary-text"
+          className="mt-2 inline-block text-meta font-semibold underline underline-offset-4"
         >
           {t("district.allCountry", { food: food.nameBn })}
         </Link>
-      </section>
+      </HeroBand>
       <div className="lg:max-w-[880px]">
         <DishGroups
           items={dishes.items}
@@ -63,11 +64,11 @@ export function DistrictFoodPageSkeleton() {
   return (
     <LoadingRegion label={t("common.loading")}>
       <PageShell header={<SubPageBar backHref={routes.home()} />}>
-        <section className="page-x pt-1 lg:pt-5">
+        <HeroBand tone="food">
           <div className="text-title-1">
             <SkeletonText className="w-2/3" />
           </div>
-        </section>
+        </HeroBand>
         <FoodDishesSectionSkeleton />
       </PageShell>
     </LoadingRegion>

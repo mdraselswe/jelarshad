@@ -1,3 +1,4 @@
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
@@ -10,9 +11,13 @@ export function LoginPrompt({ next, failed = false }: { next: string; failed?: b
   const t = getT();
   return (
     <PageShell>
-      <section className="page-x pt-10 lg:max-w-xl">
-        <h1 className="text-title-1">{t("auth.loginTitle")}</h1>
-        <p className="mt-2 text-body text-muted-foreground">{t("auth.loginBody")}</p>
+      <div className="lg:max-w-xl">
+        <HeroBand tone="home" className="lg:p-10">
+          <h1 className="text-title-1">{t("auth.loginTitle")}</h1>
+          <p className="mt-2 text-body text-on-hero/90">{t("auth.loginBody")}</p>
+        </HeroBand>
+      </div>
+      <section className="page-x pt-5 lg:max-w-xl">
         {failed ? (
           <p
             role="alert"
@@ -23,7 +28,7 @@ export function LoginPrompt({ next, failed = false }: { next: string; failed?: b
         ) : null}
         <a
           href={routes.signIn(next)}
-          className="mt-5 flex h-14 press items-center justify-center rounded-button bg-primary px-5 text-[17px] font-semibold text-primary-foreground"
+          className="flex h-14 press items-center justify-center rounded-button bg-primary bg-grad-action px-5 text-[17px] font-semibold text-primary-foreground"
         >
           {t("auth.google")}
         </a>
