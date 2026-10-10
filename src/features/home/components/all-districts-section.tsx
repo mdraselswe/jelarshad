@@ -18,7 +18,7 @@ export async function AllDistrictsSection() {
   const { divisions } = await getHomeData();
   const total = divisions.reduce((sum, division) => sum + division.districts.length, 0);
   return (
-    <details className={`${CARD_CLASS} group`}>
+    <details className={`${CARD_CLASS} group smooth-details`}>
       <summary
         className={`${ROW_CLASS} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}
       >

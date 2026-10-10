@@ -27,7 +27,7 @@ export function HeroBand({ tone, children, className }: HeroBandProps) {
     <section className="page-x pt-1 lg:pt-5">
       <div
         className={cn(
-          "rounded-[28px] p-5 text-on-hero lg:rounded-[40px] lg:p-12",
+          "animate-rise rounded-[28px] p-5 text-on-hero lg:rounded-[40px] lg:p-12",
           TONE[tone],
           className,
         )}

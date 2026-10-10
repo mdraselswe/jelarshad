@@ -66,3 +66,45 @@
     U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
     U+FFFD;
 }
+
+/*
+ * Stand-ins shown while the web fonts download. On Windows the system Bangla font (Nirmala UI) is 7–15%
+ * wider than Noto Sans Bengali / Anek Bangla, so lines wrapped differently and the page jumped when the real
+ * font arrived. size-adjust scales Nirmala UI to the web fonts' width (ratios measured on a long Bangla
+ * paragraph: 0.932 regular, 0.861 semibold, 0.852 bold). ascent/descent-override give the stand-in the
+ * web font's vertical metrics (Anek Bangla 1.25/0.616 em, Noto 0.917/0.408 em, each divided by size-adjust), so
+ * baselines do not move either. Bengali code points only, so Latin text is untouched.
+ */
+@font-face {
+  font-family: "SS Fallback Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Nirmala UI");
+  size-adjust: 93.2%;
+  ascent-override: 98.4%;
+  descent-override: 43.8%;
+  line-gap-override: 0%;
+  unicode-range: U+0980-09FE;
+}
+@font-face {
+  font-family: "SS Fallback Sans";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Nirmala UI Bold"), local("Nirmala UI");
+  size-adjust: 86.1%;
+  ascent-override: 106.5%;
+  descent-override: 47.4%;
+  line-gap-override: 0%;
+  unicode-range: U+0980-09FE;
+}
+@font-face {
+  font-family: "SS Fallback Display";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Nirmala UI Bold"), local("Nirmala UI");
+  size-adjust: 85.2%;
+  ascent-override: 146.7%;
+  descent-override: 72.3%;
+  line-gap-override: 0%;
+  unicode-range: U+0980-09FE;
+}

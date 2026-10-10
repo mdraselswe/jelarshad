@@ -17,7 +17,10 @@ type SectionProps = {
 export function Section({ title, action, children, className }: SectionProps) {
   const headingId = useId();
   return (
-    <section aria-labelledby={headingId} className={cn("page-x pt-6 lg:pt-10", className)}>
+    <section
+      aria-labelledby={headingId}
+      className={cn("animate-rise page-x pt-6 lg:pt-10", className)}
+    >
       <div className="mb-2.5 flex items-baseline justify-between gap-3">
         <h2 id={headingId} className="text-heading">
           {title}

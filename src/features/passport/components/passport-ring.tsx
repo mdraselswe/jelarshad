@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { toBnDigits } from "@/lib/format/number";
 
 /** Gold progress ring: how many of the districts have a stamp (docs/design/C-Passport). */
@@ -39,7 +40,8 @@ export function PassportRing({
           strokeDasharray={circumference}
           strokeDashoffset={circumference * (1 - filled)}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
-          className={onReward ? "stroke-on-reward" : "stroke-reward"}
+          style={{ "--ring-from": circumference } as React.CSSProperties}
+          className={cn("animate-ring", onReward ? "stroke-on-reward" : "stroke-reward")}
         />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center font-display text-xl font-bold">

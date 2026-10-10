@@ -38,7 +38,7 @@ export function FamousFoodCard({ item }: { item: HomeFamous }) {
   return (
     <Link
       href={routes.districtFood(item.district.slug, item.food.slug)}
-      className={`${FAMOUS_CARD_CLASS} press`}
+      className={`${FAMOUS_CARD_CLASS} lift press`}
     >
       <FamousFoodCardBody
         title={item.food.nameBn}

@@ -68,7 +68,7 @@ export async function MePassport({ userId }: { userId: string }) {
               </div>
               <span className="mt-2 flex h-1.5 overflow-hidden rounded-full bg-muted">
                 <span
-                  className="rounded-full bg-reward"
+                  className="origin-left animate-progress rounded-full bg-reward"
                   style={{ width: `${Math.round((division.unlocked / division.total) * 100)}%` }}
                 />
               </span>
