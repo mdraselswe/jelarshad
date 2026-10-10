@@ -25,7 +25,7 @@ export function GroupedList({
   return (
     <ul
       className={cn(
-        "divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card",
+        "rise-children divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card",
         split && SPLIT_CLASS,
         className,
       )}

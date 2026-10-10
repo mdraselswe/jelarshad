@@ -56,7 +56,11 @@ export function BottomNav() {
               active ? "font-semibold text-primary-text" : "text-muted-foreground",
             )}
           >
-            <Icon className="size-[22px]" strokeWidth={active ? 2.4 : 2} aria-hidden />
+            <Icon
+              className={cn("size-[22px]", active && "animate-pop")}
+              strokeWidth={active ? 2.4 : 2}
+              aria-hidden
+            />
             {t(label)}
           </Link>
         );

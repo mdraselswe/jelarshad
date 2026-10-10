@@ -35,7 +35,7 @@ export function DesktopNavLinks() {
             href={href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-11 press items-center rounded-xl px-4",
+              "flex h-11 press items-center rounded-xl px-4 transition-colors duration-(--duration-fast)",
               active
                 ? "bg-primary-soft font-semibold text-primary-soft-fg"
                 : "text-muted-foreground hover:bg-muted",

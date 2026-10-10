@@ -6,7 +6,7 @@ import { FamousFoodCard, FamousFoodCardSkeleton } from "./famous-food-card";
 
 // Horizontal, snap-scrolling row that bleeds to the screen edges on mobile.
 const ROW_CLASS =
-  "-mx-5 flex snap-x scroll-px-5 gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-4";
+  "rise-children -mx-5 flex snap-x scroll-px-5 gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-4";
 const SKELETON_CARDS = 4;
 
 function FamousFoodsShell({ children }: { children: React.ReactNode }) {

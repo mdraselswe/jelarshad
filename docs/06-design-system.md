@@ -198,7 +198,19 @@ are 44–57 KB each and a page downloads only the weights it uses. Changing a fo
 | `--dur-base` | 250–350ms | Sheet up, toast in, step slide |
 | `--dur-slow` | 700–1000ms | Progress bars, rings filling |
 
-Catalogue (only these; no fade-up on every section):
+Added Oct 2026 (owner asked for motion across the whole app):
+- **Page enter** (`app/(site)/template.tsx`): the page slides up 14px (380ms) on every navigation; transform only.
+- **Section and hero enter** (`animate-rise`): start at 1% opacity and 12px lower, 420ms. Never fully invisible, so
+  paint metrics (LCP) are not delayed. Sections that stream in behind a skeleton appear the same way.
+- **List stagger** (`rise-children`): rows of grouped lists, the famous-food row and the district chips rise in
+  order, 40ms apart (first eight).
+- **Lift** (`lift`): cards rise 3px under a mouse; touch screens skip it.
+- **Ring draw / bars**: the passport ring and division bars animate on first paint; the active bottom-nav icon pops.
+- **Smooth details** (`smooth-details`): "সব জেলা" opens by height, not by snapping.
+- **No jumps**: skeletons match the real box (docs/05); font stand-ins (`SS Fallback Sans/Display` in fonts.css) copy the web
+  fonts' width and vertical metrics so a late font does not re-wrap text.
+
+Catalogue (the original list):
 1. **Press**: buttons `scale(.94)` on `:active`.
 2. **Reaction pop**: selected icon scales 1 → 1.18 → 1 (350ms) + color fill.
 3. **Toast in**: translateY(24px) → 0 + fade, auto-hide 3s. Reward toast shows `+১০` gold pill.

@@ -23,7 +23,7 @@ export function DistrictChip({ district }: { district: HomeDistrict }) {
   return (
     <Link
       href={routes.district(district.slug)}
-      className={`${DISTRICT_CHIP_CLASS} ${toneClass(district.slug)} press`}
+      className={`${DISTRICT_CHIP_CLASS} ${toneClass(district.slug)} lift press`}
     >
       <DistrictChipBody name={district.nameBn} food={district.famous?.nameBn ?? " "} />
     </Link>

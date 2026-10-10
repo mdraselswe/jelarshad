@@ -5,7 +5,7 @@ import { getHomeData } from "../queries";
 import { DistrictChip, DistrictChipSkeleton } from "./district-chip";
 
 const ROW_CLASS =
-  "-mx-5 flex snap-x scroll-px-5 gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0";
+  "rise-children -mx-5 flex snap-x scroll-px-5 gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0";
 const SKELETON_CHIPS = 5;
 
 function DistrictChipsShell({ children }: { children: React.ReactNode }) {
