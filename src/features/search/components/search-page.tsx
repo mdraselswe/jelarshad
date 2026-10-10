@@ -12,7 +12,7 @@ import { SearchResults, SearchResultsSkeleton } from "./search-results";
 
 function SearchTopBar({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-2 px-4 py-3 md:px-6 lg:px-8 lg:py-6">
+    <div className="flex items-start gap-2 rounded-b-[24px] border-b border-border bg-card px-4 py-3 md:px-6 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-8 lg:py-6">
       <BackButton href={routes.home()} className="mt-1.5 lg:hidden" />
       <div className="min-w-0 flex-1 lg:max-w-[760px]">{children}</div>
     </div>

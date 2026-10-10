@@ -226,7 +226,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         <p className="mt-2 text-body text-muted-foreground">{t("add.doneBody")}</p>
         {done.reward.points > 0 && (
           <p className="mt-3 flex items-center justify-center gap-2">
-            <span className="rounded-full bg-reward px-3 py-1 font-display text-lg font-bold text-reward-foreground">
+            <span className="rounded-full bg-grad-reward px-3 py-1 font-display text-lg font-bold text-on-reward">
               +{formatNumber(done.reward.points)}
             </span>
             <span className="text-card-title">
@@ -236,7 +236,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         )}
         <Link
           href={routes.place(done.placeSlug)}
-          className="mt-5 flex h-14 press items-center justify-center rounded-button bg-primary text-[17px] font-semibold text-primary-foreground"
+          className="mt-5 flex h-14 press items-center justify-center rounded-button bg-primary bg-grad-action text-[17px] font-semibold text-primary-foreground"
         >
           {t("add.seePlace")}
         </Link>
@@ -261,9 +261,17 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         if (step === 3 || window.matchMedia("(min-width: 1024px)").matches) submit();
       }}
     >
-      <p className="text-meta text-muted-foreground lg:hidden">
-        {t("add.stepOf", { step: String(step) })}
-      </p>
+      <div className="lg:hidden">
+        <p className="text-meta text-muted-foreground">{t("add.stepOf", { step: String(step) })}</p>
+        <div aria-hidden className="mt-2 flex gap-1.5">
+          {[1, 2, 3].map((n) => (
+            <span
+              key={n}
+              className={cn("h-1.5 flex-1 rounded-full", n <= step ? "bg-grad-action" : "bg-muted")}
+            />
+          ))}
+        </div>
+      </div>
 
       <section className={cn(CARD, show(1))} aria-labelledby="add-food">
         <h2 id="add-food" className="text-heading">
@@ -307,7 +315,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         )}
         <button
           type="button"
-          className="mt-4 h-12 w-full press rounded-button bg-primary text-base font-semibold text-primary-foreground lg:hidden"
+          className="mt-4 h-12 w-full press rounded-button bg-primary bg-grad-action text-base font-semibold text-primary-foreground lg:hidden"
           onClick={() => (needFood ? toast.error(t("add.needFood")) : goTo(2))}
         >
           {t("add.next")}
@@ -436,7 +444,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
                   </span>
                   <button
                     type="button"
-                    className="h-10 shrink-0 press rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
+                    className="h-10 shrink-0 press rounded-full bg-primary bg-grad-action px-4 text-sm font-semibold text-primary-foreground"
                     onClick={() => {
                       setPlace({ id: item.id, nameBn: item.nameBn });
                       setPlaceQuery(item.nameBn);
@@ -473,7 +481,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
           </button>
           <button
             type="button"
-            className="h-12 flex-1 press rounded-button bg-primary font-semibold text-primary-foreground"
+            className="h-12 flex-1 press rounded-button bg-primary bg-grad-action font-semibold text-primary-foreground"
             onClick={() => void checkSimilarThenContinue()}
           >
             {t("add.next")}
@@ -568,7 +576,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
           <button
             type="submit"
             disabled={pending}
-            className="h-14 flex-[2] press rounded-button bg-primary text-[17px] font-semibold text-primary-foreground disabled:opacity-60 lg:flex-1"
+            className="h-14 flex-[2] press rounded-button bg-primary bg-grad-action text-[17px] font-semibold text-primary-foreground disabled:opacity-60 lg:flex-1"
           >
             {t("add.submit")}
           </button>

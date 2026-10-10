@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookmarkIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { EmptyState } from "@/components/layout/empty-state";
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
@@ -15,6 +16,7 @@ import { getServices } from "@/infrastructure/container";
 import { getT } from "@/i18n/server";
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/format/date";
+import { KIND_TONE_CLASS } from "@/lib/tone";
 import { formatNumber } from "@/lib/format/number";
 
 export const ME_TABS = ["contrib", "ate", "saved"] as const;
@@ -34,12 +36,12 @@ async function Contributions({ userId }: { userId: string }) {
     <>
       <div className="grid grid-cols-2 gap-2.5">
         {[
-          [formatNumber(experienceCount), t("me.stats.experiences")],
-          [formatNumber(places.length), t("me.stats.places")],
-        ].map(([value, label]) => (
-          <div key={label} className="rounded-card border border-border bg-card p-3.5">
-            <span className="block font-display text-[22px] leading-tight font-bold">{value}</span>
-            <span className="text-caption text-muted-foreground">{label}</span>
+          [formatNumber(experienceCount), t("me.stats.experiences"), KIND_TONE_CLASS.food],
+          [formatNumber(places.length), t("me.stats.places"), KIND_TONE_CLASS.place],
+        ].map(([value, label, tone]) => (
+          <div key={label} className={cn("rounded-card-lg p-4", tone)}>
+            <span className="block font-display text-[26px] leading-tight font-bold">{value}</span>
+            <span className="text-caption">{label}</span>
           </div>
         ))}
       </div>
@@ -56,7 +58,7 @@ async function Contributions({ userId }: { userId: string }) {
               key={place.slug}
               href={routes.place(place.slug)}
               leading={
-                <ListTile>
+                <ListTile tone="place">
                   <StoreIcon />
                 </ListTile>
               }
@@ -81,7 +83,7 @@ async function Ate({ userId }: { userId: string }) {
           key={row.experienceId}
           href={routes.food(row.food.slug)}
           leading={
-            <ListTile>
+            <ListTile tone="info">
               <span aria-hidden className="text-xl">
                 {REACTION_EMOJI[row.reaction]}
               </span>
@@ -110,7 +112,11 @@ async function Saved({ userId }: { userId: string }) {
         <ListRow
           key={`${row.kind}:${row.slug}`}
           href={row.kind === "food" ? routes.food(row.slug) : routes.place(row.slug)}
-          leading={<ListTile>{row.kind === "food" ? <UtensilsIcon /> : <BookmarkIcon />}</ListTile>}
+          leading={
+            <ListTile tone={row.kind === "food" ? "food" : "place"}>
+              {row.kind === "food" ? <UtensilsIcon /> : <BookmarkIcon />}
+            </ListTile>
+          }
           title={row.nameBn}
           meta={row.meta ?? " "}
         />
@@ -124,15 +130,15 @@ export function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
   const t = getT();
   return (
     <PageShell>
-      <section className="flex items-center gap-3.5 page-x pt-6 lg:pt-12">
+      <HeroBand tone="home" className="flex items-center gap-3.5">
         <span
           aria-hidden
-          className="flex size-14 items-center justify-center rounded-full bg-primary-soft font-display text-xl font-bold text-primary-soft-fg"
+          className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white/20 font-display text-xl font-bold"
         >
           {[...user.displayName][0]}
         </span>
         <h1 className="text-title-1">{user.displayName}</h1>
-      </section>
+      </HeroBand>
 
       <MePassport userId={user.id} />
 
@@ -145,7 +151,7 @@ export function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
               aria-current={id === tab ? "page" : undefined}
               className={cn(
                 "flex h-full flex-1 items-center justify-center rounded-xl px-2 text-[15px] font-medium whitespace-nowrap text-muted-foreground",
-                id === tab && "bg-card font-semibold text-foreground shadow-segment",
+                id === tab && "bg-card font-semibold text-primary-text shadow-segment",
               )}
             >
               {t(`me.tabs.${id}`)}
@@ -161,7 +167,7 @@ export function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
       </section>
 
       <Section title={t("me.settings")}>
-        <div className="flex flex-col gap-4 rounded-card border border-border bg-card p-4">
+        <div className="flex flex-col gap-4 rounded-card-lg border border-border bg-card p-4">
           <div>
             <p className="mb-2 text-card-title">{t("me.theme")}</p>
             <ThemePreferenceControl />

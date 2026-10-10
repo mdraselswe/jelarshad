@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { routes } from "@/config/routes";
 import { AddFlow } from "@/features/add/components/add-flow";
@@ -23,8 +24,10 @@ export default function Add() {
         const districts = await getDistrictOptions();
         return (
           <PageShell>
-            <section className="page-x pt-6 lg:pt-12">
-              <h1 className="mb-4 text-title-1 lg:mx-auto lg:max-w-2xl">{t("add.title")}</h1>
+            <HeroBand tone="home" className="lg:mx-auto lg:max-w-2xl lg:p-10">
+              <h1 className="text-title-1">{t("add.title")}</h1>
+            </HeroBand>
+            <section className="page-x pt-4 lg:pt-6">
               <AddFlow districts={districts} />
             </section>
           </PageShell>

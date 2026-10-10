@@ -20,7 +20,7 @@ export function EmptyState({ message, action, rewardPoints, className }: EmptySt
   return (
     <div
       className={cn(
-        "rounded-input border-[1.5px] border-dashed border-primary/30 bg-primary-soft/50 p-3.5 text-center",
+        "rounded-card-lg border-[1.5px] border-dashed border-primary/30 bg-primary-soft p-4 text-center",
         className,
       )}
     >

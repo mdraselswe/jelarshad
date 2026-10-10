@@ -14,11 +14,13 @@ export const metadata: Metadata = {
 export default function ComingSoonPage() {
   const t = getT();
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-end gap-3 px-6 pt-16 pb-24">
-      <LogoMark title="" className="mb-4 size-16" />
-      <h1 className="text-display">{siteConfig.name}</h1>
-      <p className="text-heading text-muted-foreground">{siteConfig.tagline}</p>
-      <p className="mt-6 text-body">{t("comingSoon.body")}</p>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-end gap-4 px-5 pt-16 pb-12">
+      <LogoMark title="" className="size-16" />
+      <div className="rounded-[28px] bg-grad-hero p-6 text-on-hero">
+        <h1 className="text-display">{siteConfig.name}</h1>
+        <p className="mt-1 text-heading text-on-hero/90">{siteConfig.tagline}</p>
+        <p className="mt-6 text-body">{t("comingSoon.body")}</p>
+      </div>
     </main>
   );
 }
