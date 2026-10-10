@@ -11,7 +11,7 @@ import { KIND_TONE_CLASS, toneClass, type Tone } from "@/lib/tone";
 
 // `split`: one card on phones and tablets, a two-column grid of separate cards on desktop.
 const SPLIT_CLASS =
-  "lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:[&>li]:overflow-hidden lg:[&>li]:rounded-card-lg lg:[&>li]:border lg:[&>li]:border-border lg:[&>li]:bg-card lg:[&>li]:shadow-card";
+  "lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:[&>li]:overflow-hidden lg:[&>li]:rounded-card-lg lg:[&>li]:border lg:[&>li]:border-border lg:[&>li]:bg-card";
 
 export function GroupedList({
   children,
@@ -25,7 +25,7 @@ export function GroupedList({
   return (
     <ul
       className={cn(
-        "divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card shadow-card",
+        "divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card",
         split && SPLIT_CLASS,
         className,
       )}
