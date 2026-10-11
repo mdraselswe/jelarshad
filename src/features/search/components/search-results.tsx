@@ -142,7 +142,10 @@ export function SearchResultsSkeleton() {
         <Skeleton className="h-[1.4em] w-1/2 text-meta" />
       </div>
       <Skeleton className="h-12 rounded-input" />
-      <Skeleton className="h-10 rounded-full" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-[42px] rounded-full" />
+        <Skeleton className="h-[42px] rounded-full" />
+      </div>
       <Skeleton className="h-[92px] rounded-card-lg" />
       {[2, 3].map((rows) => (
         <section key={rows}>
