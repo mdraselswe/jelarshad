@@ -3,7 +3,7 @@
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { SearchIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -101,6 +101,16 @@ function SearchBoxInner({ initialQuery }: { initialQuery: string }) {
   const debounced = useDebounce(value.trim());
   const canSuggest = typing && debounced.length >= appConfig.search.minQueryLength;
 
+  // While suggestions are open they replace the results of the previous search below them, so
+  // two result lists are never on screen together (globals.css hides [data-search-results]).
+  useEffect(() => {
+    if (!canSuggest) return;
+    document.body.dataset.searchSuggesting = "1";
+    return () => {
+      delete document.body.dataset.searchSuggesting;
+    };
+  }, [canSuggest]);
+
   function submit(event: FormEvent) {
     event.preventDefault();
     const q = value.trim();
@@ -158,7 +168,7 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
   const [client] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={client}>
-      <SearchBoxInner initialQuery={initialQuery} />
+      <SearchBoxInner key={initialQuery} initialQuery={initialQuery} />
     </QueryClientProvider>
   );
 }

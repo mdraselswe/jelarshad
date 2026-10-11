@@ -449,6 +449,11 @@ body:has([data-page-cta]) [data-bottom-nav] {
   display: none;
 }
 
+/* Typing in the search box: the suggestions are the only result list on screen. */
+body[data-search-suggesting] [data-search-results] {
+  display: none;
+}
+
 /* Press feedback for anything tappable (§7.1). */
 @utility press {
   transition: transform var(--duration-fast) var(--ease-out);

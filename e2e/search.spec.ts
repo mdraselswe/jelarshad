@@ -111,3 +111,17 @@ test.describe("GET /api/search", () => {
     expect((await response.json()).query.length).toBeLessThanOrEqual(60);
   });
 });
+
+test.describe("search while typing", () => {
+  test("suggestions replace the results of the previous search instead of stacking on them", async ({
+    page,
+  }) => {
+    await page.goto("/search?q=doi");
+    const results = page.locator("[data-search-results]");
+    await expect(results).toBeVisible();
+    const box = page.getByRole("searchbox", { name: "খুঁজুন" });
+    await box.fill("বগুড়া");
+    await expect(page.getByRole("region", { name: "জেলা" }).first()).toBeVisible();
+    await expect(results).toBeHidden();
+  });
+});
