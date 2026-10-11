@@ -89,12 +89,16 @@
   --color-ring: var(--primary);
 
   /* Faces: src/styles/fonts.css (self-hosted, see src/config/fonts.ts). */
+  /* Order matters for layout stability: the first font that is *available* while the web font loads sets
+     the line's strut, so a real Bangla system font must come before system-ui (a Latin font). If the
+     strut font and the font that draws the Bangla letters differ, lines grow when the web font arrives. */
   --font-sans:
-    "SS Noto Sans Bengali", "SS Fallback Sans", "Noto Sans Bengali", "Nirmala UI", system-ui,
-    sans-serif;
+    "SS Noto Sans Bengali", "SS Fallback Sans", "Noto Sans Bengali", "Nirmala UI",
+    "Bangla Sangam MN", "Kohinoor Bangla", "Lohit Bengali", system-ui, sans-serif;
   --font-display:
-    "SS Anek Bangla", "SS Fallback Display", "SS Noto Sans Bengali", "SS Fallback Sans", system-ui,
-    sans-serif;
+    "SS Anek Bangla", "SS Fallback Display", "SS Noto Sans Bengali", "SS Fallback Sans",
+    "Noto Sans Bengali", "Nirmala UI", "Bangla Sangam MN", "Kohinoor Bangla", "Lohit Bengali",
+    system-ui, sans-serif;
   --font-heading: var(--font-display);
 
   /* Shape (§5): chips are rounded-full; the rest use these. */

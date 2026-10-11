@@ -14,7 +14,7 @@ import { DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
 import { SearchTabs } from "./search-tabs";
 
-const GROUP_HEADING_CLASS = "mb-2 px-1 font-display text-xl font-semibold";
+const GROUP_HEADING_CLASS = "mb-2 px-1 font-display text-xl leading-7 font-semibold";
 
 /** Tabs + filters + grouped hits for the page's `?q=`. */
 export async function SearchResults({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
