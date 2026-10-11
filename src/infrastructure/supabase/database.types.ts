@@ -1037,6 +1037,17 @@ export type Database = {
       record_search_miss: { Args: { p_key: string; p_text: string }; Returns: undefined };
       refresh_dish_stats: { Args: { p_dish: string }; Returns: undefined };
       revoke_points: { Args: { p_entity: string; p_entity_id: string }; Returns: number };
+      search_all: {
+        Args: { lim?: number; q_key: string; q_text: string };
+        Returns: {
+          id: string;
+          kind: string;
+          score: number;
+          slug: string;
+          subtitle: string;
+          title: string;
+        }[];
+      };
       similar_food_pairs: {
         Args: { p_limit?: number; p_min?: number };
         Returns: {
@@ -1049,17 +1060,6 @@ export type Database = {
           b_name: string;
           b_slug: string;
           similarity: number;
-        }[];
-      };
-      search_all: {
-        Args: { lim?: number; q_key: string; q_text: string };
-        Returns: {
-          id: string;
-          kind: string;
-          score: number;
-          slug: string;
-          subtitle: string;
-          title: string;
         }[];
       };
       unlock_stamp: {
