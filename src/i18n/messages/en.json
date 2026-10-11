@@ -71,7 +71,8 @@
     "needReaction": "Tell us how it was",
     "similarFoodTitle": "Do you mean one of these?",
     "similarFoodHint": "A food added twice splits its page. If it matches, pick it.",
-    "similarFoodNone": "No, “{name}” is a new food"
+    "similarFoodNone": "No, “{name}” is a new food",
+    "inBangla": "Write it in Bangla: “{name}”"
   },
   "save": {
     "label": "Save to want-to-try",

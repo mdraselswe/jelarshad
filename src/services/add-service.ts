@@ -3,6 +3,7 @@ import type { AppUser, Place, PlaceType, Reaction } from "@/core/domain";
 import type { CacheInvalidator, RateLimiter, Repositories } from "@/core/ports";
 import { fail, ok, type Result } from "@/lib/result";
 import { slugify } from "@/lib/text/slug";
+import { isLatinText } from "@/lib/text/to-bangla";
 import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
 
 import type { ClaimService } from "./claim-service";
@@ -30,7 +31,8 @@ export type NewPlaceInput = {
 };
 
 export type AddInput = {
-  food: { id: string } | { nameBn: string };
+  /** An existing food, or a new one (with the Latin spelling it was typed in, if any). */
+  food: { id: string } | { nameBn: string; nameEn?: string | undefined };
   place: { id: string } | NewPlaceInput;
   reaction: Reaction;
   comment?: string | null | undefined;
@@ -127,7 +129,10 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
             slugify(nameBn),
             async (s) => (await repos.foods.bySlug(s)) !== null,
           );
-          const food = await repos.foods.create({ nameBn, slug }, user.id);
+          // Typed in Latin letters: keep that spelling as the English name (it is searchable too).
+          const typedEn = clean(input.food.nameEn ?? "").slice(0, appConfig.text.nameMax);
+          const nameEn = typedEn !== "" ? typedEn : isLatinText(nameBn) ? nameBn : null;
+          const food = await repos.foods.create({ nameBn, nameEn, slug }, user.id);
           foodId = food.id;
           foodSlug = food.slug;
           createdFood = true;

@@ -64,3 +64,13 @@ test.describe("add flow: a close name asks before creating a second food", () =>
     await expect(page.getByText("এগুলোর কোনোটাই কি আপনি বোঝাচ্ছেন?")).toBeHidden();
   });
 });
+
+test.describe("add flow: Latin letters", () => {
+  test("offers the name in Bangla and puts it in the box", async ({ page }) => {
+    await page.goto("/auth/sign-in?next=/add");
+    const box = page.getByRole("textbox", { name: "কী খাবার?" });
+    await box.fill("salad");
+    await page.getByRole("button", { name: /বাংলায় লিখুন/ }).click();
+    await expect(box).toHaveValue("সালাদ");
+  });
+});

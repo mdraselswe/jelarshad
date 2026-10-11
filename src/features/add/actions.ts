@@ -34,7 +34,10 @@ export const findSimilarPlaces = defineAction(
 );
 
 const submitSchema = z.object({
-  food: z.union([z.object({ id: z.string().min(1).max(64) }), z.object({ nameBn: name })]),
+  food: z.union([
+    z.object({ id: z.string().min(1).max(64) }),
+    z.object({ nameBn: name, nameEn: name.optional() }),
+  ]),
   place: z.union([
     z.object({ id: z.string().min(1).max(64) }),
     z.object({
