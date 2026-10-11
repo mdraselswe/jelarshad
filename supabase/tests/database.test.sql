@@ -334,27 +334,27 @@ select throws_ok(
 
 -- Merging foods (migration 0060) ------------------------------------------------------------------
 insert into foods (id, slug, name_bn) values
-  ('00000000-0000-4000-8000-00000000f002', 'rls-test-food-duplicate', 'টেস্ট খাবার (ডুপ্লিকেট)');
+  ('00000000-0000-4000-8000-00000000f0a2', 'rls-test-food-duplicate', 'টেস্ট খাবার (ডুপ্লিকেট)');
 insert into dishes (id, place_id, food_id) values
-  ('00000000-0000-4000-8000-00000000d003', '00000000-0000-4000-8000-00000000c001', '00000000-0000-4000-8000-00000000f002');
+  ('00000000-0000-4000-8000-00000000d0a3', '00000000-0000-4000-8000-00000000c001', '00000000-0000-4000-8000-00000000f0a2');
 select is(
-  merge_foods('00000000-0000-4000-8000-00000000f002', '00000000-0000-4000-8000-00000000f001'),
+  merge_foods('00000000-0000-4000-8000-00000000f0a2', '00000000-0000-4000-8000-00000000f001'),
   1, 'merging foods reports how many dishes were handled'
 );
 select is(
-  (select status::text from foods where id = '00000000-0000-4000-8000-00000000f002'),
+  (select status::text from foods where id = '00000000-0000-4000-8000-00000000f0a2'),
   'merged', 'the duplicate food is kept with status merged'
 );
 select is(
-  (select merged_into from foods where id = '00000000-0000-4000-8000-00000000f002'),
+  (select merged_into from foods where id = '00000000-0000-4000-8000-00000000f0a2'),
   '00000000-0000-4000-8000-00000000f001'::uuid, 'and points at the survivor'
 );
 select is_empty(
-  $$ select 1 from dishes where id = '00000000-0000-4000-8000-00000000d003' $$,
+  $$ select 1 from dishes where id = '00000000-0000-4000-8000-00000000d0a3' $$,
   'a dish both foods had at one place becomes one dish'
 );
 select throws_ok(
-  $$ select merge_foods('00000000-0000-4000-8000-00000000f001', '00000000-0000-4000-8000-00000000f002') $$,
+  $$ select merge_foods('00000000-0000-4000-8000-00000000f001', '00000000-0000-4000-8000-00000000f0a2') $$,
   'P0001', null, 'the surviving food must be active'
 );
 
