@@ -14,7 +14,7 @@ import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useT } from "@/i18n/client";
 
 import type { SearchSuggestions } from "../types";
-import { DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
+import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 
 const INPUT_WRAP_CLASS =
   "flex h-14 items-center gap-2.5 rounded-full border-2 border-primary bg-background px-4";
@@ -54,6 +54,13 @@ function Suggestions({ q }: { q: string }) {
       key: "foods",
       title: t("search.groups.foods"),
       rows: data.foods.map((hit) => <FoodHitRow key={hit.slug} hit={hit} />),
+    },
+    {
+      key: "areas",
+      title: t("search.groups.areas"),
+      rows: data.areas.map((hit) => (
+        <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
+      )),
     },
     {
       key: "places",

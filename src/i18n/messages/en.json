@@ -265,7 +265,8 @@
     "groups": {
       "foods": "Food",
       "places": "Places",
-      "districts": "Districts"
+      "districts": "Districts",
+      "areas": "Areas"
     },
     "filters": {
       "label": "Filters",
@@ -284,7 +285,8 @@
     "emptyFilteredHint": "Open the filters and try again.",
     "districtMeta": "{division} division",
     "openFood": "Open food",
-    "foodBannerMeta": "See where it is served across districts"
+    "foodBannerMeta": "See where it is served across districts",
+    "areaMeta": "Area in {district}"
   },
   "placeType": {
     "restaurant": "Restaurant",
@@ -369,5 +371,14 @@
     "install": "Install",
     "iosBody": "Tap Share, then choose “Add to Home Screen”.",
     "dismiss": "Later"
+  },
+  "area": {
+    "statPlaces": "Places",
+    "ranked": "Community favorites",
+    "others": "Not enough experiences yet",
+    "all": "Places in this area",
+    "noneRated": "Nobody has shared an experience about places here yet. If you have been, be the first.",
+    "add": "Share an experience",
+    "more": "There are more places. See the district page."
   }
 }

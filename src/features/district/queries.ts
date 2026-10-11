@@ -21,6 +21,23 @@ export async function getDistrictPlaces(districtId: number) {
   return getServices().catalog.districtPlaces(districtId);
 }
 
+export async function getAreaPage(districtSlug: string, areaSlug: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("districts");
+  const data = await getServices().catalog.areaPage(districtSlug, areaSlug);
+  // A new experience at any of these places refreshes the ranking.
+  for (const place of data?.places ?? []) cacheTag(`place:${place.id}`);
+  return data;
+}
+
+export async function getAreaSlugs(limit: number) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("districts");
+  return getServices().repos.districts.areaSlugs(limit);
+}
+
 export async function getDistrictFood(districtSlug: string, foodSlug: string) {
   "use cache";
   cacheLife("hours");

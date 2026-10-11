@@ -2,6 +2,7 @@ import "server-only";
 
 import { appConfig } from "@/config/app.config";
 import type {
+  AreaWithDistrict,
   Claim,
   District,
   Dish,
@@ -131,12 +132,49 @@ export function createMockRepositories(): Repositories {
     }),
   );
 
+  /** Areas that active places point at, one entry each. */
+  const mockAreas = () => {
+    const seen = new Map<string, AreaWithDistrict>();
+    for (const place of active(db.places)) {
+      if (!place.area) continue;
+      const key = `${place.district.id}/${place.area.id}`;
+      if (seen.has(key)) continue;
+      seen.set(key, {
+        id: place.area.id,
+        districtId: place.district.id,
+        slug: place.area.slug,
+        nameBn: place.area.nameBn,
+        nameEn: null,
+        district: { ...place.district },
+      });
+    }
+    return clone([...seen.values()]);
+  };
+
   return {
     districts: {
       list: async () => clone(db.districts),
       bySlug: async (slug) => clone(db.districts.find((d) => d.slug === slug) ?? null),
       fame: async (districtId) => fameWhere((f) => f.districtId === districtId),
       allFame: async () => fameWhere(() => true),
+      // The mock keeps areas on its places, so areas are derived from them.
+      areaBySlug: async (districtId, areaSlug) =>
+        mockAreas().find((a) => a.districtId === districtId && a.slug === areaSlug) ?? null,
+      areasMatching: async (text, limit) => {
+        const needle = text.trim();
+        return mockAreas()
+          .filter((a) => a.nameBn.includes(needle) || a.slug === needle.toLowerCase())
+          .slice(0, limit);
+      },
+      areasOf: async (districtId, limit) =>
+        mockAreas()
+          .filter((a) => a.districtId === districtId)
+          .sort((a, b) => a.nameBn.localeCompare(b.nameBn, "bn"))
+          .slice(0, limit),
+      areaSlugs: async (limit) =>
+        mockAreas()
+          .slice(0, limit)
+          .map((a) => ({ districtSlug: a.district.slug, areaSlug: a.slug })),
     },
 
     foods: {
@@ -198,6 +236,8 @@ export function createMockRepositories(): Repositories {
       byId: async (id) => clone(active(db.places).find((p) => p.id === id) ?? null),
       inDistrict: async (districtId, opts) =>
         paginate(clone(active(db.places).filter((p) => p.district.id === districtId)), opts),
+      inArea: async (areaId, opts) =>
+        paginate(clone(active(db.places).filter((p) => p.area?.id === areaId)), opts),
       dishes: async (placeId) =>
         active(db.dishes)
           .filter((d) => d.placeId === placeId)

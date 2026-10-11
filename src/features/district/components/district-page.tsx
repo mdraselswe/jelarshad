@@ -9,6 +9,7 @@ import { getT } from "@/i18n/server";
 import type { DistrictHeader } from "@/services/catalog-service";
 
 import { ShareButton } from "@/features/share/components/share-button";
+import { DistrictAreasSection } from "./district-areas-section";
 import { DistrictFamousSection } from "./district-famous-section";
 import { DistrictHero, DistrictHeroSkeleton } from "./district-hero";
 import { DistrictPlacesSection, DistrictPlacesSectionSkeleton } from "./district-places-section";
@@ -35,6 +36,7 @@ export function DistrictPage({ district }: { district: DistrictHeader }) {
         }
       />
       <DistrictFamousSection district={district} />
+      <DistrictAreasSection district={district} />
       <Suspense fallback={<DistrictPlacesSectionSkeleton />}>
         <DistrictPlacesSection districtId={district.id} />
       </Suspense>

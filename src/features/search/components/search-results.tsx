@@ -10,7 +10,7 @@ import { filterPlaces } from "@/services/search-service";
 
 import { searchCatalog } from "../queries";
 import { parseSearchParams, type RawSearchParams } from "../search-params";
-import { DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
+import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
 import { SearchTabs } from "./search-tabs";
 
@@ -37,8 +37,8 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const counts = {
     food: outcome.foods.length,
     place: places.length,
-    district: outcome.districts.length,
-    all: outcome.foods.length + places.length + outcome.districts.length,
+    district: outcome.districts.length + outcome.areas.length,
+    all: outcome.foods.length + places.length + outcome.districts.length + outcome.areas.length,
   };
 
   const showFoods = tab === "all" || tab === "food";
@@ -114,6 +114,16 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
               <GroupedList cards>
                 {places.map((hit) => (
                   <PlaceHitRow key={hit.slug} hit={hit} t={t} />
+                ))}
+              </GroupedList>
+            </section>
+          )}
+          {showDistricts && outcome.areas.length > 0 && (
+            <section aria-label={t("search.groups.areas")}>
+              <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.areas")}</h2>
+              <GroupedList cards>
+                {outcome.areas.map((hit) => (
+                  <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
                 ))}
               </GroupedList>
             </section>

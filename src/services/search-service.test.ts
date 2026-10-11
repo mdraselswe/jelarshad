@@ -37,6 +37,20 @@ describe("searchService.search", () => {
     );
   });
 
+  it("finds a neighbourhood by name, and the places in it", async () => {
+    const outcome = await service().search("সাতমাথা");
+    expect(outcome.areas).toEqual([
+      { slug: "satmatha", nameBn: "সাতমাথা", district: { slug: "bogura", nameBn: "বগুড়া" } },
+    ]);
+    expect(outcome.places.map((place) => place.slug)).toContain("sample-place");
+    expect(outcome.total).toBe(
+      outcome.foods.length +
+        outcome.places.length +
+        outcome.districts.length +
+        outcome.areas.length,
+    );
+  });
+
   it("finds a place by name and keeps its district", async () => {
     const { places } = await service().search("নমুনা দই ঘর");
     expect(places[0]).toMatchObject({ slug: "sample-place", district: { slug: "bogura" } });

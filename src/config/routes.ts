@@ -25,6 +25,9 @@ export const routes = {
   district: (slug: string) => `/district/${segment(slug)}`,
   districtFood: (districtSlug: string, foodSlug: string) =>
     `/district/${segment(districtSlug)}/${segment(foodSlug)}`,
+  /** A neighbourhood inside a district: /district/dhaka/area/dhanmondi. */
+  area: (districtSlug: string, areaSlug: string) =>
+    `/district/${segment(districtSlug)}/area/${segment(areaSlug)}`,
   add: () => "/add",
   me: () => "/me",
   /** Login page; `next` is where to land afterwards (a site path). */

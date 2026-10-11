@@ -21,6 +21,9 @@ export type Area = {
   nameEn: string | null;
 };
 
+/** A neighbourhood with the district it belongs to (search, area page). */
+export type AreaWithDistrict = Area & { district: Pick<District, "id" | "slug" | "nameBn"> };
+
 export type Food = {
   id: string;
   slug: string;

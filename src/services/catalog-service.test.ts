@@ -128,6 +128,27 @@ describe("catalogService place page", () => {
   });
 });
 
+describe("catalogService.areaPage", () => {
+  it("returns null for an unknown district or area", async () => {
+    expect(await service().areaPage("nowhere", "satmatha")).toBeNull();
+    expect(await service().areaPage("bogura", "nowhere")).toBeNull();
+  });
+
+  it("lists the places of a neighbourhood with what they serve", async () => {
+    const page = await service().areaPage("bogura", "satmatha");
+    expect(page?.area).toEqual({ slug: "satmatha", nameBn: "সাতমাথা" });
+    expect(page?.district.slug).toBe("bogura");
+    const place = page?.places.find((row) => row.slug === "sample-place");
+    expect(place?.foods).toContain("দই");
+  });
+
+  it("puts places with enough experiences first, never ranks the rest", async () => {
+    const page = await service().areaPage("bogura", "satmatha");
+    const flags = page?.places.map((row) => row.best.rankable) ?? [];
+    expect(flags).toEqual([...flags].sort((a, b) => Number(b) - Number(a)));
+  });
+});
+
 describe("catalogService district pages", () => {
   it("returns null for an unknown district", async () => {
     expect(await service().districtHeader("nowhere")).toBeNull();
@@ -139,6 +160,7 @@ describe("catalogService district pages", () => {
     const header = await service().districtHeader("bogura");
     expect(header?.divisionBn).toBe("রাজশাহী");
     expect(header?.famous.map((entry) => entry.food.slug)).toEqual(["doi"]);
+    expect(header?.areas.map((area) => area.slug)).toEqual(["satmatha"]);
   });
 
   it("lists the district's places", async () => {

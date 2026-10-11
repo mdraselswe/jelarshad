@@ -2,6 +2,7 @@ import "server-only";
 
 import { appConfig } from "@/config/app.config";
 import type {
+  AreaWithDistrict,
   District,
   EditSuggestion,
   Food,
@@ -107,6 +108,27 @@ function toPage<T>(rows: T[], window: ReturnType<typeof pageWindow>): Page<T> {
   };
 }
 
+type AreaRow = {
+  id: number;
+  district_id: number;
+  slug: string;
+  name_bn: string;
+  name_en: string | null;
+  districts: { id: number; slug: string; name_bn: string } | null;
+};
+
+function toAreaWithDistrict(row: AreaRow): AreaWithDistrict {
+  if (!row.districts) throw new Error(`area ${row.id} has no district`);
+  return {
+    id: row.id,
+    districtId: row.district_id,
+    slug: row.slug,
+    nameBn: row.name_bn,
+    nameEn: row.name_en,
+    district: { id: row.districts.id, slug: row.districts.slug, nameBn: row.districts.name_bn },
+  };
+}
+
 export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Repositories {
   const db: Db = clients.public;
 
@@ -202,6 +224,55 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
       },
       fame: (districtId) => fameQuery(districtId),
       allFame: () => fameQuery(null),
+      async areaBySlug(districtId, areaSlug) {
+        const row = check(
+          await db
+            .from("areas")
+            .select("id, district_id, slug, name_bn, name_en, districts(id, slug, name_bn)")
+            .eq("district_id", districtId)
+            .eq("slug", areaSlug)
+            .maybeSingle(),
+          "area",
+        );
+        return row ? toAreaWithDistrict(row as unknown as AreaRow) : null;
+      },
+      async areasMatching(text, limit) {
+        // Strip characters that mean something inside a PostgREST filter string.
+        const needle = text.trim().replace(/[%_,()*]/g, "");
+        if (needle === "") return [];
+        const rows = check(
+          await db
+            .from("areas")
+            .select("id, district_id, slug, name_bn, name_en, districts(id, slug, name_bn)")
+            .or(`name_bn.ilike.%${needle}%,name_en.ilike.%${needle}%`)
+            .order("name_bn")
+            .limit(limit),
+          "areas matching",
+        );
+        return (rows as unknown as AreaRow[]).map(toAreaWithDistrict);
+      },
+      async areasOf(districtId, limit) {
+        const rows = check(
+          await db
+            .from("areas")
+            .select("id, district_id, slug, name_bn, name_en, districts(id, slug, name_bn)")
+            .eq("district_id", districtId)
+            .order("name_bn")
+            .limit(limit),
+          "areas of district",
+        );
+        return (rows as unknown as AreaRow[]).map(toAreaWithDistrict);
+      },
+      async areaSlugs(limit) {
+        const rows = check(
+          await db.from("areas").select("slug, districts(slug)").order("id").limit(limit),
+          "area slugs",
+        );
+        return (rows as unknown as { slug: string; districts: { slug: string } | null }[]).flatMap(
+          (row) =>
+            row.districts ? [{ districtSlug: row.districts.slug, areaSlug: row.slug }] : [],
+        );
+      },
     },
 
     foods: {
@@ -289,6 +360,20 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
             .order("name_bn")
             .range(window.from, window.to),
           "places in district",
+        );
+        return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
+      },
+      async inArea(areaId, opts) {
+        const window = pageWindow(opts);
+        const rows = check(
+          await db
+            .from("places")
+            .select(PLACE_SELECT)
+            .eq("area_id", areaId)
+            .eq("status", "active")
+            .order("name_bn")
+            .range(window.from, window.to),
+          "places in area",
         );
         return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
       },
