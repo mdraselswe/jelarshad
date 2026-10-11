@@ -20,7 +20,7 @@ export function PassportInvite({ total }: { total: number }) {
           <span className="block text-meta opacity-85">{t("reward.inviteHint")}</span>
         </span>
       </span>
-      <span className="mt-3.5 flex h-11 items-center justify-center rounded-full bg-card px-4 text-sm font-semibold text-on-reward">
+      <span className="mt-3.5 flex h-11 items-center justify-center rounded-full bg-card px-4 text-sm font-semibold text-foreground">
         {t("reward.joinCta")}
       </span>
     </Link>

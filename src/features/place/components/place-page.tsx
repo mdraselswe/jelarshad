@@ -1,43 +1,52 @@
 import { Suspense } from "react";
 
+import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
+import { Section } from "@/components/layout/section";
+import { StickyCta } from "@/components/layout/sticky-cta";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { LoadingRegion } from "@/components/ui/skeleton";
+import { appConfig } from "@/config/app.config";
 import { routes } from "@/config/routes";
-import { getT } from "@/i18n/server";
-import type { PlaceHeader } from "@/services/catalog-service";
-
 import {
   PlaceReactionCard,
   ReactionCardSkeleton,
 } from "@/features/experience/components/reaction-card";
-import { ShareButton } from "@/features/share/components/share-button";
+import { ContentActions } from "@/features/moderation/components/content-actions";
 import { SaveButtonSkeleton } from "@/features/saved/components/save-button";
 import { SaveControl } from "@/features/saved/components/save-control";
-import { Section } from "@/components/layout/section";
-import { ContentActions } from "@/features/moderation/components/content-actions";
+import { ShareButton } from "@/features/share/components/share-button";
+import { getT } from "@/i18n/server";
+import { formatNumber } from "@/lib/format/number";
+import type { PlaceHeader } from "@/services/catalog-service";
+
 import { PlaceClaimsSection, PlaceClaimsSectionSkeleton } from "./place-claims-section";
 import { PlaceDishesSection, PlaceDishesSectionSkeleton } from "./place-dishes-section";
 import { PlaceHero, PlaceHeroSkeleton } from "./place-hero";
 import { PlaceInfoSection } from "./place-info-section";
 import { PlacePhotosSection } from "./place-photos-section";
 
-/** Place page: hero and info are ready with the header; claims and dishes stream in. */
+/**
+ * Place page (docs/design: M-Place, D-Place): gradient hero, a floating "are these facts still
+ * right?" card, then dishes and info. The one action ("জানান") is pinned to the bottom on phones.
+ */
 export function PlacePage({ place }: { place: PlaceHeader }) {
   const t = getT();
+  const actions = (
+    <>
+      <Suspense fallback={<SaveButtonSkeleton />}>
+        <SaveControl entity="place" entityId={place.id} />
+      </Suspense>
+      <ShareButton title={place.nameBn} path={routes.place(place.slug)} />
+    </>
+  );
   return (
     <PageShell
       header={
         <SubPageBar
+          hideMobile
           backHref={routes.district(place.district.slug)}
-          actions={
-            <>
-              <Suspense fallback={<SaveButtonSkeleton />}>
-                <SaveControl entity="place" entityId={place.id} />
-              </Suspense>
-              <ShareButton title={place.nameBn} path={routes.place(place.slug)} />
-            </>
-          }
+          actions={actions}
           crumbs={[
             { label: place.district.nameBn, href: routes.district(place.district.slug) },
             { label: place.nameBn },
@@ -45,7 +54,10 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
         />
       }
     >
-      <PlaceHero place={place} />
+      <PlaceHero
+        place={place}
+        bar={<HeroBar backHref={routes.district(place.district.slug)} actions={actions} />}
+      />
       <Suspense fallback={<PlaceClaimsSectionSkeleton />}>
         <PlaceClaimsSection placeId={place.id} />
       </Suspense>
@@ -56,7 +68,7 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
           </Suspense>
         </div>
         <div className="lg:col-span-5">
-          <div className="page-x pt-6 lg:pt-10">
+          <div id="react" className="scroll-mt-4 page-x pt-6 lg:pt-10">
             <Suspense fallback={<ReactionCardSkeleton />}>
               <PlaceReactionCard placeId={place.id} />
             </Suspense>
@@ -77,6 +89,9 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
       <Suspense fallback={null}>
         <PlacePhotosSection placeId={place.id} />
       </Suspense>
+      <StickyCta href="#react" chip={`+${formatNumber(appConfig.points.experience)}`}>
+        {t("place.reactCta")}
+      </StickyCta>
     </PageShell>
   );
 }
@@ -85,8 +100,8 @@ export function PlacePageSkeleton() {
   const t = getT();
   return (
     <LoadingRegion label={t("common.loading")}>
-      <PageShell header={<SubPageBar backHref={routes.home()} />}>
-        <PlaceHeroSkeleton />
+      <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
+        <PlaceHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
         <PlaceClaimsSectionSkeleton />
         <PlaceDishesSectionSkeleton />
       </PageShell>

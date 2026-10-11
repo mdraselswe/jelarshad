@@ -26,6 +26,7 @@ export async function PlaceDishesSection({ placeId }: { placeId: string }) {
               price={dish.price}
               experienceCount={dish.experienceCount}
               display={dish.display}
+              showBar
               leading={
                 <ListTile seed={dish.food.slug}>
                   {(dish.displayName ?? dish.food.nameBn).slice(0, 1)}
@@ -45,7 +46,7 @@ export function PlaceDishesSectionSkeleton() {
     <Section title={t("place.firstTime")}>
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
-          <DishRowSkeleton key={index} />
+          <DishRowSkeleton key={index} withBar />
         ))}
       </GroupedList>
     </Section>

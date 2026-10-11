@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { LoadingRegion } from "@/components/ui/skeleton";
@@ -17,13 +18,22 @@ export function DistrictPage({ district }: { district: DistrictHeader }) {
     <PageShell
       header={
         <SubPageBar
+          hideMobile
           backHref={routes.home()}
           crumbs={[{ label: district.nameBn }]}
           actions={<ShareButton title={district.nameBn} path={routes.district(district.slug)} />}
         />
       }
     >
-      <DistrictHero district={district} />
+      <DistrictHero
+        district={district}
+        bar={
+          <HeroBar
+            backHref={routes.home()}
+            actions={<ShareButton title={district.nameBn} path={routes.district(district.slug)} />}
+          />
+        }
+      />
       <DistrictFamousSection district={district} />
       <Suspense fallback={<DistrictPlacesSectionSkeleton />}>
         <DistrictPlacesSection districtId={district.id} />
@@ -36,8 +46,8 @@ export function DistrictPageSkeleton() {
   const t = getT();
   return (
     <LoadingRegion label={t("common.loading")}>
-      <PageShell header={<SubPageBar backHref={routes.home()} />}>
-        <DistrictHeroSkeleton />
+      <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
+        <DistrictHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
         <DistrictPlacesSectionSkeleton />
       </PageShell>
     </LoadingRegion>

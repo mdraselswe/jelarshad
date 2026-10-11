@@ -15,7 +15,10 @@ export function SubPageBar({
   backHref,
   crumbs = [],
   actions,
+  hideMobile = false,
 }: {
+  /** The phone row is drawn inside the hero band instead (HeroBar); only the breadcrumb remains. */
+  hideMobile?: boolean;
   backHref: string;
   crumbs?: Crumb[];
   /** Round icon buttons (save, share); shown right of the back button or the breadcrumb. */
@@ -24,7 +27,9 @@ export function SubPageBar({
   const t = getT();
   return (
     <>
-      <div className="flex items-center gap-2 px-4 py-3 md:px-6 lg:hidden">
+      <div
+        className={`flex items-center gap-2 px-4 py-3 md:px-6 lg:hidden ${hideMobile ? "hidden" : ""}`}
+      >
         <BackButton href={backHref} />
         {actions ? <div className="ml-auto flex items-center gap-2">{actions}</div> : null}
       </div>

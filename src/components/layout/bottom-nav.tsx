@@ -31,6 +31,7 @@ export function BottomNav() {
   const t = useT();
   return (
     <nav
+      data-bottom-nav
       aria-label={t("nav.label")}
       className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto grid h-[66px] max-w-md grid-cols-4 items-center rounded-full border border-border bg-card px-2 shadow-floating lg:hidden"
     >

@@ -55,7 +55,7 @@ test.describe("desktop (1024px and up)", () => {
   test("food page puts the lists and the score side by side", async ({ page }) => {
     await page.goto("/food/doi");
     const list = page.getByRole("region", { name: "কমিউনিটির প্রিয় জায়গা" });
-    const score = page.getByText("পছন্দ করেছেন", { exact: true });
+    const score = page.getByText("পছন্দ করেছেন", { exact: true }).locator("visible=true");
     await expect(score).toBeVisible();
     const [listBox, scoreBox] = await Promise.all([list.boundingBox(), score.boundingBox()]);
     expect(scoreBox?.x ?? 0).toBeGreaterThan((listBox?.x ?? 0) + (listBox?.width ?? 0) - 1);

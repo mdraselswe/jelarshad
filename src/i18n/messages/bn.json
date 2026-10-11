@@ -303,7 +303,9 @@
     "famousIn": "{district}-এর বিখ্যাত",
     "newGroup": "এখনও পর্যাপ্ত অভিজ্ঞতা নেই",
     "noDishes": "এই খাবার কোথায় ভালো পাওয়া যায়, এখনও কেউ জানায়নি।",
-    "voices": "মানুষ যা বলছেন"
+    "voices": "মানুষ যা বলছেন",
+    "famousInTitle": "যেসব জেলায় বিখ্যাত",
+    "reactCta": "{food} খেয়েছেন? জানান"
   },
   "dish": {
     "new": "নতুন",
@@ -318,7 +320,9 @@
     "address": "ঠিকানা",
     "map": "ম্যাপে দেখুন",
     "moreIn": "{district}-এর আরও জায়গা",
-    "newTab": "নতুন ট্যাবে খুলবে"
+    "newTab": "নতুন ট্যাবে খুলবে",
+    "verifyTitle": "তথ্যগুলো এখনো ঠিক আছে?",
+    "reactCta": "আপনার অভিজ্ঞতা জানান"
   },
   "district": {
     "famous": "বিখ্যাত খাবার",
@@ -327,7 +331,10 @@
     "titleFood": "{district}-এর {food}",
     "allCountry": "সারা দেশে {food} দেখুন",
     "noDishes": "{district}-এ {food} কোথায় ভালো পাওয়া যায়, এখনও কেউ জানায়নি।",
-    "placeCount": "{count}টি জায়গা"
+    "placeCount": "{count}টি জায়গা",
+    "statFamous": "বিখ্যাত খাবার",
+    "areasTitle": "এলাকা",
+    "stampNew": "স্ট্যাম্প পাওয়া হয়নি"
   },
   "claim": {
     "types": {

@@ -431,12 +431,18 @@
 }
 /* Round buttons (back, share, save) laid on a hero gradient: translucent, white icons. */
 @utility on-hero-actions {
-  & a,
-  & button {
+  && a,
+  && button {
     background-color: rgb(255 255 255 / 0.2);
     border-color: transparent;
     color: var(--on-hero);
   }
+}
+
+/* A page with its own pinned action (food, place) hides the floating nav while it is shown. Not in a
+   layer, so it also wins over the nav's own display utilities. */
+body:has([data-page-cta]) [data-bottom-nav] {
+  display: none;
 }
 
 /* Press feedback for anything tappable (§7.1). */

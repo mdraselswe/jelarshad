@@ -58,7 +58,7 @@ export function PassportCard({
           </span>
           <Link
             href={routes.districtFood(summary.next.district.slug, summary.next.food.slug)}
-            className="flex h-9 shrink-0 press items-center rounded-full bg-card px-3.5 text-sm font-semibold text-on-reward"
+            className="flex h-9 shrink-0 press items-center rounded-full bg-card px-3.5 text-sm font-semibold text-foreground"
           >
             {t("reward.where")}
           </Link>

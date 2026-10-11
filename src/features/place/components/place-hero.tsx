@@ -1,29 +1,51 @@
+import type { ReactNode } from "react";
+
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
 import type { PlaceHeader } from "@/services/catalog-service";
 
-export function PlaceHero({ place }: { place: PlaceHeader }) {
+/** Place page top (docs/design: M-Place): pink-to-violet band, type pill, name and area. */
+export function PlaceHero({
+  place,
+  bar,
+  aside,
+}: {
+  place: PlaceHeader;
+  bar?: ReactNode;
+  aside?: ReactNode;
+}) {
   const t = getT();
-  const where = [t(`placeType.${place.type}`), place.areaNameBn, place.district.nameBn]
-    .filter(Boolean)
-    .join(" · ");
+  const where = [place.areaNameBn, place.district.nameBn].filter(Boolean).join(", ");
   return (
-    <HeroBand tone="place">
-      <h1 className="text-title-1">{place.nameBn}</h1>
-      {place.nameEn ? <p className="text-meta text-on-hero/85">{place.nameEn}</p> : null}
-      <p className="mt-1 text-meta text-on-hero/85">{where}</p>
+    <HeroBand tone="place" bleed bar={bar} className="pb-9 lg:pb-12">
+      <div className="lg:flex lg:items-center lg:gap-8">
+        <div className="min-w-0 flex-1">
+          <span className="flex h-[30px] w-fit items-center rounded-full bg-white/22 px-3 text-[13px] font-semibold">
+            {t(`placeType.${place.type}`)}
+          </span>
+          <h1 className="mt-3 font-display text-[29px] leading-tight font-bold lg:text-[44px]">
+            {place.nameBn}
+          </h1>
+          {place.nameEn ? <p className="text-[15px] text-on-hero/90">{place.nameEn}</p> : null}
+          {where ? (
+            <p className="mt-1.5 text-[15px] text-on-hero/90 lg:text-[17px]">{where}</p>
+          ) : null}
+        </div>
+        {aside ? <div className="mt-4 hidden shrink-0 lg:mt-0 lg:block">{aside}</div> : null}
+      </div>
     </HeroBand>
   );
 }
 
-export function PlaceHeroSkeleton() {
+export function PlaceHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="place">
-      <div className="text-title-1">
+    <HeroBand tone="place" bleed bar={bar} className="pb-9 lg:pb-12">
+      <span className="flex h-[30px] w-24 items-center rounded-full bg-white/22" />
+      <div className="mt-3 font-display text-[29px] leading-tight lg:text-[44px]">
         <SkeletonText className="w-2/3" />
       </div>
-      <div className="mt-1 text-meta">
+      <div className="mt-1.5 text-[15px]">
         <SkeletonText className="w-1/2" />
       </div>
     </HeroBand>

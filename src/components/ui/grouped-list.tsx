@@ -42,11 +42,13 @@ function ListRowBody({
   title,
   meta,
   trailing,
+  footer,
 }: {
   leading: ReactNode;
   title: ReactNode;
   meta: ReactNode;
   trailing?: ReactNode;
+  footer?: ReactNode;
 }) {
   return (
     <>
@@ -54,6 +56,7 @@ function ListRowBody({
       <div className="min-w-0 flex-1">
         <div className="line-clamp-1 text-card-title">{title}</div>
         <div className="line-clamp-1 text-meta text-muted-foreground">{meta}</div>
+        {footer}
       </div>
       {trailing}
     </>
@@ -100,9 +103,11 @@ type ListRowProps = {
   trailing?: ReactNode;
   /** Opens another site in a new tab. */
   external?: boolean;
+  /** Under the meta line (a like bar). */
+  footer?: ReactNode;
 };
 
-export function ListRow({ href, leading, title, meta, trailing, external }: ListRowProps) {
+export function ListRow({ href, leading, title, meta, trailing, external, footer }: ListRowProps) {
   const Icon = external ? ExternalLinkIcon : ChevronRightIcon;
   const className = cn(ROW_CLASS, "press hover:bg-muted/50");
   const body = (
@@ -110,6 +115,7 @@ export function ListRow({ href, leading, title, meta, trailing, external }: List
       leading={leading}
       title={title}
       meta={meta}
+      footer={footer}
       trailing={trailing ?? <Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden />}
     />
   );
@@ -131,7 +137,9 @@ export function ListRow({ href, leading, title, meta, trailing, external }: List
 export function ListRowSkeleton({
   hasTrailing = true,
   trailing,
+  footer,
 }: {
+  footer?: ReactNode;
   hasTrailing?: boolean;
   /** Custom right-hand placeholder (e.g. a pill); replaces the default chevron-sized dot. */
   trailing?: ReactNode;
@@ -142,6 +150,7 @@ export function ListRowSkeleton({
         leading={<Skeleton className="size-11 shrink-0 rounded-thumb" />}
         title={<SkeletonText className="w-2/3" />}
         meta={<SkeletonText className="w-1/2" />}
+        footer={footer}
         trailing={
           trailing ??
           (hasTrailing ? <Skeleton className="size-5 shrink-0 rounded-full" /> : undefined)

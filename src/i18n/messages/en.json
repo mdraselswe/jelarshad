@@ -303,7 +303,9 @@
     "famousIn": "Famous in {district}",
     "newGroup": "Not enough experiences yet",
     "noDishes": "Nobody has said where to find this yet.",
-    "voices": "What people say"
+    "voices": "What people say",
+    "famousInTitle": "Famous in these districts",
+    "reactCta": "Had {food}? Tell us"
   },
   "dish": {
     "new": "New",
@@ -318,7 +320,9 @@
     "address": "Address",
     "map": "See on map",
     "moreIn": "More places in {district}",
-    "newTab": "Opens in a new tab"
+    "newTab": "Opens in a new tab",
+    "verifyTitle": "Is this still right?",
+    "reactCta": "Share your experience"
   },
   "district": {
     "famous": "Famous for",
@@ -327,7 +331,10 @@
     "titleFood": "{food} in {district}",
     "allCountry": "See {food} across the country",
     "noDishes": "Nobody has said yet where to find good {food} in {district}.",
-    "placeCount": "{count} places"
+    "placeCount": "{count} places",
+    "statFamous": "Famous foods",
+    "areasTitle": "Areas",
+    "stampNew": "No stamp yet"
   },
   "claim": {
     "types": {

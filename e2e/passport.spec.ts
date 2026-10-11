@@ -21,9 +21,9 @@ test.describe("food passport and points", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByText("পাসপোর্ট শুরু করুন")).toBeVisible();
+    await expect(page.getByText("পাসপোর্ট শুরু করুন").locator("visible=true")).toBeVisible();
     await page.goto("/auth/sign-in?next=/");
-    await expect(page.getByText("খাদ্য পাসপোর্ট").first()).toBeVisible();
+    await expect(page.getByText("খাদ্য পাসপোর্ট").locator("visible=true").first()).toBeVisible();
     await expect(page.getByText("পাসপোর্ট শুরু করুন")).toHaveCount(0);
   });
 
