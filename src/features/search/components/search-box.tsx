@@ -17,7 +17,7 @@ import type { SearchSuggestions } from "../types";
 import { DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 
 const INPUT_WRAP_CLASS =
-  "flex h-14 items-center gap-2.5 rounded-input border border-border bg-card px-4";
+  "flex h-14 items-center gap-2.5 rounded-full border-2 border-primary bg-background px-4";
 
 async function fetchSuggestions(q: string, signal: AbortSignal): Promise<SearchSuggestions> {
   const response = await fetch(routes.api.search({ q }), { signal });

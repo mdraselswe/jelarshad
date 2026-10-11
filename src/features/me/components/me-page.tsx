@@ -9,6 +9,7 @@ import { ThemePreferenceControl } from "@/components/theme/theme-preference-cont
 import { Button } from "@/components/ui/button";
 import { LegalLinks } from "@/features/legal/components/legal-links";
 import { MePassport } from "@/features/passport/components/passport-section";
+import { PassportRing } from "@/features/passport/components/passport-ring";
 import { GroupedList, ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import type { AppUser } from "@/core/domain";
@@ -125,22 +126,36 @@ async function Saved({ userId }: { userId: string }) {
   );
 }
 
-/** The profile: who is signed in, three tabs (links, so they are shareable and need no JS), settings. */
-export function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
+/**
+ * The profile and passport (docs/design: M-Passport, D-Passport): a hero with the progress ring and
+ * points, stamps and divisions, then three tabs (links, so they are shareable and need no JS) and
+ * settings.
+ */
+export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
   const t = getT();
+  const summary = await getServices().rewards.summary(user.id);
   return (
-    <PageShell>
-      <HeroBand tone="home" className="flex items-center gap-3.5">
-        <span
-          aria-hidden
-          className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white/20 font-display text-xl font-bold"
-        >
-          {[...user.displayName][0]}
-        </span>
-        <h1 className="text-title-1">{user.displayName}</h1>
+    <PageShell header={null}>
+      <HeroBand tone="home" bleed className="pt-8 pb-8 lg:pt-12">
+        <div className="flex items-center gap-4 lg:gap-8">
+          <PassportRing
+            value={summary.unlockedCount}
+            total={summary.totalDistricts}
+            size={104}
+            stroke={10}
+            onHero
+          />
+          <div className="min-w-0 flex-1">
+            <p className="text-[14px] text-on-hero/90">{t("reward.passportTitle")}</p>
+            <h1 className="text-title-1 break-words">{user.displayName}</h1>
+            <span className="mt-2 flex h-9 w-fit items-center rounded-full bg-reward px-3.5 text-[15px] font-bold text-reward-foreground">
+              {t("reward.pointsChip", { count: formatNumber(summary.points) })}
+            </span>
+          </div>
+        </div>
       </HeroBand>
 
-      <MePassport userId={user.id} />
+      <MePassport summary={summary} />
 
       <nav aria-label={t("me.tabs.label")} className="mt-5 page-x">
         <div className="flex h-12 items-center gap-1 rounded-input bg-muted p-1">

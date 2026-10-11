@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { HeroBand } from "@/components/layout/hero-band";
+import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { LoadingRegion, SkeletonText } from "@/components/ui/skeleton";
@@ -22,6 +23,7 @@ export function DistrictFoodPage({ data }: { data: DistrictFoodData }) {
     <PageShell
       header={
         <SubPageBar
+          hideMobile
           backHref={routes.district(district.slug)}
           crumbs={[
             { label: district.nameBn, href: routes.district(district.slug) },
@@ -36,7 +38,22 @@ export function DistrictFoodPage({ data }: { data: DistrictFoodData }) {
         />
       }
     >
-      <HeroBand tone="food">
+      <HeroBand
+        tone="food"
+        bleed
+        className="pb-9 lg:pb-12"
+        bar={
+          <HeroBar
+            backHref={routes.district(district.slug)}
+            actions={
+              <ShareButton
+                title={t("district.titleFood", { district: district.nameBn, food: food.nameBn })}
+                path={routes.districtFood(district.slug, food.slug)}
+              />
+            }
+          />
+        }
+      >
         <h1 className="text-title-1">
           {t("district.titleFood", { district: district.nameBn, food: food.nameBn })}
         </h1>
@@ -63,8 +80,13 @@ export function DistrictFoodPageSkeleton() {
   const t = getT();
   return (
     <LoadingRegion label={t("common.loading")}>
-      <PageShell header={<SubPageBar backHref={routes.home()} />}>
-        <HeroBand tone="food">
+      <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
+        <HeroBand
+          tone="food"
+          bleed
+          className="pb-9 lg:pb-12"
+          bar={<HeroBar backHref={routes.home()} />}
+        >
           <div className="text-title-1">
             <SkeletonText className="w-2/3" />
           </div>

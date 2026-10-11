@@ -8,6 +8,7 @@ export function PassportRing({
   size = 72,
   stroke = 8,
   onReward = false,
+  onHero = false,
 }: {
   value: number;
   total: number;
@@ -15,6 +16,8 @@ export function PassportRing({
   stroke?: number;
   /** Drawn on the gold reward gradient: dark ring, light track. */
   onReward?: boolean;
+  /** Drawn on a hero gradient: gold ring, translucent track, white number. */
+  onHero?: boolean;
 }) {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -28,7 +31,7 @@ export function PassportRing({
           r={radius}
           fill="none"
           strokeWidth={stroke}
-          className={onReward ? "stroke-white/60" : "stroke-muted"}
+          className={onReward ? "stroke-white/60" : onHero ? "stroke-white/25" : "stroke-muted"}
         />
         <circle
           cx={size / 2}
@@ -47,7 +50,7 @@ export function PassportRing({
       <span className="absolute inset-0 flex items-center justify-center font-display text-xl font-bold">
         {toBnDigits(value)}
         <span
-          className={`text-xs font-semibold ${onReward ? "opacity-80" : "text-muted-foreground"}`}
+          className={`text-xs font-semibold ${onReward || onHero ? "opacity-80" : "text-muted-foreground"}`}
         >
           /{toBnDigits(total)}
         </span>

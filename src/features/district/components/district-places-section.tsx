@@ -2,6 +2,8 @@ import { StoreIcon } from "lucide-react";
 
 import { Section } from "@/components/layout/section";
 import { GroupedList, ListRow, ListRowSkeleton, ListTile } from "@/components/ui/grouped-list";
+import Link from "next/link";
+
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import { formatPriceRange } from "@/lib/format/number";
@@ -13,6 +15,9 @@ const SKELETON_ROWS = 4;
 export async function DistrictPlacesSection({ districtId }: { districtId: number }) {
   const t = getT();
   const { items } = await getDistrictPlaces(districtId);
+  const areas = [
+    ...new Set(items.flatMap((place) => (place.areaNameBn ? [place.areaNameBn] : []))),
+  ];
   return (
     <Section title={t("district.places")}>
       {items.length === 0 ? (
@@ -42,6 +47,23 @@ export async function DistrictPlacesSection({ districtId }: { districtId: number
           ))}
         </GroupedList>
       )}
+      {areas.length > 0 ? (
+        <>
+          <h2 className="mt-7 mb-2.5 text-heading">{t("district.areasTitle")}</h2>
+          <ul className="flex flex-wrap gap-2.5">
+            {areas.map((area) => (
+              <li key={area}>
+                <Link
+                  href={routes.search({ q: area })}
+                  className="flex h-10 press items-center rounded-full border border-border bg-card px-4 text-[15px] font-medium"
+                >
+                  {area}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
     </Section>
   );
 }

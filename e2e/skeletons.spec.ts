@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { measureCls, throttleNetwork } from "./utils/cls";
+import { measureClsDetailed, throttleNetwork } from "./utils/cls";
 
 test.describe("skeleton parity (/dev/skeletons)", () => {
   test("every skeleton has the same height as its component at 360px", async ({ page }) => {
@@ -41,7 +41,8 @@ test.describe("layout stability", () => {
   ]) {
     test(`CLS < 0.01 on a slow network: ${path}`, async ({ page }) => {
       await throttleNetwork(page);
-      expect(await measureCls(page, path)).toBeLessThan(0.01);
+      const { total, shifts } = await measureClsDetailed(page, path);
+      expect(total, shifts.join(" ; ")).toBeLessThan(0.01);
     });
   }
 });

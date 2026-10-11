@@ -21,8 +21,26 @@ export const KIND_TONE_CLASS: Record<Tone, string> = {
   info: TONE_CLASSES[3],
 };
 
-export function toneClass(seed: string): string {
+const TILE_CLASSES = [
+  "bg-tile-1",
+  "bg-tile-2",
+  "bg-tile-3",
+  "bg-tile-4",
+  "bg-tile-5",
+  "bg-tile-6",
+] as const;
+
+function hashOf(seed: string): number {
   let hash = 0;
   for (const char of seed) hash = (hash * 31 + (char.codePointAt(0) ?? 0)) >>> 0;
-  return TONE_CLASSES[hash % TONE_CLASSES.length] ?? TONE_CLASSES[0];
+  return hash;
+}
+
+/** One of six gradient fills for a large tile (district cards), stable per seed. */
+export function tileClass(seed: string): string {
+  return TILE_CLASSES[hashOf(seed) % TILE_CLASSES.length] ?? TILE_CLASSES[0];
+}
+
+export function toneClass(seed: string): string {
+  return TONE_CLASSES[hashOf(seed) % TONE_CLASSES.length] ?? TONE_CLASSES[0];
 }

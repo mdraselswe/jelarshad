@@ -17,7 +17,7 @@ test.describe("home page", () => {
 
   test("district quick-picks link to the district page", async ({ page }) => {
     await page.goto("/");
-    const chips = page.getByRole("region").filter({ hasText: "জেলা ধরে খুঁজুন" });
+    const chips = page.getByRole("region").filter({ hasText: "জেলা ঘুরে দেখুন" });
     await expect(chips.getByRole("link", { name: /বগুড়া/ }).first()).toHaveAttribute(
       "href",
       "/district/bogura",

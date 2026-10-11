@@ -20,7 +20,21 @@ type DishRowProps = {
   rank?: number | undefined;
   /** Replaces the rank badge (e.g. a food icon on a place page). */
   leading?: ReactNode;
+  /** A thin loved-share bar under the meta line (place page). */
+  showBar?: boolean;
 };
+
+const BAR_CLASS = "mt-1.5 flex h-1.5 overflow-hidden rounded-full bg-muted";
+
+function LikeBar({ percent }: { percent: number | null }) {
+  return (
+    <span aria-hidden className={BAR_CLASS}>
+      {percent !== null ? (
+        <span className="rounded-full bg-success" style={{ width: `${percent}%` }} />
+      ) : null}
+    </span>
+  );
+}
 
 /**
  * One dish in a grouped list: rank, name, "where · price · N people" and the ❤️ % pill. The same row
@@ -35,6 +49,7 @@ export function DishRow({
   display,
   rank,
   leading,
+  showBar = false,
 }: DishRowProps) {
   const t = getT();
   const meta = [
@@ -54,13 +69,15 @@ export function DishRow({
       title={title}
       meta={meta || " "}
       trailing={<ScorePill display={display} />}
+      footer={showBar ? <LikeBar percent={display.percent} /> : undefined}
     />
   );
 }
 
-export function DishRowSkeleton() {
+export function DishRowSkeleton({ withBar = false }: { withBar?: boolean }) {
   return (
     <ListRowSkeleton
+      footer={withBar ? <span aria-hidden className={BAR_CLASS} /> : undefined}
       hasTrailing={false}
       trailing={<Skeleton className="h-7 w-14 rounded-[10px]" />}
     />

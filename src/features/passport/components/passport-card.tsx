@@ -23,7 +23,7 @@ export function PassportCard({
   const t = getT();
   const recent = summary.stamps.filter((stamp) => stamp.kind === "visit").slice(-3);
   return (
-    <div className="rounded-card-lg bg-grad-reward p-4 text-on-reward shadow-card">
+    <div className="min-h-[172px] rounded-card-lg bg-grad-reward p-4 text-on-reward shadow-card">
       <Link href={routes.me()} className="flex items-center gap-3.5">
         <PassportRing value={summary.unlockedCount} total={summary.totalDistricts} onReward />
         <span className="min-w-0 flex-1">
@@ -58,7 +58,7 @@ export function PassportCard({
           </span>
           <Link
             href={routes.districtFood(summary.next.district.slug, summary.next.food.slug)}
-            className="flex h-9 shrink-0 press items-center rounded-full bg-on-reward px-3.5 text-sm font-semibold text-reward-soft"
+            className="flex h-9 shrink-0 press items-center rounded-full bg-card px-3.5 text-sm font-semibold text-foreground"
           >
             {t("reward.where")}
           </Link>

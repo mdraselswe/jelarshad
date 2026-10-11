@@ -183,7 +183,10 @@
     "discovererStamp": "Discoverer",
     "pointsLabel": "Points",
     "ate": "Foods tried",
-    "nothingYet": "No stamps yet. Share your first experience."
+    "nothingYet": "No stamps yet. Share your first experience.",
+    "inviteHint": "Share your first experience in a district to earn a stamp.",
+    "joinCta": "Start your passport",
+    "pointsChip": "{count} points"
   },
   "comingSoon": {
     "title": "Coming soon",
@@ -214,9 +217,38 @@
     "searchPlaceholder": "Food, district or shop name",
     "famousTitle": "Famous for",
     "famousHint": "An editors' list, not a rating",
-    "districtsTitle": "Browse by district",
+    "districtsTitle": "Explore districts",
     "allDistricts": "See all {count} districts",
-    "divisionOf": "{name} division"
+    "divisionOf": "{name} division",
+    "subtitle": "The real taste of every district, from people's own experience.",
+    "categories": "Kinds of food",
+    "cat": {
+      "biryani": "Biryani",
+      "sweets": "Sweets",
+      "doi": "Doi",
+      "fish": "Fish",
+      "breakfast": "Breakfast",
+      "tea": "Tea",
+      "pitha": "Pitha",
+      "more": "More"
+    },
+    "seeAll": "See all",
+    "howTitle": "How it works",
+    "how": {
+      "s1": {
+        "h": "Search",
+        "p": "Find places by district or food."
+      },
+      "s2": {
+        "h": "Share",
+        "p": "Been there? Add your experience or details."
+      },
+      "s3": {
+        "h": "Earn stamps",
+        "p": "The first time in each district earns a passport stamp."
+      }
+    },
+    "districtCount": "{count} districts"
   },
   "search": {
     "clear": "Clear",
@@ -250,7 +282,9 @@
     "emptyHint": "Try another spelling, or write it in Bangla or English.",
     "emptyFiltered": "No places match these filters.",
     "emptyFilteredHint": "Open the filters and try again.",
-    "districtMeta": "{division} division"
+    "districtMeta": "{division} division",
+    "openFood": "Open food",
+    "foodBannerMeta": "See where it is served across districts"
   },
   "placeType": {
     "restaurant": "Restaurant",
@@ -271,7 +305,9 @@
     "famousIn": "Famous in {district}",
     "newGroup": "Not enough experiences yet",
     "noDishes": "Nobody has said where to find this yet.",
-    "voices": "What people say"
+    "voices": "What people say",
+    "famousInTitle": "Famous in these districts",
+    "reactCta": "Had {food}? Tell us"
   },
   "dish": {
     "new": "New",
@@ -286,7 +322,12 @@
     "address": "Address",
     "map": "See on map",
     "moreIn": "More places in {district}",
-    "newTab": "Opens in a new tab"
+    "newTab": "Opens in a new tab",
+    "verifyTitle": "Is this still right?",
+    "reactCta": "Share your experience",
+    "addMoreTitle": "Know photos, prices or hours?",
+    "addMoreBody": "Add them when you share your experience; it helps others.",
+    "addMoreCta": "Share your experience"
   },
   "district": {
     "famous": "Famous for",
@@ -295,7 +336,10 @@
     "titleFood": "{food} in {district}",
     "allCountry": "See {food} across the country",
     "noDishes": "Nobody has said yet where to find good {food} in {district}.",
-    "placeCount": "{count} places"
+    "placeCount": "{count} places",
+    "statFamous": "Famous foods",
+    "areasTitle": "Areas",
+    "stampNew": "No stamp yet"
   },
   "claim": {
     "types": {
