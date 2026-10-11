@@ -125,3 +125,27 @@ test.describe("district pages", () => {
     }
   });
 });
+
+test.describe("neighbourhoods", () => {
+  test("a neighbourhood is found by name and has its own page", async ({ page }) => {
+    await page.goto("/search?q=%E0%A6%B8%E0%A6%BE%E0%A6%A4%E0%A6%AE%E0%A6%BE%E0%A6%A5%E0%A6%BE");
+    const area = page.getByRole("link", { name: /সাতমাথা/ }).first();
+    await expect(area).toHaveAttribute("href", "/district/bogura/area/satmatha");
+    await area.click();
+    await expect(page.getByRole("heading", { level: 1, name: "সাতমাথা" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /নমুনা দই ঘর/ })).toBeVisible();
+  });
+
+  test("the district page lists its neighbourhoods", async ({ page }) => {
+    await page.goto("/district/bogura");
+    await expect(page.getByRole("link", { name: "সাতমাথা", exact: true })).toHaveAttribute(
+      "href",
+      "/district/bogura/area/satmatha",
+    );
+  });
+
+  test("an unknown neighbourhood shows the not-found page", async ({ page }) => {
+    await page.goto("/district/bogura/area/nowhere");
+    await expect(page.getByRole("heading", { name: "পাতাটি খুঁজে পাওয়া যায়নি" })).toBeVisible();
+  });
+});

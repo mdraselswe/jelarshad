@@ -4,6 +4,8 @@
  */
 export const appConfig = {
   pagination: {
+    /** Neighbourhood chips on a district page. */
+    areaChips: 40,
     /** Items per page for lists; also the row count of list skeletons. */
     default: 20,
     /** Upper bound a client may request via `?limit=`. */
@@ -17,6 +19,8 @@ export const appConfig = {
     debounceMs: 200,
     /** Suggestions shown under the search box. */
     suggestionLimit: 8,
+    /** Neighbourhoods a query may match (and whose places join the results). */
+    areaLimit: 2,
     /** pg_trgm similarity below this is not a match (0–1). */
     similarityThreshold: 0.25,
     /** Longer queries are cut off (keeps cache keys and the search_misses table small). */

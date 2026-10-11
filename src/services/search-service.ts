@@ -5,7 +5,7 @@ import { toSearchQuery } from "@/lib/text/normalize";
 
 // Search business rules: input limits, grouping, filters. Pure (ports only).
 
-type Deps = { repos: Pick<Repositories, "search"> };
+type Deps = { repos: Pick<Repositories, "search" | "districts" | "places"> };
 
 export type PriceTierId = (typeof appConfig.search.priceTiers)[number]["id"];
 
@@ -18,6 +18,12 @@ export type PlaceHit = {
   price: { min: number | null; max: number | null };
 };
 export type DistrictHit = { slug: string; nameBn: string; divisionBn: string };
+/** A neighbourhood ("ধানমন্ডি, ঢাকা"); its places are added to `places` of the same outcome. */
+export type AreaHit = {
+  slug: string;
+  nameBn: string;
+  district: { slug: string; nameBn: string };
+};
 
 export type SearchOutcome = {
   /** The cleaned query that was run ("" when the input was too short to search). */
@@ -25,6 +31,7 @@ export type SearchOutcome = {
   foods: FoodHit[];
   places: PlaceHit[];
   districts: DistrictHit[];
+  areas: AreaHit[];
   total: number;
 };
 
@@ -35,6 +42,7 @@ const EMPTY: SearchOutcome = {
   foods: [],
   places: [],
   districts: [],
+  areas: [],
   total: 0,
 };
 
@@ -60,7 +68,14 @@ export function createSearchService({ repos }: Deps) {
       if (query.key === "" && query.text === "") return EMPTY;
 
       const { items } = await repos.search.search(query, { limit: appConfig.search.resultLimit });
-      const outcome: SearchOutcome = { query, foods: [], places: [], districts: [], total: 0 };
+      const outcome: SearchOutcome = {
+        query,
+        foods: [],
+        places: [],
+        districts: [],
+        areas: [],
+        total: 0,
+      };
       for (const hit of items as SearchHit[]) {
         if (hit.kind === "food") {
           outcome.foods.push({
@@ -78,7 +93,31 @@ export function createSearchService({ repos }: Deps) {
           });
         }
       }
-      outcome.total = outcome.foods.length + outcome.places.length + outcome.districts.length;
+      // A neighbourhood name finds the area and the places in it (typing "ধানমন্ডি").
+      const areas = await repos.districts.areasMatching(input, appConfig.search.areaLimit);
+      for (const area of areas) {
+        outcome.areas.push({
+          slug: area.slug,
+          nameBn: area.nameBn,
+          district: { slug: area.district.slug, nameBn: area.district.nameBn },
+        });
+      }
+      const seen = new Set(outcome.places.map((place) => place.slug));
+      for (const area of areas) {
+        const { items: inArea } = await repos.places.inArea(area.id, {
+          limit: appConfig.search.resultLimit,
+        });
+        for (const place of inArea) {
+          if (seen.has(place.slug)) continue;
+          seen.add(place.slug);
+          outcome.places.push(toPlaceHit(place));
+        }
+      }
+      outcome.total =
+        outcome.foods.length +
+        outcome.places.length +
+        outcome.districts.length +
+        outcome.areas.length;
       return outcome;
     },
   };

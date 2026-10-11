@@ -4,7 +4,7 @@ import { ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import type { T } from "@/i18n/t";
 import { formatPriceRange } from "@/lib/format/number";
-import type { DistrictHit, FoodHit, PlaceHit } from "@/services/search-service";
+import type { AreaHit, DistrictHit, FoodHit, PlaceHit } from "@/services/search-service";
 
 // One row per kind of hit. Used by the results page and by the typing dropdown, so both look alike.
 
@@ -51,6 +51,21 @@ export function DistrictHitRow({ hit, t }: { hit: DistrictHit; t: T }) {
       }
       title={hit.nameBn}
       meta={t("search.districtMeta", { division: hit.divisionBn })}
+    />
+  );
+}
+
+export function AreaHitRow({ hit, t }: { hit: AreaHit; t: T }) {
+  return (
+    <ListRow
+      href={routes.area(hit.district.slug, hit.slug)}
+      leading={
+        <ListTile tone="district">
+          <MapPinIcon />
+        </ListTile>
+      }
+      title={hit.nameBn}
+      meta={t("search.areaMeta", { district: hit.district.nameBn })}
     />
   );
 }

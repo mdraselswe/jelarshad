@@ -118,6 +118,8 @@ export type DistrictHeader = {
   divisionBn: string;
   /** Curated "famous for" foods, in editor order. */
   famous: { food: FoodRef; noteBn: string | null }[];
+  /** Neighbourhoods (ধানমন্ডি…), by name; each has its own page. */
+  areas: { slug: string; nameBn: string }[];
 };
 
 export type DistrictPlaceRow = {
@@ -125,6 +127,7 @@ export type DistrictPlaceRow = {
   nameBn: string;
   type: PlaceType;
   areaNameBn: string | null;
+  areaSlug: string | null;
   price: PriceRange;
 };
 
@@ -134,6 +137,28 @@ export type DistrictFoodPage = {
   /** Why the editors list this food here. */
   noteBn: string | null;
   dishes: FoodDishes;
+};
+
+/** A place in a neighbourhood, with what it serves and how its best dish is doing. */
+export type AreaPlaceRow = {
+  id: string;
+  slug: string;
+  nameBn: string;
+  type: PlaceType;
+  price: PriceRange;
+  /** What the place serves, best liked first (food names). */
+  foods: string[];
+  /** The best dish's numbers; `rankable` false until enough people have shared experiences. */
+  best: DishDisplay;
+  experienceCount: number;
+};
+
+export type AreaPage = {
+  district: DistrictRef;
+  area: { slug: string; nameBn: string };
+  /** Ranked places first (most loved on top), then the ones without enough experiences. */
+  places: AreaPlaceRow[];
+  hasMore: boolean;
 };
 
 /** The part of a claim worth showing next to its label; only prices carry one today. */
@@ -157,11 +182,12 @@ export function createCatalogService({ repos }: Deps) {
   return {
     /** Every public page worth listing in the sitemap (real content only: no empty pairs). */
     async sitemapEntries() {
-      const [foods, places, districts, fame] = await Promise.all([
+      const [foods, places, districts, fame, areas] = await Promise.all([
         repos.foods.slugs(appConfig.seo.sitemapPerType),
         repos.places.slugs(appConfig.seo.sitemapPerType),
         repos.districts.list(),
         repos.districts.allFame(),
+        repos.districts.areaSlugs(appConfig.seo.sitemapPerType),
       ]);
       const slugById = new Map(districts.map((district) => [district.id, district.slug]));
       const pairs = new Set<string>();
@@ -171,6 +197,7 @@ export function createCatalogService({ repos }: Deps) {
       }
       return {
         districts: districts.map((district) => district.slug),
+        areas,
         foods,
         places,
         districtFoods: [...pairs].map((pair) => {
@@ -355,12 +382,16 @@ export function createCatalogService({ repos }: Deps) {
     async districtHeader(slug: string): Promise<DistrictHeader | null> {
       const district = await repos.districts.bySlug(slug);
       if (!district) return null;
-      const fame = await repos.districts.fame(district.id);
+      const [fame, areas] = await Promise.all([
+        repos.districts.fame(district.id),
+        repos.districts.areasOf(district.id, appConfig.pagination.areaChips),
+      ]);
       return {
         id: district.id,
         slug: district.slug,
         nameBn: district.nameBn,
         divisionBn: district.divisionBn,
+        areas: areas.map((area) => ({ slug: area.slug, nameBn: area.nameBn })),
         famous: fame.map((entry) => ({
           food: { slug: entry.food.slug, nameBn: entry.food.nameBn },
           noteBn: entry.noteBn,
@@ -380,8 +411,51 @@ export function createCatalogService({ repos }: Deps) {
           nameBn: place.nameBn,
           type: place.type,
           areaNameBn: place.area?.nameBn ?? null,
+          areaSlug: place.area?.slug ?? null,
           price: place.price,
         })),
+        hasMore: page.nextCursor !== null,
+      };
+    },
+
+    /**
+     * One neighbourhood: its places, with the best-liked ones first. "Best" is only ever what people
+     * have said (decision P9); a place nobody has rated yet is listed after, not ranked.
+     */
+    async areaPage(districtSlug: string, areaSlug: string): Promise<AreaPage | null> {
+      const district = await repos.districts.bySlug(districtSlug);
+      if (!district) return null;
+      const area = await repos.districts.areaBySlug(district.id, areaSlug);
+      if (!area) return null;
+      const page = await repos.places.inArea(area.id, { limit: appConfig.pagination.default });
+      const rows = await Promise.all(
+        page.items.map(async (place): Promise<{ row: AreaPlaceRow; score: number }> => {
+          const dishes = await repos.places.dishes(place.id);
+          const shown = dishes.map((dish) => ({ dish, display: dishDisplay(dish) }));
+          const bestRanked = shown.find((entry) => entry.display.rankable);
+          const first = bestRanked ?? shown[0];
+          return {
+            row: {
+              id: place.id,
+              slug: place.slug,
+              nameBn: place.nameBn,
+              type: place.type,
+              price: place.price,
+              foods: dishes.map((dish) => dish.displayName ?? dish.food.nameBn),
+              best: first?.display ?? { percent: null, rankable: false, favorite: false },
+              experienceCount: dishes.reduce((sum, dish) => sum + dish.experienceCount, 0),
+            },
+            score: bestRanked?.dish.wilsonScore ?? -1,
+          };
+        }),
+      );
+      const places = rows
+        .sort((a, b) => b.score - a.score || a.row.nameBn.localeCompare(b.row.nameBn, "bn"))
+        .map((entry) => entry.row);
+      return {
+        district: { slug: district.slug, nameBn: district.nameBn },
+        area: { slug: area.slug, nameBn: area.nameBn },
+        places,
         hasMore: page.nextCursor !== null,
       };
     },

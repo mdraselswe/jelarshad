@@ -1,4 +1,5 @@
 import type {
+  AreaWithDistrict,
   Claim,
   ClaimVote,
   District,
@@ -34,6 +35,14 @@ export interface DistrictRepository {
   fame(districtId: number): Promise<RegionalFame[]>;
   /** The whole curated list (every district), in editor order — one query for the home page. */
   allFame(): Promise<RegionalFame[]>;
+  /** One neighbourhood of a district (ধানমন্ডি in ঢাকা) by its slug. */
+  areaBySlug(districtId: number, areaSlug: string): Promise<AreaWithDistrict | null>;
+  /** Neighbourhoods whose name contains `text` (typing "ধানমন্ডি" finds the area), best first. */
+  areasMatching(text: string, limit: number): Promise<AreaWithDistrict[]>;
+  /** Every neighbourhood of one district, by name. */
+  areasOf(districtId: number, limit: number): Promise<AreaWithDistrict[]>;
+  /** Neighbourhoods that have active places (static generation, sitemap). */
+  areaSlugs(limit: number): Promise<{ districtSlug: string; areaSlug: string }[]>;
 }
 
 export type NewFood = { nameBn: string; nameEn?: string | null };
@@ -71,6 +80,8 @@ export interface PlaceRepository {
   /** Slugs of up to `limit` active places (static generation, sitemap). */
   slugs(limit: number): Promise<string[]>;
   inDistrict(districtId: number, opts?: PageOpts): Promise<Page<Place>>;
+  /** Active places in one neighbourhood. */
+  inArea(areaId: number, opts?: PageOpts): Promise<Page<Place>>;
   /** All dishes of a place, best first ("প্রথমবার? এগুলো অর্ডার করুন"). */
   dishes(placeId: string): Promise<DishWithFood[]>;
   /** The slug of the place this one was merged into, for redirecting old links; null if none. */

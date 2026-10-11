@@ -72,6 +72,32 @@ export function repositoryContract(
       expect(fame.map((f) => f.food.slug)).toContain("doi");
     });
 
+    it("finds a neighbourhood by slug and by name, and lists its places", async () => {
+      const repos = await make();
+      const bogura = await repos.districts.bySlug("bogura");
+      if (!bogura) throw new Error("fixture district missing");
+      const area = await repos.districts.areaBySlug(bogura.id, "satmatha");
+      expect(area).toMatchObject({ slug: "satmatha", nameBn: "সাতমাথা" });
+      expect(area?.district.slug).toBe("bogura");
+      expect(await repos.districts.areaBySlug(bogura.id, "nowhere")).toBeNull();
+
+      const matching = await repos.districts.areasMatching("সাতমাথা", 5);
+      expect(matching.map((candidate) => candidate.slug)).toContain("satmatha");
+      expect(await repos.districts.areasMatching("zzzz-none", 5)).toEqual([]);
+
+      const ofDistrict = await repos.districts.areasOf(bogura.id, 10);
+      expect(ofDistrict.map((candidate) => candidate.slug)).toContain("satmatha");
+      expect(await repos.districts.areaSlugs(10)).toContainEqual({
+        districtSlug: "bogura",
+        areaSlug: "satmatha",
+      });
+
+      if (!area) throw new Error("area missing");
+      const places = await repos.places.inArea(area.id, { limit: 10 });
+      expect(places.items.map((place) => place.slug)).toContain("sample-place");
+      expect(places.items.every((place) => place.area?.slug === "satmatha")).toBe(true);
+    });
+
     it("lists slugs for static generation, capped by the limit", async () => {
       const repos = await make();
       expect(await repos.foods.slugs(100)).toContain("doi");

@@ -1,4 +1,4 @@
-import type { DistrictHit, FoodHit, PlaceHit } from "@/services/search-service";
+import type { AreaHit, DistrictHit, FoodHit, PlaceHit } from "@/services/search-service";
 
 /** JSON returned by GET /api/search (typing dropdown). */
 export type SearchSuggestions = {
@@ -6,4 +6,5 @@ export type SearchSuggestions = {
   foods: FoodHit[];
   places: PlaceHit[];
   districts: DistrictHit[];
+  areas: AreaHit[];
 };

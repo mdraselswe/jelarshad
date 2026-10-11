@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     foods: outcome.foods.slice(0, each),
     places: outcome.places.slice(0, each),
     districts: outcome.districts.slice(0, each),
+    areas: outcome.areas.slice(0, each),
   };
   return Response.json(body, {
     headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
