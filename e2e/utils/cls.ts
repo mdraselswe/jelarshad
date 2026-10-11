@@ -31,6 +31,29 @@ export async function measureClsDetailed(
     const store = window as unknown as { __cls: number; __shifts: string[] };
     store.__cls = 0;
     store.__shifts = [];
+    // Landmark geometry over time, to see which block changed size when the content replaced the skeleton.
+    const geom: string[] = [];
+    let last = "";
+    setInterval(() => {
+      const box = (selector: string) => {
+        const el = document.querySelector(selector);
+        if (!el) return "-";
+        const rect = el.getBoundingClientRect();
+        return `${Math.round(rect.top + window.scrollY)}+${Math.round(rect.height)}`;
+      };
+      const line = [
+        "nav:" + box("main nav"),
+        "group:" + box("main [role=group]"),
+        "a92:" + box("main a.lift"),
+        "sec:" + box("main section"),
+        "h2:" + box("main h2"),
+      ].join(" ");
+      if (line !== last) {
+        geom.push(`${Math.round(performance.now())}ms ${line}`);
+        last = line;
+      }
+    }, 40);
+    (store as unknown as { __geom: string[] }).__geom = geom;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries() as unknown as {
         value: number;
@@ -60,7 +83,7 @@ export async function measureClsDetailed(
   await page.goto(path, { waitUntil: "load" });
   await page.waitForTimeout(settleMs);
   return page.evaluate(() => {
-    const store = window as unknown as { __cls: number; __shifts: string[] };
-    return { total: store.__cls, shifts: store.__shifts };
+    const store = window as unknown as { __cls: number; __shifts: string[]; __geom: string[] };
+    return { total: store.__cls, shifts: [...store.__shifts, ...store.__geom] };
   });
 }
