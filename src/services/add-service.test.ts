@@ -153,3 +153,34 @@ describe("addService claims", () => {
     });
   });
 });
+
+describe("addService.submit with a Latin spelling", () => {
+  const place = { nameBn: "নমুনা দোকান", districtId: bogura, type: "shop" as const };
+
+  it("keeps the Latin spelling as the English name when the Bangla form was chosen", async () => {
+    const { repos, service } = setup();
+    const result = await service.submit(user, {
+      food: { nameBn: "সালাদ", nameEn: "salad" },
+      place,
+      reaction: "loved",
+    });
+    if (!result.ok) throw new Error("expected ok");
+    expect(await repos.foods.bySlug(result.data.foodSlug)).toMatchObject({
+      nameBn: "সালাদ",
+      nameEn: "salad",
+    });
+  });
+
+  it("stores a name typed only in Latin letters as the English name too", async () => {
+    const { repos, service } = setup();
+    const result = await service.submit(user, {
+      food: { nameBn: "fried salad" },
+      place,
+      reaction: "okay",
+    });
+    if (!result.ok) throw new Error("expected ok");
+    expect(await repos.foods.bySlug(result.data.foodSlug)).toMatchObject({
+      nameEn: "fried salad",
+    });
+  });
+});

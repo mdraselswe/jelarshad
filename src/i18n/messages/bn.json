@@ -71,7 +71,8 @@
     "needReaction": "কেমন লাগল জানান",
     "similarFoodTitle": "এগুলোর কোনোটাই কি আপনি বোঝাচ্ছেন?",
     "similarFoodHint": "একই খাবার দুবার যোগ হলে পাতা ভাগ হয়ে যায়। মিললে সেটিই বেছে নিন।",
-    "similarFoodNone": "না, “{name}” নতুন খাবার"
+    "similarFoodNone": "না, “{name}” নতুন খাবার",
+    "inBangla": "বাংলায় লিখুন: “{name}”"
   },
   "save": {
     "label": "খেতে চাই তালিকায় রাখুন",

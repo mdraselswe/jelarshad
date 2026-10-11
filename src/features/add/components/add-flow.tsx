@@ -8,6 +8,7 @@ import { toast } from "@/lib/toast";
 import { routes } from "@/config/routes";
 import type { PlaceType, Reaction } from "@/core/domain";
 import { useT } from "@/i18n/client";
+import { isLatinText, latinToBangla } from "@/lib/text/to-bangla";
 import type { MessageKey } from "@/i18n/t";
 import { cn } from "@/lib/cn";
 
@@ -90,6 +91,8 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
   const [food, setFood] = useState<FoodChoice | null>(null);
   // "এটাই কি?": shown once before a typed name becomes a new food while close ones exist.
   const [askFood, setAskFood] = useState(false);
+  // The Latin spelling a person turned into Bangla with the suggestion button (kept as English name).
+  const [foodLatin, setFoodLatin] = useState<string | null>(null);
   const [districtId, setDistrictId] = useState<number | null>(null);
   const [placeQuery, setPlaceQuery] = useState("");
   const [place, setPlace] = useState<PlaceChoice>(null);
@@ -177,7 +180,10 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
     const trimmedPrice = price.replace(/[^\d]/g, "");
     startTransition(async () => {
       const result = await submitAdd({
-        food: food && food.id ? { id: food.id } : { nameBn: foodQuery },
+        food:
+          food && food.id
+            ? { id: food.id }
+            : { nameBn: foodQuery, ...(foodLatin ? { nameEn: foodLatin } : {}) },
         place:
           place !== null
             ? { id: place.id }
@@ -289,9 +295,22 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
               setFoodQuery(event.target.value);
               setFood(null);
               setAskFood(false);
+              setFoodLatin(null);
             }}
           />
         </div>
+        {food === null && isLatinText(foodQuery) && !askFood && latinToBangla(foodQuery) !== "" && (
+          <button
+            type="button"
+            className="mt-2 h-11 w-full press rounded-full bg-primary-soft px-4 text-left font-semibold text-primary-soft-fg"
+            onClick={() => {
+              setFoodLatin(foodQuery.trim());
+              setFoodQuery(latinToBangla(foodQuery));
+            }}
+          >
+            {t("add.inBangla", { name: latinToBangla(foodQuery) })}
+          </button>
+        )}
         {food === null && foodQuery.trim() !== "" && askFood && (
           <div
             role="group"
