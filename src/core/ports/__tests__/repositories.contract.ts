@@ -98,6 +98,17 @@ export function repositoryContract(
       expect(places.items.every((place) => place.area?.slug === "satmatha")).toBe(true);
     });
 
+    it("finds a possible duplicate place across spellings and scripts", async () => {
+      const repos = await make();
+      const bogura = await repos.districts.bySlug("bogura");
+      if (!bogura) throw new Error("fixture district missing");
+      const sameScript = await repos.places.similar("নমুনা দই ঘর", bogura.id);
+      expect(sameScript.map((place) => place.slug)).toContain("sample-place");
+      const romanised = await repos.places.similar("Namuna Doi Ghor", bogura.id);
+      expect(romanised.map((place) => place.slug)).toContain("sample-place");
+      expect(await repos.places.similar("zzzz", bogura.id)).toEqual([]);
+    });
+
     it("lists slugs for static generation, capped by the limit", async () => {
       const repos = await make();
       expect(await repos.foods.slugs(100)).toContain("doi");

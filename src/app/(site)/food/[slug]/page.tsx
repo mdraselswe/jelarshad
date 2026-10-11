@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
 import { getStaticSlugs } from "@/features/catalog/queries";
 import { FoodPage } from "@/features/food/components/food-page";
-import { getFoodHeader } from "@/features/food/queries";
+import { getFoodHeader, getFoodRedirect } from "@/features/food/queries";
 import { getT } from "@/i18n/server";
 import { breadcrumbLd } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -31,7 +31,11 @@ export async function generateMetadata({ params }: PageProps<"/food/[slug]">): P
 export default async function Food({ params }: PageProps<"/food/[slug]">) {
   const { slug } = await params;
   const food = await getFoodHeader(slug);
-  if (!food) notFound();
+  if (!food) {
+    const target = await getFoodRedirect(slug);
+    if (target) permanentRedirect(routes.food(target));
+    notFound();
+  }
   return (
     <>
       <FoodPage food={food} />

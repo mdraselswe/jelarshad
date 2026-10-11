@@ -1,7 +1,7 @@
 import { appConfig } from "@/config/app.config";
 import type { Place, PlaceType } from "@/core/domain";
 import type { Repositories, SearchHit } from "@/core/ports";
-import { toSearchQuery } from "@/lib/text/normalize";
+import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
 
 // Search business rules: input limits, grouping, filters. Pure (ports only).
 
@@ -45,6 +45,22 @@ const EMPTY: SearchOutcome = {
   areas: [],
   total: 0,
 };
+
+/**
+ * One row per food name: if the same food exists twice ("চাপ" added by a contributor and by the
+ * seed) people see it once, the one with a description first. The database merge (merge_foods)
+ * is the real fix; this keeps a duplicate from ever showing up twice in the meantime.
+ */
+export function collapseSameFoods(foods: FoodHit[]): FoodHit[] {
+  const byKey = new Map<string, FoodHit>();
+  for (const food of foods) {
+    const key = toSearchKey(food.nameBn);
+    const kept = byKey.get(key);
+    if (!kept || (kept.aboutBn === null && food.aboutBn !== null)) byKey.set(key, food);
+  }
+  // Keep the order the database returned the first of each name in.
+  return foods.filter((food) => byKey.get(toSearchKey(food.nameBn)) === food);
+}
 
 /** Trim, collapse and cap what the user typed. */
 export function cleanQueryInput(raw: string): string {
@@ -93,6 +109,8 @@ export function createSearchService({ repos }: Deps) {
           });
         }
       }
+      outcome.foods = collapseSameFoods(outcome.foods);
+
       // A neighbourhood name finds the area and the places in it (typing "ধানমন্ডি").
       const areas = await repos.districts.areasMatching(input, appConfig.search.areaLimit);
       for (const area of areas) {

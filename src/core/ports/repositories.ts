@@ -49,6 +49,8 @@ export type NewFood = { nameBn: string; nameEn?: string | null };
 
 export interface FoodRepository {
   bySlug(slug: string): Promise<Food | null>;
+  /** The slug of the food this one was merged into, for redirecting old links; null if none. */
+  redirectFor(slug: string): Promise<string | null>;
   byId(id: string): Promise<Food | null>;
   /** Slugs of the `limit` most experienced active foods (static generation, sitemap). */
   slugs(limit: number): Promise<string[]>;

@@ -14,6 +14,14 @@ export async function getFoodHeader(slug: string) {
   return header;
 }
 
+/** Where an old link to a merged duplicate should go (the surviving food's slug), if any. */
+export async function getFoodRedirect(slug: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("foods");
+  return getServices().repos.foods.redirectFor(slug);
+}
+
 export async function getFoodDishes(foodId: string) {
   "use cache";
   cacheLife("hours");

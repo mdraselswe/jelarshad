@@ -492,6 +492,7 @@ export type Database = {
           id: string;
           is_seed: boolean;
           loved_count: number;
+          merged_into: string | null;
           name_bn: string;
           name_en: string | null;
           search_key: string;
@@ -508,6 +509,7 @@ export type Database = {
           id?: string;
           is_seed?: boolean;
           loved_count?: number;
+          merged_into?: string | null;
           name_bn: string;
           name_en?: string | null;
           search_key?: string;
@@ -524,6 +526,7 @@ export type Database = {
           id?: string;
           is_seed?: boolean;
           loved_count?: number;
+          merged_into?: string | null;
           name_bn?: string;
           name_en?: string | null;
           search_key?: string;
@@ -544,6 +547,13 @@ export type Database = {
             columns: ["created_by"];
             isOneToOne: false;
             referencedRelation: "public_profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "foods_merged_into_fkey";
+            columns: ["merged_into"];
+            isOneToOne: false;
+            referencedRelation: "foods";
             referencedColumns: ["id"];
           },
         ];
@@ -1021,6 +1031,7 @@ export type Database = {
       };
       is_active_user: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      merge_foods: { Args: { p_from: string; p_into: string }; Returns: number };
       merge_places: { Args: { p_from: string; p_into: string }; Returns: number };
       purge_seed_data: { Args: { p_keep_used?: boolean }; Returns: Json };
       record_search_miss: { Args: { p_key: string; p_text: string }; Returns: undefined };

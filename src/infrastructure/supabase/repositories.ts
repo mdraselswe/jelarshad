@@ -276,6 +276,23 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
     },
 
     foods: {
+      async redirectFor(slug) {
+        const merged = check<{ merged_into: string | null } | null>(
+          await db
+            .from("foods")
+            .select("merged_into")
+            .eq("slug", slug)
+            .eq("status", "merged")
+            .maybeSingle(),
+          "merged food",
+        );
+        if (!merged?.merged_into) return null;
+        const target = check<{ slug: string } | null>(
+          await db.from("foods").select("slug").eq("id", merged.merged_into).maybeSingle(),
+          "food merge target",
+        );
+        return target?.slug ?? null;
+      },
       async slugs(limit) {
         const rows = check(
           await db
@@ -390,15 +407,21 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         return (rows as unknown as DishWithFoodRow[]).map(toDishWithFood);
       },
       async similar(nameBn, districtId) {
-        const needle = nameBn.trim().replace(/[%_]/g, "");
+        const needle = nameBn.trim().replace(/[%_,()*]/g, "");
         if (!needle) return [];
+        // The phonetic key makes the same name in another script or spelling collide
+        // ("Mostakim", "মোস্তাকিম", "Mustakim"), as it does in search.
+        const key = buildSearchFields(needle).searchKey.replace(/[%_,()*]/g, "");
+        const match = key
+          ? `name_bn.ilike.%${needle}%,search_key.ilike.%${key}%`
+          : `name_bn.ilike.%${needle}%`;
         const rows = check(
           await db
             .from("places")
             .select(PLACE_SELECT)
             .eq("district_id", districtId)
             .eq("status", "active")
-            .ilike("name_bn", `%${needle}%`)
+            .or(match)
             .limit(10),
           "similar places",
         );
