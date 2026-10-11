@@ -42,10 +42,14 @@ export async function measureClsDetailed(
         const moved = (entry.sources ?? [])
           .map((source) => {
             const node = source.node;
-            const name = node
-              ? `${node.nodeName.toLowerCase()}.${String(node.className).slice(0, 40)}`
+            const el = node instanceof Element ? node : node?.parentElement;
+            const text = (node?.textContent ?? "").trim().slice(0, 14);
+            const name = el
+              ? `${el.nodeName.toLowerCase()}[${String(el.className).slice(0, 48)}]"${text}"`
               : "?";
-            return `${name} ${Math.round(source.previousRect.y)}->${Math.round(source.currentRect.y)}`;
+            const prev = source.previousRect;
+            const next = source.currentRect;
+            return `${name} y${Math.round(prev.y)}->${Math.round(next.y)} h${Math.round(prev.height)}->${Math.round(next.height)}`;
           })
           .join(" | ");
         store.__shifts.push(`${entry.value.toFixed(4)} ${moved}`);
