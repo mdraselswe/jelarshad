@@ -75,4 +75,11 @@
   --cat-teal-fg: #0b5f5e;
   --cat-green-soft: #e3f7ea;
   --cat-green-fg: #146c34;
+
+  --tile-1: linear-gradient(135deg, #c026d3, #7c3aed);
+  --tile-2: linear-gradient(135deg, #db2777, #c2410c);
+  --tile-3: linear-gradient(135deg, #0b7f7e, #4f46e5);
+  --tile-4: linear-gradient(135deg, #d9421f, #b45309);
+  --tile-5: linear-gradient(135deg, #0369a1, #4f46e5);
+  --tile-6: linear-gradient(135deg, #15803d, #0b7f7e);
 }

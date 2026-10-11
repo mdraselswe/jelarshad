@@ -17,11 +17,14 @@ test.describe("food passport and points", () => {
     await expect(page.getByRole("img", { name: "বগুড়া জেলার স্ট্যাম্প" }).first()).toBeVisible();
   });
 
-  test("the home page shows the passport only to a signed-in person", async ({ page }) => {
+  test("the home page invites a visitor to start a passport and shows it once signed in", async ({
+    page,
+  }) => {
     await page.goto("/");
-    await expect(page.getByText("খাদ্য পাসপোর্ট")).toHaveCount(0);
+    await expect(page.getByText("পাসপোর্ট শুরু করুন")).toBeVisible();
     await page.goto("/auth/sign-in?next=/");
     await expect(page.getByText("খাদ্য পাসপোর্ট").first()).toBeVisible();
+    await expect(page.getByText("পাসপোর্ট শুরু করুন")).toHaveCount(0);
   });
 
   test("the passport shows progress per division and the next stamp to try", async ({ page }) => {

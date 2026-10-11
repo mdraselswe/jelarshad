@@ -183,7 +183,10 @@
     "discovererStamp": "Discoverer",
     "pointsLabel": "Points",
     "ate": "Foods tried",
-    "nothingYet": "No stamps yet. Share your first experience."
+    "nothingYet": "No stamps yet. Share your first experience.",
+    "inviteHint": "Share your first experience in a district to earn a stamp.",
+    "joinCta": "Start your passport",
+    "pointsChip": "{count} points"
   },
   "comingSoon": {
     "title": "Coming soon",
@@ -214,9 +217,38 @@
     "searchPlaceholder": "Food, district or shop name",
     "famousTitle": "Famous for",
     "famousHint": "An editors' list, not a rating",
-    "districtsTitle": "Browse by district",
+    "districtsTitle": "Explore districts",
     "allDistricts": "See all {count} districts",
-    "divisionOf": "{name} division"
+    "divisionOf": "{name} division",
+    "subtitle": "The real taste of every district, from people's own experience.",
+    "categories": "Kinds of food",
+    "cat": {
+      "biryani": "Biryani",
+      "sweets": "Sweets",
+      "doi": "Doi",
+      "fish": "Fish",
+      "breakfast": "Breakfast",
+      "tea": "Tea",
+      "pitha": "Pitha",
+      "more": "More"
+    },
+    "seeAll": "See all",
+    "howTitle": "How it works",
+    "how": {
+      "s1": {
+        "h": "Search",
+        "p": "Find places by district or food."
+      },
+      "s2": {
+        "h": "Share",
+        "p": "Been there? Add your experience or details."
+      },
+      "s3": {
+        "h": "Earn stamps",
+        "p": "The first time in each district earns a passport stamp."
+      }
+    },
+    "districtCount": "{count} districts"
   },
   "search": {
     "clear": "Clear",

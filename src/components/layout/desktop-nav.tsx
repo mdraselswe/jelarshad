@@ -1,9 +1,11 @@
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { LogoLockup } from "@/components/brand/logo";
 import { routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
+import { HomePoints } from "@/features/home/components/home-points";
 import { getT } from "@/i18n/server";
 
 import { DesktopNavLinks, DesktopSearchLink } from "./desktop-nav-client";
@@ -34,6 +36,9 @@ export function DesktopNav() {
           <PlusIcon className="size-4" strokeWidth={2.6} aria-hidden />
           {t("nav.add")}
         </Link>
+        <Suspense fallback={null}>
+          <HomePoints className="bg-reward-soft text-reward-soft-fg" />
+        </Suspense>
       </div>
     </header>
   );

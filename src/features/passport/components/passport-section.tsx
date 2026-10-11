@@ -3,7 +3,10 @@ import { getServices } from "@/infrastructure/container";
 import { getT } from "@/i18n/server";
 import { formatNumber } from "@/lib/format/number";
 
+import { getHomeData } from "@/features/home/queries";
+
 import { PassportCard } from "./passport-card";
+import { PassportInvite } from "./passport-invite";
 import { Stamp } from "./stamp";
 
 async function districtNames(): Promise<Map<number, string>> {
@@ -11,19 +14,27 @@ async function districtNames(): Promise<Map<number, string>> {
   return new Map(options.map((option) => [option.id, option.nameBn]));
 }
 
-/** Home: the compact passport card for a signed-in visitor; nothing for everyone else. */
+/** Same box as the card, so the page does not jump when the visitor's passport arrives. */
+export function HomePassportSkeleton() {
+  return <div aria-hidden className="h-[172px] rounded-card-lg bg-skeleton" />;
+}
+
+/**
+ * Home: the passport card for a signed-in visitor, an invitation to start one for everyone else
+ * (docs/design: gold card). Rendered twice on the home page: inside the desktop hero and below the kinds card on phones.
+ */
 export async function HomePassport() {
   const session = await getServices().auth.getSession();
-  if (!session) return null;
+  if (!session) {
+    const { divisions } = await getHomeData();
+    const total = divisions.reduce((sum, division) => sum + division.districts.length, 0);
+    return <PassportInvite total={total} />;
+  }
   const [summary, names] = await Promise.all([
     getServices().rewards.summary(session.user.id),
     districtNames(),
   ]);
-  return (
-    <section className="page-x pt-6 lg:max-w-xl lg:pt-10">
-      <PassportCard summary={summary} districtNames={names} />
-    </section>
-  );
+  return <PassportCard summary={summary} districtNames={names} />;
 }
 
 /** /me: points, progress per division and every stamp. */

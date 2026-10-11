@@ -411,6 +411,34 @@
   }
 }
 
+@utility bg-tile-1 {
+  background-image: var(--tile-1);
+}
+@utility bg-tile-2 {
+  background-image: var(--tile-2);
+}
+@utility bg-tile-3 {
+  background-image: var(--tile-3);
+}
+@utility bg-tile-4 {
+  background-image: var(--tile-4);
+}
+@utility bg-tile-5 {
+  background-image: var(--tile-5);
+}
+@utility bg-tile-6 {
+  background-image: var(--tile-6);
+}
+/* Round buttons (back, share, save) laid on a hero gradient: translucent, white icons. */
+@utility on-hero-actions {
+  & a,
+  & button {
+    background-color: rgb(255 255 255 / 0.2);
+    border-color: transparent;
+    color: var(--on-hero);
+  }
+}
+
 /* Press feedback for anything tappable (§7.1). */
 @utility press {
   transition: transform var(--duration-fast) var(--ease-out);
