@@ -1,3 +1,4 @@
+import { buildSearchFields } from "@/lib/text/normalize";
 import type {
   AppUser,
   Claim,
@@ -181,6 +182,28 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
         `district:${into.district.id}`,
         "search",
       ]);
+      return ok({ dishes });
+    },
+
+    /** Active foods whose names are close ("সালাদ" / "ছালাদ"), for the admin to review. */
+    duplicateFoods(minSimilarity = 0.55, limit = 30) {
+      return repos.admin.similarFoodPairs(minSimilarity, limit);
+    },
+
+    /**
+     * Merges a duplicate food into the right one. Its name stays findable as an alias of the
+     * survivor, and old links to the duplicate redirect.
+     */
+    async mergeFoods(fromId: string, intoId: string): Promise<Result<{ dishes: number }>> {
+      if (fromId === intoId) return fail("validation", { fields: { into: "same" } });
+      const [from, into] = await Promise.all([repos.foods.byId(fromId), repos.foods.byId(intoId)]);
+      if (!from || !into) return fail("not_found");
+      const dishes = await repos.admin.mergeFoods(fromId, intoId);
+      const names = [from.nameBn, from.nameEn].filter((name): name is string => Boolean(name));
+      for (const name of names) {
+        await repos.foods.addAlias(intoId, name, buildSearchFields(name).searchKey);
+      }
+      await cache.invalidate([`food:${fromId}`, `food:${intoId}`, "foods", "districts", "search"]);
       return ok({ dishes });
     },
 

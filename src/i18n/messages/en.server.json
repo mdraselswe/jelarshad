@@ -7,7 +7,8 @@
       "places": "New places",
       "claims": "Disputed facts",
       "fame": "Famous for",
-      "maintenance": "Maintenance"
+      "maintenance": "Maintenance",
+      "foods": "Possible duplicate foods"
     },
     "totals": {
       "users": "People",
@@ -51,7 +52,12 @@
     "purgeHint": "Removes counters older than 7 days. Safe to run any time.",
     "orphanTitle": "Photos with no live experience: {count}",
     "orphanHint": "Photos whose experience was removed or hidden. Running this deletes them from storage.",
-    "orphanConfirm": "Delete these photos for good?"
+    "orphanConfirm": "Delete these photos for good?",
+    "foodsHint": "Pairs of foods with close names. If they are the same food, merge one into the other; the merged name stays searchable and old links redirect.",
+    "similarity": "{percent}% alike",
+    "experiences": "{count} experiences",
+    "mergeFoodInto": "Merge into “{name}”",
+    "mergeFoodConfirm": "Merge this food into the other one? Its dishes and experiences move; this cannot be undone."
   },
   "legal": {
     "aboutLink": "About us",

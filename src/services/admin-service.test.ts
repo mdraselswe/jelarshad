@@ -158,3 +158,37 @@ describe("people and maintenance", () => {
     expect(await service.purgeRateEvents(7)).toBe(0);
   });
 });
+
+describe("merging foods", () => {
+  async function twoFoods() {
+    const { repos, service } = setup();
+    const keep = await repos.foods.create({ nameBn: "সালাদ", slug: "salad-bn" }, admin.id);
+    const dup = await repos.foods.create({ nameBn: "ছালাদ", slug: "chalad" }, admin.id);
+    return { repos, service, keep, dup };
+  }
+
+  it("lists foods whose names are alike", async () => {
+    const { repos, service } = setup();
+    await repos.foods.create({ nameBn: "সালাদ", slug: "salad-a" }, admin.id);
+    await repos.foods.create({ nameBn: "salad", slug: "salad-b" }, admin.id);
+    const pairs = await service.duplicateFoods();
+    expect(pairs.map((pair) => [pair.a.slug, pair.b.slug])).toContainEqual(["salad-a", "salad-b"]);
+  });
+
+  it("merges, redirects the old link and keeps the merged name searchable", async () => {
+    const { repos, service, keep, dup } = await twoFoods();
+    const result = await service.mergeFoods(dup.id, keep.id);
+    expect(result.ok).toBe(true);
+    expect(await repos.foods.redirectFor(dup.slug)).toBe(keep.slug);
+    expect(await repos.foods.bySlug(dup.slug)).toBeNull();
+    const hit = await repos.search.search({ text: "ছালাদ", key: "calad" }, { limit: 10 });
+    const slugs = hit.items.flatMap((item) => (item.kind === "food" ? [item.food.slug] : []));
+    expect(slugs).toContain(keep.slug);
+    expect(slugs).not.toContain(dup.slug);
+  });
+
+  it("will not merge a food into itself", async () => {
+    const { service, keep } = await twoFoods();
+    expect(await service.mergeFoods(keep.id, keep.id)).toMatchObject({ ok: false });
+  });
+});

@@ -19,6 +19,7 @@ const schema = z.discriminatedUnion("kind", [
   }),
   z.object({ kind: z.literal("edit"), id, decision: z.enum(["approve", "reject"]) }),
   z.object({ kind: z.literal("merge"), fromId: id, intoSlug: z.string().min(1).max(120) }),
+  z.object({ kind: z.literal("merge-food"), fromId: id, intoId: id }),
   z.object({ kind: z.enum(["hide", "restore"]), entity, entityId: id }),
   z.object({ kind: z.literal("ban"), userId: id, banned: z.boolean() }),
   z.object({
@@ -46,6 +47,8 @@ export const adminAct = defineAction(
         if (!into) return fail("not_found");
         return admin.mergePlaces(input.fromId, into.id);
       }
+      case "merge-food":
+        return admin.mergeFoods(input.fromId, input.intoId);
       case "hide":
         return admin.hide(input.entity, input.entityId);
       case "restore":

@@ -14,6 +14,7 @@ export const ADMIN_SECTIONS = [
   "reports",
   "edits",
   "places",
+  "foods",
   "claims",
   "fame",
   "maintenance",

@@ -51,6 +51,8 @@ export interface FoodRepository {
   bySlug(slug: string): Promise<Food | null>;
   /** The slug of the food this one was merged into, for redirecting old links; null if none. */
   redirectFor(slug: string): Promise<string | null>;
+  /** Another way to find this food ("ছালাদ" after it was merged into "সালাদ"); a no-op if known. */
+  addAlias(foodId: string, alias: string, searchKey: string): Promise<void>;
   byId(id: string): Promise<Food | null>;
   /** Slugs of the `limit` most experienced active foods (static generation, sitemap). */
   slugs(limit: number): Promise<string[]>;
@@ -221,6 +223,13 @@ export type AdminCounts = {
 
 export type OrphanMedia = { id: string; key: string };
 
+export type SimilarFoodPair = {
+  a: { id: string; slug: string; nameBn: string; experienceCount: number };
+  b: { id: string; slug: string; nameBn: string; experienceCount: number };
+  /** 0–1, trigram similarity of the phonetic keys. */
+  similarity: number;
+};
+
 export interface AdminRepository {
   counts(): Promise<AdminCounts>;
   /** Active places added in the last `sinceDays` days, newest first. */
@@ -229,6 +238,10 @@ export interface AdminRepository {
   disputedClaims(limit: number): Promise<Claim[]>;
   /** Moves everything from the duplicate into the survivor; returns how many dishes were handled. */
   mergePlaces(fromId: string, intoId: string): Promise<number>;
+  /** Same for a duplicate food: its dishes, experiences, fame rows and saves move to the survivor. */
+  mergeFoods(fromId: string, intoId: string): Promise<number>;
+  /** Pairs of active foods with close names, most alike first. */
+  similarFoodPairs(minSimilarity: number, limit: number): Promise<SimilarFoodPair[]>;
   restore(entity: Report["entity"], entityId: string): Promise<void>;
   setBanned(userId: string, banned: boolean): Promise<void>;
   setReportStatus(id: string, status: Exclude<ReviewStatus, "open">): Promise<void>;

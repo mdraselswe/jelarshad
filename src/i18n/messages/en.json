@@ -68,7 +68,10 @@
     "addMore": "Add another",
     "needFood": "Type the food name",
     "needPlace": "Choose a place and a district",
-    "needReaction": "Tell us how it was"
+    "needReaction": "Tell us how it was",
+    "similarFoodTitle": "Do you mean one of these?",
+    "similarFoodHint": "A food added twice splits its page. If it matches, pick it.",
+    "similarFoodNone": "No, “{name}” is a new food"
   },
   "save": {
     "label": "Save to want-to-try",

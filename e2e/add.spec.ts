@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { addAsNewFood } from "./utils/add";
+
 test.describe("add flow", () => {
   test("a signed-out visitor is asked to log in first", async ({ page }) => {
     await page.goto("/add");
@@ -12,7 +14,7 @@ test.describe("add flow", () => {
 
     // 1 — food
     await page.getByRole("textbox", { name: "কী খাবার?" }).fill("মহাস্থান কটকটি");
-    await page.getByRole("button", { name: /নতুন খাবার হিসেবে যোগ করুন/ }).click();
+    await addAsNewFood(page, "মহাস্থান কটকটি");
     await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
 
     // 2 — place
@@ -45,5 +47,20 @@ test.describe("add flow", () => {
     await expect(page.getByText("এগুলোর কোনোটা কি?")).toBeVisible();
     await page.getByRole("button", { name: "এটাই" }).first().click();
     await expect(page.getByRole("heading", { name: "কেমন লাগল?" })).toBeVisible();
+  });
+});
+
+test.describe("add flow: a close name asks before creating a second food", () => {
+  test("shows the existing food and lets the person say it is a new one", async ({ page }) => {
+    await page.goto("/auth/sign-in?next=/add");
+    // "দই" exists; "দইয়ের ভর্তা" is close but not the same.
+    const box = page.getByRole("textbox", { name: "কী খাবার?" });
+    await box.fill("দই");
+    // The suggestions arrive a moment after typing; the question is asked only once they are there.
+    await expect(page.getByRole("button", { name: "দই", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: /নতুন খাবার হিসেবে যোগ করুন/ }).click();
+    await expect(page.getByText("এগুলোর কোনোটাই কি আপনি বোঝাচ্ছেন?")).toBeVisible();
+    await page.getByRole("button", { name: "না, “দই” নতুন খাবার" }).click();
+    await expect(page.getByText("এগুলোর কোনোটাই কি আপনি বোঝাচ্ছেন?")).toBeHidden();
   });
 });
