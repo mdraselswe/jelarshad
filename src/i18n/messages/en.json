@@ -282,7 +282,9 @@
     "emptyHint": "Try another spelling, or write it in Bangla or English.",
     "emptyFiltered": "No places match these filters.",
     "emptyFilteredHint": "Open the filters and try again.",
-    "districtMeta": "{division} division"
+    "districtMeta": "{division} division",
+    "openFood": "Open food",
+    "foodBannerMeta": "See where it is served across districts"
   },
   "placeType": {
     "restaurant": "Restaurant",
@@ -322,7 +324,10 @@
     "moreIn": "More places in {district}",
     "newTab": "Opens in a new tab",
     "verifyTitle": "Is this still right?",
-    "reactCta": "Share your experience"
+    "reactCta": "Share your experience",
+    "addMoreTitle": "Know photos, prices or hours?",
+    "addMoreBody": "Add them when you share your experience; it helps others.",
+    "addMoreCta": "Share your experience"
   },
   "district": {
     "famous": "Famous for",

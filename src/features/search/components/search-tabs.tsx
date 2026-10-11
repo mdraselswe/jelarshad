@@ -37,7 +37,7 @@ export function SearchTabs({
           aria-current={id === active ? "page" : undefined}
           className={cn(
             "flex h-full flex-1 items-center justify-center gap-1 rounded-xl px-2 text-[15px] font-medium whitespace-nowrap text-muted-foreground transition-colors",
-            id === active && "bg-card font-semibold text-foreground shadow-segment",
+            id === active && "bg-card font-semibold text-primary-text shadow-segment",
           )}
         >
           {t(`search.tabs.${id}`)}

@@ -282,7 +282,9 @@
     "emptyHint": "বানান বদলে দেখুন, অথবা বাংলায় বা ইংরেজিতে লিখুন।",
     "emptyFiltered": "এই ফিল্টারে কোনো জায়গা নেই।",
     "emptyFilteredHint": "ফিল্টার খুলে আবার দেখুন।",
-    "districtMeta": "{division} বিভাগ"
+    "districtMeta": "{division} বিভাগ",
+    "openFood": "খাবার দেখুন",
+    "foodBannerMeta": "সব জেলায় কোথায় পাওয়া যায় দেখুন"
   },
   "placeType": {
     "restaurant": "রেস্টুরেন্ট",
@@ -322,7 +324,10 @@
     "moreIn": "{district}-এর আরও জায়গা",
     "newTab": "নতুন ট্যাবে খুলবে",
     "verifyTitle": "তথ্যগুলো এখনো ঠিক আছে?",
-    "reactCta": "আপনার অভিজ্ঞতা জানান"
+    "reactCta": "আপনার অভিজ্ঞতা জানান",
+    "addMoreTitle": "ছবি, দাম বা সময় জানেন?",
+    "addMoreBody": "অভিজ্ঞতা জানানোর সময় যোগ করলে অন্যদের কাজে লাগবে।",
+    "addMoreCta": "অভিজ্ঞতা জানান"
   },
   "district": {
     "famous": "বিখ্যাত খাবার",

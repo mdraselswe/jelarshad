@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 
 import { HeroBar } from "@/components/layout/hero-bar";
@@ -74,6 +75,18 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
             </Suspense>
           </div>
           <PlaceInfoSection place={place} />
+          <section className="page-x pt-5">
+            <div className="rounded-card-lg bg-grad-reward p-4 text-on-reward shadow-card">
+              <p className="font-display text-lg font-bold">{t("place.addMoreTitle")}</p>
+              <p className="mt-1 text-[14.5px] leading-relaxed">{t("place.addMoreBody")}</p>
+              <Link
+                href="#react"
+                className="mt-3 flex h-11 w-fit press items-center rounded-full bg-card px-5 text-sm font-semibold text-foreground"
+              >
+                {t("place.addMoreCta")}
+              </Link>
+            </div>
+          </section>
           <Section title={t("moderation.moreTitle")}>
             <ContentActions
               target={{ entity: "place", entityId: place.id }}

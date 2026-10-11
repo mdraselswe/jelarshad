@@ -1,4 +1,8 @@
+import Link from "next/link";
+
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
+import { routes } from "@/config/routes";
+import { tileClass } from "@/lib/tone";
 import { EmptyState } from "@/components/layout/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -10,7 +14,7 @@ import { DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
 import { SearchTabs } from "./search-tabs";
 
-const GROUP_HEADING_CLASS = "mb-1.5 px-1 text-caption text-muted-foreground";
+const GROUP_HEADING_CLASS = "mb-2 px-1 font-display text-xl font-semibold";
 
 /** Tabs + filters + grouped hits for the page's `?q=`. */
 export async function SearchResults({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
@@ -70,10 +74,34 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
             />
           )}
 
+          {showFoods && outcome.foods[0] && (
+            <Link
+              href={routes.food(outcome.foods[0].slug)}
+              className={`flex lift press items-center gap-3.5 rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
+            >
+              <span
+                aria-hidden
+                className="flex size-[60px] shrink-0 items-center justify-center rounded-[20px] bg-white/20 font-display text-[30px] font-bold"
+              >
+                {outcome.foods[0].nameBn.slice(0, 1)}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-display text-2xl leading-tight font-bold">
+                  {outcome.foods[0].nameBn}
+                </span>
+                <span className="line-clamp-2 block text-[14px] opacity-95">
+                  {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
+                </span>
+              </span>
+              <span className="flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
+                {t("search.openFood")}
+              </span>
+            </Link>
+          )}
           {showFoods && outcome.foods.length > 0 && (
             <section aria-label={t("search.groups.foods")}>
               <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.foods")}</h2>
-              <GroupedList>
+              <GroupedList cards>
                 {outcome.foods.map((hit) => (
                   <FoodHitRow key={hit.slug} hit={hit} />
                 ))}
@@ -83,7 +111,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           {showPlaces && places.length > 0 && (
             <section aria-label={t("search.groups.places")}>
               <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.places")}</h2>
-              <GroupedList>
+              <GroupedList cards>
                 {places.map((hit) => (
                   <PlaceHitRow key={hit.slug} hit={hit} t={t} />
                 ))}
@@ -93,7 +121,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           {showDistricts && outcome.districts.length > 0 && (
             <section aria-label={t("search.groups.districts")}>
               <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.districts")}</h2>
-              <GroupedList>
+              <GroupedList cards>
                 {outcome.districts.map((hit) => (
                   <DistrictHitRow key={hit.slug} hit={hit} t={t} />
                 ))}

@@ -13,20 +13,27 @@ import { KIND_TONE_CLASS, toneClass, type Tone } from "@/lib/tone";
 const SPLIT_CLASS =
   "lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:[&>li]:overflow-hidden lg:[&>li]:rounded-card-lg lg:[&>li]:border lg:[&>li]:border-border lg:[&>li]:bg-card";
 
+// `cards`: every row is its own white card (search results), on every width.
+const CARDS_CLASS =
+  "flex flex-col gap-3 divide-y-0 overflow-visible rounded-none border-0 bg-transparent shadow-none [&>li]:overflow-hidden [&>li]:rounded-card-lg [&>li]:border [&>li]:border-border [&>li]:bg-card [&>li]:shadow-card";
+
 export function GroupedList({
   children,
   className,
   split,
+  cards,
 }: {
   children: ReactNode;
   className?: string;
   split?: boolean;
+  cards?: boolean;
 }) {
   return (
     <ul
       className={cn(
         "rise-children divide-y divide-divider overflow-hidden rounded-card-lg border border-border bg-card",
         split && SPLIT_CLASS,
+        cards && CARDS_CLASS,
         className,
       )}
     >
