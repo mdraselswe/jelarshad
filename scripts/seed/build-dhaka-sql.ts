@@ -17,6 +17,31 @@ const q = (value: string) => `'${value.replace(/'/g, "''")}'`;
 const when = (list: string[], sql: string) => (list.length > 0 ? sql.trimEnd() : "");
 const rows = (lines: string[]) => lines.map((line) => `  ${line}`).join(",\n");
 
+const DEDUPE_FOODS_SQL = `
+-- Foods with exactly the same name become one (seed food first, then the one with a description).
+do $$
+declare
+  r record;
+begin
+  for r in
+    select dup.id as dup_id, dup.keep_id
+    from (
+      select id,
+             first_value(id) over (
+               partition by lower(btrim(name_bn))
+               order by is_seed desc, (about_bn is not null) desc, created_at, id
+             ) as keep_id
+      from foods
+      where status = 'active'
+    ) as dup
+    where dup.id <> dup.keep_id
+  loop
+    perform merge_foods(r.dup_id, r.keep_id);
+  end loop;
+end;
+$$;
+`;
+
 export const DHAKA_SETS: DhakaSet[] = [
   DHAKA_SET_1,
   DHAKA_SET_2,
@@ -169,5 +194,9 @@ where d.slug = v.district_slug and f.slug = v.food_slug
 
 update districts d
 set place_count = (select count(*) from places p where p.district_id = d.id and p.status = 'active');
-`;
+${
+  // Migration 0060 added merge_foods. Newer sets fold a food that was already there under another
+  // slug (a contributor typed it first) into the project's one, instead of leaving two "চাপ".
+  Number(set.number) >= 61 && foodRows.length > 0 ? DEDUPE_FOODS_SQL : ""
+}`;
 }

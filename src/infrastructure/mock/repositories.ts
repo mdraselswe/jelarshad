@@ -178,6 +178,8 @@ export function createMockRepositories(): Repositories {
     },
 
     foods: {
+      // The mock has no merged foods; merging is a database operation (merge_foods).
+      redirectFor: async () => null,
       slugs: async (limit) =>
         db.foods
           .filter((f) => f.status === "active")
@@ -245,11 +247,14 @@ export function createMockRepositories(): Repositories {
           .map((d) => ({ ...clone(d), food: foodOf(d) })),
       similar: async (nameBn, districtId) => {
         const needle = nameBn.trim();
+        const key = buildSearchFields(needle).searchKey;
         return clone(
           active(db.places).filter(
             (p) =>
               p.district.id === districtId &&
-              (p.nameBn.includes(needle) || needle.includes(p.nameBn)),
+              (p.nameBn.includes(needle) ||
+                needle.includes(p.nameBn) ||
+                (key !== "" && buildSearchFields(p.nameBn, p.nameEn).searchKey.includes(key))),
           ),
         );
       },

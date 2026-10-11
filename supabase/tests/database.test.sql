@@ -5,7 +5,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(61);
+select plan(66);
 
 -- Fixtures (as the migration owner, RLS bypassed) -------------------------------------------
 insert into auth.users (id, email) values
@@ -330,6 +330,32 @@ select throws_ok(
 select throws_ok(
   $$ select merge_places('00000000-0000-4000-8000-00000000c001', '00000000-0000-4000-8000-00000000c002') $$,
   'P0001', null, 'the survivor must be active'
+);
+
+-- Merging foods (migration 0060) ------------------------------------------------------------------
+insert into foods (id, slug, name_bn) values
+  ('00000000-0000-4000-8000-00000000f002', 'rls-test-food-duplicate', 'টেস্ট খাবার (ডুপ্লিকেট)');
+insert into dishes (id, place_id, food_id) values
+  ('00000000-0000-4000-8000-00000000d003', '00000000-0000-4000-8000-00000000c001', '00000000-0000-4000-8000-00000000f002');
+select is(
+  merge_foods('00000000-0000-4000-8000-00000000f002', '00000000-0000-4000-8000-00000000f001'),
+  1, 'merging foods reports how many dishes were handled'
+);
+select is(
+  (select status::text from foods where id = '00000000-0000-4000-8000-00000000f002'),
+  'merged', 'the duplicate food is kept with status merged'
+);
+select is(
+  (select merged_into from foods where id = '00000000-0000-4000-8000-00000000f002'),
+  '00000000-0000-4000-8000-00000000f001'::uuid, 'and points at the survivor'
+);
+select is_empty(
+  $$ select 1 from dishes where id = '00000000-0000-4000-8000-00000000d003' $$,
+  'a dish both foods had at one place becomes one dish'
+);
+select throws_ok(
+  $$ select merge_foods('00000000-0000-4000-8000-00000000f001', '00000000-0000-4000-8000-00000000f002') $$,
+  'P0001', null, 'the surviving food must be active'
 );
 
 select * from finish();

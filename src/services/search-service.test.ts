@@ -4,6 +4,7 @@ import { createMockRepositories } from "@/infrastructure/mock/repositories";
 
 import {
   cleanQueryInput,
+  collapseSameFoods,
   createSearchService,
   filterPlaces,
   type PlaceHit,
@@ -15,6 +16,17 @@ describe("cleanQueryInput", () => {
   it("trims, collapses spaces and caps the length", () => {
     expect(cleanQueryInput("  kacchi   biryani ")).toBe("kacchi biryani");
     expect(cleanQueryInput("a".repeat(200))).toHaveLength(60);
+  });
+});
+
+describe("collapseSameFoods", () => {
+  it("shows one food per name, keeping the one that has a description", () => {
+    const foods = [
+      { slug: "chap", nameBn: "চাপ", aboutBn: null },
+      { slug: "chaap", nameBn: "চাপ", aboutBn: "হালকা ভাজা মাংসের টুকরো।" },
+      { slug: "malai-chop", nameBn: "মালাই চপ", aboutBn: null },
+    ];
+    expect(collapseSameFoods(foods).map((food) => food.slug)).toEqual(["chaap", "malai-chop"]);
   });
 });
 

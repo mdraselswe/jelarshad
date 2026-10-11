@@ -60,6 +60,22 @@ describe("Dhaka seed data (all parts)", () => {
   });
 });
 
+describe("food de-duplication in generated migrations", () => {
+  const fake = {
+    ...DHAKA_SETS[0],
+    number: "0061",
+    migration: "0061_seed_fake.sql",
+  } as (typeof DHAKA_SETS)[number];
+
+  it("folds foods with the same name into one from migration 0061 on", () => {
+    expect(buildDhakaSql(fake)).toContain("perform merge_foods(");
+  });
+
+  it("leaves the migrations that already ran untouched", () => {
+    for (const set of DHAKA_SETS) expect(buildDhakaSql(set)).not.toContain("merge_foods");
+  });
+});
+
 describe.each(DHAKA_SETS.map((set) => [set.migration, set] as const))("migration %s", (_, set) => {
   it("invents nothing: no experiences or claims", () => {
     const sql = buildDhakaSql(set);
