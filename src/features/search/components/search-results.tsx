@@ -4,7 +4,7 @@ import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import { tileClass } from "@/lib/tone";
 import { EmptyState } from "@/components/layout/empty-state";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
 import { filterPlaces } from "@/services/search-service";
 
@@ -86,10 +86,10 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                 {outcome.foods[0].nameBn.slice(0, 1)}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block font-display text-2xl leading-tight font-bold">
+                <span className="line-clamp-1 block font-display text-2xl leading-tight font-bold">
                   {outcome.foods[0].nameBn}
                 </span>
-                <span className="line-clamp-2 block text-[14px] opacity-95">
+                <span className="line-clamp-1 block text-[14px] opacity-95">
                   {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
                 </span>
               </span>
@@ -143,10 +143,13 @@ export function SearchResultsSkeleton() {
       </div>
       <Skeleton className="h-12 rounded-input" />
       <Skeleton className="h-10 rounded-full" />
+      <Skeleton className="h-[92px] rounded-card-lg" />
       {[2, 3].map((rows) => (
         <section key={rows}>
-          <Skeleton className="mb-1.5 ml-1 h-4 w-16" />
-          <GroupedList>
+          <div className={GROUP_HEADING_CLASS}>
+            <SkeletonText className="w-16" />
+          </div>
+          <GroupedList cards>
             {Array.from({ length: rows }, (_, index) => (
               <ListRowSkeleton key={index} />
             ))}
