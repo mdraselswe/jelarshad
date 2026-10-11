@@ -77,7 +77,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           {showFoods && outcome.foods[0] && (
             <Link
               href={routes.food(outcome.foods[0].slug)}
-              className={`flex lift press items-center gap-3.5 rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
+              className={`flex h-[92px] lift press items-center gap-3.5 rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
             >
               <span
                 aria-hidden
