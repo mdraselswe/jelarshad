@@ -1048,6 +1048,20 @@ export type Database = {
           title: string;
         }[];
       };
+      similar_food_pairs: {
+        Args: { p_limit?: number; p_min?: number };
+        Returns: {
+          a_experiences: number;
+          a_id: string;
+          a_name: string;
+          a_slug: string;
+          b_experiences: number;
+          b_id: string;
+          b_name: string;
+          b_slug: string;
+          similarity: number;
+        }[];
+      };
       unlock_stamp: {
         Args: { p_district: number; p_food: string; p_kind: string; p_user: string };
         Returns: boolean;

@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { addAsNewFood } from "./utils/add";
+
 // 1x1 transparent PNG: enough for the browser to decode, shrink to WebP and upload.
 const PIXEL = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
@@ -11,7 +13,7 @@ test("a photo added with the experience shows on the place page and opens in a v
 }) => {
   await page.goto("/auth/sign-in?next=/add");
   await page.getByRole("textbox", { name: "কী খাবার?" }).fill("ছবির ঝালমুড়ি");
-  await page.getByRole("button", { name: /নতুন খাবার হিসেবে যোগ করুন/ }).click();
+  await addAsNewFood(page, "ছবির ঝালমুড়ি");
   await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
   await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
   await page.getByLabel("দোকান বা জায়গার নাম").fill("ছবিওয়ালা দোকান");
@@ -36,7 +38,7 @@ test("a photo added with the experience shows on the place page and opens in a v
 test("a file that is not a picture is turned down with a message", async ({ page }) => {
   await page.goto("/auth/sign-in?next=/add");
   await page.getByRole("textbox", { name: "কী খাবার?" }).fill("ঝালমুড়ি ২");
-  await page.getByRole("button", { name: /নতুন খাবার হিসেবে যোগ করুন/ }).click();
+  await addAsNewFood(page, "ঝালমুড়ি ২");
   await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
   await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
   await page.getByLabel("দোকান বা জায়গার নাম").fill("আরেকটা দোকান");

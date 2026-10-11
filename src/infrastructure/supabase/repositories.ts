@@ -276,6 +276,15 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
     },
 
     foods: {
+      async addAlias(foodId, alias, searchKey) {
+        const { error } = await writer(clients)
+          .from("aliases")
+          .upsert(
+            { entity: "food", entity_id: foodId, alias, search_key: searchKey },
+            { onConflict: "entity,entity_id,search_key", ignoreDuplicates: true },
+          );
+        if (error) throw new Error(`Supabase add alias: ${error.message}`);
+      },
       async redirectFor(slug) {
         const merged = check<{ merged_into: string | null } | null>(
           await db
@@ -1141,6 +1150,36 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         });
         if (error) throw new Error(`Supabase merge_places: ${error.message}`);
         return Number(data ?? 0);
+      },
+      async mergeFoods(fromId, intoId) {
+        const { data, error } = await writer(clients).rpc("merge_foods", {
+          p_from: fromId,
+          p_into: intoId,
+        });
+        if (error) throw new Error(`Supabase merge_foods: ${error.message}`);
+        return Number(data ?? 0);
+      },
+      async similarFoodPairs(minSimilarity, limit) {
+        const { data, error } = await writer(clients).rpc("similar_food_pairs", {
+          p_min: minSimilarity,
+          p_limit: limit,
+        });
+        if (error) throw new Error(`Supabase similar_food_pairs: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          a: {
+            id: row.a_id,
+            slug: row.a_slug,
+            nameBn: row.a_name,
+            experienceCount: row.a_experiences,
+          },
+          b: {
+            id: row.b_id,
+            slug: row.b_slug,
+            nameBn: row.b_name,
+            experienceCount: row.b_experiences,
+          },
+          similarity: row.similarity,
+        }));
       },
       async restore(entity, entityId) {
         const table = (

@@ -88,6 +88,8 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
 
   const [foodQuery, setFoodQuery] = useState("");
   const [food, setFood] = useState<FoodChoice | null>(null);
+  // "এটাই কি?": shown once before a typed name becomes a new food while close ones exist.
+  const [askFood, setAskFood] = useState(false);
   const [districtId, setDistrictId] = useState<number | null>(null);
   const [placeQuery, setPlaceQuery] = useState("");
   const [place, setPlace] = useState<PlaceChoice>(null);
@@ -286,10 +288,49 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
             onChange={(event) => {
               setFoodQuery(event.target.value);
               setFood(null);
+              setAskFood(false);
             }}
           />
         </div>
-        {food === null && foodQuery.trim() !== "" && (
+        {food === null && foodQuery.trim() !== "" && askFood && (
+          <div
+            role="group"
+            aria-labelledby="add-similar-food"
+            className="mt-2 rounded-input border border-warning bg-warning-soft p-3.5"
+          >
+            <p id="add-similar-food" className="font-semibold">
+              {t("add.similarFoodTitle")}
+            </p>
+            <p className="text-meta text-muted-foreground">{t("add.similarFoodHint")}</p>
+            <ul className="mt-2 flex flex-col gap-2">
+              {foodSuggestions.slice(0, 4).map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className="h-11 w-full press rounded-full border border-border bg-card px-4 text-left font-semibold"
+                    onClick={() => {
+                      chooseFood({ id: item.id, nameBn: item.nameBn });
+                      setAskFood(false);
+                    }}
+                  >
+                    {item.nameBn}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              className="mt-2 h-11 w-full press rounded-full px-4 text-left text-primary-text"
+              onClick={() => {
+                chooseFood({ id: null, nameBn: foodQuery.trim() });
+                setAskFood(false);
+              }}
+            >
+              {t("add.similarFoodNone", { name: foodQuery.trim() })}
+            </button>
+          </div>
+        )}
+        {food === null && foodQuery.trim() !== "" && !askFood && (
           <ul className="mt-2 divide-y divide-divider rounded-input border border-border">
             {foodSuggestions.map((item) => (
               <li key={item.id}>
@@ -306,7 +347,11 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
               <button
                 type="button"
                 className="h-12 w-full px-4 text-left text-primary-text"
-                onClick={() => chooseFood({ id: null, nameBn: foodQuery.trim() })}
+                onClick={() => {
+                  // Close names exist: ask once before creating a second one.
+                  if (foodSuggestions.length > 0) setAskFood(true);
+                  else chooseFood({ id: null, nameBn: foodQuery.trim() });
+                }}
               >
                 {t("add.newFood", { name: foodQuery.trim() })}
               </button>

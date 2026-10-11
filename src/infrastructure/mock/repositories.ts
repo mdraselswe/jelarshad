@@ -54,6 +54,8 @@ export function createMockRepositories(): Repositories {
     reports: [] as Report[],
     saved: [] as (SavedItem & { userId: string })[],
     placeCreators: new Map<string, string>(),
+    foodAliases: new Map<string, string[]>(),
+    foodMergedInto: new Map<string, string>(),
     banned: new Set<string>(),
     points: [] as {
       userId: string;
@@ -178,8 +180,15 @@ export function createMockRepositories(): Repositories {
     },
 
     foods: {
-      // The mock has no merged foods; merging is a database operation (merge_foods).
-      redirectFor: async () => null,
+      redirectFor: async (slug) => {
+        const merged = db.foods.find((f) => f.slug === slug && f.status === "merged");
+        const targetId = merged && db.foodMergedInto.get(merged.id);
+        return db.foods.find((f) => f.id === targetId)?.slug ?? null;
+      },
+      addAlias: async (foodId, alias) => {
+        const list = db.foodAliases.get(foodId) ?? [];
+        if (!list.includes(alias)) db.foodAliases.set(foodId, [...list, alias]);
+      },
       slugs: async (limit) =>
         db.foods
           .filter((f) => f.status === "active")
@@ -515,7 +524,11 @@ export function createMockRepositories(): Repositories {
         const hits: SearchHit[] = q
           ? [
               ...db.foods
-                .filter((f) => matches(f.nameBn, f.nameEn, f.slug))
+                .filter(
+                  (f) =>
+                    f.status === "active" &&
+                    matches(f.nameBn, f.nameEn, f.slug, ...(db.foodAliases.get(f.id) ?? [])),
+                )
                 .map((f) => ({ kind: "food" as const, food: foodWithStats(f) })),
               ...active(db.places)
                 .filter((p) => matches(p.nameBn, p.nameEn, p.slug))
@@ -637,6 +650,47 @@ export function createMockRepositories(): Repositories {
         from.status = "merged";
         from.mergedIntoId = intoId;
         return handled;
+      },
+      mergeFoods: async (fromId, intoId) => {
+        const from = db.foods.find((f) => f.id === fromId);
+        const into = db.foods.find((f) => f.id === intoId);
+        if (!from || !into || fromId === intoId || into.status !== "active") {
+          throw new Error("mock: cannot merge");
+        }
+        let handled = 0;
+        for (const dish of db.dishes.filter((d) => d.foodId === fromId)) {
+          const target = db.dishes.find((d) => d.placeId === dish.placeId && d.foodId === intoId);
+          if (!target) dish.foodId = intoId;
+          else {
+            for (const experience of db.experiences) {
+              if (experience.dishId === dish.id) experience.dishId = target.id;
+            }
+            db.dishes = db.dishes.filter((d) => d.id !== dish.id);
+            recount(target);
+          }
+          handled += 1;
+        }
+        from.status = "merged";
+        db.foodMergedInto.set(fromId, intoId);
+        return handled;
+      },
+      similarFoodPairs: async (_min, limit) => {
+        const foods = db.foods.filter((f) => f.status === "active");
+        const pairs = [];
+        for (const [index, a] of foods.entries()) {
+          for (const b of foods.slice(index + 1)) {
+            const keyA = buildSearchFields(a.nameBn).searchKey;
+            const keyB = buildSearchFields(b.nameBn).searchKey;
+            if (keyA !== "" && keyA === keyB) {
+              pairs.push({
+                a: { id: a.id, slug: a.slug, nameBn: a.nameBn, experienceCount: 0 },
+                b: { id: b.id, slug: b.slug, nameBn: b.nameBn, experienceCount: 0 },
+                similarity: 1,
+              });
+            }
+          }
+        }
+        return pairs.slice(0, limit);
       },
       restore: async (entity, entityId) => {
         const rows: { id: string; status: string }[] =

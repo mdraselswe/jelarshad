@@ -45,6 +45,7 @@ export type CacheTag =
   | `dish:${string}`
   | `user:${string}`
   | "districts"
+  | "foods"
   | "search";
 
 export interface CacheInvalidator {
