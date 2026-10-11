@@ -542,7 +542,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
                   type="button"
                   aria-label={t("photos.remove")}
                   onClick={() => removePhoto(index)}
-                  className="text-toast-foreground absolute top-0.5 right-0.5 flex size-7 items-center justify-center rounded-full bg-toast"
+                  className="absolute top-0.5 right-0.5 flex size-7 items-center justify-center rounded-full bg-toast text-toast-fg"
                 >
                   ×
                 </button>
