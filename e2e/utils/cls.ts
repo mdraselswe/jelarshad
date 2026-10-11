@@ -42,8 +42,9 @@ export async function measureClsDetailed(
         const moved = (entry.sources ?? [])
           .map((source) => {
             const node = source.node;
-            const el = node instanceof Element ? node : node?.parentElement;
-            const text = (node?.textContent ?? "").trim().slice(0, 14);
+            const target = node as Node | null;
+            const el = target instanceof Element ? target : (target?.parentElement ?? null);
+            const text = (target?.textContent ?? "").trim().slice(0, 14);
             const name = el
               ? `${el.nodeName.toLowerCase()}[${String(el.className).slice(0, 48)}]"${text}"`
               : "?";
