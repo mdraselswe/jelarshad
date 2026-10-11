@@ -24,7 +24,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
 
   if (q === "") {
     return (
-      <div className="page-x pt-8 text-center">
+      <div data-search-results className="page-x pt-8 text-center">
         <p className="text-card-title">{t("search.prompt")}</p>
         <p className="mt-1 text-meta text-muted-foreground">{t("search.promptHint")}</p>
       </div>
@@ -47,7 +47,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const showFilters = tab === "all" || tab === "place";
 
   return (
-    <div className="flex flex-col gap-4 page-x pt-1 lg:pt-2">
+    <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-2">
       <p className="px-1 text-meta text-muted-foreground">{t("search.resultsFor", { q })}</p>
       <SearchTabs q={q} active={tab} counts={counts} carry={{ type, price }} />
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
@@ -77,7 +77,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           {showFoods && outcome.foods[0] && (
             <Link
               href={routes.food(outcome.foods[0].slug)}
-              className={`flex h-[92px] lift press items-center gap-3.5 rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
+              className={`flex h-[92px] lift press items-center gap-3.5 overflow-hidden rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
             >
               <span
                 aria-hidden
@@ -86,10 +86,10 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                 {outcome.foods[0].nameBn.slice(0, 1)}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="line-clamp-1 block font-display text-2xl leading-tight font-bold">
+                <span className="line-clamp-1 font-display text-2xl leading-tight font-bold">
                   {outcome.foods[0].nameBn}
                 </span>
-                <span className="line-clamp-1 block text-[14px] opacity-95">
+                <span className="line-clamp-1 text-[14px] opacity-95">
                   {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
                 </span>
               </span>
@@ -147,7 +147,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
 /** Tabs, one filter row and two short groups — close to a typical result, not a promise. */
 export function SearchResultsSkeleton() {
   return (
-    <div className="flex flex-col gap-4 page-x pt-1" aria-hidden>
+    <div data-search-results className="flex flex-col gap-4 page-x pt-1" aria-hidden>
       <div className="px-1">
         <Skeleton className="h-[1.4em] w-1/2 text-meta" />
       </div>
