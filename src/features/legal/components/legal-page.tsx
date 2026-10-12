@@ -1,3 +1,4 @@
+import { BowlArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
@@ -28,7 +29,7 @@ export function LegalPage({ kind }: { kind: "about" | "policy" }) {
   return (
     <PageShell header={<SubPageBar backHref={routes.home()} crumbs={[{ label: title }]} />}>
       <div className="max-w-3xl">
-        <HeroBand tone="home">
+        <HeroBand tone="home" art={<BowlArt />}>
           <h1 className="text-title-1">{title}</h1>
           <p className="mt-3 text-body text-on-hero/90">{lead}</p>
         </HeroBand>

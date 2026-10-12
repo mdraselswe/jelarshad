@@ -25,7 +25,12 @@
     "signOut": "Sign out",
     "banned": "Your account is currently suspended.",
     "welcome": "Welcome, {name}",
-    "profileTitle": "Me"
+    "profileTitle": "Me",
+    "perks": {
+      "xp": "Earn XP and levels for every contribution",
+      "stamp": "A stamp and badges for each district",
+      "streak": "Daily streak and missions"
+    }
   },
   "experience": {
     "question": "Have you eaten it? How was it?",

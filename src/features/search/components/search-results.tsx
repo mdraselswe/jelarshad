@@ -1,9 +1,12 @@
+import { MapPinIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 import Link from "next/link";
 
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import { tileClass } from "@/lib/tone";
+import { MagnifierArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
+import { Panel } from "@/components/layout/panel";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
 import { filterPlaces } from "@/services/search-service";
@@ -14,8 +17,6 @@ import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hi
 import { SearchFilters } from "./search-filters";
 import { SearchTabs } from "./search-tabs";
 
-const GROUP_HEADING_CLASS = "mb-2 px-1 font-display text-xl leading-7 font-semibold";
-
 /** Tabs + filters + grouped hits for the page's `?q=`. */
 export async function SearchResults({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
   const t = getT();
@@ -24,7 +25,8 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
 
   if (q === "") {
     return (
-      <div data-search-results className="page-x pt-8 text-center">
+      <div data-search-results className="page-x pt-6 text-center">
+        <MagnifierArt className="mx-auto w-40" />
         <p className="text-card-title">{t("search.prompt")}</p>
         <p className="mt-1 text-meta text-muted-foreground">{t("search.promptHint")}</p>
       </div>
@@ -59,6 +61,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
         <div className={`flex flex-col gap-4 ${showFilters ? "lg:col-span-9" : "lg:col-span-12"}`}>
           {counts[tab] === 0 && (
             <EmptyState
+              art={<MagnifierArt />}
               message={
                 <>
                   <strong className="block font-semibold">
@@ -99,44 +102,64 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
             </Link>
           )}
           {showFoods && outcome.foods.length > 0 && (
-            <section aria-label={t("search.groups.foods")}>
-              <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.foods")}</h2>
-              <GroupedList cards>
+            <Panel
+              bare
+              title={t("search.groups.foods")}
+              icon={<UtensilsIcon />}
+              tone="coral"
+              cardClassName="p-3 lg:p-4"
+            >
+              <GroupedList className="rounded-none border-0 bg-transparent">
                 {outcome.foods.map((hit) => (
                   <FoodHitRow key={hit.slug} hit={hit} />
                 ))}
               </GroupedList>
-            </section>
+            </Panel>
           )}
           {showPlaces && places.length > 0 && (
-            <section aria-label={t("search.groups.places")}>
-              <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.places")}</h2>
-              <GroupedList cards>
+            <Panel
+              bare
+              title={t("search.groups.places")}
+              icon={<StoreIcon />}
+              tone="violet"
+              cardClassName="p-3 lg:p-4"
+            >
+              <GroupedList className="rounded-none border-0 bg-transparent">
                 {places.map((hit) => (
                   <PlaceHitRow key={hit.slug} hit={hit} t={t} />
                 ))}
               </GroupedList>
-            </section>
+            </Panel>
           )}
           {showDistricts && outcome.areas.length > 0 && (
-            <section aria-label={t("search.groups.areas")}>
-              <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.areas")}</h2>
-              <GroupedList cards>
+            <Panel
+              bare
+              title={t("search.groups.areas")}
+              icon={<MapPinIcon />}
+              tone="teal"
+              cardClassName="p-3 lg:p-4"
+            >
+              <GroupedList className="rounded-none border-0 bg-transparent">
                 {outcome.areas.map((hit) => (
                   <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
                 ))}
               </GroupedList>
-            </section>
+            </Panel>
           )}
           {showDistricts && outcome.districts.length > 0 && (
-            <section aria-label={t("search.groups.districts")}>
-              <h2 className={GROUP_HEADING_CLASS}>{t("search.groups.districts")}</h2>
-              <GroupedList cards>
+            <Panel
+              bare
+              title={t("search.groups.districts")}
+              icon={<MapPinIcon />}
+              tone="sky"
+              cardClassName="p-3 lg:p-4"
+            >
+              <GroupedList className="rounded-none border-0 bg-transparent">
                 {outcome.districts.map((hit) => (
                   <DistrictHitRow key={hit.slug} hit={hit} t={t} />
                 ))}
               </GroupedList>
-            </section>
+            </Panel>
           )}
         </div>
       </div>
@@ -158,16 +181,19 @@ export function SearchResultsSkeleton() {
       </div>
       <Skeleton className="h-[92px] rounded-card-lg" />
       {[2, 3].map((rows) => (
-        <section key={rows}>
-          <div className={GROUP_HEADING_CLASS}>
-            <SkeletonText className="w-16" />
-          </div>
-          <GroupedList cards>
+        <Panel
+          key={rows}
+          bare
+          title={<SkeletonText className="w-16" />}
+          icon={<UtensilsIcon />}
+          cardClassName="p-3 lg:p-4"
+        >
+          <GroupedList className="rounded-none border-0 bg-transparent">
             {Array.from({ length: rows }, (_, index) => (
               <ListRowSkeleton key={index} />
             ))}
           </GroupedList>
-        </section>
+        </Panel>
       ))}
     </div>
   );

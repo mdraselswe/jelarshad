@@ -1,10 +1,12 @@
 "use client";
 
+import { HeartIcon, MapPinIcon, UtensilsIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "@/lib/toast";
 
+import { IconChip } from "@/components/ui/icon-chip";
 import { routes } from "@/config/routes";
 import type { PlaceType, Reaction } from "@/core/domain";
 import { useT } from "@/i18n/client";
@@ -30,7 +32,7 @@ type PlaceChoice = { id: string; nameBn: string } | null;
 
 const INPUT = "h-14 w-full rounded-input border border-border bg-card px-4 text-base";
 const LABEL = "mb-1.5 block text-meta font-semibold";
-const CARD = "rounded-card-lg border border-border bg-card p-5";
+const CARD = "rounded-[28px] border border-border bg-card p-5 shadow-card";
 const PLACE_TYPE_IDS: PlaceType[] = [
   "restaurant",
   "shop",
@@ -293,9 +295,14 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
       </div>
 
       <section className={cn(CARD, show(1))} aria-labelledby="add-food">
-        <h2 id="add-food" className="text-heading">
-          {t("add.food")}
-        </h2>
+        <div className="flex items-center gap-2.5">
+          <IconChip tone="coral">
+            <UtensilsIcon />
+          </IconChip>
+          <h2 id="add-food" className="text-heading">
+            {t("add.food")}
+          </h2>
+        </div>
         <div className="relative mt-3">
           <input
             className={INPUT}
@@ -398,9 +405,14 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
       </section>
 
       <section className={cn(CARD, show(2))} aria-labelledby="add-place">
-        <h2 id="add-place" className="text-heading">
-          {t("add.place")}
-        </h2>
+        <div className="flex items-center gap-2.5">
+          <IconChip tone="teal">
+            <MapPinIcon />
+          </IconChip>
+          <h2 id="add-place" className="text-heading">
+            {t("add.place")}
+          </h2>
+        </div>
         <label htmlFor="add-district" className={cn(LABEL, "mt-3")}>
           {t("add.district")}
         </label>
@@ -565,9 +577,14 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
       </section>
 
       <section className={cn(CARD, show(3))} aria-labelledby="add-how">
-        <h2 id="add-how" className="text-heading">
-          {t("add.how")}
-        </h2>
+        <div className="flex items-center gap-2.5">
+          <IconChip tone="violet">
+            <HeartIcon />
+          </IconChip>
+          <h2 id="add-how" className="text-heading">
+            {t("add.how")}
+          </h2>
+        </div>
         <div role="group" aria-labelledby="add-how" className="mt-3 grid grid-cols-3 gap-2">
           {REACTIONS.map(({ id, label, tone }) => (
             <button

@@ -11,6 +11,8 @@ type PanelProps = {
   action?: ReactNode;
   children: ReactNode;
   className?: string | undefined;
+  /** The container already has the page gutter and spacing: no padding of its own. */
+  bare?: boolean;
   /** Classes for the white card itself. */
   cardClassName?: string | undefined;
 };
@@ -26,13 +28,14 @@ export function Panel({
   action,
   children,
   className,
+  bare = false,
   cardClassName,
 }: PanelProps) {
   const headingId = useId();
   return (
     <section
       aria-labelledby={headingId}
-      className={cn("animate-rise page-x pt-5 lg:pt-8", className)}
+      className={cn("animate-rise", !bare && "page-x pt-5 lg:pt-8", className)}
     >
       <div
         className={cn(
