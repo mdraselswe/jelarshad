@@ -1,7 +1,8 @@
+import { HeartIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { Section } from "@/components/layout/section";
+import { Panel } from "@/components/layout/panel";
 import { GroupedList, ListRow, ListRowSkeleton, ListTile } from "@/components/ui/grouped-list";
 import { ScorePill } from "@/components/ui/score-pill";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,8 +29,10 @@ export function pickFamousRows(famous: HomeFamous[], count: number): HomeFamous[
 function FamousShell({ children }: { children: ReactNode }) {
   const t = getT();
   return (
-    <Section
+    <Panel
       title={t("home.famousTitle")}
+      icon={<HeartIcon />}
+      tone="coral"
       action={
         <Link href={routes.search()} className="text-sm font-semibold text-primary-text">
           {t("home.seeAll")}
@@ -37,8 +40,8 @@ function FamousShell({ children }: { children: ReactNode }) {
       }
     >
       <p className="-mt-1.5 mb-3 text-meta text-muted-foreground">{t("home.famousHint")}</p>
-      <GroupedList>{children}</GroupedList>
-    </Section>
+      <GroupedList className="rounded-none border-0 bg-transparent">{children}</GroupedList>
+    </Panel>
   );
 }
 

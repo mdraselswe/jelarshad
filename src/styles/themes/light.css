@@ -82,4 +82,35 @@
   --tile-4: linear-gradient(135deg, #d9421f, #b45309);
   --tile-5: linear-gradient(135deg, #0369a1, #4f46e5);
   --tile-6: linear-gradient(135deg, #15803d, #0b7f7e);
+
+  /* Section grounds (docs/06-design-system.md §2d): dotted page ground, tinted bands, wave fills. */
+  --dot: #d9d3fa;
+  --dot-warm: #ffd9a8;
+  --dot-mint: #b4ebdd;
+  --band-warm: #fff4e5;
+  --band-mint: #ddf7f1;
+  --band-teal: #0f766e;
+  --band-night: #312e81;
+  --gradient-mission: linear-gradient(160deg, #0f766e 0%, #14b8a6 100%);
+  --gradient-night: linear-gradient(170deg, #312e81 0%, #4c1d95 100%);
+
+  /* Illustration palette: drawn on gradients, so it is the same in every theme. */
+  --ill-steam: #ffffff;
+  --ill-rice: #fffbeb;
+  --ill-grain: #f1dfa6;
+  --ill-bowl: #ea580c;
+  --ill-bowl-hi: #fdba74;
+  --ill-cup: #059669;
+  --ill-sweet: #ffffff;
+  --ill-plate: #c4b5fd;
+  --ill-fish: #e2e8f0;
+  --ill-fish-fin: #94a3b8;
+  --ill-ink: #1e293b;
+  --ill-gold: #f59e0b;
+  --ill-gold-hi: #fde68a;
+  --ill-pin-a: #4f46e5;
+  --ill-pin-b: #db2777;
+  --ill-pin-c: #ea580c;
+  --ill-spark-a: #fde68a;
+  --ill-spark-b: #f9a8d4;
 }

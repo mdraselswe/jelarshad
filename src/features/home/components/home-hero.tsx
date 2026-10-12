@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { LogoMark } from "@/components/brand/logo";
+import { BowlArt, CloudArt, CupArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
+import { WaveDivider } from "@/components/layout/wave-divider";
 import { QUICK_SEARCHES } from "@/config/home";
 import { routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
@@ -23,7 +25,7 @@ export function HomeHero() {
     <HeroBand
       tone="home"
       bleed
-      className="pb-16 lg:pb-12"
+      className="relative overflow-hidden rounded-b-none pb-14 lg:pb-12"
       bar={
         <>
           <Link
@@ -45,10 +47,13 @@ export function HomeHero() {
         </>
       }
     >
-      <div className="lg:grid lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-12">
+      <CloudArt className="pointer-events-none absolute top-10 left-[44%] hidden w-32 opacity-25 lg:block" />
+      <BowlArt className="pointer-events-none absolute top-[78px] right-2 w-[132px] lg:top-3 lg:right-8 lg:w-[112px]" />
+      <CupArt className="pointer-events-none absolute top-[86px] right-[140px] hidden w-14 lg:top-5 lg:right-40 lg:block" />
+      <div className="relative lg:grid lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-12">
         <div>
           <h1 className="text-title-1 lg:text-[52px]">{t("home.title")}</h1>
-          <p className="mt-1.5 text-body text-on-hero/90 lg:max-w-xl lg:text-lg">
+          <p className="mt-1.5 max-w-[15rem] text-body text-on-hero/90 lg:max-w-xl lg:text-lg">
             {t("home.subtitle")}
           </p>
           <SearchEntry
@@ -74,6 +79,7 @@ export function HomeHero() {
           </Suspense>
         </div>
       </div>
+      <WaveDivider className="absolute inset-x-0 -bottom-px text-background lg:hidden" />
     </HeroBand>
   );
 }

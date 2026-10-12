@@ -252,7 +252,9 @@
         "p": "The first time in each district earns a passport stamp."
       }
     },
-    "districtCount": "{count} districts"
+    "districtCount": "{count} districts",
+    "categoriesTitle": "What are you craving?",
+    "lovedTitle": "What people love"
   },
   "search": {
     "clear": "Clear",
@@ -384,5 +386,73 @@
     "noneRated": "Nobody has shared an experience about places here yet. If you have been, be the first.",
     "add": "Share an experience",
     "more": "There are more places. See the district page."
+  },
+  "game": {
+    "level": {
+      "1": "New Eater",
+      "2": "Taste Seeker",
+      "3": "Taste Explorer",
+      "4": "Food Lover",
+      "5": "Taste Expert",
+      "6": "Food Specialist",
+      "7": "District Conqueror",
+      "8": "Taste Emperor"
+    },
+    "levelLabel": "Level {level}",
+    "xp": "{count} XP",
+    "xpOf": "{done}/{total} XP",
+    "toNext": "{count} XP to the next level",
+    "maxLevel": "You reached the top level",
+    "streakDays": "{count} days",
+    "streakLabel": "Day streak",
+    "streakBest": "Longest streak {count} days",
+    "streakStart": "Share one experience today to start a streak",
+    "missionsToday": "Today's mission",
+    "missionsWeek": "This week's missions",
+    "missionDone": "Done",
+    "bonus": "+{count} XP",
+    "mission": {
+      "daily_experiences": "Share {count} experiences today",
+      "weekly_experiences": "Share {count} experiences this week",
+      "weekly_districts": "Taste {count} new district this week",
+      "weekly_places": "Add {count} new place this week"
+    },
+    "badgesTitle": "My badges",
+    "badge": {
+      "first_stamp": "First stamp",
+      "districts_5": "5 districts",
+      "districts_10": "10 districts",
+      "districts_25": "25 districts",
+      "streak_3": "3-day streak",
+      "streak_7": "7-day streak",
+      "streak_30": "30-day streak",
+      "experiences_10": "10 experiences",
+      "experiences_50": "50 experiences",
+      "places_1": "First place",
+      "places_5": "5 places",
+      "discoverer_1": "Discoverer"
+    },
+    "badgeEarned": "Earned",
+    "badgeLocked": "{value}/{target}",
+    "journeyTitle": "My taste journey",
+    "journeyCount": "{done}/{total} districts",
+    "boardTitle": "Active contributors this week",
+    "boardHint": "Weekly, only people who chose to be listed",
+    "boardEmpty": "Nobody is listed yet. You could be the first.",
+    "boardOptIn": "Show my name on the list",
+    "boardOptInHint": "When off, nobody sees your name.",
+    "boardYou": "You",
+    "boardSaved": "Setting changed",
+    "levelUpTitle": "New level!",
+    "levelUpBody": "You are now {name}",
+    "stampTitle": "New stamp earned",
+    "continue": "Keep going",
+    "seePassport": "See in passport",
+    "later": "Later",
+    "promoTitle": "Collect stamps from 64 districts",
+    "promoBody": "Taste each district's food and earn a stamp in your passport.",
+    "promoCta": "See passport",
+    "startTitle": "Start your passport",
+    "startBody": "Sign in to earn XP and stamps."
   }
 }
