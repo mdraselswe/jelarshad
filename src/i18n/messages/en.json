@@ -156,6 +156,8 @@
     "settings": "Settings",
     "theme": "Theme",
     "stats": {
+      "districts": "Districts tasted",
+      "badges": "Badges",
       "experiences": "Experiences",
       "places": "Places added"
     },

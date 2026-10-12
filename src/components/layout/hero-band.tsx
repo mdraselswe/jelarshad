@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
 
+import { WaveDivider } from "./wave-divider";
+
 const TONE = {
   home: "bg-hero-home",
   food: "bg-hero-food",
@@ -22,6 +24,8 @@ type HeroBandProps = {
   bleed?: boolean;
   /** Top row on phones only (back and share buttons, the brand); it sits on the gradient. */
   bar?: ReactNode;
+  /** A faint illustration behind the content (docs/06-design-system.md §2d). */
+  art?: ReactNode;
 };
 
 /**
@@ -29,23 +33,34 @@ type HeroBandProps = {
  * §2c). White text on the gradient passes AA in every theme; the two soft circles are part of the
  * background, so the band is a single painted layer. From 1024px it is always an inset card.
  */
-export function HeroBand({ tone, children, className, bleed = false, bar }: HeroBandProps) {
+export function HeroBand({ tone, children, className, bleed = false, bar, art }: HeroBandProps) {
   return (
     <section className={bleed ? "lg:page-x lg:pt-5" : "page-x pt-1 lg:pt-5"}>
       <div
         className={cn(
-          "animate-rise text-on-hero lg:rounded-[40px] lg:p-12",
-          bleed ? "rounded-b-[36px] px-5 pt-5 pb-8" : "rounded-[28px] p-5",
+          "relative animate-rise overflow-hidden text-on-hero lg:rounded-[40px] lg:p-12",
+          bleed ? "px-5 pt-5 pb-11" : "rounded-[28px] p-5",
           TONE[tone],
           className,
         )}
       >
+        {art ? (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-3 -bottom-3 w-40 rotate-6 opacity-20 lg:top-8 lg:right-10 lg:bottom-auto lg:w-56"
+          >
+            {art}
+          </div>
+        ) : null}
         {bar ? (
           <div className="mb-4 flex min-h-11 items-center justify-between gap-3 on-hero-actions lg:hidden">
             {bar}
           </div>
         ) : null}
-        {children}
+        <div className="relative">{children}</div>
+        {bleed ? (
+          <WaveDivider className="absolute inset-x-0 -bottom-px text-background lg:hidden" />
+        ) : null}
       </div>
     </section>
   );

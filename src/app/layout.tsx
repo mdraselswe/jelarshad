@@ -3,6 +3,7 @@ import { preload } from "react-dom";
 
 import { ThemeScript } from "@/components/theme/theme-script";
 import { LazyToaster } from "@/components/ui/lazy-toaster";
+import { LazyRewardMoment } from "@/features/reward/lazy-reward-moment";
 import { FONT_PRELOADS } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { themes } from "@/config/themes";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh">
         {children}
         <LazyToaster />
+        <LazyRewardMoment />
       </body>
     </html>
   );

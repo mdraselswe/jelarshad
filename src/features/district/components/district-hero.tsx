@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { PinArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -16,7 +17,7 @@ export function DistrictHero({
 }) {
   const t = getT();
   return (
-    <HeroBand tone="district" bleed bar={bar} className="pb-9 lg:pb-12">
+    <HeroBand tone="district" bleed bar={bar} art={<PinArt />} className="pb-12 lg:pb-12">
       <p className="text-[14px] text-on-hero/90">
         {t("search.districtMeta", { division: district.divisionBn })}
       </p>
@@ -37,7 +38,7 @@ export function DistrictHero({
 
 export function DistrictHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="district" bleed bar={bar} className="pb-9 lg:pb-12">
+    <HeroBand tone="district" bleed bar={bar} art={<PinArt />} className="pb-12 lg:pb-12">
       <div className="text-[14px]">
         <SkeletonText className="w-1/3" />
       </div>

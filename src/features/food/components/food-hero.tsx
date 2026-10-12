@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { BowlArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import type { FoodHeader } from "@/services/catalog-service";
@@ -15,7 +16,7 @@ const TILE_CLASS =
  */
 export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
   return (
-    <HeroBand tone="food" bleed bar={bar} className="pb-9 lg:pb-12">
+    <HeroBand tone="food" bleed bar={bar} art={<BowlArt />} className="pb-12 lg:pb-12">
       <div className="lg:flex lg:items-center lg:gap-10">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-4 lg:gap-8">
@@ -45,7 +46,7 @@ export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
 
 export function FoodHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="food" bleed bar={bar} className="pb-9 lg:pb-12">
+    <HeroBand tone="food" bleed bar={bar} art={<BowlArt />} className="pb-12 lg:pb-12">
       <div className="flex items-center gap-4 lg:gap-8">
         <span aria-hidden className={TILE_CLASS} />
         <div className="min-w-0 flex-1 font-display text-[36px] leading-[1.15] lg:text-[48px]">

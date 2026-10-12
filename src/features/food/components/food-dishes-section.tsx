@@ -1,3 +1,5 @@
+import { SparklesIcon, TrophyIcon, UtensilsIcon } from "lucide-react";
+
 import { Section } from "@/components/layout/section";
 import { GroupedList } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
@@ -27,7 +29,7 @@ export function DishGroups({
   const t = getT();
   if (items.length === 0) {
     return (
-      <Section title={t("food.dishesAll")}>
+      <Section title={t("food.dishesAll")} icon={<UtensilsIcon />} tone="coral">
         <p className="text-meta text-muted-foreground">{emptyText}</p>
       </Section>
     );
@@ -51,7 +53,7 @@ export function DishGroups({
   return (
     <>
       {ranked.length > 0 ? (
-        <Section title={t("food.dishesRanked")}>
+        <Section title={t("food.dishesRanked")} icon={<TrophyIcon />} tone="amber">
           {range ? (
             <p className="-mt-1.5 mb-3 text-meta text-muted-foreground">
               {t("food.typicalPrice", { range })}
@@ -61,7 +63,11 @@ export function DishGroups({
         </Section>
       ) : null}
       {unranked.length > 0 ? (
-        <Section title={ranked.length > 0 ? t("food.newGroup") : t("food.dishesAll")}>
+        <Section
+          title={ranked.length > 0 ? t("food.newGroup") : t("food.dishesAll")}
+          icon={<SparklesIcon />}
+          tone="violet"
+        >
           <GroupedList>{unranked.map((dish) => row(dish))}</GroupedList>
         </Section>
       ) : null}
@@ -78,7 +84,7 @@ export async function FoodDishesSection({ foodId }: { foodId: string }) {
 export function FoodDishesSectionSkeleton() {
   const t = getT();
   return (
-    <Section title={t("food.dishesRanked")}>
+    <Section title={t("food.dishesRanked")} icon={<TrophyIcon />} tone="amber">
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
           <DishRowSkeleton key={index} />

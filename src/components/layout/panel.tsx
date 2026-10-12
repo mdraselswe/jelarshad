@@ -6,13 +6,13 @@ import { cn } from "@/lib/cn";
 type PanelProps = {
   title: ReactNode;
   icon?: ReactNode;
-  tone?: IconChipTone;
+  tone?: IconChipTone | undefined;
   /** Right of the title, e.g. a "সব দেখুন" link. */
   action?: ReactNode;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
   /** Classes for the white card itself. */
-  cardClassName?: string;
+  cardClassName?: string | undefined;
 };
 
 /**

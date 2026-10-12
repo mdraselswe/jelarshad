@@ -1,6 +1,7 @@
+import { HeartIcon } from "lucide-react";
 import Link from "next/link";
 
-import { Section } from "@/components/layout/section";
+import { Band } from "@/components/layout/band";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import { cn } from "@/lib/cn";
@@ -15,7 +16,13 @@ export function DistrictFamousSection({ district }: { district: DistrictHeader }
   const t = getT();
   if (district.famous.length === 0) return null;
   return (
-    <Section title={t("district.famous")}>
+    <Band
+      tone="warm"
+      title={t("district.famous")}
+      icon={<HeartIcon />}
+      gap={false}
+      className="mt-6"
+    >
       <p className="-mt-1.5 mb-3 text-meta text-muted-foreground">{t("home.famousHint")}</p>
       <ul className="grid rise-children grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         {district.famous.map(({ food, noteBn }) => (
@@ -44,6 +51,6 @@ export function DistrictFamousSection({ district }: { district: DistrictHeader }
           </li>
         ))}
       </ul>
-    </Section>
+    </Band>
   );
 }

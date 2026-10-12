@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BookmarkIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
+import { TrophyArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
@@ -8,8 +9,9 @@ import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
 import { Button } from "@/components/ui/button";
 import { LegalLinks } from "@/features/legal/components/legal-links";
+import { MeGame } from "@/features/game/components/me-game";
+import { levelNameKey, LevelRing, StreakFlame } from "@/features/game/components/game-bits";
 import { MePassport } from "@/features/passport/components/passport-section";
-import { PassportRing } from "@/features/passport/components/passport-ring";
 import { GroupedList, ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import type { AppUser } from "@/core/domain";
@@ -133,28 +135,40 @@ async function Saved({ userId }: { userId: string }) {
  */
 export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
   const t = getT();
-  const summary = await getServices().rewards.summary(user.id);
+  const [summary, progress] = await Promise.all([
+    getServices().rewards.summary(user.id),
+    getServices().rewards.progress(user.id),
+  ]);
   return (
     <PageShell header={null}>
-      <HeroBand tone="home" bleed className="pt-8 pb-8 lg:pt-12">
+      <HeroBand tone="home" bleed art={<TrophyArt />} className="pt-8 pb-12 lg:pt-12">
         <div className="flex items-center gap-4 lg:gap-8">
-          <PassportRing
-            value={summary.unlockedCount}
-            total={summary.totalDistricts}
-            size={104}
-            stroke={10}
-            onHero
-          />
+          <LevelRing info={progress.level} size={104} stroke={10} onDark />
           <div className="min-w-0 flex-1">
-            <p className="text-[14px] text-on-hero/90">{t("reward.passportTitle")}</p>
+            <p className="text-[14px] text-on-hero/90">
+              {t(levelNameKey(progress.level.level))}
+              {" · "}
+              {t("game.levelLabel", { level: formatNumber(progress.level.level) })}
+            </p>
             <h1 className="text-title-1 break-words">{user.displayName}</h1>
+            <p className="mt-1.5 text-[13.5px] text-on-hero/90">
+              {progress.level.isMax
+                ? t("game.maxLevel")
+                : t("game.toNext", { count: formatNumber(progress.level.toNext) })}
+            </p>
             <span className="mt-2 flex h-9 w-fit items-center rounded-full bg-reward px-3.5 text-[15px] font-bold text-reward-foreground">
               {t("reward.pointsChip", { count: formatNumber(summary.points) })}
             </span>
           </div>
+          <StreakFlame
+            days={progress.streak.current}
+            label={t("game.streakDays", { count: formatNumber(progress.streak.current) })}
+            className="shrink-0 rounded-[18px] bg-white/15 px-3 py-2 text-on-hero"
+          />
         </div>
       </HeroBand>
 
+      <MeGame userId={user.id} summary={summary} />
       <MePassport summary={summary} />
 
       <nav aria-label={t("me.tabs.label")} className="mt-5 page-x">

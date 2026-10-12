@@ -1,3 +1,5 @@
+import { MessageCircleIcon } from "lucide-react";
+
 import { Section } from "@/components/layout/section";
 import { GroupedList } from "@/components/ui/grouped-list";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
@@ -20,7 +22,7 @@ export async function FoodVoicesSection({ foodId }: { foodId: string }) {
   const { items: experiences, asOf } = await getFoodExperiences(foodId);
   if (experiences.length === 0) return null;
   return (
-    <Section title={t("food.voices")}>
+    <Section title={t("food.voices")} icon={<MessageCircleIcon />} tone="violet">
       <GroupedList split>
         {experiences.map((experience) => (
           <li key={experience.id} className={ITEM_CLASS}>
@@ -57,7 +59,7 @@ export async function FoodVoicesSection({ foodId }: { foodId: string }) {
 export function FoodVoicesSectionSkeleton() {
   const t = getT();
   return (
-    <Section title={t("food.voices")}>
+    <Section title={t("food.voices")} icon={<MessageCircleIcon />} tone="violet">
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
           <li key={index} className={ITEM_CLASS}>

@@ -1,3 +1,5 @@
+import { UtensilsIcon } from "lucide-react";
+
 import { Section } from "@/components/layout/section";
 import { GroupedList, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
@@ -13,7 +15,7 @@ export async function PlaceDishesSection({ placeId }: { placeId: string }) {
   const t = getT();
   const dishes = await getPlaceDishes(placeId);
   return (
-    <Section title={t("place.firstTime")}>
+    <Section title={t("place.firstTime")} icon={<UtensilsIcon />} tone="coral">
       {dishes.length === 0 ? (
         <p className="text-meta text-muted-foreground">{t("place.noDishes")}</p>
       ) : (
@@ -43,7 +45,7 @@ export async function PlaceDishesSection({ placeId }: { placeId: string }) {
 export function PlaceDishesSectionSkeleton() {
   const t = getT();
   return (
-    <Section title={t("place.firstTime")}>
+    <Section title={t("place.firstTime")} icon={<UtensilsIcon />} tone="coral">
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
           <DishRowSkeleton key={index} withBar />

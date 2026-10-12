@@ -156,6 +156,8 @@
     "settings": "সেটিংস",
     "theme": "থিম",
     "stats": {
+      "districts": "জেলা চাখা",
+      "badges": "ব্যাজ",
       "experiences": "অভিজ্ঞতা",
       "places": "জায়গা যোগ"
     },
