@@ -1,6 +1,6 @@
 ---
 name: create-component
-description: Create a UI component in ShojaShapta (feature component or shared primitive) with a pixel-matched skeleton, design tokens, i18n and accessibility. Use whenever adding a component that renders data.
+description: Create a UI component in Jelar Shad (feature component or shared primitive) with a pixel-matched skeleton, design tokens, i18n and accessibility. Use whenever adding a component that renders data.
 ---
 
 # Create a component

@@ -952,7 +952,7 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           p_key: query.key,
           p_text: query.text,
         });
-        if (error) console.error("[shojashapta] record_search_miss failed:", error.message);
+        if (error) console.error("[jelarshad] record_search_miss failed:", error.message);
       },
     },
 

@@ -1,6 +1,6 @@
 ---
 name: ship-task
-description: Take one ShojaShapta roadmap task from branch to merged, tested and deployed - branch naming, implementation checks, tests, conventional commit, PR, CI, preview, merge, and phase tagging. Use for every roadmap task.
+description: Take one Jelar Shad roadmap task from branch to merged, tested and deployed - branch naming, implementation checks, tests, conventional commit, PR, CI, preview, merge, and phase tagging. Use for every roadmap task.
 ---
 
 # Ship one roadmap task

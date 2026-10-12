@@ -103,7 +103,7 @@ SUPABASE_SERVICE_ROLE_KEY=         # server only, never exposed
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=             # server only
-CLOUDINARY_UPLOAD_FOLDER=shojashapta
+CLOUDINARY_UPLOAD_FOLDER=jelarshad
 
 # Admin bootstrap
 ADMIN_EMAILS=rrasel141@gmail.com

@@ -31,7 +31,7 @@ Dependency rule: arrows point **down only**, and `services` depends on `core/por
 
 ## 3. Folder structure
 ```
-shojashapta/
+jelarshad/
 ├─ AGENTS.md  CLAUDE.md  README.md
 ├─ docs/                         # this documentation
 ├─ .claude/skills/               # AI coding recipes

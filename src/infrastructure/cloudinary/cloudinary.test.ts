@@ -32,8 +32,8 @@ describe("signParams", () => {
 
 describe("cloudinaryUrl", () => {
   it("serves WebP at the right size for each variant", () => {
-    expect(cloudinaryUrl("demo", "shojashapta/experience/u-1", "thumb")).toBe(
-      "https://res.cloudinary.com/demo/image/upload/c_limit,w_400,f_webp,q_auto/shojashapta/experience/u-1",
+    expect(cloudinaryUrl("demo", "jelarshad/experience/u-1", "thumb")).toBe(
+      "https://res.cloudinary.com/demo/image/upload/c_limit,w_400,f_webp,q_auto/jelarshad/experience/u-1",
     );
     expect(cloudinaryUrl("demo", "k", "large")).toContain("w_1080");
   });

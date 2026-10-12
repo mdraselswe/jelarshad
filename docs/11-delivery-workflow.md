@@ -13,7 +13,7 @@ merged change to `main` is tested again, database migrations run, and the site d
 | Production | `https://jelarshad.shojashapta.com` | `main` | Supabase **prod** project | Real users |
 
 Two Supabase free projects (dev + prod) are allowed on the free plan. Cloudinary: one account, folders
-`shojashapta-dev/` and `shojashapta/`.
+`jelarshad-dev/` and `jelarshad/`.
 
 ## 2. Git model (simple trunk-based)
 

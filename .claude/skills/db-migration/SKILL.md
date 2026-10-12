@@ -1,6 +1,6 @@
 ---
 name: db-migration
-description: Change the ShojaShapta PostgreSQL schema safely - new table, column, index, function or RLS policy - via Supabase migration files, regenerated types and repository updates. Use for any database change.
+description: Change the Jelar Shad PostgreSQL schema safely - new table, column, index, function or RLS policy - via Supabase migration files, regenerated types and repository updates. Use for any database change.
 ---
 
 # Database migration

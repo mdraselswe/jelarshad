@@ -1,7 +1,7 @@
 # 06 — Design System, Fonts, Motion & UI
 
 Approved screens: `docs/design/` (markup reference for every MVP screen) and the live canvas
-"জেলার স্বাদ (ex ShojaShapta) স্ক্রিন ডিজাইন" (Claude artifact). When code and this doc disagree with the approved
+"জেলার স্বাদ স্ক্রিন ডিজাইন" (Claude artifact). When code and this doc disagree with the approved
 screens, the screens win; update this doc.
 
 ## 1. Feel
@@ -133,7 +133,7 @@ The calm base (indigo action, gold reward) stays. On top of it:
 - Rules unchanged: primary is never a status color, status is icon + text, every pair passes AA
   (`pnpm test:themes` also checks the category pairs).
 
-Approved screens: the "ShojaShapta নতুন ডিজাইন" canvas (mobile and desktop), extended by §2d.
+Approved screens: the "জেলার স্বাদ নতুন ডিজাইন" canvas (mobile and desktop), extended by §2d.
 
 ## 2d. Live layer ("জীবন্ত", approved Oct 2026)
 
@@ -252,7 +252,7 @@ disabled under `prefers-reduced-motion: reduce`.
 |---|---|---|
 | `PassportRing` | Gold ring progress, center `৭/৬৪` | districts with ≥1 experience |
 | `PassportCard` (home) | Ring + title + last 3 mini stamps overlapping (rotated) + "পরের স্ট্যাম্প" row with primary pill | same + next suggested district (nearest RegionalFame not yet unlocked) |
-| `Stamp` | SVG rubber stamp: outer ring 3px + thin ring, inner circle, curved top text "সোজাসাপ্টা পাসপোর্ট", curved bottom text = food, center = district (display font), date; ink color per district, rotation, rough-edge SVG filter (feTurbulence + feDisplacementMap), opacity .92 | first experience per district |
+| `Stamp` | SVG rubber stamp: outer ring 3px + thin ring, inner circle, curved top text "খাদ্য পাসপোর্ট", curved bottom text = food, center = district (display font), date; ink color per district, rotation, rough-edge SVG filter (feTurbulence + feDisplacementMap), opacity .92 | first experience per district |
 | `LockedStamp` | Dashed grey circle + lock + district + food | RegionalFame districts not unlocked |
 | `PointsPill` | Gold pill `+১০` | points events |
 | `DivisionProgressTile` | Name, `৩/১৩`, gold bar | per division |
