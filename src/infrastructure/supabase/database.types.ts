@@ -776,6 +776,7 @@ export type Database = {
           home_district_id: number | null;
           id: string;
           is_banned: boolean;
+          leaderboard_opt_in: boolean;
           points_total: number;
           role: Database["public"]["Enums"]["user_role"];
         };
@@ -786,6 +787,7 @@ export type Database = {
           home_district_id?: number | null;
           id: string;
           is_banned?: boolean;
+          leaderboard_opt_in?: boolean;
           points_total?: number;
           role?: Database["public"]["Enums"]["user_role"];
         };
@@ -796,6 +798,7 @@ export type Database = {
           home_district_id?: number | null;
           id?: string;
           is_banned?: boolean;
+          leaderboard_opt_in?: boolean;
           points_total?: number;
           role?: Database["public"]["Enums"]["user_role"];
         };
@@ -1065,6 +1068,10 @@ export type Database = {
       unlock_stamp: {
         Args: { p_district: number; p_food: string; p_kind: string; p_user: string };
         Returns: boolean;
+      };
+      weekly_leaderboard: {
+        Args: { p_limit: number; p_since: string };
+        Returns: { display_name: string; user_id: string; xp: number }[];
       };
       wilson_lower_bound: { Args: { n: number; pos: number; z?: number }; Returns: number };
     };

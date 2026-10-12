@@ -14,6 +14,7 @@ import type {
   Page,
   PageOpts,
   Place,
+  PointKind,
   Report,
   SavedItem,
   Stamp,
@@ -64,7 +65,9 @@ export function createMockRepositories(): Repositories {
       entityId: string;
       points: number;
       revoked: boolean;
+      createdAt: Date;
     }[],
+    leaderboardOptIn: new Set<string>(),
     stamps: [] as (Stamp & { userId: string })[],
     media: [] as (MediaRef & { entity: string; entityId: string })[],
     rateEvents: [] as { userId: string; action: string; at: Date }[],
@@ -550,7 +553,15 @@ export function createMockRepositories(): Repositories {
         ) {
           return 0;
         }
-        db.points.push({ userId, kind, entity, entityId, points, revoked: false });
+        db.points.push({
+          userId,
+          kind,
+          entity,
+          entityId,
+          points,
+          revoked: false,
+          createdAt: new Date(),
+        });
         return points;
       },
       revoke: async (entity, entityId) => {
@@ -590,6 +601,46 @@ export function createMockRepositories(): Repositories {
         db.points
           .filter((e) => e.userId === userId && !e.revoked)
           .reduce((sum, e) => sum + e.points, 0),
+      events: async (userId, since, limit) =>
+        db.points
+          .filter((e) => e.userId === userId && !e.revoked && e.createdAt >= since)
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+          .slice(0, limit)
+          .map((e) => ({
+            kind: e.kind as PointKind,
+            entityId: e.entityId,
+            points: e.points,
+            createdAt: new Date(e.createdAt),
+          })),
+      kindCounts: async (userId) => {
+        const counts: Partial<Record<PointKind, number>> = {};
+        for (const e of db.points) {
+          if (e.userId !== userId || e.revoked) continue;
+          const kind = e.kind as PointKind;
+          counts[kind] = (counts[kind] ?? 0) + 1;
+        }
+        return counts;
+      },
+      weeklyTop: async (since, limit) => {
+        const totals = new Map<string, number>();
+        for (const e of db.points) {
+          if (e.revoked || e.createdAt < since || !db.leaderboardOptIn.has(e.userId)) continue;
+          totals.set(e.userId, (totals.get(e.userId) ?? 0) + e.points);
+        }
+        return [...totals.entries()]
+          .map(([userId, xp]) => ({
+            userId,
+            displayName: userId === fixtures.demoUser.id ? fixtures.demoUser.displayName : userId,
+            xp,
+          }))
+          .sort((a, b) => b.xp - a.xp)
+          .slice(0, limit);
+      },
+      leaderboardOptIn: async (userId) => db.leaderboardOptIn.has(userId),
+      setLeaderboardOptIn: async (userId, optIn) => {
+        if (optIn) db.leaderboardOptIn.add(userId);
+        else db.leaderboardOptIn.delete(userId);
+      },
     },
 
     rateLimits: {

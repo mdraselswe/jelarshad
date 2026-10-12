@@ -5,7 +5,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(66);
+select plan(70);
 
 -- Fixtures (as the migration owner, RLS bypassed) -------------------------------------------
 insert into auth.users (id, email) values
@@ -356,6 +356,29 @@ select is_empty(
 select throws_ok(
   $$ select merge_foods('00000000-0000-4000-8000-00000000f001', '00000000-0000-4000-8000-00000000f0a2') $$,
   'P0001', null, 'the surviving food must be active'
+);
+
+-- Weekly board (migration 0062) -------------------------------------------------------------------
+select is(
+  (select leaderboard_opt_in from profiles where id = '00000000-0000-4000-8000-0000000000a1'),
+  false, 'nobody is on the board until they choose to be'
+);
+select award_points('00000000-0000-4000-8000-0000000000a1', 'experience', 'experience', 'board-1', 10);
+select award_points('00000000-0000-4000-8000-0000000000a1', 'place_create', 'place', 'board-2', 20);
+select is_empty(
+  $ select 1 from weekly_leaderboard(now() - interval '1 day', 5)
+     where user_id = '00000000-0000-4000-8000-0000000000a1' $,
+  'someone who did not opt in is not listed'
+);
+update profiles set leaderboard_opt_in = true where id = '00000000-0000-4000-8000-0000000000a1';
+select is(
+  (select xp from weekly_leaderboard(now() - interval '1 day', 5)
+    where user_id = '00000000-0000-4000-8000-0000000000a1'),
+  30, 'an opted-in person is listed with the XP of the week'
+);
+select is(
+  (select count(*)::int from weekly_leaderboard(now() + interval '1 day', 5)),
+  0, 'actions before the start of the week do not count'
 );
 
 select * from finish();

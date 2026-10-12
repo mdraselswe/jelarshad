@@ -33,6 +33,8 @@ describe("points for experiences", () => {
     expect(first.ok && first.data.reward).toEqual({
       points: 10,
       newStamps: [{ districtName: "বগুড়া", kind: "visit" }],
+      // the first district of the week also completes the weekly district mission
+      missions: [{ id: "weekly_districts", bonus: 30 }],
     });
     // a second dish in the same district: points again, but the stamp is already in the book
     const second = await experience.add(user, {
@@ -40,7 +42,14 @@ describe("points for experiences", () => {
       foodId: fixtureIds.foods.doi,
       reaction: "okay",
     });
-    expect(second.ok && second.data.reward).toEqual({ points: 10, newStamps: [] });
+    // the second experience of the day completes the daily mission
+    expect(second.ok && second.data.reward).toEqual({
+      points: 10,
+      newStamps: [],
+      missions: [{ id: "daily_experiences", bonus: 10 }],
+      // 10 + 30 + 10 + 10 = 60 XP: level 2 starts at 50
+      levelUp: { level: 2 },
+    });
     expect((await rewards.summary(user.id)).unlockedCount).toBe(1);
   });
 
@@ -50,7 +59,8 @@ describe("points for experiences", () => {
     await experience.add(user, { ...input, reaction: "loved" });
     const edit = await experience.add(user, { ...input, reaction: "okay" });
     expect(edit.ok && edit.data.reward).toEqual(NO_REWARD);
-    expect((await rewards.summary(user.id)).points).toBe(10);
+    // 10 for the experience + 30 for the weekly district mission, and nothing for the edit
+    expect((await rewards.summary(user.id)).points).toBe(40);
   });
 });
 
@@ -70,7 +80,8 @@ describe("points for new places", () => {
       "discoverer",
       "visit",
     ]);
-    expect((await rewards.summary(user.id)).points).toBe(50);
+    // 50 for the actions + 30 (weekly district) + 25 (weekly place) mission bonuses
+    expect((await rewards.summary(user.id)).points).toBe(105);
   });
 
   it("does not pay the discoverer bonus when the district already serves the food", async () => {
@@ -110,7 +121,8 @@ describe("revoking points", () => {
     });
     if (!added.ok) throw new Error("setup failed");
     expect(await rewards.revokeFor("experience", added.data.experience.id)).toBe(10);
-    expect((await rewards.summary(user.id)).points).toBe(0);
+    // the mission bonus stays: it was earned by a district stamp, which is kept
+    expect((await rewards.summary(user.id)).points).toBe(30);
     expect(await rewards.revokeFor("experience", added.data.experience.id)).toBe(0);
   });
 });
@@ -139,5 +151,66 @@ describe("passport summary", () => {
         { points: 20, newStamps: [] },
       ),
     ).toEqual({ points: 30, newStamps: [{ districtName: "ক", kind: "visit" }] });
+  });
+});
+
+describe("levels, streak and missions", () => {
+  it("starts at level 1 with nothing done", async () => {
+    const { rewards } = setup();
+    const progress = await rewards.progress(user.id);
+    expect(progress.xp).toBe(0);
+    expect(progress.level.level).toBe(1);
+    expect(progress.streak).toMatchObject({ current: 0, activeToday: false });
+    expect(progress.missions.every((mission) => !mission.complete)).toBe(true);
+    expect(progress.badges.every((badge) => !badge.earned)).toBe(true);
+  });
+
+  it("counts today as a streak day and earns the first stamp badge", async () => {
+    const { experience, rewards } = setup();
+    await experience.add(user, {
+      placeId: fixtureIds.places.second,
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    const progress = await rewards.progress(user.id);
+    expect(progress.streak).toMatchObject({ current: 1, best: 1, activeToday: true });
+    expect(progress.badges.find((badge) => badge.id === "first_stamp")?.earned).toBe(true);
+    expect(progress.counts).toMatchObject({ districts: 1, experiences: 1 });
+  });
+
+  it("pays a mission bonus once and reports a level-up when XP crosses a threshold", async () => {
+    const { experience, rewards } = setup();
+    // 10 + 30 (weekly district) = 40 XP: still level 1 (level 2 starts at 50)
+    const first = await experience.add(user, {
+      placeId: fixtureIds.places.second,
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    expect(first.ok && first.data.reward.levelUp).toBeUndefined();
+    // +10 and the daily mission +10 = 60 XP: level 2
+    const second = await experience.add(user, {
+      placeId: fixtureIds.places.sample,
+      foodId: fixtureIds.foods.doi,
+      reaction: "okay",
+    });
+    expect(second.ok && second.data.reward.levelUp).toEqual({ level: 2 });
+    expect((await rewards.progress(user.id)).level.level).toBe(2);
+  });
+
+  it("lists only people who opted in to the weekly board", async () => {
+    const { experience, rewards } = setup();
+    await experience.add(user, {
+      placeId: fixtureIds.places.second,
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    expect((await rewards.leaderboard(user.id)).entries).toEqual([]);
+    await rewards.setLeaderboardOptIn(user.id, true);
+    const board = await rewards.leaderboard(user.id);
+    expect(board.optedIn).toBe(true);
+    expect(board.entries).toHaveLength(1);
+    expect(board.entries[0]?.xp).toBe(40);
+    await rewards.setLeaderboardOptIn(user.id, false);
+    expect((await rewards.leaderboard(user.id)).entries).toEqual([]);
   });
 });

@@ -116,6 +116,44 @@ export const appConfig = {
     homeMiniStamps: 3,
   },
 
+  /** Levels, streak, missions and badges (docs/00-decisions.md P15). XP is the points total. */
+  gamification: {
+    /** XP at which each level starts (level 1 = 0). Names: `level.<n>` in the message files. */
+    levelThresholds: [0, 50, 150, 300, 500, 800, 1200, 1800],
+    /** Streak days are Bangladesh days (UTC+6, no daylight saving). */
+    timeZoneOffsetMinutes: 360,
+    /** Weeks start on Saturday (0 = Sunday). */
+    weekStartsOn: 6,
+    /** How far back activity is read for the streak and missions. */
+    activityLookbackDays: 120,
+    /** Most point events read for one person's activity. */
+    activityEventLimit: 1500,
+    /** Goals counted from what the person already did; the bonus is paid once per period. */
+    missions: [
+      { id: "daily_experiences", period: "day", source: "experience", target: 2, bonus: 10 },
+      { id: "weekly_experiences", period: "week", source: "experience", target: 5, bonus: 40 },
+      { id: "weekly_districts", period: "week", source: "district", target: 1, bonus: 30 },
+      { id: "weekly_places", period: "week", source: "place", target: 1, bonus: 25 },
+    ],
+    /** Badges: earned when the metric reaches the target. Names: `badge.<id>`. */
+    badges: [
+      { id: "first_stamp", metric: "districts", target: 1 },
+      { id: "districts_5", metric: "districts", target: 5 },
+      { id: "districts_10", metric: "districts", target: 10 },
+      { id: "districts_25", metric: "districts", target: 25 },
+      { id: "streak_3", metric: "bestStreak", target: 3 },
+      { id: "streak_7", metric: "bestStreak", target: 7 },
+      { id: "streak_30", metric: "bestStreak", target: 30 },
+      { id: "experiences_10", metric: "experiences", target: 10 },
+      { id: "experiences_50", metric: "experiences", target: 50 },
+      { id: "places_1", metric: "places", target: 1 },
+      { id: "places_5", metric: "places", target: 5 },
+      { id: "discoverer_1", metric: "discoveries", target: 1 },
+    ],
+    /** People on the weekly board. */
+    leaderboardSize: 5,
+  },
+
   seo: {
     /** District pages with fewer places are noindex (thin content). */
     minPlacesToIndexDistrict: 1,
