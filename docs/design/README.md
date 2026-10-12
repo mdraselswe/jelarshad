@@ -1,6 +1,6 @@
 # Approved screen designs
 
-Source of truth for how MVP screens look. Live canvas: Claude artifact "ShojaShapta স্ক্রিন ডিজাইন".
+Source of truth for how MVP screens look. Live canvas: Claude artifact "জেলার স্বাদ স্ক্রিন ডিজাইন".
 These `.dc.html` files are design markup (inline styles + a small logic script), **not** production code.
 Read them for layout, spacing, sizes, colors, copy and motion; rebuild them with our components,
 Tailwind tokens and i18n as described in `docs/06-design-system.md`.

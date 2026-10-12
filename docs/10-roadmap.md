@@ -22,7 +22,7 @@ pnpm dlx shadcn@latest init
 pnpm add zod @tanstack/react-query @supabase/supabase-js @supabase/ssr cloudinary date-fns lucide-react sonner clsx tailwind-merge server-only
 pnpm add -D vitest @vitejs/plugin-react @playwright/test prettier prettier-plugin-tailwindcss husky lint-staged supabase tsx @next/bundle-analyzer @axe-core/playwright
 git init -b main; git add -A; git commit -m "chore: scaffold"
-git remote add origin https://github.com/<you>/shojashapta.git; git push -u origin main
+git remote add origin https://github.com/<you>/jelarshad.git; git push -u origin main
 ```
 Install Docker Desktop if you want a local Supabase (`pnpm db:start`); otherwise use a second free Supabase project as "dev".
 
@@ -38,7 +38,7 @@ Install Docker Desktop if you want a local Supabase (`pnpm db:start`); otherwise
 
 **0.8 Architecture skeleton:** `core/domain` types, all `core/ports`, empty adapters, `infrastructure/container.ts`, `infrastructure/client.ts`, `defineAction`, `Result`, i18n (`bn.json`, `getT`, `useT`), **mock adapters + fixtures** (`DB_PROVIDER=mock`), `/api/health`.
 
-**Done when:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build` pass; app shell with header (`<LogoLockup />`), bottom nav and Bangla font renders in system/light/dark with no flash on reload; `pnpm test:themes` passes; importing `@supabase/supabase-js` from a component fails lint; a PR shows green CI + a preview URL; merging deploys to https://shojashapta.com (coming-soon page) and the smoke test passes; tag `phase-0`.
+**Done when:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build` pass; app shell with header (`<LogoLockup />`), bottom nav and Bangla font renders in system/light/dark with no flash on reload; `pnpm test:themes` passes; importing `@supabase/supabase-js` from a component fails lint; a PR shows green CI + a preview URL; merging deploys to https://jelarshad.shojashapta.com (coming-soon page) and the smoke test passes; tag `phase-0`.
 
 ---
 

@@ -35,7 +35,7 @@ const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: optionalString,
   CLOUDINARY_API_KEY: optionalString,
   CLOUDINARY_API_SECRET: optionalString,
-  CLOUDINARY_UPLOAD_FOLDER: z.string().trim().min(1).default("shojashapta"),
+  CLOUDINARY_UPLOAD_FOLDER: z.string().trim().min(1).default("jelarshad"),
   ADMIN_EMAILS: z
     .string()
     .default("")

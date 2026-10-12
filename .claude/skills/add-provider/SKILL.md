@@ -1,6 +1,6 @@
 ---
 name: add-provider
-description: Add or swap a vendor/package (database, auth, image storage, analytics, error reporting) behind a port in ShojaShapta without touching business logic. Use when integrating or replacing any third-party service or SDK.
+description: Add or swap a vendor/package (database, auth, image storage, analytics, error reporting) behind a port in Jelar Shad without touching business logic. Use when integrating or replacing any third-party service or SDK.
 ---
 
 # Add or swap a provider

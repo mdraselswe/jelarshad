@@ -26,13 +26,13 @@ describe("parseClientEnv", () => {
 
   it("falls back to the Vercel branch URL on previews", () => {
     expect(
-      parseClientEnv({ NEXT_PUBLIC_VERCEL_BRANCH_URL: "shojashapta-git-x.vercel.app" })
+      parseClientEnv({ NEXT_PUBLIC_VERCEL_BRANCH_URL: "jelarshad-git-x.vercel.app" })
         .NEXT_PUBLIC_SITE_URL,
-    ).toBe("https://shojashapta-git-x.vercel.app");
+    ).toBe("https://jelarshad-git-x.vercel.app");
   });
 
   it("rejects an invalid site URL", () => {
-    expect(() => parseClientEnv({ NEXT_PUBLIC_SITE_URL: "shojashapta.com" })).toThrow();
+    expect(() => parseClientEnv({ NEXT_PUBLIC_SITE_URL: "jelarshad.example" })).toThrow();
   });
 
   it("requires the cloud name when storage is cloudinary", () => {

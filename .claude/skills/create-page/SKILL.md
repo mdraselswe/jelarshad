@@ -1,6 +1,6 @@
 ---
 name: create-page
-description: Create a new route/page in ShojaShapta with its loading skeleton, Suspense sections, metadata and cache tags. Use whenever adding or rebuilding a page under src/app.
+description: Create a new route/page in Jelar Shad with its loading skeleton, Suspense sections, metadata and cache tags. Use whenever adding or rebuilding a page under src/app.
 ---
 
 # Create a page
