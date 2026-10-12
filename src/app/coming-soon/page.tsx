@@ -18,7 +18,9 @@ export default function ComingSoonPage() {
       <LogoMark title="" className="size-16" />
       <div className="rounded-[28px] bg-grad-hero p-6 text-on-hero">
         <h1 className="text-display">{siteConfig.name}</h1>
-        <p className="mt-1 text-heading text-on-hero/90">{siteConfig.tagline}</p>
+        <p className="mt-1 min-h-[2lh] text-heading text-on-hero/90 sm:min-h-0">
+          {siteConfig.tagline}
+        </p>
         <p className="mt-6 text-body">{t("comingSoon.body")}</p>
       </div>
     </main>

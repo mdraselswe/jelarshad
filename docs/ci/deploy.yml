@@ -1,5 +1,5 @@
 # Installed in Phase 0.3 as .github/workflows/deploy.yml
-# Push to main: run the full CI, migrate PROD database, deploy to https://shojashapta.com, smoke test.
+# Push to main: run the full CI, migrate PROD database, deploy to the production URL, smoke test.
 name: Deploy production
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: { name: production, url: https://shojashapta.com }
+    environment: { name: production, url: "${{ vars.PRODUCTION_URL || 'https://shojashapta.com' }}" }
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -34,8 +34,11 @@ jobs:
       - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Smoke test
+        env:
+          # Set the repository variable PRODUCTION_URL to the live address (default: the first domain).
+          BASE_URL: ${{ vars.PRODUCTION_URL || 'https://shojashapta.com' }}
         run: |
           for path in / /food/doi /api/health; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "https://shojashapta.com$path")
+            code=$(curl -sL -o /dev/null -w "%{http_code}" "$BASE_URL$path")
             echo "$path -> $code"; [ "$code" = "200" ] || exit 1
           done

@@ -8,7 +8,7 @@ describe("buildMetadata", () => {
     expect(meta.title).toBe("দই");
     expect(meta.alternates.canonical).toBe("http://localhost:3000/food/doi");
     expect(meta.openGraph).toMatchObject({
-      title: "দই · সোজাসাপ্টা",
+      title: "দই · জেলার স্বাদ",
       url: "http://localhost:3000/food/doi",
       locale: "bn_BD",
     });
@@ -18,7 +18,7 @@ describe("buildMetadata", () => {
   it("omits the title for the home page and falls back to the tagline", () => {
     const meta = buildMetadata({ description: "x", path: "/" });
     expect("title" in meta).toBe(false);
-    expect(meta.openGraph.title).toBe("সোজাসাপ্টা — খাবার নিয়ে সোজাসাপ্টা কথা");
+    expect(meta.openGraph.title).toBe("জেলার স্বাদ — জেলায় জেলায় আসল স্বাদের খোঁজ");
   });
 
   it("adds an absolute image only when given, and noindex only when asked", () => {

@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 
+import { siteConfig } from "@/config/site";
+
 import { shapeLine, wrapLines, type FontKey, type ShapedLine } from "./shape";
 
 // Share cards (every page has its own OG image, Bangla text included). The card is one SVG made of
@@ -43,7 +45,7 @@ export async function ogCard({ eyebrow, title, subtitle }: CardInput): Promise<I
   parts.push(
     `<g transform="translate(${PAD} ${PAD}) scale(1.125)"><path fill="${PRIMARY}" fill-rule="evenodd" d="M32 4a28 28 0 1 1-16.4 50.7L5 59l3.6-10.7A28 28 0 0 1 32 4zM19 31h26a13 13 0 0 1-26 0z"/><rect x="23" y="22" width="18" height="3.6" rx="1.8" fill="${GOLD}"/></g>`,
   );
-  parts.push(drawLine(await shapeLine("সোজাসাপ্টা", "display", 46), PAD + 92, PAD + 52, INK));
+  parts.push(drawLine(await shapeLine(siteConfig.name, "display", 46), PAD + 92, PAD + 52, INK));
 
   // Text block: eyebrow, title (up to two lines), subtitle (up to two lines).
   const titleSize = title.length > 22 ? 80 : 112;
@@ -64,7 +66,9 @@ export async function ogCard({ eyebrow, title, subtitle }: CardInput): Promise<I
     parts.push(drawLine(line, PAD, y, MUTED));
     y += 52;
   }
-  parts.push(drawLine(await shapeLine("shojashapta.com", "text" as FontKey, 30), PAD, 580, MUTED));
+  parts.push(
+    drawLine(await shapeLine(new URL(siteConfig.url).host, "text" as FontKey, 30), PAD, 580, MUTED),
+  );
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_SIZE.width}" height="${OG_SIZE.height}" viewBox="0 0 ${OG_SIZE.width} ${OG_SIZE.height}">${parts.join("")}</svg>`;
   const src = `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;

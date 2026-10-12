@@ -7,10 +7,10 @@ Every such question should land on one of our pages.
 ### URL design (lowercase latin slugs, stable forever)
 | Page | URL | Title pattern |
 |---|---|---|
-| District | `/district/bogura` | বগুড়ার বিখ্যাত খাবার ও কোথায় পাবেন | ShojaShapta |
-| Food | `/food/doi` | দই কোথায় ভালো পাওয়া যায়? কমিউনিটির প্রিয় জায়গা | ShojaShapta |
-| District × Food | `/district/bogura/doi` | বগুড়ার দই — কমিউনিটির প্রিয় {n}টি জায়গা | ShojaShapta |
-| Place | `/place/akbaria-hotel-bogura` | {নাম}, {এলাকা} — কী অর্ডার করবেন | ShojaShapta |
+| District | `/district/bogura` | বগুড়ার বিখ্যাত খাবার ও কোথায় পাবেন | জেলার স্বাদ |
+| Food | `/food/doi` | দই কোথায় ভালো পাওয়া যায়? কমিউনিটির প্রিয় জায়গা | জেলার স্বাদ |
+| District × Food | `/district/bogura/doi` | বগুড়ার দই — কমিউনিটির প্রিয় {n}টি জায়গা | জেলার স্বাদ |
+| Place | `/place/akbaria-hotel-bogura` | {নাম}, {এলাকা} — কী অর্ডার করবেন | জেলার স্বাদ |
 Slug changes create a permanent redirect (keep `slug_history` table in V1.5; avoid renames in MVP).
 
 ### Metadata (via `lib/seo/metadata.ts`)
@@ -34,7 +34,7 @@ Slug changes create a permanent redirect (keep `slug_history` table in V1.5; avo
 
 ### OG images
 `opengraph-image.tsx` per dynamic route using `next/og` (`ImageResponse`), 1200×630: food/place name in
-Bangla, ❤️ %, district, ShojaShapta logo. Load the Bangla font file explicitly for the OG renderer
+Bangla, ❤️ %, district, জেলার স্বাদ logo. Load the Bangla font file explicitly for the OG renderer
 (read the `.ttf` from `public/fonts/` or fetch once and cache). Cached by tag; regenerate on data change.
 
 ### Content
@@ -69,7 +69,7 @@ add ~1 s. We keep the design and treat 2.5 s / 95 as targets; Phase 8.5 tries to
 - Bundle check with `pnpm analyze` before each release.
 
 ## 3. PWA (MVP = installable, no offline)
-- `app/manifest.ts`: `name: "ShojaShapta — সোজাসাপ্টা"`, `short_name: "ShojaShapta"`, `lang: "bn"`,
+- `app/manifest.ts`: `name: "Jelar Shad — জেলার স্বাদ"`, `short_name: "Jelar Shad"`, `lang: "bn"`,
   `start_url: "/?source=pwa"`, `display: "standalone"`, theme/background colors from tokens,
   icons 192, 512, maskable 512, apple-touch-icon 180, `shortcuts` (খুঁজুন, যোগ করুন).
 - Minimal service worker `public/sw.js` registered in production only: no caching logic in MVP

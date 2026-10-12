@@ -83,7 +83,7 @@ analyze        ANALYZE=true next build
 ## 7. Environment variables (`.env.example`)
 ```
 # App
-NEXT_PUBLIC_SITE_URL=http://localhost:3000   # prod: https://shojashapta.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000   # prod: https://jelarshad.shojashapta.com
 NEXT_PUBLIC_LAUNCHED=false                  # false = "শিগগিরই আসছে" page + noindex in production
 PREVIEW_ACCESS_SECRET=                      # /?preview=<secret> lets founding contributors in before launch
 NEXT_PUBLIC_DEFAULT_LOCALE=bn

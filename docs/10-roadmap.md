@@ -1,12 +1,12 @@
 # 10 — Implementation Roadmap (MVP)
 
 Work phase by phase. One task = one branch = one PR (`docs/11-delivery-workflow.md` §5). Every task is tested
-and committed; merging to `main` auto-deploys to https://shojashapta.com. Each phase ends with its **Done when**
+and committed; merging to `main` auto-deploys to https://jelarshad.shojashapta.com. Each phase ends with its **Done when**
 list checked, a `phase-N` git tag and a GitHub Release.
 Tell your AI tool: *"Read AGENTS.md. Do Phase N, task N.x only. Use the ship-task skill."*
 
 **Every phase ends with the same Ship step:** all checks green on `main` → production deploy succeeded →
-smoke-tested on shojashapta.com → `git tag phase-N && git push --tags` → Release notes → tick the phase here.
+smoke-tested on jelarshad.shojashapta.com → `git tag phase-N && git push --tags` → Release notes → tick the phase here.
 
 ---
 
@@ -130,8 +130,8 @@ Install Docker Desktop if you want a local Supabase (`pnpm db:start`); otherwise
 ---
 
 ## Phase 9 — Launch (owner actions: see the checklist given with the Phase 8 hand-off)
-9.1 Final production checks: prod Supabase auth URLs, Google OAuth origins for shojashapta.com, Cloudinary prod folder, quotas (`11-delivery-workflow.md` §4).
-9.1b Set `NEXT_PUBLIC_LAUNCHED=true` in Vercel Production → redeploy → site public and indexable; submit `https://shojashapta.com/sitemap.xml` in Google Search Console; tag `v1.0.0`.
+9.1 Final production checks: prod Supabase auth URLs, Google OAuth origins for jelarshad.shojashapta.com, Cloudinary prod folder, quotas (`11-delivery-workflow.md` §4).
+9.1b Set `NEXT_PUBLIC_LAUNCHED=true` in Vercel Production → redeploy → site public and indexable; submit `https://jelarshad.shojashapta.com/sitemap.xml` in Google Search Console; tag `v1.0.0`.
 9.2 Final content review (RegionalFame sources, 150+ places).  9.3 Soft launch to 20–30 founding contributors, fix feedback for 1–2 weeks.
 9.4 Public launch: Facebook food groups with share cards; university district-vs-district campaign.
 9.5 Weekly: check quotas, `search_misses` → add aliases/content, admin queues.

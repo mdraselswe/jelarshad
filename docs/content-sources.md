@@ -136,4 +136,4 @@ Only shops and restaurants that a newspaper names are added. Districts without s
 ## Customer reviews
 
 None are copied. Articles, Google Maps, Foodpanda and Facebook reviews belong to their authors and
-platforms; reviews in ShojaShapta come only from people using the app (decision P5).
+platforms; reviews in Jelar Shad come only from people using the app (decision P5).

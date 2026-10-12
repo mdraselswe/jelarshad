@@ -6,7 +6,7 @@ Every product/tech decision made during planning (Oct 2026), with the reason and
 ## Product
 | # | Decision | Why | Rejected / deferred |
 |---|---|---|---|
-| P1 | Name **ShojaShapta (সোজাসাপ্টা)**, tagline "খাবার নিয়ে সোজাসাপ্টা কথা" | "সোজাসাপ্টা" = straightforward/honest — matches community-truth idea | — |
+| P1 | Name **জেলার স্বাদ (Jelar Shad)**, tagline "জেলায় জেলায় আসল স্বাদের খোঁজ" (renamed from ShojaShapta / সোজাসাপ্টা on 2026-10-12: the old name did not say what the app is for) | The name says the purpose: the taste of each district. The logo symbol stays | সোজাসাপ্টা, খাঁটি, স্বাদের ঠিকানা, Food Trail BD |
 | P2 | Scope = "বাংলাদেশে কোথায় কী খাবেন?", not only famous foods | Famous-only data runs out; local favorites (e.g. মিরপুরের চিকেন চাপ) keep data growing | Famous-food-only directory |
 | P3 | Core loop: search → eat → react → verify/correct → better data | The verification loop is the USP vs Google Maps / Foodpanda reviews | — |
 | P4 | Simplicity first: one search box, max 3 taps per action, buttons over typing | Owner requirement: never complicated | Separate search modes, 8 rating categories |
@@ -50,7 +50,7 @@ Every product/tech decision made during planning (Oct 2026), with the reason and
 | D10 | Theming from day one: system/light/dark via `data-theme` + CSS token files + `src/config/themes.ts` registry; custom themes later = one CSS file + one registry entry; contrast auto-checked | Owner requirement; future custom themes without touching components | `dark:` class overrides, `next-themes` dependency, cookie-based SSR theme (would make pages dynamic) |
 | D11 | Logo is theme-aware: in-app always `<LogoMark />`/`<LogoLockup />` using `--logo-*` tokens; dark variant `#8B85FF` + `#FBBF24`; SVG favicon follows OS scheme | Logo must look right in every theme | Static `<img>` logos in the app |
 | D12 | Fonts self-hosted as static per-weight woff2 files (`public/fonts`, `@font-face` + `unicode-range`); **five files**: Anek 700 (Bengali), Noto 400 + 600 (Bengali + Latin); only Noto 400 + Anek 700 (Bengali) preloaded; other weights map to the nearest one | `next/font/google` serves ~260 KB of variable files for these weights and preloads whole families; mobile LCP failed the 2.5 s budget in CI | `next/font/google` variable fonts; preloading every weight |
-| T11 | Domain **shojashapta.com** (apex canonical, www → apex). The only paid item (registration) | Owner's choice | — |
+| T11 | Address **jelarshad.shojashapta.com** for now (a subdomain of the owner's existing domain; a main domain may come later). `shojashapta.com` and `www` redirect (308) to `NEXT_PUBLIC_SITE_URL` once it points elsewhere (`src/lib/legacy-host.ts`) | Owner's choice; the app must be movable to its own domain without code changes | shojashapta.com apex |
 | T12 | CI/CD: GitHub Actions runs tests → migrations → `vercel deploy --prebuilt --prod`; Vercel git auto-deploy off; PR previews on dev DB; two Supabase projects (dev/prod) | Tests and migrations always run before code goes live; host-portable | Vercel automatic git deploys (no test/migration gate) |
 | T13 | Trunk-based git: one task per branch/PR, squash-merge, `phase-N` tags + releases | Small reviewable steps, easy rollback per phase | Long-lived develop branch |
 | T14 | Production live from Phase 0 behind `NEXT_PUBLIC_LAUNCHED=false` (coming-soon, noindex); public launch in Phase 9 | Real deploy pipeline exercised from day one without exposing unfinished app | Deploying only at the end |

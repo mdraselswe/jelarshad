@@ -1,4 +1,4 @@
-# AGENTS.md — Rules for anyone writing code in ShojaShapta
+# AGENTS.md — Rules for anyone writing code in Jelar Shad (জেলার স্বাদ)
 
 These rules are non-negotiable. If a request conflicts with them, stop and ask.
 
