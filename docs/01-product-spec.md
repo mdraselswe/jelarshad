@@ -114,8 +114,12 @@ Built only from data we already collect (experiences, contributions, claim votes
   claim vote +5, accepted edit suggestion +15. Shown as a gold `+১০` toast. Points are never spent; they are a score.
 - **Anti-farming**: points only for actions that pass rate limits; points from hidden/removed content are revoked;
   one experience per dish per user.
-- **V1.5**: levels (named: নবীন খাদক → খাদ্যপ্রেমী → খাদ্য বিশেষজ্ঞ), daily streak, weekly challenge, achievements ("রাজশাহী বিভাগ জয়").
-- **V2**: leaderboards, local expert, public profile pages.
+- **Levels** (decision P15): XP is the points total; `appConfig.gamification.levelThresholds` sets where each of the 8 levels starts; names in the message files (`level.1…8`).
+- **Daily streak**: consecutive Bangladesh days with at least one earning action; a run that ended yesterday still counts until midnight, a missed day resets it, the best run is kept. No penalties.
+- **Missions**: one daily and a few weekly goals (`appConfig.gamification.missions`), counted from actions already stored; the bonus XP is paid once per period (the points table refuses repeats).
+- **Badges**: derived from counts (districts, best streak, experiences, places, discoveries), nothing stored.
+- **Weekly board**: only people who opted in (settings on `/me`); shows display name and the XP of the week. Off by default.
+- **V2**: local expert, public profile pages.
 
 ### 3.12 Share
 Food, place, district and top-list pages: native share sheet (Web Share API) with copy-link fallback.
@@ -127,7 +131,6 @@ Actions: approve/reject edit, merge duplicate places, hide content, ban user, ed
 
 ## 4. Out of MVP (do not build)
 - **V1.5:** nearby + distance filter, interactive Bangladesh map, trending, seasonal section, area pages, offline mode, trust weighting.
-- **V1.5 (gamification):** levels, streak, weekly challenge, achievements (see §3.11b).
 - **V2:** badges beyond stamps, local expert, leaderboards, polls, travel guide, roadside food, price history, push notifications, phone OTP, Facebook login.
 - **V3:** AI assistant, personalization, owner portal, food awards, yearly wrap, monetization (requires moving off Vercel Hobby).
 

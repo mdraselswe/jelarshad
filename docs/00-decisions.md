@@ -20,6 +20,7 @@ Every product/tech decision made during planning (Oct 2026), with the reason and
 | P12 | Launch data: all 64 districts with curated RegionalFame; 10–15 districts with places | Empty districts kill first impressions; full 64 deep data is too much | 64 × 3–5 places at launch |
 | P13 | Gamification MVP-light: passport, stamps (incl. "আবিষ্কারক"), points. V1.5: levels, streak, weekly challenge, achievements | Owner wants people to come back; MVP-light reuses existing data | All gamification in V2; all of it in MVP |
 | P14 | Viewing/search/share never need login; Google login only when acting | Friction kills growth | Login wall |
+| P15 | Gamification V1.5 pulled into the product on 2026-10-12 (owner approved the "জেলার স্বাদ" design): **levels** (XP = points total, 8 named levels), **daily streak** (Bangladesh days; a missed day resets the run but the best run is kept, no penalty), **daily and weekly missions** (counted from earlier actions, bonus XP paid once per period), **badges** derived from counts, and an **opt-in weekly board**. All computed from `point_events`, so one migration only (0062: opt-in flag, index, board function). Still no spending of points, no extra tracking | Owner wants the app to feel alive and bring people back; reuses the data we already keep | A separate XP/streak table (drift risk), public profiles, always-on leaderboard |
 
 ## Technology & cost
 | # | Decision | Why | Rejected / deferred |

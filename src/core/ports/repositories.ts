@@ -17,6 +17,8 @@ import type {
   Reaction,
   RegionalFame,
   ReviewStatus,
+  LeaderboardEntry,
+  PointEvent,
   PointKind,
   RewardEntity,
   Stamp,
@@ -207,6 +209,14 @@ export interface RewardRepository {
   }): Promise<boolean>;
   stamps(userId: string): Promise<Stamp[]>;
   total(userId: string): Promise<number>;
+  /** Earning actions that still count (not revoked) since a date, newest first. */
+  events(userId: string, since: Date, limit: number): Promise<PointEvent[]>;
+  /** How many actions of each kind still count, over the person's whole history. */
+  kindCounts(userId: string): Promise<Partial<Record<PointKind, number>>>;
+  /** People who opted in, most XP since a date first. */
+  weeklyTop(since: Date, limit: number): Promise<LeaderboardEntry[]>;
+  leaderboardOptIn(userId: string): Promise<boolean>;
+  setLeaderboardOptIn(userId: string, optIn: boolean): Promise<void>;
 }
 
 export type AdminCounts = {

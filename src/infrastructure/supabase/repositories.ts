@@ -9,6 +9,7 @@ import type {
   Page,
   PageOpts,
   Place,
+  PointKind,
   Report,
   StampKind,
 } from "@/core/domain";
@@ -1011,6 +1012,72 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           "points total",
         );
         return row?.points_total ?? 0;
+      },
+      async events(userId, since, limit) {
+        const rows = check(
+          await writer(clients)
+            .from("point_events")
+            .select("kind, entity_id, points, created_at")
+            .eq("user_id", userId)
+            .is("revoked_at", null)
+            .gte("created_at", since.toISOString())
+            .order("created_at", { ascending: false })
+            .limit(limit),
+          "point events",
+        );
+        return rows.map((row) => ({
+          kind: row.kind as PointKind,
+          entityId: row.entity_id,
+          points: row.points,
+          createdAt: new Date(row.created_at),
+        }));
+      },
+      async kindCounts(userId) {
+        const rows = check(
+          await writer(clients)
+            .from("point_events")
+            .select("kind")
+            .eq("user_id", userId)
+            .is("revoked_at", null)
+            .limit(5000),
+          "point event kinds",
+        );
+        const counts: Partial<Record<PointKind, number>> = {};
+        for (const row of rows) {
+          const kind = row.kind as PointKind;
+          counts[kind] = (counts[kind] ?? 0) + 1;
+        }
+        return counts;
+      },
+      async weeklyTop(since, limit) {
+        const { data, error } = await writer(clients).rpc("weekly_leaderboard", {
+          p_since: since.toISOString(),
+          p_limit: limit,
+        });
+        if (error) throw new Error(`Supabase weekly_leaderboard: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          userId: row.user_id,
+          displayName: row.display_name,
+          xp: row.xp,
+        }));
+      },
+      async leaderboardOptIn(userId) {
+        const row = check<{ leaderboard_opt_in: boolean } | null>(
+          await writer(clients)
+            .from("profiles")
+            .select("leaderboard_opt_in")
+            .eq("id", userId)
+            .maybeSingle(),
+          "leaderboard opt-in",
+        );
+        return row?.leaderboard_opt_in ?? false;
+      },
+      async setLeaderboardOptIn(userId, optIn) {
+        const { error } = await writer(clients)
+          .from("profiles")
+          .update({ leaderboard_opt_in: optIn })
+          .eq("id", userId);
+        if (error) throw new Error(`Supabase leaderboard opt-in: ${error.message}`);
       },
     },
 

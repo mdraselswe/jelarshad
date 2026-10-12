@@ -238,6 +238,38 @@ export function repositoryContract(
       expect(doi.items.some((hit) => hit.kind === "food" && hit.food.slug === "doi")).toBe(true);
     });
 
+    writeIt("experiences")(
+      "keeps an activity history for streaks, missions and the weekly board",
+      async () => {
+        const repos = await make();
+        const userId = ids.users.contract;
+        const since = new Date(Date.now() - 60_000);
+        const paid = await repos.rewards.award({
+          userId,
+          kind: "experience",
+          entity: "experience",
+          entityId: `contract-activity-${Date.now()}`,
+          points: 10,
+        });
+        expect(paid).toBe(10);
+        const events = await repos.rewards.events(userId, since, 50);
+        expect(events.some((event) => event.kind === "experience" && event.points === 10)).toBe(
+          true,
+        );
+        expect((await repos.rewards.kindCounts(userId)).experience ?? 0).toBeGreaterThan(0);
+
+        await repos.rewards.setLeaderboardOptIn(userId, true);
+        expect(await repos.rewards.leaderboardOptIn(userId)).toBe(true);
+        const top = await repos.rewards.weeklyTop(since, 5);
+        expect(top.some((entry) => entry.userId === userId && entry.xp >= 10)).toBe(true);
+
+        await repos.rewards.setLeaderboardOptIn(userId, false);
+        expect((await repos.rewards.weeklyTop(since, 5)).some((e) => e.userId === userId)).toBe(
+          false,
+        );
+      },
+    );
+
     it("finds places and districts too", async () => {
       const repos = await make();
       const district = await repos.search.search(toSearchQuery("bogura"));

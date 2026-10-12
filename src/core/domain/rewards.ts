@@ -1,10 +1,25 @@
 // Food passport and points (docs/01-product-spec.md §3.11b): a score and a stamp book, never spent.
 
 export type PointKind =
-  "experience" | "place_create" | "discoverer" | "claim_vote" | "edit_accepted";
+  "experience" | "place_create" | "discoverer" | "claim_vote" | "edit_accepted" | "mission";
 
 /** What the points were for; revoking an entity takes back everything awarded for it. */
-export type RewardEntity = "experience" | "place" | "claim" | "edit_suggestion";
+export type RewardEntity = "experience" | "place" | "claim" | "edit_suggestion" | "mission";
+
+/** One earning action (kept for the streak and the missions). */
+export type PointEvent = {
+  kind: PointKind;
+  entityId: string;
+  points: number;
+  createdAt: Date;
+};
+
+/** One person on the weekly board (only people who opted in). */
+export type LeaderboardEntry = {
+  userId: string;
+  displayName: string;
+  xp: number;
+};
 
 export type StampKind = "visit" | "discoverer";
 
