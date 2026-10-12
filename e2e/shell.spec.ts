@@ -31,6 +31,19 @@ test.describe("app shell", () => {
     await expect(page.getByRole("link", { name: "গোপনীয়তা ও নিয়ম" })).toBeVisible();
   });
 
+  test("the pinned action is fixed to the screen, not to the page", async ({ page }) => {
+    await page.goto("/food/doi");
+    const cta = page.locator("[data-page-cta]");
+    await expect(cta).toBeVisible();
+    const box = await cta.boundingBox();
+    const viewport = page.viewportSize();
+    expect(box && viewport).toBeTruthy();
+    if (!box || !viewport) return;
+    // at the top of a long page it already sits at the bottom of the screen
+    expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
+    expect(box.y).toBeGreaterThan(viewport.height / 2);
+  });
+
   test("coming-soon page has no app chrome", async ({ page }) => {
     await page.goto("/coming-soon");
     await expect(page.getByRole("navigation", { name: "প্রধান মেনু" })).toHaveCount(0);

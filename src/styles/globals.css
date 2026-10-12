@@ -139,7 +139,9 @@
   --animate-step-slide: step-slide var(--duration-base) var(--ease-out) both;
   --animate-progress: progress-x var(--duration-slow) var(--ease-out) both;
   --animate-shimmer: shimmer 1.4s linear infinite;
-  --animate-page-in: page-in 380ms var(--ease-out) both;
+  /* backwards, not both: an animation that keeps its end value leaves an identity transform on the
+     page wrapper, and that would pin every position:fixed child (the pinned action) to the wrapper. */
+  --animate-page-in: page-in 380ms var(--ease-out) backwards;
   --animate-rise: rise 420ms var(--ease-out) both;
   --animate-ring: ring-draw 1000ms var(--ease-out) 150ms both;
 
@@ -693,6 +695,8 @@ body[data-search-suggesting] [data-search-results] {
   }
   html {
     -webkit-text-size-adjust: 100%;
+    /* Anchors and scrolled-to controls stay clear of the floating nav and the pinned action. */
+    scroll-padding-bottom: 7rem;
   }
   body {
     @apply bg-background ground-dots font-sans text-foreground antialiased;
