@@ -1045,7 +1045,11 @@ export type Database = {
       };
       district_leaderboard: {
         Args: { p_district: number; p_limit: number; p_since: string };
-        Returns: { display_name: string; user_id: string; xp: number }[];
+        Returns: {
+          display_name: string;
+          user_id: string;
+          xp: number;
+        }[];
       };
       is_active_user: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
