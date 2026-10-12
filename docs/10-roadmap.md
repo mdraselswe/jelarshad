@@ -11,7 +11,7 @@ smoke-tested on jelarshad.shojashapta.com → `git tag phase-N && git push --tag
 ---
 
 ## Phase 0 — Setup & foundations — ✅ done (tag `phase-0`, 2026-10-07)
-**0.1 Accounts (no card anywhere):** GitHub repo (owner creates it; private is fine), Supabase **two** projects (`shojashapta-dev`, `shojashapta-prod`), Cloudinary, Vercel (Hobby), Google Cloud OAuth client. Domain `shojashapta.com` bought at a registrar (the only paid item).
+**0.1 Accounts (no card anywhere):** GitHub repo (owner creates it; private is fine), Supabase **two** projects (`jelarshad-dev`, `jelarshad-prod`), Cloudinary, Vercel (Hobby), Google Cloud OAuth client. Domain `shojashapta.com` bought at a registrar (the only paid item).
 
 **0.2 Scaffold** (Windows PowerShell):
 ```powershell

@@ -9,7 +9,7 @@ merged change to `main` is tested again, database migrations run, and the site d
 | Env | URL | Branch | Database | Purpose |
 |---|---|---|---|---|
 | Local | `http://localhost:3000` | any | Supabase **dev** project (or local Docker) | Build & try |
-| Preview | `https://shojashapta-git-<branch>-<team>.vercel.app` | every PR | Supabase **dev** project | Review a phase before merge |
+| Preview | `https://jelarshad-git-<branch>-<team>.vercel.app` | every PR | Supabase **dev** project | Review a phase before merge |
 | Production | `https://jelarshad.shojashapta.com` | `main` | Supabase **prod** project | Real users |
 
 Two Supabase free projects (dev + prod) are allowed on the free plan. Cloudinary: one account, folders
