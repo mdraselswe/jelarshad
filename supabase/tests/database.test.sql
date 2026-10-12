@@ -366,8 +366,8 @@ select is(
 select award_points('00000000-0000-4000-8000-0000000000a1', 'experience', 'experience', 'board-1', 10);
 select award_points('00000000-0000-4000-8000-0000000000a1', 'place_create', 'place', 'board-2', 20);
 select is_empty(
-  $ select 1 from weekly_leaderboard(now() - interval '1 day', 5)
-     where user_id = '00000000-0000-4000-8000-0000000000a1' $,
+  $$ select 1 from weekly_leaderboard(now() - interval '1 day', 5)
+     where user_id = '00000000-0000-4000-8000-0000000000a1' $$,
   'someone who did not opt in is not listed'
 );
 update profiles set leaderboard_opt_in = true where id = '00000000-0000-4000-8000-0000000000a1';
