@@ -18,7 +18,7 @@ test.describe("add flow", () => {
     await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
 
     // 2 — place
-    await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
+    await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
     await page.getByLabel("দোকান বা জায়গার নাম").fill("মহাস্থানগড়ের কটকটি ঘর");
     await page.getByLabel("এলাকা").fill("মহাস্থানগড়");
     await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
@@ -41,7 +41,7 @@ test.describe("add flow", () => {
     await page.getByRole("textbox", { name: "কী খাবার?" }).fill("দই");
     await page.getByRole("button", { name: "দই", exact: true }).first().click();
     await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
-    await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
+    await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
     await page.getByLabel("দোকান বা জায়গার নাম").fill("নমুনা দই ঘর");
     await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
     await expect(page.getByText("এগুলোর কোনোটা কি?")).toBeVisible();

@@ -30,7 +30,7 @@ test.describe("corrections and reports", () => {
     await page.getByRole("textbox", { name: "কী খাবার?" }).fill("দই");
     await page.getByRole("button", { name: "দই", exact: true }).first().click();
     await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
-    await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
+    await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
     await page.getByLabel("দোকান বা জায়গার নাম").fill("নমুনা মিষ্টিমুখ");
     await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
     await page.getByRole("button", { name: "এটাই" }).first().click();

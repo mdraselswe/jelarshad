@@ -15,7 +15,7 @@ test("a photo added with the experience shows on the place page and opens in a v
   await page.getByRole("textbox", { name: "কী খাবার?" }).fill("ছবির ঝালমুড়ি");
   await addAsNewFood(page, "ছবির ঝালমুড়ি");
   await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
-  await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
+  await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
   await page.getByLabel("দোকান বা জায়গার নাম").fill("ছবিওয়ালা দোকান");
   await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
   await page.getByRole("button", { name: "দারুণ" }).click();
@@ -40,7 +40,7 @@ test("a file that is not a picture is turned down with a message", async ({ page
   await page.getByRole("textbox", { name: "কী খাবার?" }).fill("ঝালমুড়ি ২");
   await addAsNewFood(page, "ঝালমুড়ি ২");
   await page.getByRole("button", { name: "পরের ধাপ" }).first().click();
-  await page.getByLabel("জেলা").selectOption({ label: "বগুড়া" });
+  await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
   await page.getByLabel("দোকান বা জায়গার নাম").fill("আরেকটা দোকান");
   await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
   await page.locator("input[type=file]").setInputFiles({
