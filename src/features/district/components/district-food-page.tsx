@@ -41,7 +41,7 @@ export function DistrictFoodPage({ data }: { data: DistrictFoodData }) {
       <HeroBand
         tone="food"
         bleed
-        className="pb-9 lg:pb-12"
+        className="pb-12 lg:pb-12"
         bar={
           <HeroBar
             backHref={routes.district(district.slug)}
@@ -84,7 +84,7 @@ export function DistrictFoodPageSkeleton() {
         <HeroBand
           tone="food"
           bleed
-          className="pb-9 lg:pb-12"
+          className="pb-12 lg:pb-12"
           bar={<HeroBar backHref={routes.home()} />}
         >
           <div className="text-title-1">

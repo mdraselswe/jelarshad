@@ -14,7 +14,7 @@ export async function DistrictPlacesSection({ districtId }: { districtId: number
   const t = getT();
   const { items } = await getDistrictPlaces(districtId);
   return (
-    <Section title={t("district.places")}>
+    <Section title={t("district.places")} icon={<StoreIcon />} tone="violet">
       {items.length === 0 ? (
         <p className="text-meta text-muted-foreground">{t("district.noPlaces")}</p>
       ) : (
@@ -49,7 +49,7 @@ export async function DistrictPlacesSection({ districtId }: { districtId: number
 export function DistrictPlacesSectionSkeleton() {
   const t = getT();
   return (
-    <Section title={t("district.places")}>
+    <Section title={t("district.places")} icon={<StoreIcon />} tone="violet">
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
           <ListRowSkeleton key={index} />

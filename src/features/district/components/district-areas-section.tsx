@@ -1,6 +1,7 @@
+import { MapPinIcon } from "lucide-react";
 import Link from "next/link";
 
-import { Section } from "@/components/layout/section";
+import { Band } from "@/components/layout/band";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import type { DistrictHeader } from "@/services/catalog-service";
@@ -10,7 +11,7 @@ export function DistrictAreasSection({ district }: { district: DistrictHeader })
   const t = getT();
   if (district.areas.length === 0) return null;
   return (
-    <Section title={t("district.areasTitle")}>
+    <Band tone="mint" title={t("district.areasTitle")} icon={<MapPinIcon />}>
       <ul className="flex rise-children flex-wrap gap-2.5">
         {district.areas.map((area) => (
           <li key={area.slug}>
@@ -23,6 +24,6 @@ export function DistrictAreasSection({ district }: { district: DistrictHeader })
           </li>
         ))}
       </ul>
-    </Section>
+    </Band>
   );
 }

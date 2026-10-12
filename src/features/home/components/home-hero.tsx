@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { LogoMark } from "@/components/brand/logo";
+import { BowlArt, CloudArt, CupArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { QUICK_SEARCHES } from "@/config/home";
 import { routes } from "@/config/routes";
@@ -23,7 +24,7 @@ export function HomeHero() {
     <HeroBand
       tone="home"
       bleed
-      className="pb-16 lg:pb-12"
+      className="pb-14 lg:pb-12"
       bar={
         <>
           <Link
@@ -45,10 +46,13 @@ export function HomeHero() {
         </>
       }
     >
+      <CloudArt className="pointer-events-none absolute -top-2 left-[44%] hidden w-32 opacity-25 lg:block" />
+      <BowlArt className="pointer-events-none absolute top-0 right-2 w-[132px] lg:-top-9 lg:right-8 lg:w-[112px]" />
+      <CupArt className="pointer-events-none absolute top-[8px] right-[140px] hidden w-14 lg:-top-7 lg:right-40 lg:block" />
       <div className="lg:grid lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-12">
         <div>
           <h1 className="text-title-1 lg:text-[52px]">{t("home.title")}</h1>
-          <p className="mt-1.5 text-body text-on-hero/90 lg:max-w-xl lg:text-lg">
+          <p className="mt-1.5 max-w-[15rem] text-body text-on-hero/90 lg:max-w-xl lg:text-lg">
             {t("home.subtitle")}
           </p>
           <SearchEntry

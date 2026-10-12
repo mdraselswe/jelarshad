@@ -1,5 +1,7 @@
 import { MapPinIcon, MapIcon } from "lucide-react";
 
+import { InfoIcon } from "lucide-react";
+
 import { Section } from "@/components/layout/section";
 import { GroupedList, ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
@@ -12,7 +14,7 @@ import { mapSearchUrl } from "../map-url";
 export function PlaceInfoSection({ place }: { place: PlaceHeader }) {
   const t = getT();
   return (
-    <Section title={t("place.info")}>
+    <Section title={t("place.info")} icon={<InfoIcon />} tone="sky">
       <GroupedList>
         <ListRow
           href={mapSearchUrl(place.mapQuery)}

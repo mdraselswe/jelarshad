@@ -72,6 +72,34 @@
   --tile-4: linear-gradient(135deg, #d9421f, #b45309);
   --tile-5: linear-gradient(135deg, #0369a1, #4f46e5);
   --tile-6: linear-gradient(135deg, #15803d, #0b7f7e);
+
+  --dot: #26233f;
+  --dot-warm: #3a2a17;
+  --dot-mint: #1d3c3f;
+  --band-warm: #241b12;
+  --band-mint: #12262a;
+  --band-teal: #0f766e;
+  --band-night: #312e81;
+  --gradient-mission: linear-gradient(160deg, #0f766e 0%, #14b8a6 100%);
+  --gradient-night: linear-gradient(170deg, #312e81 0%, #4c1d95 100%);
+  --ill-steam: #ffffff;
+  --ill-rice: #fffbeb;
+  --ill-grain: #f1dfa6;
+  --ill-bowl: #ea580c;
+  --ill-bowl-hi: #fdba74;
+  --ill-cup: #059669;
+  --ill-sweet: #ffffff;
+  --ill-plate: #c4b5fd;
+  --ill-fish: #e2e8f0;
+  --ill-fish-fin: #94a3b8;
+  --ill-ink: #1e293b;
+  --ill-gold: #f59e0b;
+  --ill-gold-hi: #fde68a;
+  --ill-pin-a: #8b85ff;
+  --ill-pin-b: #f472b6;
+  --ill-pin-c: #fb923c;
+  --ill-spark-a: #fde68a;
+  --ill-spark-b: #f9a8d4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -147,5 +175,33 @@
     --tile-4: linear-gradient(135deg, #d9421f, #b45309);
     --tile-5: linear-gradient(135deg, #0369a1, #4f46e5);
     --tile-6: linear-gradient(135deg, #15803d, #0b7f7e);
+
+    --dot: #26233f;
+    --dot-warm: #3a2a17;
+    --dot-mint: #1d3c3f;
+    --band-warm: #241b12;
+    --band-mint: #12262a;
+    --band-teal: #0f766e;
+    --band-night: #312e81;
+    --gradient-mission: linear-gradient(160deg, #0f766e 0%, #14b8a6 100%);
+    --gradient-night: linear-gradient(170deg, #312e81 0%, #4c1d95 100%);
+    --ill-steam: #ffffff;
+    --ill-rice: #fffbeb;
+    --ill-grain: #f1dfa6;
+    --ill-bowl: #ea580c;
+    --ill-bowl-hi: #fdba74;
+    --ill-cup: #059669;
+    --ill-sweet: #ffffff;
+    --ill-plate: #c4b5fd;
+    --ill-fish: #e2e8f0;
+    --ill-fish-fin: #94a3b8;
+    --ill-ink: #1e293b;
+    --ill-gold: #f59e0b;
+    --ill-gold-hi: #fde68a;
+    --ill-pin-a: #8b85ff;
+    --ill-pin-b: #f472b6;
+    --ill-pin-c: #fb923c;
+    --ill-spark-a: #fde68a;
+    --ill-spark-b: #f9a8d4;
   }
 }

@@ -156,6 +156,8 @@
     "settings": "সেটিংস",
     "theme": "থিম",
     "stats": {
+      "districts": "জেলা চাখা",
+      "badges": "ব্যাজ",
       "experiences": "অভিজ্ঞতা",
       "places": "জায়গা যোগ"
     },
@@ -252,7 +254,9 @@
         "p": "প্রতিটি জেলায় প্রথমবারে পাসপোর্টে স্ট্যাম্প।"
       }
     },
-    "districtCount": "{count}টি জেলা"
+    "districtCount": "{count}টি জেলা",
+    "categoriesTitle": "কী খেতে ইচ্ছে?",
+    "lovedTitle": "মানুষ যা ভালোবেসেছে"
   },
   "search": {
     "clear": "মুছে ফেলুন",
@@ -384,5 +388,74 @@
     "noneRated": "এখনো কেউ এই এলাকার কোনো জায়গা নিয়ে জানাননি। আপনি গিয়ে থাকলে প্রথম জানান।",
     "add": "অভিজ্ঞতা জানান",
     "more": "আরও জায়গা আছে। জেলার পাতায় দেখুন।"
+  },
+  "game": {
+    "level": {
+      "1": "নবীন খাদক",
+      "2": "স্বাদ-সন্ধানী",
+      "3": "স্বাদ-অভিযাত্রী",
+      "4": "খাদ্যপ্রেমী",
+      "5": "স্বাদ-বিশারদ",
+      "6": "খাদ্য বিশেষজ্ঞ",
+      "7": "জেলা-জয়ী",
+      "8": "স্বাদ-সম্রাট"
+    },
+    "levelLabel": "লেভেল {level}",
+    "xp": "{count} XP",
+    "xpOf": "{done}/{total} XP",
+    "toNext": "পরের লেভেলে আর {count} XP বাকি",
+    "maxLevel": "সর্বোচ্চ লেভেলে পৌঁছেছেন",
+    "streakDays": "{count} দিন",
+    "streakLabel": "দিনের ধারা",
+    "streakBest": "দীর্ঘতম ধারা {count} দিন",
+    "streakStart": "আজ একটি অভিজ্ঞতা জানিয়ে ধারা শুরু করুন",
+    "missionsToday": "আজকের মিশন",
+    "missionsWeek": "এই সপ্তাহের মিশন",
+    "missionDone": "সম্পন্ন",
+    "bonus": "+{count} XP",
+    "mission": {
+      "daily_experiences": "আজ {count}টি অভিজ্ঞতা জানান",
+      "weekly_experiences": "এই সপ্তাহে {count}টি অভিজ্ঞতা জানান",
+      "weekly_districts": "এই সপ্তাহে {count}টি নতুন জেলার স্বাদ চাখুন",
+      "weekly_places": "এই সপ্তাহে {count}টি নতুন জায়গা যোগ করুন"
+    },
+    "badgesTitle": "আমার ব্যাজ",
+    "badge": {
+      "first_stamp": "প্রথম স্ট্যাম্প",
+      "districts_5": "৫ জেলা",
+      "districts_10": "১০ জেলা",
+      "districts_25": "২৫ জেলা",
+      "streak_3": "৩ দিনের ধারা",
+      "streak_7": "৭ দিনের ধারা",
+      "streak_30": "৩০ দিনের ধারা",
+      "experiences_10": "১০ অভিজ্ঞতা",
+      "experiences_50": "৫০ অভিজ্ঞতা",
+      "places_1": "প্রথম জায়গা",
+      "places_5": "৫টি জায়গা",
+      "discoverer_1": "আবিষ্কারক"
+    },
+    "badgeEarned": "অর্জিত",
+    "badgeLocked": "{value}/{target}",
+    "journeyTitle": "আমার স্বাদ-যাত্রা",
+    "journeyCount": "{done}/{total} জেলা",
+    "boardTitle": "এই সপ্তাহের সক্রিয় অবদানকারী",
+    "boardHint": "সাপ্তাহিক, শুধু যাঁরা দেখাতে রাজি",
+    "boardEmpty": "এখনও কেউ তালিকায় নেই। আপনিই প্রথম হতে পারেন।",
+    "boardOptIn": "আমার নাম তালিকায় দেখান",
+    "boardOptInHint": "বন্ধ থাকলে কেউ আপনার নাম দেখবে না।",
+    "boardYou": "আপনি",
+    "boardSaved": "সেটিং বদলেছে",
+    "levelUpTitle": "নতুন লেভেল!",
+    "levelUpBody": "আপনি এখন {name}",
+    "stampTitle": "নতুন স্ট্যাম্প অর্জন",
+    "continue": "চালিয়ে যান",
+    "seePassport": "পাসপোর্টে দেখুন",
+    "later": "পরে দেখব",
+    "promoTitle": "৬৪ জেলার স্ট্যাম্প জমান",
+    "promoBody": "প্রতিটা জেলার খাবার চেখে পাসপোর্টে স্ট্যাম্প তুলুন।",
+    "promoCta": "পাসপোর্ট দেখুন",
+    "startTitle": "পাসপোর্ট শুরু করুন",
+    "missionInvite": "লগইন করে আজকের মিশন নিন",
+    "startBody": "লগইন করে XP ও স্ট্যাম্প পান।"
   }
 }

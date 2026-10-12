@@ -1,41 +1,21 @@
 import type { MessageKey } from "@/i18n/t";
 
 // The kinds of food on the home page (docs/design: eight tiles). A tile opens a search for its name,
-// so it only ever shows what exists. Class names are literal so Tailwind sees them.
+// so it only ever shows what exists. `tile` is a gradient fill (docs/06-design-system.md §2d); class
+// names are literal so Tailwind sees them. The icon for each id is chosen in home-categories.tsx.
 export const HOME_CATEGORIES: readonly {
   id: string;
   label: MessageKey;
-  glyph: string;
-  tone: string;
+  tile: string;
 }[] = [
-  {
-    id: "biryani",
-    label: "home.cat.biryani",
-    glyph: "বি",
-    tone: "bg-cat-coral-soft text-cat-coral-fg",
-  },
-  {
-    id: "sweets",
-    label: "home.cat.sweets",
-    glyph: "মি",
-    tone: "bg-cat-pink-soft text-cat-pink-fg",
-  },
-  { id: "doi", label: "home.cat.doi", glyph: "দ", tone: "bg-cat-violet-soft text-cat-violet-fg" },
-  { id: "fish", label: "home.cat.fish", glyph: "মা", tone: "bg-cat-sky-soft text-cat-sky-fg" },
-  {
-    id: "breakfast",
-    label: "home.cat.breakfast",
-    glyph: "না",
-    tone: "bg-cat-amber-soft text-cat-amber-fg",
-  },
-  { id: "tea", label: "home.cat.tea", glyph: "চা", tone: "bg-cat-teal-soft text-cat-teal-fg" },
-  {
-    id: "pitha",
-    label: "home.cat.pitha",
-    glyph: "পি",
-    tone: "bg-cat-green-soft text-cat-green-fg",
-  },
-  { id: "more", label: "home.cat.more", glyph: "আ", tone: "bg-primary-soft text-primary-soft-fg" },
+  { id: "biryani", label: "home.cat.biryani", tile: "bg-tile-2" },
+  { id: "sweets", label: "home.cat.sweets", tile: "bg-tile-1" },
+  { id: "doi", label: "home.cat.doi", tile: "bg-tile-5" },
+  { id: "fish", label: "home.cat.fish", tile: "bg-tile-3" },
+  { id: "breakfast", label: "home.cat.breakfast", tile: "bg-tile-4" },
+  { id: "tea", label: "home.cat.tea", tile: "bg-tile-6" },
+  { id: "pitha", label: "home.cat.pitha", tile: "bg-tile-2" },
+  { id: "more", label: "home.cat.more", tile: "bg-tile-1" },
 ];
 
 /** Search shortcuts under the desktop hero. */

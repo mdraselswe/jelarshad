@@ -1,3 +1,4 @@
+import { MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -90,7 +91,12 @@ export function FoodPage({ food }: { food: FoodHeader }) {
         <FoodStatsCard food={food} />
       </div>
       {food.famousIn.length > 0 ? (
-        <Section title={t("food.famousInTitle")} className="lg:hidden">
+        <Section
+          title={t("food.famousInTitle")}
+          icon={<MapPinIcon />}
+          tone="teal"
+          className="lg:hidden"
+        >
           <FamousInChips food={food} />
         </Section>
       ) : null}

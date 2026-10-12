@@ -86,8 +86,10 @@ test.describe("tablet (768 to 1023px)", () => {
   test("keeps the floating bottom nav and a two-column famous grid", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("navigation", { name: "প্রধান মেনু" }).last()).toBeVisible();
-    const cards = page.getByRole("link", { name: /দই.*বগুড়া/ });
-    const next = page.getByRole("link", { name: /.+/ }).filter({ hasText: "মেজবান" }).first();
+    // the list of famous foods (not the district tiles above it)
+    const famous = page.getByRole("region", { name: "যেসব খাবারের জন্য বিখ্যাত" });
+    const cards = famous.getByRole("link", { name: /দই.*বগুড়া/ });
+    const next = famous.getByRole("link").filter({ hasText: "মেজবান" }).first();
     const [a, b] = await Promise.all([cards.boundingBox(), next.boundingBox()]);
     expect(a && b && Math.abs(a.width - b.width) < 2).toBe(true);
   });

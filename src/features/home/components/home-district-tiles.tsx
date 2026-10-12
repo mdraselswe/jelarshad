@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { Section } from "@/components/layout/section";
+import { MapPinIcon } from "lucide-react";
+
+import { RouteArt } from "@/components/illustration/food-art";
+import { Band } from "@/components/layout/band";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HOME_DISTRICT_TILES } from "@/config/home";
 import { routes } from "@/config/routes";
@@ -21,8 +24,10 @@ const TILE_CLASS =
 function TilesShell({ children, count }: { children: ReactNode; count?: number }) {
   const t = getT();
   return (
-    <Section
+    <Band
+      tone="warm"
       title={t("home.districtsTitle")}
+      icon={<MapPinIcon />}
       action={
         count === undefined ? undefined : (
           <span className="text-sm font-semibold text-primary-text">
@@ -31,8 +36,9 @@ function TilesShell({ children, count }: { children: ReactNode; count?: number }
         )
       }
     >
+      <RouteArt tone="gold" className="-mb-1 h-10 w-full" />
       <div className={ROW_CLASS}>{children}</div>
-    </Section>
+    </Band>
   );
 }
 
