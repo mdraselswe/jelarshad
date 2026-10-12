@@ -12,11 +12,13 @@ type EmptyStateProps = {
   action?: { label: string; href: string };
   /** Points earned for that action, shown as a gold pill ("+২০"). */
   rewardPoints?: number;
+  /** A small live illustration above the message. */
+  art?: ReactNode;
   className?: string;
 };
 
 /** Empty state = invitation (docs/06-design-system.md §6): dashed box, one primary button, reward hint. */
-export function EmptyState({ message, action, rewardPoints, className }: EmptyStateProps) {
+export function EmptyState({ message, action, rewardPoints, art, className }: EmptyStateProps) {
   return (
     <div
       className={cn(
@@ -24,6 +26,11 @@ export function EmptyState({ message, action, rewardPoints, className }: EmptySt
         className,
       )}
     >
+      {art ? (
+        <div aria-hidden className="mx-auto mb-2 w-36">
+          {art}
+        </div>
+      ) : null}
       <p className="text-[15px] leading-relaxed">{message}</p>
       {action && (
         <Button asChild className="mt-2.5">

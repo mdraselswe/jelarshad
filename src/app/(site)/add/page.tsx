@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { BowlArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { routes } from "@/config/routes";
@@ -24,7 +25,7 @@ export default function Add() {
         const districts = await getDistrictOptions();
         return (
           <PageShell>
-            <HeroBand tone="home" className="lg:mx-auto lg:max-w-2xl lg:p-10">
+            <HeroBand tone="home" art={<BowlArt />} className="lg:mx-auto lg:max-w-2xl lg:p-10">
               <h1 className="text-title-1">{t("add.title")}</h1>
             </HeroBand>
             <section className="page-x pt-4 lg:pt-6">
