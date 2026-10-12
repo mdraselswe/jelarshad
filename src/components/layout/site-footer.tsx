@@ -4,7 +4,7 @@ import Link from "next/link";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 
-const AUTHOR = { name: "mdraselswe", url: "https://linkedin.com/in/mdraselswe" } as const;
+const AUTHOR = { name: "Muhammad Rasel", url: "https://linkedin.com/in/mdraselswe" } as const;
 
 /**
  * End of every app page: the about and privacy links and who built it (with a link to their LinkedIn).
@@ -28,18 +28,26 @@ export function SiteFooter() {
           {t("legal.policyLink")}
         </Link>
       </nav>
-      <p className="mt-1 flex min-h-11 flex-wrap items-center gap-x-1.5 text-meta leading-none text-muted-foreground">
-        <span className="leading-none">{t("footer.builtWith")}</span>
-        <HeartIcon aria-hidden className="size-4 fill-cat-pink-fg stroke-cat-pink-fg" />
-        <span className="leading-none">{t("footer.by")}</span>
+      {/* One text line (icons inline) so the words and the icons share a single baseline. */}
+      <p className="mt-1 py-2.5 text-meta leading-6 text-muted-foreground">
+        {t("footer.builtWith")}{" "}
+        <HeartIcon
+          aria-hidden
+          className="inline size-4 fill-cat-pink-fg stroke-cat-pink-fg align-middle"
+        />{" "}
+        {t("footer.by")}{" "}
         <a
           href={AUTHOR.url}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${t("footer.linkedin")}: ${AUTHOR.name}`}
-          className="inline-flex items-center gap-1 font-semibold text-primary-text underline-offset-4 hover:underline"
+          className="font-semibold text-primary-text underline-offset-4 hover:underline"
         >
-          <svg viewBox="0 0 24 24" aria-hidden className="size-4 fill-current">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden
+            className="mr-1 inline size-4 fill-current align-middle"
+          >
             <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.05c.53-1 1.84-2 3.8-2 4.06 0 4.8 2.67 4.8 6.14V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z" />
           </svg>
           {AUTHOR.name}
