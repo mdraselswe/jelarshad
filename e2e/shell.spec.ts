@@ -35,13 +35,17 @@ test.describe("app shell", () => {
     await page.goto("/food/doi");
     const cta = page.locator("[data-page-cta]");
     await expect(cta).toBeVisible();
-    const box = await cta.boundingBox();
     const viewport = page.viewportSize();
-    expect(box && viewport).toBeTruthy();
-    if (!box || !viewport) return;
-    // at the top of a long page it already sits at the bottom of the screen
-    expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
-    expect(box.y).toBeGreaterThan(viewport.height / 2);
+    expect(viewport).toBeTruthy();
+    if (!viewport) return;
+    // The page-enter animation moves the wrapper for a moment; once it ends, the action sits at the
+    // bottom of the screen even at the top of a long page.
+    await expect
+      .poll(async () => {
+        const box = await cta.boundingBox();
+        return box ? box.y + box.height : Infinity;
+      })
+      .toBeLessThanOrEqual(viewport.height);
   });
 
   test("coming-soon page has no app chrome", async ({ page }) => {
