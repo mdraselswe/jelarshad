@@ -40,7 +40,7 @@ export async function HomeMissions() {
           href={routes.login({ next: routes.me() })}
           className={`${BODY} flex press flex-col justify-center gap-1 rounded-[20px] bg-white/15 px-4`}
         >
-          <span className="text-card-title">{t("game.startTitle")}</span>
+          <span className="text-card-title">{t("game.missionInvite")}</span>
           <span className="text-meta opacity-90">{t("game.startBody")}</span>
         </Link>
       </MissionsShell>

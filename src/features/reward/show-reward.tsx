@@ -23,7 +23,12 @@ export function stampText(t: Translate, reward: Reward): string | null {
  * themes. With nothing earned it falls back to a plain
  * confirmation, so a repeat action still says that it worked.
  */
-export function showReward(t: Translate, reward: Reward, plain: string) {
+export function showReward(
+  t: Translate,
+  reward: Reward,
+  plain: string,
+  options: { celebrate?: boolean } = {},
+) {
   const bonus = reward.missions?.reduce((sum, mission) => sum + mission.bonus, 0) ?? 0;
   if (reward.points <= 0 && reward.newStamps.length === 0 && bonus === 0 && !reward.levelUp) {
     toast.success(plain);
@@ -31,7 +36,7 @@ export function showReward(t: Translate, reward: Reward, plain: string) {
   }
   // A new level or stamp is celebrated full screen; everything else is a quick gold toast.
   const newStamp = reward.newStamps[0];
-  if (reward.levelUp || newStamp) {
+  if (options.celebrate !== false && (reward.levelUp || newStamp)) {
     announceMoment({
       points: reward.points,
       bonus,

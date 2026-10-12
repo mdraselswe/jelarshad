@@ -133,7 +133,31 @@ The calm base (indigo action, gold reward) stays. On top of it:
 - Rules unchanged: primary is never a status color, status is icon + text, every pair passes AA
   (`pnpm test:themes` also checks the category pairs).
 
-Approved screens: the "ShojaShapta নতুন ডিজাইন" canvas (mobile and desktop).
+Approved screens: the "ShojaShapta নতুন ডিজাইন" canvas (mobile and desktop), extended by §2d.
+
+## 2d. Live layer ("জীবন্ত", approved Oct 2026)
+
+On top of the colorful layer (§2c) the owner approved: sections with their own grounds, small live
+illustrations and a game layer (decision P15). Canvas: "জেলার স্বাদ — লাইভ গেমিফাইড ডিজাইন".
+
+- **Page ground**: the lavender background carries a faint dot pattern (`ground-dots`, token `--dot`).
+- **Panel** (`<Panel>`, and `<Section>`, which is a panel): a white card (radius 28/32) headed by an
+  `<IconChip>` (gradient tile `bg-tile-N`, white icon) and the title. A grouped list directly inside is flattened.
+- **Band** (`<Band tone>`): a full-width strip with a slowly moving wave on its top edge. Tones: `teal`
+  (missions, progress; `--gradient-mission`), `warm` (browsing districts and foods; dotted `--band-warm`),
+  `mint` (places, areas; `--band-mint`), `night` (rewards and the passport; `--gradient-night`). On desktop the band is
+  edge to edge while its content keeps the 1200px column. Two bands of one tone never touch.
+- **Hero band**: flat bottom with a wave on phones, an inset rounded card from 1024px. `art` puts a faint
+  illustration behind the content.
+- **Illustrations** (`components/illustration/food-art.tsx`): inline SVG, colors from the `--ill-*` tokens,
+  decorative (`aria-hidden`). Steam, float, route, pin, twinkle and drift use only transform/opacity
+  (`animate-fx-*`) and stop under reduced motion. Phone heroes carry at most one (the home bowl).
+- **Icons**: lucide line icons (24px grid, 1.9 stroke) in gradient tiles; no emoji as icons.
+- **Game layer** (`features/game`): level ring and XP bar, streak flame, mission rows (fixed 64px), badge
+  tiles, opt-in weekly board. New stamp or level: full-screen `RewardMoment` (confetti, medal/trophy); other
+  rewards stay a gold toast.
+- Loading: every new section has a fixed height path (level strip 84px, mission band body 136px), so the
+  guest, signed-in and skeleton states are the same size.
 
 ## 3. Fonts — perfect Bangla + English
 

@@ -15,6 +15,7 @@ import { cn } from "@/lib/cn";
 import { appConfig } from "@/config/app.config";
 import { attachPhotos } from "@/features/media/actions";
 import { showReward, stampText } from "@/features/reward/show-reward";
+import { levelNameKey } from "@/features/game/components/game-bits";
 import type { Reward } from "@/services/reward-service";
 import { uploadPhotos } from "@/features/media/upload";
 import { formatNumber } from "@/lib/format/number";
@@ -210,7 +211,8 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
           if (uploaded.failed > 0 || (attached && !attached.ok)) toast.error(t("photos.failed"));
         }
         setDone({ placeSlug: result.data.placeSlug, reward: result.data.reward });
-        showReward(t, result.data.reward, t("add.doneTitle"));
+        // The success screen below is the celebration, so the toast stays a toast.
+        showReward(t, result.data.reward, t("add.doneTitle"), { celebrate: false });
         router.refresh();
         return;
       }
@@ -235,13 +237,22 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         {done.reward.points > 0 && (
           <p className="mt-3 flex items-center justify-center gap-2">
             <span className="rounded-full bg-grad-reward px-3 py-1 font-display text-lg font-bold text-on-reward">
-              +{formatNumber(done.reward.points)}
+              +
+              {formatNumber(
+                done.reward.points +
+                  (done.reward.missions?.reduce((sum, mission) => sum + mission.bonus, 0) ?? 0),
+              )}
             </span>
             <span className="text-card-title">
               {stampText(t, done.reward) ?? t("reward.points")}
             </span>
           </p>
         )}
+        {done.reward.levelUp ? (
+          <p className="mt-2 text-card-title text-primary-text">
+            {t("game.levelUpBody", { name: t(levelNameKey(done.reward.levelUp.level)) })}
+          </p>
+        ) : null}
         <Link
           href={routes.place(done.placeSlug)}
           className="mt-5 flex h-14 press items-center justify-center rounded-button bg-primary bg-grad-action text-[17px] font-semibold text-primary-foreground"
