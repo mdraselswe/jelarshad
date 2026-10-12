@@ -19,13 +19,7 @@ export function PageShell({ children, header, className }: PageShellProps) {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col md:max-w-none lg:min-h-[calc(100dvh-72px)] lg:max-w-[1200px]">
       {header === undefined ? <Header /> : header}
-      <main
-        id="main"
-        className={cn(
-          "flex flex-1 flex-col pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-20",
-          className,
-        )}
-      >
+      <main id="main" className={cn("flex flex-1 flex-col pb-6 lg:pb-12", className)}>
         {children}
       </main>
     </div>

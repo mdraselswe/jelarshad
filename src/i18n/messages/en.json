@@ -231,7 +231,7 @@
     "districtsTitle": "Explore districts",
     "allDistricts": "See all {count} districts",
     "divisionOf": "{name} division",
-    "subtitle": "The real taste of every district, from people's own experience.",
+    "subtitle": "The real taste of every district's food, from people's own experience.",
     "categories": "Kinds of food",
     "cat": {
       "biryani": "Biryani",
@@ -299,7 +299,10 @@
     "districtMeta": "{division} division",
     "openFood": "Open food",
     "foodBannerMeta": "See where it is served across districts",
-    "areaMeta": "Area in {district}"
+    "areaMeta": "Area in {district}",
+    "addCta": "Add it if you know it",
+    "addHint": "Adding a place you know helps others find it.",
+    "tryTitle": "Try these too"
   },
   "placeType": {
     "restaurant": "Restaurant",
@@ -464,5 +467,10 @@
     "startBody": "Sign in to earn XP and stamps.",
     "districtBoardTitle": "Active contributors in this district",
     "boardLogin": "Sign in to appear on the list"
+  },
+  "footer": {
+    "builtWith": "Built with",
+    "by": "by",
+    "linkedin": "LinkedIn profile"
   }
 }

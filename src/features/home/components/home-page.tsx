@@ -1,7 +1,5 @@
 import { Suspense } from "react";
 
-import { LegalLinks } from "@/features/legal/components/legal-links";
-
 import { PageShell } from "@/components/layout/page-shell";
 import { LoadingRegion } from "@/components/ui/skeleton";
 import { GamePromo } from "@/features/game/components/game-promo";
@@ -47,7 +45,6 @@ export function HomePage() {
       <Suspense fallback={<AllDistrictsSectionSkeleton />}>
         <AllDistrictsSection />
       </Suspense>
-      <LegalLinks />
     </PageShell>
   );
 }

@@ -229,6 +229,65 @@ export function MagnifierArt({ className }: ArtProps) {
   );
 }
 
+/**
+ * "Nothing found": an empty plate with a magnifier hunting over it, a question mark that floats and
+ * a few sparkles. Uses ground tokens, so it reads on a white card in both themes.
+ */
+export function NotFoundArt({ className }: ArtProps) {
+  return (
+    <svg viewBox="0 0 220 160" aria-hidden className={className}>
+      <circle cx="110" cy="84" r="62" fill="var(--primary-soft)" />
+      <ellipse cx="110" cy="118" rx="54" ry="10" fill="var(--border)" />
+      <g className="animate-fx-float-b">
+        <ellipse
+          cx="110"
+          cy="96"
+          rx="46"
+          ry="16"
+          fill="var(--card)"
+          stroke="var(--border)"
+          strokeWidth="3"
+        />
+        <ellipse cx="110" cy="96" rx="30" ry="9" fill="var(--primary-soft)" />
+      </g>
+      <g className="animate-fx-float">
+        <circle cx="168" cy="38" r="17" fill="var(--reward)" />
+        <path
+          d="M162 34a6.5 6.5 0 1 1 9 6c-2 1-3 2.200-3 4.500M168 51h.01"
+          fill="none"
+          stroke="var(--reward-foreground)"
+          strokeWidth="3.500"
+          strokeLinecap="round"
+        />
+      </g>
+      <g className="animate-fx-scan">
+        <circle
+          cx="96"
+          cy="70"
+          r="22"
+          fill="var(--card)"
+          fillOpacity=".75"
+          stroke="var(--primary)"
+          strokeWidth="6"
+        />
+        <path d="M112 86l20 20" stroke="var(--primary)" strokeWidth="9" strokeLinecap="round" />
+      </g>
+      <g className="animate-fx-twinkle">
+        <path
+          d="M40 40l2.400 7.600L50 50l-7.600 2.400L40 60l-2.400-7.600L30 50l7.600-2.400z"
+          fill="var(--reward)"
+        />
+      </g>
+      <g className="animate-fx-twinkle [animation-delay:-1.3s]">
+        <path
+          d="M190 112l1.800 5.700 5.700 1.800-5.700 1.800L190 127l-1.800-5.700-5.700-1.800 5.700-1.800z"
+          fill="var(--primary)"
+        />
+      </g>
+    </svg>
+  );
+}
+
 /** Cloud that drifts across a hero. */
 export function CloudArt({ className }: ArtProps) {
   return (

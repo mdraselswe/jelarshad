@@ -23,6 +23,14 @@ test.describe("app shell", () => {
     expect(box.height).toBeCloseTo(66, 0);
   });
 
+  test("every page ends with the legal links and the builder's LinkedIn", async ({ page }) => {
+    await page.goto("/about");
+    const credit = page.getByRole("link", { name: /LinkedIn.*mdraselswe/ });
+    await expect(credit).toHaveAttribute("href", "https://linkedin.com/in/mdraselswe");
+    await expect(credit).toHaveAttribute("rel", /noopener/);
+    await expect(page.getByRole("link", { name: "গোপনীয়তা ও নিয়ম" })).toBeVisible();
+  });
+
   test("coming-soon page has no app chrome", async ({ page }) => {
     await page.goto("/coming-soon");
     await expect(page.getByRole("navigation", { name: "প্রধান মেনু" })).toHaveCount(0);

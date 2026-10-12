@@ -6,6 +6,7 @@ import { routes } from "@/config/routes";
 import { tileClass } from "@/lib/tone";
 import { MagnifierArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
+import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -59,23 +60,20 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           </div>
         )}
         <div className={`flex flex-col gap-4 ${showFilters ? "lg:col-span-9" : "lg:col-span-12"}`}>
-          {counts[tab] === 0 && (
-            <EmptyState
-              art={<MagnifierArt />}
-              message={
-                <>
-                  <strong className="block font-semibold">
-                    {filtered && outcome.total > 0
-                      ? t("search.emptyFiltered")
-                      : t("search.empty", { q })}
-                  </strong>
-                  {filtered && outcome.total > 0
-                    ? t("search.emptyFilteredHint")
-                    : t("search.emptyHint")}
-                </>
-              }
-            />
-          )}
+          {counts[tab] === 0 &&
+            (filtered && outcome.total > 0 ? (
+              <EmptyState
+                art={<MagnifierArt />}
+                message={
+                  <>
+                    <strong className="block font-semibold">{t("search.emptyFiltered")}</strong>
+                    {t("search.emptyFilteredHint")}
+                  </>
+                }
+              />
+            ) : (
+              <SearchEmpty q={q} />
+            ))}
 
           {showFoods && outcome.foods[0] && (
             <Link
