@@ -391,8 +391,8 @@ select is(
   10, 'an action that remembers its district counts on that district board'
 );
 select is_empty(
-  $ select 1 from district_leaderboard(1::smallint, now() - interval '1 day', 5)
-     where user_id = '00000000-0000-4000-8000-0000000000a1' $,
+  $$ select 1 from district_leaderboard(1::smallint, now() - interval '1 day', 5)
+     where user_id = '00000000-0000-4000-8000-0000000000a1' $$,
   'and not on another district board'
 );
 select is(
