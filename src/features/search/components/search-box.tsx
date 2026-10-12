@@ -1,10 +1,12 @@
 "use client";
 
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { SearchIcon, XIcon } from "lucide-react";
+import { PlusIcon, SearchIcon, XIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 
+import { NotFoundArt } from "@/components/illustration/food-art";
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { appConfig } from "@/config/app.config";
@@ -12,6 +14,7 @@ import { routes } from "@/config/routes";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useT } from "@/i18n/client";
+import { formatNumber } from "@/lib/format/number";
 
 import type { SearchSuggestions } from "../types";
 import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
@@ -76,9 +79,26 @@ function Suggestions({ q }: { q: string }) {
 
   if (groups.length === 0) {
     return (
-      <p role="status" className="px-1 text-meta text-muted-foreground">
-        {t("search.empty", { q: data.query || q })}
-      </p>
+      <section
+        role="status"
+        className="animate-rise rounded-[28px] border border-border bg-card px-5 py-6 text-center shadow-card"
+      >
+        <NotFoundArt className="mx-auto w-44" />
+        <h2 className="mt-1 font-display text-[20px] leading-tight font-bold">
+          {t("search.empty", { q: data.query || q })}
+        </h2>
+        <p className="mt-1.5 text-meta text-muted-foreground">{t("search.emptyHint")}</p>
+        <Link
+          href={routes.add()}
+          className="mt-4 inline-flex h-12 press items-center gap-2 rounded-full bg-grad-reward px-5 text-[15px] font-bold text-on-reward shadow-card"
+        >
+          <PlusIcon className="size-5" aria-hidden strokeWidth={2.6} />
+          {t("search.addCta")}
+          <span className="rounded-full bg-on-reward px-2 font-display text-[13px] text-reward-soft">
+            +{formatNumber(appConfig.points.experience)}
+          </span>
+        </Link>
+      </section>
     );
   }
   return (
