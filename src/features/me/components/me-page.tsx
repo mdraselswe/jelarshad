@@ -8,7 +8,6 @@ import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
 import { Button } from "@/components/ui/button";
-import { LegalLinks } from "@/features/legal/components/legal-links";
 import { MeGame } from "@/features/game/components/me-game";
 import { levelNameKey, LevelRing, StreakFlame } from "@/features/game/components/game-bits";
 import { MePassport } from "@/features/passport/components/passport-section";
@@ -208,7 +207,6 @@ export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
           </form>
         </div>
       </Section>
-      <LegalLinks />
     </PageShell>
   );
 }

@@ -231,7 +231,7 @@
     "districtsTitle": "জেলা ঘুরে দেখুন",
     "allDistricts": "সব {count}টি জেলা দেখুন",
     "divisionOf": "{name} বিভাগ",
-    "subtitle": "দেশের প্রতিটি জেলার আসল স্বাদ, মানুষের অভিজ্ঞতায়।",
+    "subtitle": "দেশের প্রতিটি জেলার খাবারের আসল স্বাদ, মানুষের অভিজ্ঞতায়।",
     "categories": "খাবারের ধরন",
     "cat": {
       "biryani": "বিরিয়ানি",
@@ -299,7 +299,10 @@
     "districtMeta": "{division} বিভাগ",
     "openFood": "খাবার দেখুন",
     "foodBannerMeta": "সব জেলায় কোথায় পাওয়া যায় দেখুন",
-    "areaMeta": "{district}-এর এলাকা"
+    "areaMeta": "{district}-এর এলাকা",
+    "addCta": "আপনি জানলে যোগ করুন",
+    "addHint": "আপনার জানা জায়গা যোগ করলে আরও অনেকে খুঁজে পাবে।",
+    "tryTitle": "এগুলোও খুঁজে দেখুন"
   },
   "placeType": {
     "restaurant": "রেস্টুরেন্ট",
@@ -464,5 +467,10 @@
     "startBody": "লগইন করে XP ও স্ট্যাম্প পান।",
     "districtBoardTitle": "এই জেলার সক্রিয় অবদানকারী",
     "boardLogin": "লগইন করে তালিকায় নাম দিন"
+  },
+  "footer": {
+    "builtWith": "Built with",
+    "by": "by",
+    "linkedin": "LinkedIn প্রোফাইল"
   }
 }

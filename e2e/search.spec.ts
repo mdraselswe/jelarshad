@@ -54,7 +54,10 @@ test.describe("search page", () => {
 
   test("an empty result explains itself", async ({ page }) => {
     await page.goto("/search?q=zzzzqq");
-    await expect(page.getByText("“zzzzqq” নামে কিছু পাওয়া যায়নি।")).toBeVisible();
+    await expect(page.getByText("“zzzzqq” নামে কিছু পাওয়া যায়নি।").first()).toBeVisible();
+    // the invitation to add it, with the XP it earns, and other searches to try
+    await expect(page.getByRole("link", { name: /আপনি জানলে যোগ করুন/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: "কাচ্চি" }).first()).toBeVisible();
     await expect(page.getByText("বানান বদলে দেখুন")).toBeVisible();
   });
 

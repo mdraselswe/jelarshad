@@ -18,7 +18,7 @@ import { DesktopNavLinks, DesktopSearchLink } from "./desktop-nav-client";
 export function DesktopNav() {
   const t = getT();
   return (
-    <header className="hidden border-b border-border bg-card lg:block">
+    <header className="header-sticky hidden border-b border-border [--header-bg:var(--card)] lg:block">
       <div className="mx-auto flex h-18 max-w-[1200px] items-center gap-6 px-8">
         <Link
           href={routes.home()}
