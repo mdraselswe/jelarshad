@@ -61,6 +61,30 @@ test.describe("search page", () => {
     await expect(page.getByText("বানান বদলে দেখুন")).toBeVisible();
   });
 
+  test("typing a name that does not exist shows the illustrated not-found card", async ({
+    page,
+  }) => {
+    await page.goto("/search");
+    await page.getByRole("searchbox", { name: "খুঁজুন" }).fill("zzzzqq");
+    const card = page.getByRole("status");
+    await expect(card.getByRole("heading", { name: /নামে কিছু পাওয়া যায়নি/ })).toBeVisible();
+    await expect(card.locator("svg.w-44")).toBeVisible();
+    await expect(card.getByRole("link", { name: /আপনি জানলে যোগ করুন/ })).toBeVisible();
+  });
+
+  test("on desktop the search bar never paints over the top nav when scrolled", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 320 });
+    await page.goto("/search?q=kachchi");
+    await page.evaluate(() => window.scrollTo(0, 400));
+    const topmostIsNav = await page.evaluate(() => {
+      const hit = document.elementsFromPoint(900, 30)[0];
+      return hit?.closest("header") !== null;
+    });
+    expect(topmostIsNav).toBe(true);
+  });
+
   test("typing shows grouped suggestions, then Enter opens the results", async ({ page }) => {
     await page.goto("/search");
     const box = page.getByRole("searchbox", { name: "খুঁজুন" });
