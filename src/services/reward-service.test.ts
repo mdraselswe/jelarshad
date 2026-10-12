@@ -214,3 +214,23 @@ describe("levels, streak and missions", () => {
     expect((await rewards.leaderboard(user.id)).entries).toEqual([]);
   });
 });
+
+describe("district board", () => {
+  it("counts only the actions of that district, for people who opted in", async () => {
+    const { experience, rewards } = setup();
+    await experience.add(user, {
+      placeId: fixtureIds.places.second, // a place in Bogura (district 2)
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    const BOGURA = 2;
+    const NATORE = 4;
+    expect((await rewards.districtLeaderboard(BOGURA, user.id)).entries).toEqual([]);
+    await rewards.setLeaderboardOptIn(user.id, true);
+    const bogura = await rewards.districtLeaderboard(BOGURA, user.id);
+    expect(bogura.optedIn).toBe(true);
+    // +10 for the experience; the weekly district bonus belongs to no district
+    expect(bogura.entries.map((entry) => entry.xp)).toEqual([10]);
+    expect((await rewards.districtLeaderboard(NATORE, user.id)).entries).toEqual([]);
+  });
+});

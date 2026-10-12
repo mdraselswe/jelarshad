@@ -5,7 +5,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(70);
+select plan(73);
 
 -- Fixtures (as the migration owner, RLS bypassed) -------------------------------------------
 insert into auth.users (id, email) values
@@ -379,6 +379,25 @@ select is(
 select is(
   (select count(*)::int from weekly_leaderboard(now() + interval '1 day', 5)),
   0, 'actions before the start of the week do not count'
+);
+
+-- District board (migration 0063) ------------------------------------------------------------------
+select award_points(
+  '00000000-0000-4000-8000-0000000000a1', 'experience', 'experience', 'board-district-1', 10, 900::smallint
+);
+select is(
+  (select xp from district_leaderboard(900::smallint, now() - interval '1 day', 5)
+    where user_id = '00000000-0000-4000-8000-0000000000a1'),
+  10, 'an action that remembers its district counts on that district board'
+);
+select is_empty(
+  $ select 1 from district_leaderboard(1::smallint, now() - interval '1 day', 5)
+     where user_id = '00000000-0000-4000-8000-0000000000a1' $,
+  'and not on another district board'
+);
+select is(
+  (select district_id from point_events where entity_id = 'board-1'),
+  null, 'an action without a district is kept without one'
 );
 
 select * from finish();

@@ -197,6 +197,8 @@ export interface RewardRepository {
     entity: RewardEntity;
     entityId: string;
     points: number;
+    /** The district the action happened in, for the district board. */
+    districtId?: number | null;
   }): Promise<number>;
   /** Takes back everything awarded for this entity (hidden or removed content); returns the points removed. */
   revoke(entity: RewardEntity, entityId: string): Promise<number>;
@@ -215,6 +217,8 @@ export interface RewardRepository {
   kindCounts(userId: string): Promise<Partial<Record<PointKind, number>>>;
   /** People who opted in, most XP since a date first. */
   weeklyTop(since: Date, limit: number): Promise<LeaderboardEntry[]>;
+  /** The same, counting only actions in one district. */
+  districtTop(districtId: number, since: Date, limit: number): Promise<LeaderboardEntry[]>;
   leaderboardOptIn(userId: string): Promise<boolean>;
   setLeaderboardOptIn(userId: string, optIn: boolean): Promise<void>;
 }
