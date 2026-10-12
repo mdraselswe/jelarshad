@@ -25,7 +25,7 @@ test.describe("app shell", () => {
 
   test("every page ends with the legal links and the builder's LinkedIn", async ({ page }) => {
     await page.goto("/about");
-    const credit = page.getByRole("link", { name: /LinkedIn.*mdraselswe/ });
+    const credit = page.getByRole("link", { name: /LinkedIn.*Muhammad Rasel/ });
     await expect(credit).toHaveAttribute("href", "https://linkedin.com/in/mdraselswe");
     await expect(credit).toHaveAttribute("rel", /noopener/);
     await expect(page.getByRole("link", { name: "গোপনীয়তা ও নিয়ম" })).toBeVisible();
