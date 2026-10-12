@@ -5,8 +5,18 @@ import { clientEnv, serverEnv } from "@/config/env";
 import { routes } from "@/config/routes";
 import { refreshAuthSession } from "@/infrastructure/container";
 import { decideLaunchGate, PREVIEW_COOKIE, PREVIEW_PARAM } from "@/lib/launch-gate";
+import { legacyHostRedirect } from "@/lib/legacy-host";
 
 export async function proxy(request: NextRequest) {
+  // The old address keeps working: it moves to the new one, same path (permanent redirect).
+  const moved = legacyHostRedirect({
+    requestHost: request.headers.get("host") ?? request.nextUrl.host,
+    siteUrl: clientEnv.NEXT_PUBLIC_SITE_URL,
+    pathname: request.nextUrl.pathname,
+    search: request.nextUrl.search,
+  });
+  if (moved) return NextResponse.redirect(moved, 308);
+
   const launched = clientEnv.NEXT_PUBLIC_LAUNCHED;
   const decision = await decideLaunchGate({
     launched,

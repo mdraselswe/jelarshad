@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("app shell", () => {
   test("home shows the header logo and the bottom nav with home active", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("link", { name: "সোজাসাপ্টা" }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "জেলার স্বাদ" }).first()).toBeVisible();
 
     const nav = page.getByRole("navigation", { name: "প্রধান মেনু" });
     await expect(nav.getByRole("link")).toHaveText(["হোম", "খুঁজুন", "যোগ", "আমি"]);

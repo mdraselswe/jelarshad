@@ -1,7 +1,7 @@
 # 01 — Product Spec (MVP)
 
 ## 1. Vision
-**ShojaShapta** = Bangladesh's community-validated food map.
+**জেলার স্বাদ (Jelar Shad)** = Bangladesh's community-validated food map.
 People add → people verify → people discover → better data → more people.
 
 Core loop:
@@ -119,7 +119,7 @@ Built only from data we already collect (experiences, contributions, claim votes
 
 ### 3.12 Share
 Food, place, district and top-list pages: native share sheet (Web Share API) with copy-link fallback.
-Every page has its own OG image card with ShojaShapta branding.
+Every page has its own OG image card with Jelar Shad branding.
 
 ### 3.13 Admin
 Queues: reports · disputed claims · edit suggestions · new places · duplicate candidates · flagged media.

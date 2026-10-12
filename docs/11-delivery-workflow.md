@@ -2,7 +2,7 @@
 
 Goal: the app is built phase by phase (`10-roadmap.md`). Every task is tested and committed; every
 merged change to `main` is tested again, database migrations run, and the site deploys to
-**https://shojashapta.com** automatically. Nothing reaches production without passing tests.
+**https://jelarshad.shojashapta.com** automatically. Nothing reaches production without passing tests.
 
 ## 1. Environments
 
@@ -10,7 +10,7 @@ merged change to `main` is tested again, database migrations run, and the site d
 |---|---|---|---|---|
 | Local | `http://localhost:3000` | any | Supabase **dev** project (or local Docker) | Build & try |
 | Preview | `https://shojashapta-git-<branch>-<team>.vercel.app` | every PR | Supabase **dev** project | Review a phase before merge |
-| Production | `https://shojashapta.com` | `main` | Supabase **prod** project | Real users |
+| Production | `https://jelarshad.shojashapta.com` | `main` | Supabase **prod** project | Real users |
 
 Two Supabase free projects (dev + prod) are allowed on the free plan. Cloudinary: one account, folders
 `shojashapta-dev/` and `shojashapta/`.
@@ -41,7 +41,7 @@ docs/ci/vercel.json   → vercel.json                    (turns off Vercel's own
 PR opened/updated ─► CI: install → typecheck → lint → unit tests → test:themes → build → e2e (Playwright) → Lighthouse budgets
                  └─► Preview: migrate dev DB → vercel deploy (preview) → URL in the job summary
 merge to main    ─► CI again ─► Deploy: supabase db push (prod) → vercel build --prod → vercel deploy --prebuilt --prod
-                                └─► smoke test https://shojashapta.com (home, a food page, /api/health) → fail = alert
+                                └─► smoke test the production URL (home, a food page, /api/health) → fail = alert
 ```
 
 Why deploy from Actions instead of Vercel's automatic git deploy: tests and **database migrations run
@@ -58,23 +58,29 @@ move off Vercel (only the last step changes).
 App env vars (Supabase URL/keys, Cloudinary, `NEXT_PUBLIC_SITE_URL`) live in **Vercel project settings**
 per environment (Preview / Production) and are pulled by `vercel pull` during the build.
 
-## 4. Domain: shojashapta.com
+## 4. Domain: jelarshad.shojashapta.com
 
-> The domain registration is the **one paid item** in the project (yearly fee at the registrar).
-> Everything else stays free / no card. Buy from any registrar; keep auto-renew on.
+> The app lives on a **subdomain** of the owner's existing domain `shojashapta.com`. A main domain of its
+> own may come later; nothing in the code depends on the host (everything uses `NEXT_PUBLIC_SITE_URL`).
 
-1. Vercel → Project → Settings → Domains → add `shojashapta.com` and `www.shojashapta.com`.
-   Set `www` → redirect (308) to `shojashapta.com` (apex is canonical).
-2. At the registrar, add exactly the DNS records Vercel shows (an `A` record for the apex and a
-   `CNAME` for `www`), or point the nameservers to Vercel. Wait for "Valid configuration"; HTTPS is automatic.
-3. Vercel env `NEXT_PUBLIC_SITE_URL`: Production = `https://shojashapta.com`, Preview = the preview URL
+1. Vercel → Project → Settings → Domains → add `jelarshad.shojashapta.com`. Keep `shojashapta.com` and
+   `www.shojashapta.com` there too: once `NEXT_PUBLIC_SITE_URL` points to the new address the app itself
+   redirects them (308, same path; `src/lib/legacy-host.ts`).
+2. At the DNS provider of `shojashapta.com`, add the record Vercel shows for the subdomain (a `CNAME`
+   `jelarshad` → `cname.vercel-dns.com`, or the value shown). Wait for "Valid configuration"; HTTPS is automatic.
+3. Vercel env `NEXT_PUBLIC_SITE_URL`: Production = `https://jelarshad.shojashapta.com`, Preview = the preview URL
    (`https://$VERCEL_BRANCH_URL`), Local = `http://localhost:3000`. All canonical/OG/sitemap URLs use it.
-4. Supabase **prod** → Authentication → URL configuration: Site URL `https://shojashapta.com`;
-   Redirect URLs `https://shojashapta.com/auth/callback`. Supabase **dev**: `http://localhost:3000/auth/callback`
-   and `https://*-<your-vercel-team>.vercel.app/auth/callback`.
-5. Google Cloud → OAuth client: Authorized JavaScript origins `https://shojashapta.com`, `http://localhost:3000`;
-   Authorized redirect URIs = the callback URL shown in each Supabase project's Google provider settings.
-6. Email for the domain (optional, later): free forwarding at the registrar/Cloudflare, e.g. `hello@shojashapta.com`.
+   Then redeploy.
+4. GitHub → Settings → Secrets and variables → Actions → Variables: `PRODUCTION_URL` =
+   `https://jelarshad.shojashapta.com` (the deploy smoke test uses it).
+5. Supabase **prod** → Authentication → URL configuration: Site URL `https://jelarshad.shojashapta.com`;
+   Redirect URLs `https://jelarshad.shojashapta.com/auth/callback` (keep the old one until the move is done).
+   Supabase **dev**: `http://localhost:3000/auth/callback` and `https://*-<your-vercel-team>.vercel.app/auth/callback`.
+6. Google Cloud → OAuth client: Authorized JavaScript origins `https://jelarshad.shojashapta.com`,
+   `http://localhost:3000`; Authorized redirect URIs = the callback URL shown in each Supabase project's Google
+   provider settings (unchanged).
+7. Search Console (after launch): add the new address as a property and submit its `/sitemap.xml`.
+8. Email for the domain (optional, later): free forwarding at the registrar/Cloudflare.
 
 ### Before public launch (Phase 0–8)
 Production is live from Phase 0 but shows a **"শিগগিরই আসছে"** page and is `noindex`, controlled by

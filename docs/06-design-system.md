@@ -1,7 +1,7 @@
 # 06 — Design System, Fonts, Motion & UI
 
 Approved screens: `docs/design/` (markup reference for every MVP screen) and the live canvas
-"ShojaShapta স্ক্রিন ডিজাইন" (Claude artifact). When code and this doc disagree with the approved
+"জেলার স্বাদ (ex ShojaShapta) স্ক্রিন ডিজাইন" (Claude artifact). When code and this doc disagree with the approved
 screens, the screens win; update this doc.
 
 ## 1. Feel

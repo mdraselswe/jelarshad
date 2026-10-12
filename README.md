@@ -1,6 +1,6 @@
-# ShojaShapta (সোজাসাপ্টা) — https://shojashapta.com
+# জেলার স্বাদ (Jelar Shad) — https://jelarshad.shojashapta.com
 
-> খাবার নিয়ে সোজাসাপ্টা কথা — বাংলাদেশে কোথায় কী খাবেন?
+> জেলায় জেলায় আসল স্বাদের খোঁজ — বাংলাদেশে কোথায় কী খাবেন?
 
 A community-powered, community-validated food discovery web app (PWA) for Bangladesh.
 People add where a food is good, others confirm or correct it, and everyone can find
@@ -30,7 +30,7 @@ automatically and follow the rules in `docs/`.
 | `docs/08-seo-performance-pwa.md` | SEO, Core Web Vitals budgets, PWA | Before pages ship |
 | `docs/09-security-and-limits.md` | RLS, rate limits, uploads, free-tier protection | Before any write path |
 | `docs/10-roadmap.md` | Phase-by-phase tasks with done criteria | To plan each work session |
-| `docs/11-delivery-workflow.md` | Git flow, CI/CD, auto-deploy, domain shojashapta.com, rollback | Before the first commit |
+| `docs/11-delivery-workflow.md` | Git flow, CI/CD, auto-deploy, domain jelarshad.shojashapta.com, rollback | Before the first commit |
 | `docs/ci/` | GitHub Actions / Vercel / Lighthouse templates (installed in Phase 0.3) | Phase 0.3 |
 | `brand/` | Final logo, app icons, favicon, share image + usage rules | Before header, manifest, OG |
 | `docs/design/` | Approved screen designs (markup reference) | Before building any screen |

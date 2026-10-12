@@ -1,5 +1,5 @@
 # Installed in Phase 0.3 as .github/workflows/deploy.yml
-# Push to main: run the full CI, migrate PROD database, deploy to https://shojashapta.com, smoke test.
+# Push to main: run the full CI, migrate PROD database, deploy to the production URL, smoke test.
 name: Deploy production
 on:
   push:
@@ -14,7 +14,8 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: { name: production, url: https://shojashapta.com }
+    environment:
+      { name: production, url: "${{ vars.PRODUCTION_URL || 'https://shojashapta.com' }}" }
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -47,13 +48,16 @@ jobs:
       - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - run: vercel deploy --prebuilt --archive=tgz --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Smoke test
+        env:
+          # Set the repository variable PRODUCTION_URL to the live address (default: the first domain).
+          BASE_URL: ${{ vars.PRODUCTION_URL || 'https://shojashapta.com' }}
         run: |
           # A new production deployment takes a short while to start serving; retry for up to ~2 min.
           # A 200 alone could come from anyone (a registrar parking page answers 200 for every path):
           # /api/health must be ours and must report the commit we just deployed.
           ok=false
           for attempt in $(seq 1 12); do
-            health=$(curl -s --max-time 15 "https://shojashapta.com/api/health" || true)
+            health=$(curl -s --max-time 15 "$BASE_URL/api/health" || true)
             echo "attempt $attempt: /api/health -> $health"
             if echo "$health" | grep -q '"ok":true' && echo "$health" | grep -q "\"version\":\"$GITHUB_SHA\""; then
               ok=true; break
@@ -62,6 +66,6 @@ jobs:
           done
           $ok || { echo "::error::production is not serving $GITHUB_SHA"; exit 1; }
           for path in / /food/doi; do
-            code=$(curl -s -o /dev/null --max-time 15 -w "%{http_code}" "https://shojashapta.com$path")
+            code=$(curl -sL -o /dev/null --max-time 15 -w "%{http_code}" "$BASE_URL$path")
             echo "$path -> $code"; [ "$code" = "200" ] || exit 1
           done

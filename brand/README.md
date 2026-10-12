@@ -1,7 +1,7 @@
-# ShojaShapta brand assets
+# Jelar Shad (জেলার স্বাদ) brand assets
 
 Final logo: **"কথার সিল"** (concept 6) — a round seal with a speech-bubble tail (people's honest talk +
-passport stamp), a dashed inner ring (the stamp), a bowl (food) and a gold straight line (সোজা).
+passport stamp), a dashed inner ring (the stamp), a bowl (food) and a gold straight line (a plain, honest word on every dish).
 Seen whole, it also reads as a smiling face.
 
 All SVGs are pure vector: text is converted to outlines (no font needed) and the cut-outs are real
@@ -16,10 +16,10 @@ transparency, so every file works on any background.
 | `logo/mark-white.svg` | Symbol on dark/indigo backgrounds |
 | `logo/mark-mono.svg` | One color (`currentColor`) — stamps, watermarks, print |
 | `logo/mark-small.svg` | Simplified symbol for 16–32px (no dashed ring) |
-| `logo/lockup.svg` | Symbol + "সোজাসাপ্টা" + tagline, on light backgrounds |
+| `logo/lockup.svg` | Symbol + "জেলার স্বাদ" + tagline, on light backgrounds |
 | `logo/lockup-white.svg` | Same on dark backgrounds |
 | `logo/lockup-compact.svg` | Symbol + name, no tagline (header) |
-| `logo/lockup-en.svg` | Symbol + Bangla name + "ShojaShapta" |
+| `logo/lockup-en.svg` | Symbol + Bangla name + "Jelar Shad" |
 | `logo/app-icon.svg` | Rounded-square app icon source (1024) |
 | `logo/app-icon-maskable.svg` | Full-bleed icon with safe zone (Android maskable) |
 | `logo/icon-192.png`, `logo/icon-512.png` | PWA manifest icons |

@@ -48,7 +48,7 @@ test.describe("search engines", () => {
 test.describe("installable app", () => {
   test("the manifest names the app, starts at home and has the icons", async ({ request }) => {
     const manifest = await (await request.get("/manifest.webmanifest")).json();
-    expect(manifest.short_name).toBe("ShojaShapta");
+    expect(manifest.short_name).toBe("Jelar Shad");
     expect(manifest.display).toBe("standalone");
     expect(manifest.start_url).toBe("/?source=pwa");
     const purposes = manifest.icons.map((icon: { purpose?: string }) => icon.purpose ?? "any");
