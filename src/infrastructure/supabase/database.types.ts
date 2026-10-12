@@ -1071,7 +1071,11 @@ export type Database = {
       };
       weekly_leaderboard: {
         Args: { p_limit: number; p_since: string };
-        Returns: { display_name: string; user_id: string; xp: number }[];
+        Returns: {
+          display_name: string;
+          user_id: string;
+          xp: number;
+        }[];
       };
       wilson_lower_bound: { Args: { n: number; pos: number; z?: number }; Returns: number };
     };
