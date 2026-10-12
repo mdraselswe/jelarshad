@@ -461,6 +461,8 @@
     "promoCta": "See passport",
     "startTitle": "Start your passport",
     "missionInvite": "Sign in to take today's mission",
-    "startBody": "Sign in to earn XP and stamps."
+    "startBody": "Sign in to earn XP and stamps.",
+    "districtBoardTitle": "Active contributors in this district",
+    "boardLogin": "Sign in to appear on the list"
   }
 }

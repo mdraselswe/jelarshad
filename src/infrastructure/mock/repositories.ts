@@ -66,11 +66,30 @@ export function createMockRepositories(): Repositories {
       points: number;
       revoked: boolean;
       createdAt: Date;
+      districtId: number | null;
     }[],
     leaderboardOptIn: new Set<string>(),
     stamps: [] as (Stamp & { userId: string })[],
     media: [] as (MediaRef & { entity: string; entityId: string })[],
     rateEvents: [] as { userId: string; action: string; at: Date }[],
+  };
+
+  // Opted-in people with the most XP since a date, optionally only for one district.
+  const topOf = (since: Date, limit: number, districtId: number | null) => {
+    const totals = new Map<string, number>();
+    for (const e of db.points) {
+      if (e.revoked || e.createdAt < since || !db.leaderboardOptIn.has(e.userId)) continue;
+      if (districtId !== null && e.districtId !== districtId) continue;
+      totals.set(e.userId, (totals.get(e.userId) ?? 0) + e.points);
+    }
+    return [...totals.entries()]
+      .map(([userId, xp]) => ({
+        userId,
+        displayName: userId === fixtures.demoUser.id ? fixtures.demoUser.displayName : userId,
+        xp,
+      }))
+      .sort((a, b) => b.xp - a.xp)
+      .slice(0, limit);
   };
 
   const foodWithStats = (food: Food): Food => {
@@ -547,7 +566,7 @@ export function createMockRepositories(): Repositories {
     },
 
     rewards: {
-      award: async ({ userId, kind, entity, entityId, points }) => {
+      award: async ({ userId, kind, entity, entityId, points, districtId = null }) => {
         if (
           db.points.some((e) => e.userId === userId && e.kind === kind && e.entityId === entityId)
         ) {
@@ -561,6 +580,7 @@ export function createMockRepositories(): Repositories {
           points,
           revoked: false,
           createdAt: new Date(),
+          districtId,
         });
         return points;
       },
@@ -621,21 +641,8 @@ export function createMockRepositories(): Repositories {
         }
         return counts;
       },
-      weeklyTop: async (since, limit) => {
-        const totals = new Map<string, number>();
-        for (const e of db.points) {
-          if (e.revoked || e.createdAt < since || !db.leaderboardOptIn.has(e.userId)) continue;
-          totals.set(e.userId, (totals.get(e.userId) ?? 0) + e.points);
-        }
-        return [...totals.entries()]
-          .map(([userId, xp]) => ({
-            userId,
-            displayName: userId === fixtures.demoUser.id ? fixtures.demoUser.displayName : userId,
-            xp,
-          }))
-          .sort((a, b) => b.xp - a.xp)
-          .slice(0, limit);
-      },
+      weeklyTop: async (since, limit) => topOf(since, limit, null),
+      districtTop: async (districtId, since, limit) => topOf(since, limit, districtId),
       leaderboardOptIn: async (userId) => db.leaderboardOptIn.has(userId),
       setLeaderboardOptIn: async (userId, optIn) => {
         if (optIn) db.leaderboardOptIn.add(userId);

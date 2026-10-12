@@ -723,6 +723,7 @@ export type Database = {
       point_events: {
         Row: {
           created_at: string;
+          district_id: number | null;
           entity: string;
           entity_id: string;
           id: number;
@@ -733,6 +734,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
+          district_id?: number | null;
           entity: string;
           entity_id: string;
           id?: number;
@@ -743,6 +745,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
+          district_id?: number | null;
           entity?: string;
           entity_id?: string;
           id?: number;
@@ -752,6 +755,13 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "point_events_district_id_fkey";
+            columns: ["district_id"];
+            isOneToOne: false;
+            referencedRelation: "districts";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "point_events_user_id_fkey";
             columns: ["user_id"];
@@ -1020,6 +1030,7 @@ export type Database = {
     Functions: {
       award_points: {
         Args: {
+          p_district?: number;
           p_entity: string;
           p_entity_id: string;
           p_kind: string;
@@ -1031,6 +1042,14 @@ export type Database = {
       check_rate_limit: {
         Args: { p_action: string; p_max: number; p_user: string; p_window: string };
         Returns: boolean;
+      };
+      district_leaderboard: {
+        Args: { p_district: number; p_limit: number; p_since: string };
+        Returns: {
+          display_name: string;
+          user_id: string;
+          xp: number;
+        }[];
       };
       is_active_user: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };

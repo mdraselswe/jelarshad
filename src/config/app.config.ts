@@ -152,6 +152,8 @@ export const appConfig = {
     ],
     /** People on the weekly board. */
     leaderboardSize: 5,
+    /** People on a district's weekly board (the district page). */
+    districtBoardSize: 3,
   },
 
   seo: {

@@ -957,13 +957,14 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
     },
 
     rewards: {
-      async award({ userId, kind, entity, entityId, points }) {
+      async award({ userId, kind, entity, entityId, points, districtId }) {
         const { data, error } = await writer(clients).rpc("award_points", {
           p_user: userId,
           p_kind: kind,
           p_entity: entity,
           p_entity_id: entityId,
           p_points: points,
+          ...(districtId != null ? { p_district: districtId } : {}),
         });
         if (error) throw new Error(`Supabase award_points: ${error.message}`);
         return data ?? 0;
@@ -1055,6 +1056,19 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           p_limit: limit,
         });
         if (error) throw new Error(`Supabase weekly_leaderboard: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          userId: row.user_id,
+          displayName: row.display_name,
+          xp: row.xp,
+        }));
+      },
+      async districtTop(districtId, since, limit) {
+        const { data, error } = await writer(clients).rpc("district_leaderboard", {
+          p_district: districtId,
+          p_since: since.toISOString(),
+          p_limit: limit,
+        });
+        if (error) throw new Error(`Supabase district_leaderboard: ${error.message}`);
         return (data ?? []).map((row) => ({
           userId: row.user_id,
           displayName: row.display_name,

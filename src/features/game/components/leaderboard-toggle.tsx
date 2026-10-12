@@ -10,7 +10,13 @@ import { toast } from "@/lib/toast";
 import { setLeaderboardOptIn } from "../actions";
 
 /** The switch that puts the person's name on the weekly board. Optimistic; off by default. */
-export function LeaderboardToggle({ initial }: { initial: boolean }) {
+export function LeaderboardToggle({
+  initial,
+  className,
+}: {
+  initial: boolean;
+  className?: string;
+}) {
   const t = useT();
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -35,11 +41,16 @@ export function LeaderboardToggle({ initial }: { initial: boolean }) {
       role="switch"
       aria-checked={on}
       onClick={toggle}
-      className="flex w-full press items-center gap-3 rounded-[20px] bg-card p-3 text-left"
+      className={cn(
+        "flex w-full press items-center gap-3 rounded-[20px] bg-card p-3 text-left",
+        className,
+      )}
     >
       <span className="min-w-0 flex-1">
-        <span className="block text-card-title">{t("game.boardOptIn")}</span>
-        <span className="block text-meta text-muted-foreground">{t("game.boardOptInHint")}</span>
+        <span className="block truncate text-card-title">{t("game.boardOptIn")}</span>
+        <span className="block truncate text-meta text-muted-foreground">
+          {t("game.boardOptInHint")}
+        </span>
       </span>
       <span
         aria-hidden

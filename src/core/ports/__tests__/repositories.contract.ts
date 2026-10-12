@@ -267,6 +267,25 @@ export function repositoryContract(
         expect((await repos.rewards.weeklyTop(since, 5)).some((e) => e.userId === userId)).toBe(
           false,
         );
+
+        // an action that remembers its district appears on that district's board only
+        await repos.rewards.setLeaderboardOptIn(userId, true);
+        const bogura = await repos.districts.bySlug("bogura");
+        if (!bogura) throw new Error("fixture district missing");
+        await repos.rewards.award({
+          userId,
+          kind: "experience",
+          entity: "experience",
+          entityId: `contract-district-${Date.now()}`,
+          points: 10,
+          districtId: bogura.id,
+        });
+        expect(
+          (await repos.rewards.districtTop(bogura.id, since, 5)).some(
+            (entry) => entry.userId === userId && entry.xp >= 10,
+          ),
+        ).toBe(true);
+        await repos.rewards.setLeaderboardOptIn(userId, false);
       },
     );
 

@@ -8,6 +8,7 @@ import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import type { DistrictHeader } from "@/services/catalog-service";
 
+import { DistrictBoard, DistrictBoardSkeleton } from "@/features/game/components/district-board";
 import { ShareButton } from "@/features/share/components/share-button";
 import { DistrictAreasSection } from "./district-areas-section";
 import { DistrictFamousSection } from "./district-famous-section";
@@ -40,6 +41,9 @@ export function DistrictPage({ district }: { district: DistrictHeader }) {
       <Suspense fallback={<DistrictPlacesSectionSkeleton />}>
         <DistrictPlacesSection districtId={district.id} />
       </Suspense>
+      <Suspense fallback={<DistrictBoardSkeleton />}>
+        <DistrictBoard districtId={district.id} />
+      </Suspense>
     </PageShell>
   );
 }
@@ -51,6 +55,7 @@ export function DistrictPageSkeleton() {
       <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
         <DistrictHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
         <DistrictPlacesSectionSkeleton />
+        <DistrictBoardSkeleton />
       </PageShell>
     </LoadingRegion>
   );

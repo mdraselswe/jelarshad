@@ -186,6 +186,7 @@ export function createRewardService({ repos }: Deps) {
         entity: "experience",
         entityId: input.experienceId,
         points: appConfig.points.experience,
+        districtId: input.district.id,
       });
       const isNewStamp = await repos.rewards.unlockStamp({
         userId: user.id,
@@ -215,6 +216,7 @@ export function createRewardService({ repos }: Deps) {
         entity: "place",
         entityId: input.placeId,
         points: appConfig.points.place_create,
+        districtId: input.district.id,
       });
       const newStamps: NewStamp[] = [];
       if (input.firstForFood) {
@@ -228,6 +230,7 @@ export function createRewardService({ repos }: Deps) {
             entity: "place",
             entityId: input.placeId,
             points: appConfig.points.discoverer,
+            districtId: input.district.id,
           });
           const isNewStamp = await repos.rewards.unlockStamp({
             userId: user.id,
@@ -278,6 +281,20 @@ export function createRewardService({ repos }: Deps) {
       const since = periodStart(now, "week", ZONE.offsetMinutes, ZONE.weekStartsOn);
       const [entries, optedIn] = await Promise.all([
         repos.rewards.weeklyTop(since, gamification.leaderboardSize),
+        userId ? repos.rewards.leaderboardOptIn(userId) : Promise.resolve(null),
+      ]);
+      return { entries, optedIn };
+    },
+
+    /** The weekly board of one district (only people who opted in). */
+    async districtLeaderboard(
+      districtId: number,
+      userId: string | null,
+      now: Date = new Date(),
+    ): Promise<Leaderboard> {
+      const since = periodStart(now, "week", ZONE.offsetMinutes, ZONE.weekStartsOn);
+      const [entries, optedIn] = await Promise.all([
+        repos.rewards.districtTop(districtId, since, gamification.districtBoardSize),
         userId ? repos.rewards.leaderboardOptIn(userId) : Promise.resolve(null),
       ]);
       return { entries, optedIn };
