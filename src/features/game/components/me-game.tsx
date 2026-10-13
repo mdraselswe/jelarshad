@@ -109,6 +109,11 @@ export async function MeGame({ userId, summary }: { userId: string; summary: Pas
     .reverse();
   const more = Math.max(0, summary.unlockedCount - visited.length);
   const earned = progress.badges.filter((badge) => badge.earned).length;
+  const orderedBadges = [...progress.badges].sort(
+    (a, b) => Number(b.earned) - Number(a.earned) || b.value / b.target - a.value / a.target,
+  );
+  const topBadges = orderedBadges.slice(0, 6);
+  const otherBadges = orderedBadges.slice(6);
   const day = progress.missions.filter((mission) => mission.period === "day");
   const week = progress.missions.filter((mission) => mission.period === "week");
 
@@ -204,7 +209,7 @@ export async function MeGame({ userId, summary }: { userId: string; summary: Pas
 
       <Panel title={t("game.badgesTitle")} icon={<MedalIcon />} tone="amber" className="-mt-2">
         <ul className="grid grid-cols-3 gap-2.5 lg:grid-cols-6">
-          {progress.badges.map((badge) => (
+          {topBadges.map((badge) => (
             <BadgeTile
               key={badge.id}
               badge={badge}
@@ -212,6 +217,22 @@ export async function MeGame({ userId, summary }: { userId: string; summary: Pas
             />
           ))}
         </ul>
+        {otherBadges.length > 0 ? (
+          <details className="group mt-3">
+            <summary className="flex h-11 cursor-pointer list-none items-center justify-center rounded-[16px] bg-primary-soft text-[14px] font-semibold text-primary-soft-fg [&::-webkit-details-marker]:hidden">
+              {t("game.allBadges", { count: formatNumber(progress.badges.length) })}
+            </summary>
+            <ul className="mt-3 grid grid-cols-3 gap-2.5 lg:grid-cols-6">
+              {otherBadges.map((badge) => (
+                <BadgeTile
+                  key={badge.id}
+                  badge={badge}
+                  name={t(`game.badge.${badge.id}` as BadgeNameKey)}
+                />
+              ))}
+            </ul>
+          </details>
+        ) : null}
       </Panel>
 
       <Band tone="warm" title={t("game.boardTitle")} icon={<TrophyIcon />}>

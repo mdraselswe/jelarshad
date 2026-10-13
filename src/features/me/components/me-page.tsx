@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookmarkIcon, StoreIcon, UtensilsIcon } from "lucide-react";
+import { BookmarkIcon, FlameIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { TrophyArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
@@ -9,7 +9,7 @@ import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
 import { Button } from "@/components/ui/button";
 import { MeGame } from "@/features/game/components/me-game";
-import { levelNameKey, LevelRing, StreakFlame } from "@/features/game/components/game-bits";
+import { levelNameKey, LevelRing } from "@/features/game/components/game-bits";
 import { MePassport } from "@/features/passport/components/passport-section";
 import { GroupedList, ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
@@ -139,30 +139,42 @@ export async function MePage({ user }: { user: AppUser }) {
   ]);
   return (
     <PageShell header={null}>
-      <HeroBand tone="home" bleed art={<TrophyArt />} className="pt-8 pb-12 lg:pt-12">
-        <div className="flex items-center gap-4 lg:gap-8">
-          <LevelRing info={progress.level} size={104} stroke={10} onDark />
-          <div className="min-w-0 flex-1">
-            <p className="text-[14px] text-on-hero/90">
-              {t(levelNameKey(progress.level.level))}
-              {" · "}
-              {t("game.levelLabel", { level: formatNumber(progress.level.level) })}
-            </p>
-            <h1 className="text-title-1 break-words">{user.displayName}</h1>
-            <p className="mt-1.5 text-[13.5px] text-on-hero/90">
-              {progress.level.isMax
-                ? t("game.maxLevel")
-                : t("game.toNext", { count: formatNumber(progress.level.toNext) })}
-            </p>
-            <span className="mt-2 flex h-9 w-fit items-center rounded-full bg-reward px-3.5 text-[15px] font-bold text-reward-foreground">
-              {t("reward.pointsChip", { count: formatNumber(summary.points) })}
-            </span>
-          </div>
-          <StreakFlame
-            days={progress.streak.current}
-            label={t("game.streakDays", { count: formatNumber(progress.streak.current) })}
-            className="shrink-0 rounded-[18px] bg-white/15 px-3 py-2 text-on-hero"
+      <HeroBand tone="home" bleed className="pb-14 lg:pb-12">
+        <TrophyArt className="pointer-events-none absolute top-6 -right-2 hidden w-40 opacity-25 lg:block" />
+        <div className="relative flex items-start justify-between gap-3">
+          <h1 className="font-display text-[22px] leading-tight font-extrabold lg:text-[30px]">
+            {t("me.passportTitle")}
+          </h1>
+          <span className="flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-white/20 px-3 text-[13px] font-semibold">
+            <FlameIcon
+              className={cn(
+                "size-4",
+                progress.streak.current > 0 && "animate-fx-flame fill-reward stroke-reward",
+              )}
+              aria-hidden
+            />
+            {t("game.streakChip", { count: formatNumber(progress.streak.current) })}
+          </span>
+        </div>
+        <div className="relative mt-3 flex flex-col items-center text-center">
+          <LevelRing
+            info={progress.level}
+            size={130}
+            stroke={12}
+            onDark
+            caption={t("game.levelWord")}
           />
+          <p className="mt-3 font-display text-[22px] leading-tight font-extrabold">
+            {t(levelNameKey(progress.level.level))}
+          </p>
+          <p className="mt-1 text-[13.5px] text-on-hero/90">
+            {progress.level.isMax
+              ? t("game.maxLevel")
+              : t("game.toNext", { count: formatNumber(progress.level.toNext) })}
+          </p>
+          <span className="mt-3 flex h-8 items-center rounded-full bg-reward px-3.5 text-[14px] font-bold text-reward-foreground">
+            {t("reward.pointsChip", { count: formatNumber(summary.points) })}
+          </span>
         </div>
       </HeroBand>
 

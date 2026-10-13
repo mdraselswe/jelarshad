@@ -21,11 +21,14 @@ export function LevelRing({
   size = 54,
   stroke = 6,
   onDark = false,
+  caption,
   className,
 }: {
   info: LevelInfo;
   size?: number;
   stroke?: number;
+  /** A small word above the number, e.g. "লেভেল". */
+  caption?: string;
   /** On a gradient: translucent track, white number. */
   onDark?: boolean;
   className?: string;
@@ -62,12 +65,21 @@ export function LevelRing({
       </svg>
       <span
         className={cn(
-          "absolute inset-0 flex items-center justify-center font-display font-bold",
+          "absolute inset-0 flex flex-col items-center justify-center font-display font-bold",
           onDark ? "text-on-hero" : "text-primary-text",
         )}
-        style={{ fontSize: Math.round(size * 0.36) }}
       >
-        {toBnDigits(info.level)}
+        {caption ? (
+          <span className="font-sans text-[12px] leading-none font-medium opacity-85">
+            {caption}
+          </span>
+        ) : null}
+        <span
+          style={{ fontSize: Math.round(size * (caption ? 0.42 : 0.36)) }}
+          className="leading-tight"
+        >
+          {toBnDigits(info.level)}
+        </span>
       </span>
     </span>
   );

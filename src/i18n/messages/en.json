@@ -153,6 +153,7 @@
     "section": "Photos"
   },
   "me": {
+    "passportTitle": "My passport",
     "tabs": {
       "label": "My page",
       "contrib": "My contributions",
@@ -413,6 +414,9 @@
     "more": "There are more places. See the district page."
   },
   "game": {
+    "streakChip": "{count}-day streak",
+    "levelWord": "Level",
+    "allBadges": "See all {count} badges",
     "level": {
       "1": "New Eater",
       "2": "Taste Seeker",

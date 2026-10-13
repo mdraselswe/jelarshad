@@ -10,7 +10,7 @@ test.describe("login", () => {
     await expect(page.getByRole("heading", { name: "লগইন করুন" })).toBeVisible();
     await page.getByRole("link", { name: "গুগল দিয়ে চালিয়ে যান" }).click();
     await expect(page).toHaveURL(/\/me$/);
-    await expect(page.getByRole("heading", { level: 1, name: "নমুনা ব্যবহারকারী" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "আমার পাসপোর্ট" })).toBeVisible();
   });
 
   test("signing out returns to the login prompt", async ({ page }) => {
