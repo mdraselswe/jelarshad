@@ -2,6 +2,7 @@ import { TrophyIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Panel } from "@/components/layout/panel";
+import { RankBadge } from "@/components/ui/rank-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { routes } from "@/config/routes";
 import { getServices } from "@/infrastructure/container";
@@ -65,16 +66,7 @@ export async function DistrictBoard({ districtId }: { districtId: number }) {
         >
           {board.entries.map((entry, index) => (
             <li key={entry.userId} className="flex h-14 items-center gap-3">
-              <span
-                className={cn(
-                  "flex size-9 items-center justify-center rounded-[12px] font-display font-bold",
-                  index === 0 && "bg-grad-reward text-on-reward",
-                  index === 1 && "bg-muted text-foreground",
-                  index > 1 && "bg-primary-soft text-primary-soft-fg",
-                )}
-              >
-                {formatNumber(index + 1)}
-              </span>
+              <RankBadge rank={index + 1} className="size-9 rounded-[12px] text-base" />
               <span className="min-w-0 flex-1 truncate font-semibold">
                 {entry.userId === userId ? t("game.boardYou") : entry.displayName}
               </span>

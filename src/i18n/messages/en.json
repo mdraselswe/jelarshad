@@ -225,6 +225,13 @@
     "unknown": "Something went wrong. Try again."
   },
   "home": {
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "noon": "Good noon, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}",
+      "night": "Good night, {name}"
+    },
     "title": "What will you eat today?",
     "searchPlaceholder": "Food, district or shop name",
     "famousTitle": "Famous for",

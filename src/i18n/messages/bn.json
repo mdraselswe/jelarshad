@@ -225,11 +225,18 @@
     "unknown": "কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।"
   },
   "home": {
+    "greeting": {
+      "morning": "শুভ সকাল, {name}",
+      "noon": "শুভ দুপুর, {name}",
+      "afternoon": "শুভ বিকেল, {name}",
+      "evening": "শুভ সন্ধ্যা, {name}",
+      "night": "শুভ রাত্রি, {name}"
+    },
     "title": "আজ কী খাবেন?",
     "searchPlaceholder": "খাবার, জেলা বা দোকানের নাম",
     "famousTitle": "যেসব খাবারের জন্য বিখ্যাত",
     "famousHint": "সম্পাদকদের যাচাই করা তালিকা, রেটিং নয়",
-    "districtsTitle": "জেলা ঘুরে দেখুন",
+    "districtsTitle": "জেলায় জেলায় স্বাদ",
     "allDistricts": "সব {count}টি জেলা দেখুন",
     "divisionOf": "{name} বিভাগ",
     "subtitle": "দেশের প্রতিটি জেলার খাবারের আসল স্বাদ, মানুষের অভিজ্ঞতায়।",

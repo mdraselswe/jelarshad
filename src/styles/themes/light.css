@@ -82,6 +82,10 @@
   --tile-4: linear-gradient(135deg, #d9421f, #b45309);
   --tile-5: linear-gradient(135deg, #0369a1, #4f46e5);
   --tile-6: linear-gradient(135deg, #15803d, #0b7f7e);
+  --kind-orange: linear-gradient(145deg, #fdba74, #f97316);
+  --kind-pink: linear-gradient(145deg, #f9a8d4, #db2777);
+  --kind-violet: linear-gradient(145deg, #c4b5fd, #7c3aed);
+  --kind-green: linear-gradient(145deg, #6ee7b7, #059669);
 
   /* Section grounds (docs/06-design-system.md §2d): dotted page ground, tinted bands, wave fills. */
   --dot: #d9d3fa;

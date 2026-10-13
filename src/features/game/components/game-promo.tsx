@@ -23,7 +23,7 @@ export function GamePromo() {
           <p className="mt-1.5 text-[14px] text-on-hero/90 lg:text-base">{t("game.promoBody")}</p>
           <Link
             href={routes.me()}
-            className="mt-4 inline-flex h-11 press items-center gap-1.5 rounded-full bg-reward px-5 text-[15px] font-bold text-reward-foreground"
+            className="mt-4 inline-flex h-12 press items-center gap-2 rounded-[16px] bg-reward px-[18px] text-[14.5px] font-bold text-on-reward"
           >
             {t("game.promoCta")}
             <ChevronRightIcon className="size-4" aria-hidden />

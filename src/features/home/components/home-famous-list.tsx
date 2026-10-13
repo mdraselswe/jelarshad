@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Panel } from "@/components/layout/panel";
-import { GroupedList, ListRow, ListRowSkeleton, ListTile } from "@/components/ui/grouped-list";
+import { GroupedList, ListRow, ListRowSkeleton } from "@/components/ui/grouped-list";
+import { RankBadge } from "@/components/ui/rank-badge";
 import { ScorePill } from "@/components/ui/score-pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HOME_FAMOUS_ROWS } from "@/config/home";
@@ -51,11 +52,11 @@ export async function HomeFamousList() {
   if (rows.length === 0) return null;
   return (
     <FamousShell>
-      {rows.map((item) => (
+      {rows.map((item, index) => (
         <ListRow
           key={`${item.district.slug}/${item.food.slug}`}
           href={routes.districtFood(item.district.slug, item.food.slug)}
-          leading={<ListTile seed={item.food.slug}>{item.food.nameBn.slice(0, 1)}</ListTile>}
+          leading={<RankBadge rank={index + 1} />}
           title={item.food.nameBn}
           meta={[item.district.nameBn, item.noteBn].filter(Boolean).join(" · ")}
           trailing={<ScorePill display={{ percent: null }} />}
