@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { FlagIcon, PencilIcon, ScaleIcon } from "lucide-react";
+
+import { IconChip } from "@/components/ui/icon-chip";
 import { AdminCard, AdminFrame } from "@/features/admin/components/admin-frame";
 import { getServices } from "@/infrastructure/container";
 import { getT } from "@/i18n/server";
@@ -21,9 +24,9 @@ export default function Admin() {
         const t = getT();
         const counts = await getServices().admin.counts();
         const queues = [
-          ["reports", counts.openReports],
-          ["edits", counts.openEdits],
-          ["claims", counts.disputedClaims],
+          ["reports", counts.openReports, <FlagIcon key="r" />, "coral"],
+          ["edits", counts.openEdits, <PencilIcon key="e" />, "violet"],
+          ["claims", counts.disputedClaims, <ScaleIcon key="c" />, "teal"],
         ] as const;
         const totals = [
           ["users", counts.users],
@@ -35,11 +38,14 @@ export default function Admin() {
         ] as const;
         return (
           <>
-            <div className="grid grid-cols-3 gap-2.5">
-              {queues.map(([key, value]) => (
+            <div className="grid grid-cols-3 gap-2.5 lg:gap-4">
+              {queues.map(([key, value, icon, tone]) => (
                 <Link key={key} href={`/admin/${key}`} className="press">
                   <AdminCard>
-                    <span className="block font-display text-[22px] font-bold">
+                    <IconChip tone={tone} className="mb-2">
+                      {icon}
+                    </IconChip>
+                    <span className="block font-display text-[26px] leading-tight font-extrabold">
                       {formatNumber(value)}
                     </span>
                     <span className="text-caption text-muted-foreground">
@@ -50,7 +56,7 @@ export default function Admin() {
               ))}
             </div>
             <h2 className="mt-3 text-card-title">{t("admin.usage")}</h2>
-            <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-3 lg:gap-4">
               {totals.map(([key, value]) => (
                 <AdminCard key={key}>
                   <span className="block font-display text-[22px] font-bold">

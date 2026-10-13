@@ -1,9 +1,21 @@
+import {
+  FlagIcon,
+  PencilIcon,
+  ScaleIcon,
+  StarIcon,
+  StoreIcon,
+  UtensilsIcon,
+  WrenchIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { WorldStrip } from "@/components/illustration/world-art";
+import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
+import { IconChip, type IconChipTone } from "@/components/ui/icon-chip";
 import { routes } from "@/config/routes";
 import type { AppUser } from "@/core/domain";
 import { getServices } from "@/infrastructure/container";
@@ -21,9 +33,20 @@ export const ADMIN_SECTIONS = [
 ] as const;
 export type AdminSection = (typeof ADMIN_SECTIONS)[number];
 
+const SECTION_LOOK: Record<AdminSection, { icon: ReactNode; tone: IconChipTone }> = {
+  reports: { icon: <FlagIcon />, tone: "coral" },
+  edits: { icon: <PencilIcon />, tone: "violet" },
+  places: { icon: <StoreIcon />, tone: "sky" },
+  foods: { icon: <UtensilsIcon />, tone: "amber" },
+  claims: { icon: <ScaleIcon />, tone: "teal" },
+  fame: { icon: <StarIcon />, tone: "reward" },
+  maintenance: { icon: <WrenchIcon />, tone: "green" },
+};
+
 /**
  * Every /admin page sits in this: only an admin sees anything, everyone else gets the normal
- * not-found page so the area is not advertised. It reads cookies, so it needs the Suspense of loading.tsx.
+ * not-found page so the area is not advertised. A colored header, then the sections as a side list
+ * on desktop and a swipeable row on phones. It reads cookies, so it needs the Suspense of loading.tsx.
  */
 export async function AdminFrame({
   section,
@@ -44,33 +67,59 @@ export async function AdminFrame({
           ...(section ? [{ label: t(`admin.sections.${section}`) }] : []),
         ]}
       />
-      <div className="page-x pt-2 lg:pt-6">
-        <h1 className="font-display text-2xl font-bold">
+      <HeroBand
+        tone="home"
+        className="pb-6 lg:pb-[150px]"
+        scene={
+          <div className="hidden lg:block">
+            <WorldStrip scene="village" />
+          </div>
+        }
+      >
+        <p className="text-[13px] font-semibold text-on-hero/90">{t("admin.title")}</p>
+        <h1 className="font-display text-[28px] leading-[1.25] font-extrabold lg:text-[40px]">
           {section ? t(`admin.sections.${section}`) : t("admin.title")}
         </h1>
-        <nav aria-label={t("admin.title")} className="mt-3 flex flex-wrap gap-1.5">
+      </HeroBand>
+      <div className="page-x pt-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8 lg:pt-8">
+        <nav
+          aria-label={t("admin.title")}
+          className="-mx-1 flex [scrollbar-width:none] gap-2 overflow-x-auto px-1 py-2 lg:sticky lg:top-24 lg:col-span-3 lg:mx-0 lg:flex-col lg:gap-1.5 lg:overflow-visible lg:rounded-[28px] lg:border lg:border-border lg:bg-card lg:p-3 lg:shadow-card"
+        >
           {ADMIN_SECTIONS.map((item) => (
             <Link
               key={item}
               href={`/admin/${item}`}
               aria-current={item === section ? "page" : undefined}
               className={cn(
-                "press rounded-full border px-3.5 py-1.5 text-sm font-medium",
+                "flex h-11 shrink-0 press items-center gap-2.5 rounded-[16px] px-3 text-[14px] font-semibold whitespace-nowrap lg:h-12",
                 item === section
-                  ? "border-primary-soft bg-primary-soft text-primary-soft-fg"
-                  : "border-border bg-card",
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-foreground shadow-card lg:bg-transparent lg:shadow-none lg:hover:bg-muted",
               )}
             >
+              <IconChip
+                tone={SECTION_LOOK[item].tone}
+                className="size-7 rounded-[10px] [&_svg]:size-4"
+              >
+                {SECTION_LOOK[item].icon}
+              </IconChip>
               {t(`admin.sections.${item}`)}
             </Link>
           ))}
         </nav>
-        <div className="mt-5 flex flex-col gap-3">{children(session.user)}</div>
+        <div className="mt-4 flex flex-col gap-3 lg:col-span-9 lg:mt-0">
+          {children(session.user)}
+        </div>
       </div>
     </PageShell>
   );
 }
 
 export function AdminCard({ children }: { children: ReactNode }) {
-  return <div className="rounded-card border border-border bg-card p-3.5">{children}</div>;
+  return (
+    <div className="rounded-[24px] border border-border bg-card p-4 shadow-card lg:p-5">
+      {children}
+    </div>
+  );
 }
