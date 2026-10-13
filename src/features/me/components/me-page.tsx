@@ -128,11 +128,10 @@ async function Saved({ userId }: { userId: string }) {
 }
 
 /**
- * The profile and passport (docs/design: M-Passport, D-Passport): a hero with the progress ring and
- * points, stamps and divisions, then three tabs (links, so they are shareable and need no JS) and
- * settings.
+ * The passport (docs/design/ Passport): a hero with the level ring and XP, the stamp journey, missions,
+ * badges and this week's board. Contributions and settings live on the profile page.
  */
-export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
+export async function MePage({ user }: { user: AppUser }) {
   const t = getT();
   const [summary, progress] = await Promise.all([
     getServices().rewards.summary(user.id),
@@ -169,13 +168,45 @@ export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
 
       <MeGame userId={user.id} summary={summary} />
       <MePassport summary={summary} />
+    </PageShell>
+  );
+}
+
+/** "Me": what I added and ate, what I saved, and the settings. */
+export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }) {
+  const t = getT();
+  const summary = await getServices().rewards.summary(user.id);
+  return (
+    <PageShell>
+      <section className="page-x pt-3 lg:pt-8">
+        <div className="flex items-center gap-4 rounded-[28px] border border-border bg-card p-4 shadow-card">
+          <span
+            aria-hidden
+            className="flex size-16 shrink-0 items-center justify-center rounded-[22px] bg-tile-1 font-display text-[28px] font-extrabold text-on-hero"
+          >
+            {[...user.displayName][0]}
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-title-1 break-words">{user.displayName}</h1>
+            <span className="mt-1.5 inline-flex h-8 items-center rounded-full bg-reward-soft px-3 text-[14px] font-bold text-reward-soft-fg">
+              {t("reward.pointsChip", { count: formatNumber(summary.points) })}
+            </span>
+          </div>
+          <Link
+            href={routes.me()}
+            className="flex h-11 shrink-0 press items-center rounded-full bg-primary-soft px-4 text-[14px] font-semibold text-primary-soft-fg"
+          >
+            {t("nav.passport")}
+          </Link>
+        </div>
+      </section>
 
       <nav aria-label={t("me.tabs.label")} className="mt-5 page-x">
         <div className="flex h-12 items-center gap-1 rounded-input bg-muted p-1">
           {ME_TABS.map((id) => (
             <Link
               key={id}
-              href={id === "contrib" ? routes.me() : `${routes.me()}?tab=${id}`}
+              href={id === "contrib" ? routes.profile() : `${routes.profile()}?tab=${id}`}
               aria-current={id === tab ? "page" : undefined}
               className={cn(
                 "flex h-full flex-1 items-center justify-center rounded-xl px-2 text-[15px] font-medium whitespace-nowrap text-muted-foreground",
@@ -195,7 +226,7 @@ export async function MePage({ user, tab }: { user: AppUser; tab: MeTab }) {
       </section>
 
       <Section title={t("me.settings")}>
-        <div className="flex flex-col gap-4 rounded-card-lg border border-border bg-card p-4">
+        <div className="flex flex-col gap-4">
           <div>
             <p className="mb-2 text-card-title">{t("me.theme")}</p>
             <ThemePreferenceControl />

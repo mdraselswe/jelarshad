@@ -1,68 +1,75 @@
 "use client";
 
-import { HouseIcon, PlusIcon, SearchIcon, UserRoundIcon, type LucideIcon } from "lucide-react";
+import { HouseIcon, PlusIcon, SearchIcon, TrophyIcon, UserRoundIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { routes } from "@/config/routes";
 import { useT } from "@/i18n/client";
-import type { MessageKey } from "@/i18n/t";
 import { cn } from "@/lib/cn";
 
-type NavItem = { href: string; label: MessageKey; icon: LucideIcon; primary?: boolean };
-
-const ITEMS: readonly NavItem[] = [
-  { href: routes.home(), label: "nav.home", icon: HouseIcon },
-  { href: routes.search(), label: "nav.search", icon: SearchIcon },
-  { href: routes.add(), label: "nav.add", icon: PlusIcon, primary: true },
-  { href: routes.me(), label: "nav.me", icon: UserRoundIcon },
-];
-
 function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  if (href === "/") return pathname === "/";
+  // The passport is /me, the profile is /me/profile: the passport tab must not light up on it.
+  if (href === routes.me()) return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+const TAB =
+  "flex h-full min-w-14 press flex-col items-center justify-center gap-0.5 text-[11.5px] leading-tight";
+
 /**
- * Floating bottom navigation (docs/06-design-system.md §6): 16px from the edges, 66px tall,
- * card pill (no backdrop blur); the center "যোগ" is the primary pill. Thumb-reachable on 360px.
+ * Floating bottom navigation (docs/design/ Main, Passport): a white 68px bar 16px from the edges, four
+ * tabs and the gold "add" button raised above the bar in the middle. Thumb-reachable on 360px.
  */
 export function BottomNav() {
   const pathname = usePathname();
   const t = useT();
+  const tabs = [
+    { href: routes.home(), label: t("nav.home"), Icon: HouseIcon },
+    { href: routes.search(), label: t("nav.search"), Icon: SearchIcon },
+    null,
+    { href: routes.me(), label: t("nav.passport"), Icon: TrophyIcon },
+    { href: routes.profile(), label: t("nav.me"), Icon: UserRoundIcon },
+  ] as const;
   return (
     <nav
       data-bottom-nav
       aria-label={t("nav.label")}
-      className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto grid h-[66px] max-w-md grid-cols-4 items-center rounded-full border border-border bg-card px-2 shadow-floating lg:hidden"
+      className="fixed inset-x-4 bottom-[max(1.125rem,env(safe-area-inset-bottom))] z-40 mx-auto flex h-[68px] max-w-md items-center justify-around rounded-[26px] bg-card px-1.5 shadow-floating lg:hidden"
     >
-      {ITEMS.map(({ href, label, icon: Icon, primary }) => {
-        const active = isActive(pathname, href);
-        return primary ? (
+      {tabs.map((tab) => {
+        if (tab === null) {
+          const active = isActive(pathname, routes.add());
+          return (
+            <Link
+              key="add"
+              href={routes.add()}
+              aria-label={t("nav.add")}
+              aria-current={active ? "page" : undefined}
+              className="-mt-[26px] flex size-14 press animate-fx-pulse items-center justify-center rounded-[20px] bg-grad-reward text-on-reward"
+            >
+              <PlusIcon className="size-7" strokeWidth={2.6} aria-hidden />
+            </Link>
+          );
+        }
+        const active = isActive(pathname, tab.href);
+        return (
           <Link
-            key={href}
-            href={href}
-            aria-current={active ? "page" : undefined}
-            className="flex h-11 press items-center gap-1.5 justify-self-center rounded-full bg-primary bg-grad-action px-4 text-sm font-semibold text-primary-foreground"
-          >
-            <Icon className="size-[18px]" strokeWidth={2.6} aria-hidden />
-            {t(label)}
-          </Link>
-        ) : (
-          <Link
-            key={href}
-            href={href}
+            key={tab.href}
+            href={tab.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-full press flex-col items-center justify-center gap-px text-nav",
+              TAB,
               active ? "font-semibold text-primary-text" : "text-muted-foreground",
             )}
           >
-            <Icon
-              className={cn("size-[22px]", active && "animate-pop")}
-              strokeWidth={active ? 2.4 : 2}
+            <tab.Icon
+              className={cn("size-6", active && "animate-pop")}
+              strokeWidth={2}
               aria-hidden
             />
-            {t(label)}
+            {tab.label}
           </Link>
         );
       })}

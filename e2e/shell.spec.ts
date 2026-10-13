@@ -6,7 +6,7 @@ test.describe("app shell", () => {
     await expect(page.getByRole("link", { name: "জেলার স্বাদ" }).first()).toBeVisible();
 
     const nav = page.getByRole("navigation", { name: "প্রধান মেনু" });
-    await expect(nav.getByRole("link")).toHaveText(["হোম", "খুঁজুন", "যোগ", "আমি"]);
+    await expect(nav.getByRole("link")).toHaveText(["হোম", "খুঁজুন", "", "পাসপোর্ট", "আমি"]);
     await expect(nav.getByRole("link", { name: "হোম" })).toHaveAttribute("aria-current", "page");
     await expect(nav.getByRole("link", { name: "খুঁজুন" })).not.toHaveAttribute("aria-current");
   });
@@ -20,7 +20,7 @@ test.describe("app shell", () => {
     expect(box.x).toBeGreaterThanOrEqual(16);
     expect(box.x + box.width).toBeLessThanOrEqual(viewport.width - 16);
     expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
-    expect(box.height).toBeCloseTo(66, 0);
+    expect(box.height).toBeCloseTo(68, 0);
   });
 
   test("every page ends with the legal links and the builder's LinkedIn", async ({ page }) => {

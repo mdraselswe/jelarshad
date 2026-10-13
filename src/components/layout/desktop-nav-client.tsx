@@ -15,11 +15,14 @@ import { cn } from "@/lib/cn";
 const LINKS: readonly { href: string; label: MessageKey }[] = [
   { href: routes.home(), label: "nav.home" },
   { href: routes.search(), label: "nav.search" },
-  { href: routes.me(), label: "nav.me" },
+  { href: routes.me(), label: "nav.passport" },
+  { href: routes.profile(), label: "nav.me" },
 ];
 
 function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  if (href === "/") return pathname === "/";
+  if (href === routes.me()) return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function DesktopNavLinks() {

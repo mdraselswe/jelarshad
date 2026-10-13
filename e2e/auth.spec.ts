@@ -14,8 +14,8 @@ test.describe("login", () => {
   });
 
   test("signing out returns to the login prompt", async ({ page }) => {
-    await page.goto("/auth/sign-in?next=/me");
-    await expect(page).toHaveURL(/\/me$/);
+    await page.goto("/auth/sign-in?next=/me/profile");
+    await expect(page).toHaveURL(/\/me\/profile$/);
     await page.getByRole("button", { name: "লগআউট" }).click();
     await expect(page).toHaveURL(/\/$/);
     await page.goto("/me");
