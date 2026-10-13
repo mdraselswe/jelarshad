@@ -16,7 +16,7 @@ export async function HomeGreeting() {
   const session = await getServices().auth.getSession();
   if (!session) return null;
   const t = getT();
-  const name = session.user.displayName.trim().split(/s+/)[0] ?? "";
+  const name = session.user.displayName.trim().split(/\s+/)[0] ?? "";
   if (name === "") return null;
   return (
     <span className="inline-block rounded-[12px] bg-white/20 px-2.5 py-1 text-[12.5px] leading-tight font-semibold">

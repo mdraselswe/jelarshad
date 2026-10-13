@@ -87,10 +87,10 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                 {outcome.foods[0].nameBn.slice(0, 1)}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="line-clamp-1 font-display text-2xl leading-tight font-bold">
+                <span className="line-clamp-1 font-display text-2xl leading-[1.4] font-bold">
                   {outcome.foods[0].nameBn}
                 </span>
-                <span className="line-clamp-1 text-[14px] opacity-95">
+                <span className="line-clamp-1 text-[14px] leading-normal opacity-95">
                   {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
                 </span>
               </span>

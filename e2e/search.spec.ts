@@ -69,7 +69,11 @@ test.describe("search page", () => {
     const card = page.getByRole("status");
     await expect(card.getByRole("heading", { name: /নামে কিছু পাওয়া যায়নি/ })).toBeVisible();
     await expect(card.locator("svg.w-44")).toBeVisible();
-    await expect(card.getByRole("link", { name: /আপনি জানলে যোগ করুন/ })).toBeVisible();
+    const cta = card.getByRole("link", { name: /আপনি জানলে যোগ করুন/ });
+    await expect(cta).toBeVisible();
+    // Inside the violet band the link must keep its own dark-on-gold look, not the band's white text.
+    const color = await cta.evaluate((element) => getComputedStyle(element).color);
+    expect(color).not.toBe("rgb(255, 255, 255)");
   });
 
   test("on desktop the search bar never paints over the top nav when scrolled", async ({
