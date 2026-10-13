@@ -19,10 +19,16 @@ export function PlaceHero({
   const t = getT();
   const where = [place.areaNameBn, place.district.nameBn].filter(Boolean).join(", ");
   return (
-    <HeroBand tone="place" bleed bar={bar} art={<PlateArt />} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="place"
+      bleed
+      bar={bar}
+      art={<PlateArt className="hidden lg:block" />}
+      className="pb-12 lg:pb-12"
+    >
       <PlateArt className="pointer-events-none absolute -top-2 left-1/2 w-[168px] -translate-x-1/2 lg:hidden" />
       <div className="flex min-h-[280px] flex-col justify-end lg:flex-row lg:items-center lg:gap-8">
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 lg:flex-1">
           <span className="flex h-[30px] w-fit items-center rounded-full bg-white/22 px-3 text-[13px] font-semibold">
             {t(`placeType.${place.type}`)}
           </span>
@@ -42,7 +48,13 @@ export function PlaceHero({
 
 export function PlaceHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="place" bleed bar={bar} art={<PlateArt />} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="place"
+      bleed
+      bar={bar}
+      art={<PlateArt className="hidden lg:block" />}
+      className="pb-12 lg:pb-12"
+    >
       <div className="flex min-h-[280px] flex-col justify-end lg:min-h-0">
         <span className="flex h-[30px] w-24 items-center rounded-full bg-white/22" />
         <div className="mt-3 font-display text-[34px] leading-[1.15] lg:text-[44px]">
