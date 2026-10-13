@@ -40,6 +40,23 @@ test.describe("search page", () => {
     await expect(page.getByRole("region", { name: "জায়গা" })).toHaveCount(0);
   });
 
+  test("switching tabs is instant: no server request, the address bar follows", async ({
+    page,
+  }) => {
+    await page.goto("/search?q=বগুড়া");
+    await expect(page.getByRole("navigation", { name: "খুঁজুন" })).toBeVisible();
+    const requests: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().includes("/search")) requests.push(request.url());
+    });
+    await page.getByRole("link", { name: /^জেলা/ }).click();
+    await expect(page).toHaveURL(/tab=district/);
+    await expect(page.getByRole("link", { name: /^জেলা/ })).toHaveAttribute("aria-current", "page");
+    await page.getByRole("link", { name: /^সব/ }).click();
+    await expect(page).not.toHaveURL(/tab=/);
+    expect(requests).toEqual([]);
+  });
+
   test("place filters live in the URL", async ({ page }) => {
     await page.goto("/search?q=নমুনা&tab=place");
     await expect(page.getByRole("link", { name: /নমুনা দই ঘর/ })).toBeVisible();
