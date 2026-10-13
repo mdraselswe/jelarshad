@@ -26,7 +26,7 @@ export function HomeHero() {
     <HeroBand
       tone="home"
       bleed
-      className="pb-[132px] lg:pb-12"
+      className="pb-[132px] lg:pb-[150px]"
       scene={<WorldStrip scene="hills" />}
       bar={
         <>

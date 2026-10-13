@@ -144,7 +144,7 @@ export async function MePage({ user }: { user: AppUser }) {
         tone="home"
         bleed
         scene={<WorldStrip scene="river" />}
-        className="pb-[132px] lg:pb-12"
+        className="pb-[132px] lg:pb-[150px]"
       >
         <TrophyArt className="pointer-events-none absolute top-6 -right-2 hidden w-40 opacity-25 lg:block" />
         <div className="relative flex items-start justify-between gap-3">

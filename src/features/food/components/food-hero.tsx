@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { PotArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { routes } from "@/config/routes";
@@ -21,7 +22,17 @@ const TILE_CLASS =
 export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
   const t = getT();
   return (
-    <HeroBand tone="food" bleed bar={bar} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="food"
+      bleed
+      bar={bar}
+      scene={
+        <div className="hidden lg:block">
+          <WorldStrip scene="village" />
+        </div>
+      }
+      className="pb-12 lg:pb-[150px]"
+    >
       <PotArt className="pointer-events-none absolute -top-3 left-1/2 w-[188px] -translate-x-1/2 lg:hidden" />
       <div className="flex min-h-[318px] flex-col justify-end lg:block lg:flex lg:min-h-0 lg:flex-row lg:items-center lg:gap-10">
         <div className="min-w-0 lg:flex-1">
@@ -68,7 +79,17 @@ export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
 
 export function FoodHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="food" bleed bar={bar} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="food"
+      bleed
+      bar={bar}
+      scene={
+        <div className="hidden lg:block">
+          <WorldStrip scene="village" />
+        </div>
+      }
+      className="pb-12 lg:pb-[150px]"
+    >
       <div className="flex min-h-[318px] flex-col justify-end lg:min-h-0 lg:flex-row lg:items-center lg:gap-8">
         <span aria-hidden className={TILE_CLASS} />
         <div className="min-w-0 font-display text-[40px] leading-[1.15] lg:flex-1 lg:text-[48px]">

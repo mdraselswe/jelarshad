@@ -68,7 +68,7 @@ export function HeroBand({
           </div>
         ) : null}
         {scene ? (
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 lg:hidden">
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0">
             {scene}
           </div>
         ) : null}

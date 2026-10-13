@@ -273,6 +273,7 @@
     "lovedTitle": "What people love"
   },
   "search": {
+    "heroTitle": "What are you looking for?",
     "clear": "Clear",
     "label": "Search",
     "prompt": "Type a food, district or shop name",

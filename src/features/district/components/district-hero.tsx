@@ -51,7 +51,7 @@ export function DistrictHero({
       bleed
       bar={bar}
       scene={<WorldStrip scene="village" />}
-      className="pb-[132px] lg:pb-12"
+      className="pb-[132px] lg:pb-[150px]"
     >
       <SparkleArt className="pointer-events-none absolute top-3 right-12 size-3" />
       <SparkleArt

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { PlateArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -24,7 +25,12 @@ export function PlaceHero({
       bleed
       bar={bar}
       art={<PlateArt className="hidden lg:block" />}
-      className="pb-12 lg:pb-12"
+      scene={
+        <div className="hidden lg:block">
+          <WorldStrip scene="village" />
+        </div>
+      }
+      className="pb-12 lg:pb-[150px]"
     >
       <PlateArt className="pointer-events-none absolute -top-2 left-1/2 w-[168px] -translate-x-1/2 lg:hidden" />
       <div className="flex min-h-[280px] flex-col justify-end lg:flex-row lg:items-center lg:gap-8">
@@ -53,7 +59,12 @@ export function PlaceHeroSkeleton({ bar }: { bar?: ReactNode }) {
       bleed
       bar={bar}
       art={<PlateArt className="hidden lg:block" />}
-      className="pb-12 lg:pb-12"
+      scene={
+        <div className="hidden lg:block">
+          <WorldStrip scene="village" />
+        </div>
+      }
+      className="pb-12 lg:pb-[150px]"
     >
       <div className="flex min-h-[280px] flex-col justify-end lg:min-h-0">
         <span className="flex h-[30px] w-24 items-center rounded-full bg-white/22" />

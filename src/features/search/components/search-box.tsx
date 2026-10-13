@@ -20,7 +20,7 @@ import type { SearchSuggestions } from "../types";
 import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
 
 const INPUT_WRAP_CLASS =
-  "flex h-[50px] items-center gap-2.5 rounded-[18px] bg-card px-3.5 text-foreground shadow-floating lg:h-14 lg:rounded-full lg:border-2 lg:border-primary lg:bg-background lg:px-4 lg:shadow-none";
+  "flex h-[50px] items-center gap-2.5 rounded-[18px] bg-card px-3.5 text-foreground shadow-floating lg:h-16 lg:rounded-[22px] lg:bg-card lg:px-5 lg:shadow-floating";
 
 async function fetchSuggestions(q: string, signal: AbortSignal): Promise<SearchSuggestions> {
   const response = await fetch(routes.api.search({ q }), { signal });
