@@ -47,7 +47,7 @@ export function RewardMoment() {
     <Dialog open={open} onOpenChange={(next) => !next && setMoment(null)}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-[calc(100%-2rem)] overflow-hidden border-0 bg-grad-hero p-0 text-on-hero sm:max-w-sm"
+        className="top-0 left-0 h-dvh max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none border-0 bg-grad-hero p-0 text-on-hero sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-w-sm sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[32px]"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           {CONFETTI.map((piece) => (
@@ -58,17 +58,23 @@ export function RewardMoment() {
             />
           ))}
         </div>
-        <div className="relative flex flex-col items-center px-6 pt-10 pb-6 text-center">
-          <span
-            aria-hidden
-            className="flex size-28 animate-fx-pop items-center justify-center rounded-[36px] bg-grad-reward text-on-reward shadow-toast"
-          >
-            <Icon className="size-14" />
-          </span>
+        <div className="relative flex h-full min-h-dvh flex-col items-center px-6 pt-[18dvh] pb-8 text-center sm:min-h-0 sm:pt-10 sm:pb-6">
+          <div className="relative flex size-[200px] items-center justify-center">
+            <span
+              aria-hidden
+              className="absolute inset-4 animate-fx-twinkle rounded-full bg-reward/60 blur-2xl"
+            />
+            <span
+              aria-hidden
+              className="relative flex size-[138px] -rotate-6 animate-fx-pop items-center justify-center rounded-[44px] bg-grad-reward text-on-reward shadow-toast"
+            >
+              <Icon className="size-[74px]" strokeWidth={1.8} />
+            </span>
+          </div>
           <DialogDescription className="mt-5 text-[15px] font-semibold text-on-hero/90">
             {title}
           </DialogDescription>
-          <DialogTitle className="mt-1 font-display text-[30px] leading-tight font-bold">
+          <DialogTitle className="mt-1 font-display text-[36px] leading-[1.2] font-extrabold">
             {heading}
           </DialogTitle>
           {moment?.plain && (moment.level || moment.stamp) ? (
@@ -76,30 +82,30 @@ export function RewardMoment() {
           ) : null}
           <div className="mt-5 flex flex-wrap justify-center gap-2.5">
             {xp > 0 ? (
-              <span className="flex h-10 items-center gap-1.5 rounded-full bg-white/20 px-4 font-display text-lg font-bold">
+              <span className="flex h-11 items-center gap-2 rounded-[18px] bg-white/16 px-4 font-display text-xl font-extrabold">
                 <ZapIcon aria-hidden className="size-5 fill-reward stroke-reward" />
                 {t("game.bonus", { count: formatNumber(xp) })}
               </span>
             ) : null}
             {moment?.level ? (
-              <span className="flex h-10 items-center gap-1.5 rounded-full bg-white/20 px-4 font-display text-lg font-bold">
+              <span className="flex h-11 items-center gap-2 rounded-[18px] bg-white/16 px-4 font-display text-xl font-extrabold">
                 <FlameIcon aria-hidden className="size-5 fill-reward stroke-reward" />
                 {t("game.levelLabel", { level: formatNumber(moment.level) })}
               </span>
             ) : null}
           </div>
-          <div className="mt-6 flex w-full flex-col gap-2.5">
+          <div className="mt-auto flex w-full flex-col gap-2.5 pt-6">
             <Link
               href={routes.me()}
               onClick={() => setMoment(null)}
-              className="flex h-12 press items-center justify-center rounded-full bg-reward text-base font-bold text-reward-foreground"
+              className="flex h-[54px] press items-center justify-center rounded-[18px] bg-grad-reward text-base font-bold text-on-reward"
             >
               {t("game.seePassport")}
             </Link>
             <button
               type="button"
               onClick={() => setMoment(null)}
-              className="flex h-11 press items-center justify-center rounded-full bg-white/15 text-[15px] font-semibold"
+              className="flex h-12 press items-center justify-center rounded-[18px] bg-white/15 text-[15px] font-semibold"
             >
               {t("game.continue")}
             </button>

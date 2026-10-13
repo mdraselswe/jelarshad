@@ -32,3 +32,18 @@ mobile screens; the differences are layout only:
 
 The first built version (task 2.8) covers the read pages that exist today. Streak, points, avatar, passport card,
 reaction picker, verify panel and the add flow arrive with Phases 3-5 and follow these files.
+
+## The colorful canvas (approved 2026-10-12, built through #72-#73)
+
+The live canvas "জেলার স্বাদ — লাইভ গেমিফাইড ডিজাইন" replaces the older `C-*.dc.html` look for phones. Its boards are
+Main (home), Passport, Reward (the reward moment), Food, District, Search, Desktop and Kit (sections, illustrations,
+icons, motion). What follows from it in the code:
+
+- Bottom bar: five items, the gold "যোগ" button raised in the middle; passport (`/me`) and profile (`/me/profile`)
+  are separate tabs.
+- Hero bands per page: home violet, food orange-to-pink with a floating pot, district deep blue with the region and
+  pins, search violet with the white field, place pink-violet with a floating plate.
+- White panels with 32px radius on the dotted ground; tinted bands (teal, warm, mint, night) with a wave on top;
+  48px rank tiles; kind tiles with light-to-strong gradients.
+- Not built on purpose: the "nearby" map band on the food page (no location feature exists) and the notification bell
+  on home (no notifications exist). The district tagline is the list of its famous foods.
