@@ -53,7 +53,7 @@ export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
             </div>
           </div>
           {food.aboutBn ? (
-            <p className="mt-1.5 line-clamp-2 text-[14px] leading-snug text-on-hero/95 lg:mt-4 lg:max-w-xl lg:text-[17px] lg:leading-relaxed">
+            <p className="mt-1.5 line-clamp-2 text-[14px] leading-normal text-on-hero/95 lg:mt-4 lg:max-w-xl lg:text-[17px] lg:leading-relaxed">
               {food.aboutBn}
             </p>
           ) : null}

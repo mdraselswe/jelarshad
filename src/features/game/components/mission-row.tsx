@@ -67,7 +67,7 @@ export function MissionRow({
         {mission.complete ? <CheckIcon className="size-5" /> : <Icon className="size-5" />}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="line-clamp-1 text-[14px] leading-tight font-semibold">
+        <span className="line-clamp-1 text-[14px] leading-normal font-semibold">
           {key ? t(key, { count: formatNumber(mission.target) }) : mission.id}
         </span>
         <XpBar

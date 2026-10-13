@@ -45,4 +45,9 @@ test.describe("home page", () => {
     expect(overflow).toBe(0);
     await expect(page.getByRole("navigation", { name: "প্রধান মেনু" })).toBeVisible();
   });
+
+  test("a signed-in visitor is greeted by first name only", async ({ page }) => {
+    await page.goto("/auth/sign-in?next=/");
+    await expect(page.getByText(/^শুভ .*, নমুনা$/)).toBeVisible();
+  });
 });

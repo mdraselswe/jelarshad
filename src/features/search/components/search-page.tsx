@@ -14,8 +14,10 @@ import { SearchResults, SearchResultsSkeleton } from "./search-results";
 function SearchTopBar({ children }: { children: React.ReactNode }) {
   return (
     // Phones: the violet band of the approved canvas (back, white field, wave). Desktop: plain row.
-    <div className="relative flex items-start gap-3 on-hero-actions bg-grad-hero px-5 pt-5 pb-10 md:px-7 lg:static lg:z-auto lg:bg-none lg:px-8 lg:py-6">
-      <BackButton href={routes.home()} className="mt-0.5 lg:hidden" />
+    <div className="relative flex items-start gap-3 bg-grad-hero px-5 pt-5 pb-10 md:px-7 lg:static lg:z-auto lg:bg-none lg:px-8 lg:py-6">
+      <div className="mt-0.5 on-hero-actions lg:hidden">
+        <BackButton href={routes.home()} />
+      </div>
       <div className="min-w-0 flex-1 lg:max-w-[760px]">{children}</div>
       <WaveDivider className="absolute inset-x-0 -bottom-px text-background lg:hidden" />
     </div>

@@ -85,7 +85,7 @@ export async function HomeDistrictTiles() {
             className={cn(TILE_CLASS, tileClass(district.slug), "lift press")}
           >
             <Dish className="pointer-events-none absolute top-2.5 right-2 w-16" />
-            <span className="line-clamp-1 font-display text-[22px] leading-tight font-extrabold md:text-[28px]">
+            <span className="line-clamp-1 font-display text-[22px] leading-[1.4] font-extrabold md:text-[28px]">
               {district.nameBn}
             </span>
             <span className="line-clamp-1 text-[13px] opacity-95 md:text-[15px]">
