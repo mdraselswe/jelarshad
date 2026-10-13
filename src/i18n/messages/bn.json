@@ -327,6 +327,10 @@
     "experienceCount": "{count} জন খেয়েছেন",
     "liked": "{percent} পছন্দ করেছেন",
     "likedSuffix": "পছন্দ করেছেন",
+    "stripNew": "নতুন",
+    "stripNewHint": "এখনও মত নেই",
+    "stripPeople": "জন খেয়েছেন",
+    "stripXp": "XP, অভিজ্ঞতায়",
     "noExperiences": "এখনও কেউ অভিজ্ঞতা জানায়নি",
     "famousIn": "{district}-এর বিখ্যাত",
     "newGroup": "এখনও পর্যাপ্ত অভিজ্ঞতা নেই",
@@ -356,6 +360,9 @@
     "addMoreCta": "অভিজ্ঞতা জানান"
   },
   "district": {
+    "stampTitle": "{district}-এর স্ট্যাম্প",
+    "stampDone": "পাসপোর্টে জমা হয়েছে",
+    "stampTodo": "একটি অভিজ্ঞতা জানালেই পাবেন",
     "famous": "বিখ্যাত খাবার",
     "places": "এখানকার জায়গা",
     "noPlaces": "এই জেলায় এখনও কোনো জায়গা যোগ হয়নি।",

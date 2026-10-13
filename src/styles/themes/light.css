@@ -52,9 +52,9 @@
   --stamp-4: #be185d;
 
   --gradient-hero: linear-gradient(150deg, #4338ca 0%, #6d3fe8 55%, #a21caf 100%);
-  --gradient-food: linear-gradient(150deg, #7c3aed 0%, #a21caf 100%);
+  --gradient-food: linear-gradient(155deg, #ea580c 0%, #db2777 70%, #9d174d 130%);
   --gradient-place: linear-gradient(150deg, #db2777 0%, #7c3aed 100%);
-  --gradient-district: linear-gradient(150deg, #0b7f7e 0%, #4f46e5 100%);
+  --gradient-district: linear-gradient(155deg, #1e40af 0%, #4f46e5 55%, #7c3aed 120%);
   --gradient-reward: linear-gradient(135deg, #ffe9a8 0%, #f7b52c 100%);
   --gradient-action: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
   --on-hero: #ffffff;

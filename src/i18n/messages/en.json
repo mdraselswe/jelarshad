@@ -327,6 +327,10 @@
     "experienceCount": "{count} people ate it",
     "liked": "{percent} liked it",
     "likedSuffix": "liked it",
+    "stripNew": "New",
+    "stripNewHint": "No verdict yet",
+    "stripPeople": "people ate it",
+    "stripXp": "XP for an experience",
     "noExperiences": "Nobody has shared an experience yet",
     "famousIn": "Famous in {district}",
     "newGroup": "Not enough experiences yet",
@@ -356,6 +360,9 @@
     "addMoreCta": "Share your experience"
   },
   "district": {
+    "stampTitle": "{district} stamp",
+    "stampDone": "Collected in your passport",
+    "stampTodo": "Share one experience to earn it",
     "famous": "Famous for",
     "places": "Places here",
     "noPlaces": "No places have been added in this district yet.",

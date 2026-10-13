@@ -145,8 +145,11 @@ export function ListRowSkeleton({
   hasTrailing = true,
   trailing,
   footer,
+  ranked = false,
 }: {
   footer?: ReactNode;
+  /** The row has a 48px rank tile instead of the 44px tile. */
+  ranked?: boolean;
   hasTrailing?: boolean;
   /** Custom right-hand placeholder (e.g. a pill); replaces the default chevron-sized dot. */
   trailing?: ReactNode;
@@ -154,7 +157,11 @@ export function ListRowSkeleton({
   return (
     <li className={ROW_CLASS}>
       <ListRowBody
-        leading={<Skeleton className="size-11 shrink-0 rounded-thumb" />}
+        leading={
+          <Skeleton
+            className={cn("shrink-0", ranked ? "size-12 rounded-[16px]" : "size-11 rounded-thumb")}
+          />
+        }
         title={<SkeletonText className="w-2/3" />}
         meta={<SkeletonText className="w-1/2" />}
         footer={footer}

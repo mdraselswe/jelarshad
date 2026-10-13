@@ -145,6 +145,7 @@ export function AreaPageSkeleton() {
           <GroupedList>
             {Array.from({ length: 4 }, (_, index) => (
               <ListRowSkeleton
+                ranked
                 key={index}
                 trailing={<Skeleton className="h-7 w-14 shrink-0 rounded-[10px]" />}
               />

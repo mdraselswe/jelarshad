@@ -40,3 +40,41 @@ export function FoodStatsCard({ food, className }: { food: FoodHeader; className
     </div>
   );
 }
+
+/**
+ * Phone only: three small cards under the hero (approved canvas: Food). The first is the people's
+ * verdict once there is a score (decision P10), otherwise "new"; the second is how many people
+ * ate it; the third is what adding an experience earns.
+ */
+export function FoodStatsStrip({ food, reward }: { food: FoodHeader; reward: string }) {
+  const t = getT();
+  const hasScore = food.percent !== null && food.experienceCount > 0;
+  const cards = [
+    {
+      value: hasScore ? formatPercent(food.percent ?? 0) : t("food.stripNew"),
+      label: hasScore ? t("food.likedSuffix") : t("food.stripNewHint"),
+      tone: "text-cat-pink-fg",
+    },
+    {
+      value: formatNumber(food.experienceCount),
+      label: t("food.stripPeople"),
+      tone: "text-primary-text",
+    },
+    { value: reward, label: t("food.stripXp"), tone: "text-cat-teal-fg" },
+  ];
+  return (
+    <ul className="grid grid-cols-3 gap-2.5">
+      {cards.map((card) => (
+        <li
+          key={card.label}
+          className="rounded-[22px] bg-card px-2 py-3.5 text-center shadow-floating"
+        >
+          <div className={`font-display text-[22px] leading-tight font-extrabold ${card.tone}`}>
+            {card.value}
+          </div>
+          <div className="text-[12.5px] leading-snug text-muted-foreground">{card.label}</div>
+        </li>
+      ))}
+    </ul>
+  );
+}

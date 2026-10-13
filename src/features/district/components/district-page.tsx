@@ -11,6 +11,7 @@ import type { DistrictHeader } from "@/services/catalog-service";
 import { DistrictBoard, DistrictBoardSkeleton } from "@/features/game/components/district-board";
 import { ShareButton } from "@/features/share/components/share-button";
 import { DistrictAreasSection } from "./district-areas-section";
+import { DistrictStampCard, DistrictStampCardSkeleton } from "./district-stamp-card";
 import { DistrictFamousSection } from "./district-famous-section";
 import { DistrictHero, DistrictHeroSkeleton } from "./district-hero";
 import { DistrictPlacesSection, DistrictPlacesSectionSkeleton } from "./district-places-section";
@@ -36,6 +37,9 @@ export function DistrictPage({ district }: { district: DistrictHeader }) {
           />
         }
       />
+      <Suspense fallback={<DistrictStampCardSkeleton />}>
+        <DistrictStampCard districtId={district.id} nameBn={district.nameBn} slug={district.slug} />
+      </Suspense>
       <DistrictFamousSection district={district} />
       <DistrictAreasSection district={district} />
       <Suspense fallback={<DistrictPlacesSectionSkeleton />}>

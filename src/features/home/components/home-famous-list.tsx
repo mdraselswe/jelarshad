@@ -71,6 +71,7 @@ export function HomeFamousListSkeleton() {
     <FamousShell>
       {Array.from({ length: HOME_FAMOUS_ROWS }, (_, index) => (
         <ListRowSkeleton
+          ranked
           key={index}
           trailing={<Skeleton className="h-7 w-14 shrink-0 rounded-[10px]" />}
         />

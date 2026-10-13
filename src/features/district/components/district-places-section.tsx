@@ -1,7 +1,8 @@
 import { StoreIcon } from "lucide-react";
 
 import { Section } from "@/components/layout/section";
-import { GroupedList, ListRow, ListRowSkeleton, ListTile } from "@/components/ui/grouped-list";
+import { GroupedList, ListRow, ListRowSkeleton } from "@/components/ui/grouped-list";
+import { RankBadge } from "@/components/ui/rank-badge";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import { formatPriceRange } from "@/lib/format/number";
@@ -19,15 +20,11 @@ export async function DistrictPlacesSection({ districtId }: { districtId: number
         <p className="text-meta text-muted-foreground">{t("district.noPlaces")}</p>
       ) : (
         <GroupedList split>
-          {items.map((place) => (
+          {items.map((place, index) => (
             <ListRow
               key={place.slug}
               href={routes.place(place.slug)}
-              leading={
-                <ListTile tone="place">
-                  <StoreIcon />
-                </ListTile>
-              }
+              leading={<RankBadge rank={index + 1} />}
               title={place.nameBn}
               meta={
                 [
@@ -52,7 +49,7 @@ export function DistrictPlacesSectionSkeleton() {
     <Section title={t("district.places")} icon={<StoreIcon />} tone="violet">
       <GroupedList>
         {Array.from({ length: SKELETON_ROWS }, (_, index) => (
-          <ListRowSkeleton key={index} />
+          <ListRowSkeleton ranked key={index} />
         ))}
       </GroupedList>
     </Section>

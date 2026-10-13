@@ -25,7 +25,7 @@ import type { FoodHeader } from "@/services/catalog-service";
 
 import { FoodDishesSection, FoodDishesSectionSkeleton } from "./food-dishes-section";
 import { FoodHero, FoodHeroSkeleton } from "./food-hero";
-import { FoodStatsCard } from "./food-stats-card";
+import { FoodStatsStrip } from "./food-stats-card";
 import { FoodVoicesSection, FoodVoicesSectionSkeleton } from "./food-voices-section";
 
 function FamousInChips({ food }: { food: FoodHeader }) {
@@ -88,7 +88,7 @@ export function FoodPage({ food }: { food: FoodHeader }) {
         }
       />
       <div className="relative z-10 -mt-5 page-x lg:hidden">
-        <FoodStatsCard food={food} />
+        <FoodStatsStrip food={food} reward={`+${formatNumber(appConfig.points.experience)}`} />
       </div>
       {food.famousIn.length > 0 ? (
         <Section
