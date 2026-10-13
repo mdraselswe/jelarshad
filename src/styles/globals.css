@@ -157,6 +157,7 @@
   --animate-fx-twinkle: fx-twinkle 2.6s ease-in-out infinite;
   --animate-fx-scan: fx-scan 5s ease-in-out infinite;
   --animate-fx-flame: fx-flame 1.6s ease-in-out infinite;
+  --animate-fx-pulse: fx-pulse 2.4s ease-out infinite;
   --animate-fx-fall: fx-fall 2.8s linear infinite;
   --animate-fx-fill: fx-fill 1100ms var(--ease-out) 250ms both;
   --animate-fx-pop: fx-pop 550ms cubic-bezier(0.2, 1.2, 0.3, 1) both;
@@ -275,6 +276,14 @@
   100% {
     transform: scale(1);
     opacity: 1;
+  }
+}
+@keyframes fx-pulse {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--reward) 55%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 16px color-mix(in oklab, var(--reward) 0%, transparent);
   }
 }
 @keyframes fx-ring {

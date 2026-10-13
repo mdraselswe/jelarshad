@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("profile", () => {
   test("shows tabs for contributions, what I ate and saved items", async ({ page }) => {
-    await page.goto("/auth/sign-in?next=/me");
+    await page.goto("/auth/sign-in?next=/me/profile");
     await expect(page.getByRole("heading", { level: 1, name: "নমুনা ব্যবহারকারী" })).toBeVisible();
     await expect(page.getByRole("link", { name: "আমার অবদান" })).toHaveAttribute(
       "aria-current",
@@ -30,12 +30,12 @@ test.describe("profile", () => {
     const bookmark = page.getByRole("button", { name: "খেতে চাই তালিকায় রাখুন" }).first();
     if ((await bookmark.getAttribute("aria-pressed")) !== "true") await bookmark.click();
     await expect(page.getByText("খেতে চাই তালিকায় রাখা হয়েছে।")).toBeVisible();
-    await page.goto("/me?tab=saved");
+    await page.goto("/me/profile?tab=saved");
     await expect(page.getByRole("link", { name: /^দই/ })).toBeVisible();
   });
 
   test("the theme switcher and sign-out live in settings", async ({ page }) => {
-    await page.goto("/auth/sign-in?next=/me");
+    await page.goto("/auth/sign-in?next=/me/profile");
     await expect(page.getByRole("heading", { name: "সেটিংস" })).toBeVisible();
     await expect(page.getByRole("button", { name: "লগআউট" })).toBeVisible();
   });

@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 /**
- * The one action of a phone detail page, pinned to the bottom (docs/design: M-Food, M-Place). While it
- * is on screen it replaces the floating nav (globals.css hides the nav next to `data-page-cta`);
- * desktop shows the same action inside the page instead.
+ * The one action of a phone detail page, pinned to the bottom (docs/design/ Food): a gold 58px button
+ * with a pulse. While it is on screen it replaces the floating nav (globals.css hides the nav next
+ * to `data-page-cta`); desktop shows the same action inside the page instead.
  */
 export function StickyCta({
   href,
@@ -19,15 +19,15 @@ export function StickyCta({
   return (
     <div
       data-page-cta
-      className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto max-w-md lg:hidden"
+      className="fixed inset-x-4 bottom-[max(1.125rem,env(safe-area-inset-bottom))] z-40 mx-auto max-w-md lg:hidden"
     >
       <Link
         href={href}
-        className="flex h-[58px] press items-center justify-center gap-2.5 rounded-full bg-primary bg-grad-action px-5 text-[17px] font-semibold text-primary-foreground shadow-floating"
+        className="flex h-[58px] press animate-fx-pulse items-center justify-center gap-2.5 rounded-[20px] bg-grad-reward px-5 text-[16px] font-bold text-on-reward shadow-floating"
       >
         {children}
         {chip ? (
-          <span className="flex h-[26px] items-center rounded-full bg-reward px-2.5 text-[13px] font-bold text-reward-foreground">
+          <span className="flex h-[26px] items-center rounded-[11px] bg-white/55 px-2.5 text-[12.5px] font-bold text-on-reward">
             {chip}
           </span>
         ) : null}

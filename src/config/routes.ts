@@ -29,7 +29,10 @@ export const routes = {
   area: (districtSlug: string, areaSlug: string) =>
     `/district/${segment(districtSlug)}/area/${segment(areaSlug)}`,
   add: () => "/add",
+  /** The passport: level, stamps, badges, missions. */
   me: () => "/me",
+  /** "Me": contributions, what I ate, saved, settings. */
+  profile: () => "/me/profile",
   /** Login page; `next` is where to land afterwards (a site path). */
   login: (opts?: { next?: string | undefined; error?: boolean }) =>
     withSearchParams("/login", { next: opts?.next, error: opts?.error ? "1" : undefined }),

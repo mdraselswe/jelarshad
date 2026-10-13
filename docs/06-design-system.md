@@ -209,7 +209,7 @@ are 44–57 KB each and a page downloads only the weights it uses. Changing a fo
 - **Rank badge**: 32px rounded square; #1 primary/white, others muted.
 - **Score pill**: `৯২%` on success-soft. "নতুন"/few experiences → muted pill.
 - **Segmented control**: muted track, white selected segment with small shadow (search tabs, verify ✅/⚠️/❌).
-- **Floating bottom nav**: 16px from edges, 66px tall, white pill (no backdrop blur: it is costly to paint), 4 items; center item "যোগ" is a primary pill.
+- **Floating bottom nav** (approved canvas: Main, Passport): 16px from the edges, 68px tall, white bar with 26px radius (no backdrop blur: it is costly to paint), five items: হোম, খুঁজুন, the gold 56px "যোগ" button raised 26px above the bar with a slow pulse, পাসপোর্ট (`/me`) and আমি (`/me/profile`). Pages with a pinned action replace the bar with that gold 58px button.
 - **Bottom sheet** for verify, login and filters: scrim `rgb(22 22 29 / .45)`, handle bar, radius 28.
 - **Empty state** = invitation: dashed primary-soft box + one primary button + reward hint (`+২০`).
 
