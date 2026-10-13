@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { SparkleArt, TrophyArt } from "@/components/illustration/food-art";
+import { HillEdge, HouseArt, PersonArt, TreeArt } from "@/components/illustration/world-art";
 import { Band } from "@/components/layout/band";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
@@ -14,7 +15,14 @@ export function GamePromo() {
       <SparkleArt className="absolute top-6 left-10 size-3" />
       <SparkleArt tone="b" delay={1200} className="absolute top-14 right-12 size-2.5" />
       <SparkleArt delay={1900} className="absolute right-8 bottom-10 size-3.5" />
-      <div className="relative flex items-center gap-4 lg:gap-8">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16">
+        <HillEdge className="absolute inset-x-0 bottom-0 text-black/25" />
+        <TreeArt className="absolute bottom-1 left-[6%] w-8" />
+        <HouseArt className="absolute bottom-1 left-[26%] w-14" />
+        <TreeArt tone="b" className="absolute bottom-1 left-[52%] w-6" />
+        <PersonArt shirt="b" className="absolute bottom-1 left-[70%] h-10 w-5" />
+      </div>
+      <div className="relative flex items-center gap-4 pb-16 lg:gap-8 lg:pb-0">
         <TrophyArt className="h-[94px] w-[84px] shrink-0 lg:h-[130px] lg:w-[116px]" />
         <div className="min-w-0">
           <h2 className="font-display text-[22px] leading-tight font-bold lg:text-[32px]">

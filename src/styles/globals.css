@@ -158,11 +158,82 @@
   --animate-fx-scan: fx-scan 5s ease-in-out infinite;
   --animate-fx-flame: fx-flame 1.6s ease-in-out infinite;
   --animate-fx-pulse: fx-pulse 2.4s ease-out infinite;
+  --animate-fx-spin: fx-spin 40s linear infinite;
+  --animate-fx-sway: fx-sway 4.5s ease-in-out infinite;
+  --animate-fx-bob: fx-bob 3.8s ease-in-out infinite;
+  --animate-fx-step: fx-step 0.9s ease-in-out infinite;
+  --animate-fx-leg: fx-leg 0.9s ease-in-out infinite;
+  --animate-fx-leg-b: fx-leg 0.9s ease-in-out -0.45s infinite;
+  --animate-fx-fly: fx-fly 14s linear infinite;
+  --animate-fx-flap: fx-flap 0.5s ease-in-out infinite;
+  --animate-fx-drift-b: fx-drift 22s ease-in-out -6s infinite alternate;
+  --animate-fx-wave-b: fx-wave 26s linear reverse infinite;
   --animate-fx-fall: fx-fall 2.8s linear infinite;
   --animate-fx-fill: fx-fill 1100ms var(--ease-out) 250ms both;
   --animate-fx-pop: fx-pop 550ms cubic-bezier(0.2, 1.2, 0.3, 1) both;
 }
 
+@keyframes fx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fx-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes fx-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(3px) rotate(2deg);
+  }
+}
+@keyframes fx-step {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+@keyframes fx-leg {
+  0%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+@keyframes fx-fly {
+  from {
+    transform: translate(-30px, 0);
+  }
+  50% {
+    transform: translate(120px, -10px);
+  }
+  to {
+    transform: translate(280px, 4px);
+  }
+}
+@keyframes fx-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.45);
+  }
+}
 @keyframes fx-float {
   0%,
   100% {

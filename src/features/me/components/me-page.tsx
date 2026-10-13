@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookmarkIcon, FlameIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { TrophyArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
@@ -139,7 +140,12 @@ export async function MePage({ user }: { user: AppUser }) {
   ]);
   return (
     <PageShell header={null}>
-      <HeroBand tone="home" bleed className="pb-14 lg:pb-12">
+      <HeroBand
+        tone="home"
+        bleed
+        scene={<WorldStrip scene="river" />}
+        className="pb-[132px] lg:pb-12"
+      >
         <TrophyArt className="pointer-events-none absolute top-6 -right-2 hidden w-40 opacity-25 lg:block" />
         <div className="relative flex items-start justify-between gap-3">
           <h1 className="font-display text-[22px] leading-tight font-extrabold lg:text-[30px]">

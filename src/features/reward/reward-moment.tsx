@@ -4,6 +4,7 @@ import { FlameIcon, MedalIcon, TrophyIcon, ZapIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { PersonArt } from "@/components/illustration/world-art";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { routes } from "@/config/routes";
 import { levelNameKey } from "@/features/game/components/game-bits";
@@ -94,7 +95,12 @@ export function RewardMoment() {
               </span>
             ) : null}
           </div>
-          <div className="mt-auto flex w-full flex-col gap-2.5 pt-6">
+          <div aria-hidden className="mt-auto flex items-end justify-center gap-4 pt-6">
+            <PersonArt shirt="b" walking={false} className="h-16 w-8 animate-fx-float" />
+            <PersonArt shirt="a" walking={false} className="h-[72px] w-9 animate-fx-float-b" />
+            <PersonArt shirt="c" walking={false} className="h-16 w-8 animate-fx-float-c" />
+          </div>
+          <div className="flex w-full flex-col gap-2.5 pt-5">
             <Link
               href={routes.me()}
               onClick={() => setMoment(null)}

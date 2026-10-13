@@ -26,6 +26,8 @@ type HeroBandProps = {
   bar?: ReactNode;
   /** A faint illustration behind the content (docs/06-design-system.md §2d). */
   art?: ReactNode;
+  /** A countryside strip along the bottom of the band on phones; give the band room with padding. */
+  scene?: ReactNode;
 };
 
 /**
@@ -33,7 +35,15 @@ type HeroBandProps = {
  * §2c). White text on the gradient passes AA in every theme; the two soft circles are part of the
  * background, so the band is a single painted layer. From 1024px it is always an inset card.
  */
-export function HeroBand({ tone, children, className, bleed = false, bar, art }: HeroBandProps) {
+export function HeroBand({
+  tone,
+  children,
+  className,
+  bleed = false,
+  bar,
+  art,
+  scene,
+}: HeroBandProps) {
   return (
     <section className={bleed ? "lg:page-x lg:pt-5" : "page-x pt-1 lg:pt-5"}>
       <div
@@ -55,6 +65,11 @@ export function HeroBand({ tone, children, className, bleed = false, bar, art }:
         {bar ? (
           <div className="mb-4 flex min-h-11 items-center justify-between gap-3 on-hero-actions lg:hidden">
             {bar}
+          </div>
+        ) : null}
+        {scene ? (
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 lg:hidden">
+            {scene}
           </div>
         ) : null}
         <div className="relative">{children}</div>

@@ -3,16 +3,38 @@ import { useId, type ReactNode } from "react";
 import { IconChip, type IconChipTone } from "@/components/ui/icon-chip";
 import { cn } from "@/lib/cn";
 
+import { HillEdge, TreeEdge } from "@/components/illustration/world-art";
+
 import { WaveDivider } from "./wave-divider";
 
 // A full-width section with its own ground (docs/06-design-system.md §2d): teal for missions and
 // progress, warm for browsing districts and foods, mint for places and maps, night for rewards.
+// `edge` is the top of the band: water waves, hills or a row of trees, so the page does not repeat
+// one wave everywhere.
 const TONES = {
-  teal: { wave: "text-band-teal", ground: "band-teal text-on-hero", chip: "teal" },
-  night: { wave: "text-band-night", ground: "band-night text-on-hero", chip: "violet" },
-  warm: { wave: "text-band-warm", ground: "band-warm text-foreground", chip: "amber" },
-  mint: { wave: "text-band-mint", ground: "band-mint text-foreground", chip: "green" },
-} as const satisfies Record<string, { wave: string; ground: string; chip: IconChipTone }>;
+  teal: { wave: "text-band-teal", ground: "band-teal text-on-hero", chip: "teal", edge: "hills" },
+  night: {
+    wave: "text-band-night",
+    ground: "band-night text-on-hero",
+    chip: "violet",
+    edge: "hills",
+  },
+  warm: {
+    wave: "text-band-warm",
+    ground: "band-warm text-foreground",
+    chip: "amber",
+    edge: "trees",
+  },
+  mint: {
+    wave: "text-band-mint",
+    ground: "band-mint text-foreground",
+    chip: "green",
+    edge: "wave",
+  },
+} as const satisfies Record<
+  string,
+  { wave: string; ground: string; chip: IconChipTone; edge: "wave" | "hills" | "trees" }
+>;
 
 export type BandTone = keyof typeof TONES;
 
@@ -55,7 +77,13 @@ export function Band({
         className,
       )}
     >
-      {flush ? null : <WaveDivider className={style.wave} />}
+      {flush ? null : style.edge === "hills" ? (
+        <HillEdge className={style.wave} />
+      ) : style.edge === "trees" ? (
+        <TreeEdge className={style.wave} />
+      ) : (
+        <WaveDivider className={style.wave} />
+      )}
       <div className={cn(flush ? "" : "-mt-px", style.ground)}>
         <div
           className={cn(

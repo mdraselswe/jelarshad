@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { LogoMark } from "@/components/brand/logo";
 import { BowlArt, CloudArt, CupArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { QUICK_SEARCHES } from "@/config/home";
 import { routes } from "@/config/routes";
@@ -25,7 +26,8 @@ export function HomeHero() {
     <HeroBand
       tone="home"
       bleed
-      className="pb-14 lg:pb-12"
+      className="pb-[132px] lg:pb-12"
+      scene={<WorldStrip scene="hills" />}
       bar={
         <>
           <Link
