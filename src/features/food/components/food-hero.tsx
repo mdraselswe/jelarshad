@@ -24,7 +24,7 @@ export function FoodHero({ food, bar }: { food: FoodHeader; bar?: ReactNode }) {
     <HeroBand tone="food" bleed bar={bar} className="pb-12 lg:pb-12">
       <PotArt className="pointer-events-none absolute -top-3 left-1/2 w-[188px] -translate-x-1/2 lg:hidden" />
       <div className="flex min-h-[318px] flex-col justify-end lg:block lg:flex lg:min-h-0 lg:flex-row lg:items-center lg:gap-10">
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 lg:flex-1">
           {food.famousIn.length > 0 ? (
             <ul className="mb-2.5 flex flex-wrap gap-2 lg:hidden">
               {food.famousIn.slice(0, 2).map((district) => (
@@ -71,7 +71,7 @@ export function FoodHeroSkeleton({ bar }: { bar?: ReactNode }) {
     <HeroBand tone="food" bleed bar={bar} className="pb-12 lg:pb-12">
       <div className="flex min-h-[318px] flex-col justify-end lg:min-h-0 lg:flex-row lg:items-center lg:gap-8">
         <span aria-hidden className={TILE_CLASS} />
-        <div className="min-w-0 flex-1 font-display text-[40px] leading-[1.15] lg:text-[48px]">
+        <div className="min-w-0 font-display text-[40px] leading-[1.15] lg:flex-1 lg:text-[48px]">
           <SkeletonText className="w-1/2" />
         </div>
       </div>
