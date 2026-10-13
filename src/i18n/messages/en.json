@@ -489,8 +489,7 @@
     "boardLogin": "Sign in to appear on the list"
   },
   "footer": {
-    "builtWith": "Built with",
-    "by": "by",
+    "builtWith": "Made with love by",
     "linkedin": "LinkedIn profile"
   }
 }
