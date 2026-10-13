@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
@@ -75,7 +76,12 @@ export function AreaPage({ data }: { data: AreaPageData }) {
       <HeroBand
         tone="district"
         bleed
-        className="pb-12 lg:pb-12"
+        scene={
+          <div className="hidden lg:block">
+            <WorldStrip scene="hills" />
+          </div>
+        }
+        className="pb-12 lg:pb-[150px]"
         bar={<HeroBar backHref={routes.district(district.slug)} actions={share} />}
       >
         <p className="text-[14px] text-on-hero/90">
@@ -130,7 +136,12 @@ export function AreaPageSkeleton() {
         <HeroBand
           tone="district"
           bleed
-          className="pb-12 lg:pb-12"
+          scene={
+            <div className="hidden lg:block">
+              <WorldStrip scene="hills" />
+            </div>
+          }
+          className="pb-12 lg:pb-[150px]"
           bar={<HeroBar backHref={routes.home()} />}
         >
           <div className="text-[14px]">

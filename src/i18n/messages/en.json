@@ -41,6 +41,10 @@
     "updated": "Your answer was updated."
   },
   "add": {
+    "perksTitle": "What you earn",
+    "perkExperience": "Sharing an experience",
+    "perkPlace": "Adding a new place",
+    "perkDiscoverer": "Finding the first place of a famous food",
     "title": "Add",
     "stepOf": "Step {step}/3",
     "food": "What did you eat?",

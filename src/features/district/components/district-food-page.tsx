@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
@@ -41,7 +42,12 @@ export function DistrictFoodPage({ data }: { data: DistrictFoodData }) {
       <HeroBand
         tone="food"
         bleed
-        className="pb-12 lg:pb-12"
+        scene={
+          <div className="hidden lg:block">
+            <WorldStrip scene="village" />
+          </div>
+        }
+        className="pb-12 lg:pb-[150px]"
         bar={
           <HeroBar
             backHref={routes.district(district.slug)}
@@ -84,7 +90,12 @@ export function DistrictFoodPageSkeleton() {
         <HeroBand
           tone="food"
           bleed
-          className="pb-12 lg:pb-12"
+          scene={
+            <div className="hidden lg:block">
+              <WorldStrip scene="village" />
+            </div>
+          }
+          className="pb-12 lg:pb-[150px]"
           bar={<HeroBar backHref={routes.home()} />}
         >
           <div className="text-title-1">
