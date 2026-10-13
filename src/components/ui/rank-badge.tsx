@@ -1,21 +1,22 @@
-import { toBnDigits } from "@/lib/format/number";
 import { cn } from "@/lib/cn";
+import { formatNumber } from "@/lib/format/number";
 
-/** 32px rounded square: #1 is primary, the rest are muted (docs/06-design-system.md §6). */
-export const RANK_BADGE_CLASS =
-  "flex size-8 shrink-0 items-center justify-center rounded-[10px] font-display text-[15px] font-bold";
-
-export function RankBadge({ rank }: { rank: number }) {
+/** The numeral tile of a ranked row: gold for first, soft indigo for the rest (approved canvas). */
+export function RankBadge({ rank, className }: { rank: number; className?: string }) {
   return (
     <span
+      aria-hidden
       className={cn(
-        RANK_BADGE_CLASS,
+        "flex size-12 shrink-0 items-center justify-center rounded-[16px] font-display text-[21px] font-extrabold",
         rank === 1
-          ? "bg-primary bg-grad-action text-primary-foreground"
-          : "bg-muted text-muted-foreground",
+          ? "bg-grad-reward text-on-reward"
+          : rank === 2
+            ? "bg-muted text-foreground"
+            : "bg-primary-soft text-primary-soft-fg",
+        className,
       )}
     >
-      {toBnDigits(rank)}
+      {formatNumber(rank)}
     </span>
   );
 }

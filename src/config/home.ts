@@ -7,13 +7,15 @@ export const HOME_CATEGORIES: readonly {
   id: string;
   label: MessageKey;
   tile: string;
+  /** Shown on phones too: the phone row is these four, tablets and desktop show all eight. */
+  phone?: true;
 }[] = [
-  { id: "biryani", label: "home.cat.biryani", tile: "bg-tile-2" },
-  { id: "sweets", label: "home.cat.sweets", tile: "bg-tile-1" },
-  { id: "doi", label: "home.cat.doi", tile: "bg-tile-5" },
+  { id: "biryani", label: "home.cat.biryani", tile: "bg-kind-orange", phone: true },
+  { id: "sweets", label: "home.cat.sweets", tile: "bg-kind-pink", phone: true },
+  { id: "doi", label: "home.cat.doi", tile: "bg-kind-violet", phone: true },
   { id: "fish", label: "home.cat.fish", tile: "bg-tile-3" },
   { id: "breakfast", label: "home.cat.breakfast", tile: "bg-tile-4" },
-  { id: "tea", label: "home.cat.tea", tile: "bg-tile-6" },
+  { id: "tea", label: "home.cat.tea", tile: "bg-kind-green", phone: true },
   { id: "pitha", label: "home.cat.pitha", tile: "bg-tile-2" },
   { id: "more", label: "home.cat.more", tile: "bg-tile-1" },
 ];

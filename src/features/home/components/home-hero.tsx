@@ -11,6 +11,7 @@ import { HomePassport } from "@/features/passport/components/passport-section";
 import { SearchEntry } from "@/features/search/components/search-entry";
 import { getT } from "@/i18n/server";
 
+import { HomeGreeting } from "./home-greeting";
 import { HomePoints } from "./home-points";
 
 /**
@@ -30,11 +31,11 @@ export function HomeHero() {
           <Link
             href={routes.home()}
             aria-label={siteConfig.name}
-            className="flex items-center gap-2.5 !bg-transparent font-display text-xl font-bold"
+            className="flex items-center gap-2.5 !bg-transparent font-display text-xl font-extrabold"
           >
             <span
               aria-hidden
-              className="flex size-10 items-center justify-center rounded-[13px] bg-card"
+              className="flex size-9 items-center justify-center rounded-[12px] bg-card"
             >
               <LogoMark title="" className="size-7" />
             </span>
@@ -47,17 +48,24 @@ export function HomeHero() {
       }
     >
       <CloudArt className="pointer-events-none absolute -top-2 left-[44%] hidden w-32 opacity-25 lg:block" />
-      <BowlArt className="pointer-events-none absolute top-0 right-2 w-[132px] lg:-top-9 lg:right-8 lg:w-[112px]" />
+      <BowlArt className="pointer-events-none absolute top-3 -right-1 w-[150px] lg:-top-9 lg:right-8 lg:w-[112px]" />
       <CupArt className="pointer-events-none absolute top-[8px] right-[140px] hidden w-14 lg:-top-7 lg:right-40 lg:block" />
       <div className="lg:grid lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-12">
         <div>
-          <h1 className="text-title-1 lg:text-[52px]">{t("home.title")}</h1>
-          <p className="mt-1.5 max-w-[15rem] text-body text-on-hero/90 lg:max-w-xl lg:text-lg">
+          <div className="mb-2 min-h-[26px] lg:hidden">
+            <Suspense fallback={null}>
+              <HomeGreeting />
+            </Suspense>
+          </div>
+          <h1 className="h-[92px] max-w-[14.5rem] overflow-hidden font-display text-[38px] leading-[1.2] font-extrabold lg:h-auto lg:max-w-none lg:overflow-visible lg:text-[52px] lg:leading-[1.2] lg:font-bold">
+            {t("home.title")}
+          </h1>
+          <p className="mt-2 h-[44px] max-w-[14.5rem] overflow-hidden text-[14.5px] leading-[1.5] text-on-hero/90 lg:mt-1.5 lg:h-auto lg:max-w-xl lg:overflow-visible lg:text-lg">
             {t("home.subtitle")}
           </p>
           <SearchEntry
             withButton
-            className="mt-5 rounded-full border-0 shadow-floating lg:mt-6 lg:h-16 lg:max-w-[600px] lg:text-lg"
+            className="mt-6 h-[54px] rounded-[18px] border-0 text-[15px] shadow-floating lg:mt-6 lg:h-16 lg:max-w-[600px] lg:rounded-full lg:text-lg"
           />
           <ul className="mt-4 hidden flex-wrap gap-2.5 lg:flex">
             {QUICK_SEARCHES.map((term) => (

@@ -144,7 +144,8 @@ test.describe("search while typing", () => {
     page,
   }) => {
     await page.goto("/search?q=doi");
-    const results = page.locator("[data-search-results]");
+    // The loading skeleton carries the same marker (aria-hidden): only the real results count.
+    const results = page.locator("[data-search-results]:not([aria-hidden])");
     await expect(results).toBeVisible();
     const box = page.getByRole("searchbox", { name: "খুঁজুন" });
     await box.fill("বগুড়া");

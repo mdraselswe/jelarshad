@@ -77,6 +77,7 @@ export function DishRow({
 export function DishRowSkeleton({ withBar = false }: { withBar?: boolean }) {
   return (
     <ListRowSkeleton
+      ranked
       footer={withBar ? <span aria-hidden className={BAR_CLASS} /> : undefined}
       hasTrailing={false}
       trailing={<Skeleton className="h-7 w-14 rounded-[10px]" />}

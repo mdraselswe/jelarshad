@@ -42,16 +42,21 @@ export function HomeCategories() {
       icon={<UtensilsIcon />}
       tone="coral"
       className="pt-5 lg:pt-7"
+      action={
+        <Link href={routes.search()} className="text-[13px] font-semibold text-primary-text">
+          {t("home.seeAll")}
+        </Link>
+      }
     >
       <ul
         aria-label={t("home.categories")}
-        className="grid grid-cols-4 gap-y-4 lg:grid-cols-8 lg:gap-3.5"
+        className="grid grid-cols-4 gap-x-2.5 gap-y-4 pt-1 lg:grid-cols-8 lg:gap-3.5"
       >
         {HOME_CATEGORIES.map((category, index) => {
           const label = t(category.label);
           const Icon = ICONS[category.id] ?? CandyIcon;
           return (
-            <li key={category.id}>
+            <li key={category.id} className={category.phone ? undefined : "hidden md:block"}>
               <Link
                 href={category.id === "more" ? routes.search() : routes.search({ q: label })}
                 className="flex press flex-col items-center gap-2 lg:rounded-card-lg lg:border lg:border-border lg:bg-primary-soft/40 lg:px-2 lg:py-4"
@@ -59,14 +64,14 @@ export function HomeCategories() {
                 <span
                   aria-hidden
                   className={cn(
-                    "flex size-[58px] items-center justify-center rounded-[20px] text-on-hero shadow-card lg:size-[62px]",
+                    "flex size-[62px] items-center justify-center rounded-[22px] text-on-hero shadow-card",
                     category.tile,
                     index % 2 === 0 ? "animate-fx-float" : "animate-fx-float-b",
                   )}
                 >
-                  <Icon className="size-7" />
+                  <Icon className="size-[30px]" strokeWidth={1.9} />
                 </span>
-                <span className="text-center text-[13px] font-medium lg:text-[14.5px] lg:font-semibold">
+                <span className="text-center text-[12.5px] font-semibold lg:text-[14.5px]">
                   {label}
                 </span>
               </Link>

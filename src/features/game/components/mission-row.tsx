@@ -26,6 +26,12 @@ const MESSAGES: Record<string, MissionMessageKey> = {
   weekly_places: "game.mission.weekly_places",
 };
 
+/** The sentence for one mission, e.g. "আজ ৩টি অভিজ্ঞতা জানান". */
+export function missionTitle(t: ReturnType<typeof getT>, mission: MissionProgress): string {
+  const key = MESSAGES[mission.id];
+  return key ? t(key, { count: formatNumber(mission.target) }) : mission.id;
+}
+
 /**
  * One goal with its bar. `onBand` draws it translucent on a dark or colored band; otherwise it is a
  * soft row for a white panel. Fixed height (64px) so lists of missions never reflow.

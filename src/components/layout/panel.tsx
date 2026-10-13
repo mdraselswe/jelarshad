@@ -39,7 +39,7 @@ export function Panel({
     >
       <div
         className={cn(
-          "rounded-[28px] border border-border bg-card p-4 shadow-card lg:rounded-[32px] lg:p-6",
+          "rounded-[32px] border border-border bg-card p-4 shadow-card lg:p-6",
           cardClassName,
         )}
       >

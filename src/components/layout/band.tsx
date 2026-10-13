@@ -26,23 +26,43 @@ type BandProps = {
   className?: string;
   /** Spacing above the wave; the page ground shows in it. */
   gap?: boolean;
+  /** No wave and no gap: the band starts with a straight edge, directly under the section above. */
+  flush?: boolean;
 };
 
 /**
  * Wave on top, tinted or gradient ground below, content inside the page gutter. On desktop the band
  * runs edge to edge while its content keeps the 1200px column.
  */
-export function Band({ tone, title, icon, action, children, className, gap = true }: BandProps) {
+export function Band({
+  tone,
+  title,
+  icon,
+  action,
+  children,
+  className,
+  gap = true,
+  flush = false,
+}: BandProps) {
   const headingId = useId();
   const style = TONES[tone];
   return (
     <section
       aria-labelledby={title ? headingId : undefined}
-      className={cn("animate-rise lg:ml-[calc(50%-50vw)] lg:w-screen", gap && "mt-7", className)}
+      className={cn(
+        "animate-rise lg:ml-[calc(50%-50vw)] lg:w-screen",
+        gap && !flush && "mt-7",
+        className,
+      )}
     >
-      <WaveDivider className={style.wave} />
-      <div className={cn("-mt-px", style.ground)}>
-        <div className="page-x pt-2 pb-7 lg:mx-auto lg:max-w-[1200px] lg:pt-4 lg:pb-12">
+      {flush ? null : <WaveDivider className={style.wave} />}
+      <div className={cn(flush ? "" : "-mt-px", style.ground)}>
+        <div
+          className={cn(
+            "page-x pb-7 lg:mx-auto lg:max-w-[1200px] lg:pt-4 lg:pb-12",
+            flush ? "pt-6" : "pt-2",
+          )}
+        >
           {title ? (
             <div className="mb-3 flex items-center gap-2.5">
               {icon ? <IconChip tone={style.chip}>{icon}</IconChip> : null}

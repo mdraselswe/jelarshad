@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { BackButton } from "@/components/layout/back-button";
+import { WaveDivider } from "@/components/layout/wave-divider";
 import { PageShell } from "@/components/layout/page-shell";
 import { LoadingRegion } from "@/components/ui/skeleton";
 import { routes } from "@/config/routes";
@@ -12,9 +13,11 @@ import { SearchResults, SearchResultsSkeleton } from "./search-results";
 
 function SearchTopBar({ children }: { children: React.ReactNode }) {
   return (
-    <div className="sticky top-0 z-40 flex items-start gap-2 rounded-b-[24px] border-b border-border bg-card px-4 py-3 shadow-card md:px-6 lg:static lg:z-auto lg:rounded-none lg:border-0 lg:bg-transparent lg:px-8 lg:py-6 lg:shadow-none">
-      <BackButton href={routes.home()} className="mt-1.5 lg:hidden" />
+    // Phones: the violet band of the approved canvas (back, white field, wave). Desktop: plain row.
+    <div className="relative flex items-start gap-3 on-hero-actions bg-grad-hero px-5 pt-5 pb-10 md:px-7 lg:static lg:z-auto lg:bg-none lg:px-8 lg:py-6">
+      <BackButton href={routes.home()} className="mt-0.5 lg:hidden" />
       <div className="min-w-0 flex-1 lg:max-w-[760px]">{children}</div>
+      <WaveDivider className="absolute inset-x-0 -bottom-px text-background lg:hidden" />
     </div>
   );
 }

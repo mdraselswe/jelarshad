@@ -652,6 +652,19 @@
 @utility bg-tile-6 {
   background-image: var(--tile-6);
 }
+/* Light-to-strong fills for the food-kind tiles on the home page (approved canvas: Main). */
+@utility bg-kind-orange {
+  background-image: var(--kind-orange);
+}
+@utility bg-kind-pink {
+  background-image: var(--kind-pink);
+}
+@utility bg-kind-violet {
+  background-image: var(--kind-violet);
+}
+@utility bg-kind-green {
+  background-image: var(--kind-green);
+}
 /* Round buttons (back, share, save) laid on a hero gradient: translucent, white icons. */
 @utility on-hero-actions {
   && a,

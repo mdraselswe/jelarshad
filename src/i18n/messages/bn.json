@@ -225,11 +225,18 @@
     "unknown": "কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।"
   },
   "home": {
+    "greeting": {
+      "morning": "শুভ সকাল, {name}",
+      "noon": "শুভ দুপুর, {name}",
+      "afternoon": "শুভ বিকেল, {name}",
+      "evening": "শুভ সন্ধ্যা, {name}",
+      "night": "শুভ রাত্রি, {name}"
+    },
     "title": "আজ কী খাবেন?",
     "searchPlaceholder": "খাবার, জেলা বা দোকানের নাম",
     "famousTitle": "যেসব খাবারের জন্য বিখ্যাত",
     "famousHint": "সম্পাদকদের যাচাই করা তালিকা, রেটিং নয়",
-    "districtsTitle": "জেলা ঘুরে দেখুন",
+    "districtsTitle": "জেলায় জেলায় স্বাদ",
     "allDistricts": "সব {count}টি জেলা দেখুন",
     "divisionOf": "{name} বিভাগ",
     "subtitle": "দেশের প্রতিটি জেলার খাবারের আসল স্বাদ, মানুষের অভিজ্ঞতায়।",
@@ -320,6 +327,10 @@
     "experienceCount": "{count} জন খেয়েছেন",
     "liked": "{percent} পছন্দ করেছেন",
     "likedSuffix": "পছন্দ করেছেন",
+    "stripNew": "নতুন",
+    "stripNewHint": "এখনও মত নেই",
+    "stripPeople": "জন খেয়েছেন",
+    "stripXp": "XP, অভিজ্ঞতায়",
     "noExperiences": "এখনও কেউ অভিজ্ঞতা জানায়নি",
     "famousIn": "{district}-এর বিখ্যাত",
     "newGroup": "এখনও পর্যাপ্ত অভিজ্ঞতা নেই",
@@ -349,6 +360,9 @@
     "addMoreCta": "অভিজ্ঞতা জানান"
   },
   "district": {
+    "stampTitle": "{district}-এর স্ট্যাম্প",
+    "stampDone": "পাসপোর্টে জমা হয়েছে",
+    "stampTodo": "একটি অভিজ্ঞতা জানালেই পাবেন",
     "famous": "বিখ্যাত খাবার",
     "places": "এখানকার জায়গা",
     "noPlaces": "এই জেলায় এখনও কোনো জায়গা যোগ হয়নি।",
