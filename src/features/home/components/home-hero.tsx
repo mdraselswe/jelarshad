@@ -57,10 +57,10 @@ export function HomeHero() {
               <HomeGreeting />
             </Suspense>
           </div>
-          <h1 className="max-w-[14.5rem] font-display text-[38px] leading-[1.2] font-extrabold lg:max-w-none lg:text-[52px] lg:leading-[1.2] lg:font-bold">
+          <h1 className="h-[92px] max-w-[14.5rem] overflow-hidden font-display text-[38px] leading-[1.2] font-extrabold lg:h-auto lg:max-w-none lg:overflow-visible lg:text-[52px] lg:leading-[1.2] lg:font-bold">
             {t("home.title")}
           </h1>
-          <p className="mt-2 max-w-[14.5rem] text-[14.5px] leading-[1.5] text-on-hero/90 lg:mt-1.5 lg:max-w-xl lg:text-lg">
+          <p className="mt-2 h-[44px] max-w-[14.5rem] overflow-hidden text-[14.5px] leading-[1.5] text-on-hero/90 lg:mt-1.5 lg:h-auto lg:max-w-xl lg:overflow-visible lg:text-lg">
             {t("home.subtitle")}
           </p>
           <SearchEntry
