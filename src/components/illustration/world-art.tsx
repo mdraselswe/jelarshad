@@ -225,8 +225,8 @@ export function WorldStrip({
     >
       <SunArt className="absolute top-1 right-6 w-12 opacity-95" />
       <svg
-        viewBox="0 0 120 50"
-        className="absolute top-3 left-[8%] w-20 animate-fx-drift opacity-80"
+        viewBox="0 -10 120 60"
+        className="absolute top-3 left-[8%] w-20 animate-fx-drift overflow-visible opacity-80"
       >
         <path
           d="M20 40a14 14 0 0 1 4-27 20 20 0 0 1 38-4 16 16 0 0 1 30 8 12 12 0 0 1 8 23z"
@@ -234,8 +234,8 @@ export function WorldStrip({
         />
       </svg>
       <svg
-        viewBox="0 0 120 50"
-        className="absolute top-8 left-[46%] w-14 animate-fx-drift-b opacity-70"
+        viewBox="0 -10 120 60"
+        className="absolute top-8 left-[46%] w-14 animate-fx-drift-b overflow-visible opacity-70"
       >
         <path
           d="M20 40a14 14 0 0 1 4-27 20 20 0 0 1 38-4 16 16 0 0 1 30 8 12 12 0 0 1 8 23z"
