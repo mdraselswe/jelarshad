@@ -21,7 +21,7 @@ const PUBLIC = [
 // A web font replacing its fallback re-wraps a heading or a paragraph once (a few hundredths of CLS on
 // text-heavy pages). The limit catches what the skeletons are for: a block of the wrong shape, which
 // measures in tenths.
-const limitFor = () => 0.05;
+const LIMIT = 0.05;
 const SIGNED_IN = ["/me", "/me/profile", "/add"];
 const ADMIN = ["/admin", "/admin/reports", "/admin/places", "/admin/maintenance"];
 
@@ -33,10 +33,10 @@ for (const [label, viewport] of [
     test.use({ viewport });
 
     for (const path of PUBLIC) {
-      test(`CLS < ${limitFor(path)}: ${path}`, async ({ page }) => {
+      test(`CLS < ${LIMIT}: ${path}`, async ({ page }) => {
         await throttleNetwork(page);
         const { total, shifts } = await measureClsDetailed(page, path);
-        expect(total, shifts.join(" ; ")).toBeLessThan(limitFor(path));
+        expect(total, shifts.join(" ; ")).toBeLessThan(LIMIT);
       });
     }
 
