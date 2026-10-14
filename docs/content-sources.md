@@ -154,3 +154,20 @@ are place names only, so a contributor can add a shop under the right one. Nothi
 Not listed on purpose: Savar, Ashulia, Rampura, Banasree, Aftabnagar, Mouchak and Gazipur shops. The only
 places that name them are review and directory sites (ratings aggregators, delivery apps), which the
 content rules exclude, and no newspaper article found names a shop there. Contributors add them in the app.
+
+## Directory-listed places (migrations 0066 and 0067, decision T20)
+
+The owner asked for the areas that newspapers do not cover (Savar, Banasree, Khilgaon, Uttara, Banani,
+Gazipur). These rows keep only a name, an area and a kind of food from the listing's own area/address
+field. No rating, review count, price, hour or address is stored. Cuisine tags on a listing are only used
+where they match the place's own name (Chinese, pizza, kacchi, tehari).
+
+| What | Source |
+|---|---|
+| Savar: Shiraj Chuigosto, Kacchi Bhai, Haji Nanna Biriyani, Alom Tehari Ghor, Kacchi Dine, PizzaClub (Thana Road, Talbag) | [BDPlaces, Restaurants in Savar](https://bdplaces.com/restaurants-in-savar/) |
+| Banasree: Shiraj Chuigosto, El Cardo. Khilgaon and Taltola: Vooter Adda (Shahid Baki Road), Churrasco, Pasta Club | [BDPlaces, place pages for Khilgaon and Banasree](https://bdplaces.com/place/vooter-adda/), [El Cardo](https://bdplaces.com/place/el-cardo-banasree/), [Churrasco](https://bdplaces.com/place/churrasco/), [Pasta Club](https://bdplaces.com/place/pasta-club/) |
+| Uttara: PizzaBurg, Izakaya, Foodies' Pond, Kala Bhuna and Kabab Nook, Takumi, Kacchi Darbar, Thai Emerald. Banani: Herfy | [BDPlaces, Restaurants in Uttara](https://bdplaces.com/restaurants-in-uttara/), [Restaurants in Banani](https://bdplaces.com/restaurants-in-banani/) |
+| Gazipur (Joydebpur): Euro Bangla Chinese Restaurant | [BDPlaces, Restaurants in Gazipur](https://bdplaces.com/restaurants-in-gazipur/) |
+
+Still not listed: Rampura, Aftabnagar, Mouchak, Badda and Malibagh shops other than the newspaper ones above;
+no listing stated an area for them. Contributors add them in the app.
