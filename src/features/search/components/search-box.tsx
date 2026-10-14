@@ -81,7 +81,7 @@ function Suggestions({ q }: { q: string }) {
     return (
       <section
         role="status"
-        className="animate-rise rounded-[28px] border border-border bg-card px-5 py-6 text-center shadow-card"
+        className="animate-rise rounded-[28px] border border-border bg-card px-5 py-6 text-center text-foreground shadow-card"
       >
         <NotFoundArt className="mx-auto w-44" />
         <h2 className="mt-1 font-display text-[20px] leading-tight font-bold">
@@ -105,7 +105,7 @@ function Suggestions({ q }: { q: string }) {
     <div className="flex flex-col gap-3">
       {groups.map((group) => (
         <section key={group.key} aria-label={group.title}>
-          <h2 className="mb-1.5 px-1 text-caption text-muted-foreground">{group.title}</h2>
+          <h2 className="mb-1.5 px-1 text-caption font-semibold text-on-hero/90">{group.title}</h2>
           <GroupedList>{group.rows}</GroupedList>
         </section>
       ))}
