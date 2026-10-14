@@ -72,7 +72,8 @@ describe("food de-duplication in generated migrations", () => {
   });
 
   it("leaves the migrations that already ran untouched", () => {
-    for (const set of DHAKA_SETS) expect(buildDhakaSql(set)).not.toContain("merge_foods");
+    for (const set of DHAKA_SETS.filter((candidate) => Number(candidate.number) < 61))
+      expect(buildDhakaSql(set)).not.toContain("merge_foods");
   });
 });
 

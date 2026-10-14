@@ -137,3 +137,20 @@ Only shops and restaurants that a newspaper names are added. Districts without s
 
 None are copied. Articles, Google Maps, Foodpanda and Facebook reviews belong to their authors and
 platforms; reviews in Jelar Shad come only from people using the app (decision P5).
+
+## Dhaka neighbourhoods, Khilgaon, Taltola, hill food, Gazipur (migrations 0064 and 0065)
+
+Area names (Badda, Merul Badda, Rampura, Aftabnagar, Malibagh, Mouchak, Khilgaon, Savar, Ashulia, and about
+fifty more Dhaka neighbourhoods and upazilas; Joydebpur, Tongi, Konabari, Kaliakair and others in Gazipur)
+are place names only, so a contributor can add a shop under the right one. Nothing is claimed about food there.
+
+| What | Source |
+|---|---|
+| Khilgaon: Pithaghar (pitha), Kachchi Bhai (kacchi), Delhi Darbar (kacchi, tehari, khichuri), Yangtze Kabab, Shahin Spicy Kabab | [Prothom Alo, Khilgaon](https://www.prothomalo.com/bangladesh/capital/5ophqgcwu2) |
+| Taltola food street: Apon Coffee Shop (cold coffee), Tangail Chom Chom Ghor and Bakery (chom chom) | [The Business Standard, How a food street transformed Khilgaon-Taltola](https://www.tbsnews.net/features/panorama/how-food-street-transformed-face-khilgaon-taltola-702258) |
+| Hill food: Larang (Malibagh), Jumghor (Merul Badda), Roaja (Uttara), Jaba (Farmgate) | [The Daily Star Bangla, from Uttara to Malibagh](https://bangla.thedailystar.net/life-living/food-recipe/news-3950581) |
+| Gazipur famous for: shahi nashta, nakshi pitha, chapa shutki, Kaliganj kalojam | [tourbd.info, Gazipur district food](https://tourbd.info/gazipur-jelar-bikkhato-khabar/) (a travel site; it names no shop, so no Gazipur place is listed) |
+
+Not listed on purpose: Savar, Ashulia, Rampura, Banasree, Aftabnagar, Mouchak and Gazipur shops. The only
+places that name them are review and directory sites (ratings aggregators, delivery apps), which the
+content rules exclude, and no newspaper article found names a shop there. Contributors add them in the app.

@@ -5,6 +5,7 @@ import { DHAKA_SET_3 } from "./dhaka-data-3";
 import { DHAKA_SET_4 } from "./dhaka-data-4";
 import { DHAKA_SET_5 } from "./dhaka-data-5";
 import { DHAKA_SET_6 } from "./dhaka-data-6";
+import { DHAKA_SET_7, GAZIPUR_SET } from "./dhaka-data-7";
 import { CHATTOGRAM_SET, SYLHET_SET } from "./districts-data";
 import { BOGURA_SET, CUMILLA_SET, KHULNA_SET, RAJSHAHI_SET } from "./districts-data-2";
 import { DISTRICT_SETS_4 } from "./districts-data-4";
@@ -49,6 +50,7 @@ export const DHAKA_SETS: DhakaSet[] = [
   DHAKA_SET_4,
   DHAKA_SET_5,
   DHAKA_SET_6,
+  DHAKA_SET_7,
   CHATTOGRAM_SET,
   SYLHET_SET,
   KHULNA_SET,
@@ -60,6 +62,7 @@ export const DHAKA_SETS: DhakaSet[] = [
   RANGPUR_SET,
   COXS_BAZAR_SET,
   ...DISTRICT_SETS_4,
+  GAZIPUR_SET,
 ];
 
 export const migrationPath = (set: DhakaSet) => `supabase/migrations/${set.migration}`;
@@ -158,14 +161,17 @@ where p.slug = v.place_slug and a.district_id = p.district_id and a.slug = v.are
 `,
 )}
 
-insert into dishes (place_id, food_id, is_seed)
+${when(
+  dishRows,
+  `insert into dishes (place_id, food_id, is_seed)
 select p.id, f.id, true
 from (values
 ${rows(dishRows)}
 ) as v(place_slug, food_slug)
 join places p on p.slug = v.place_slug
 join foods f on f.slug = v.food_slug
-on conflict (place_id, food_id) do nothing;
+on conflict (place_id, food_id) do nothing;`,
+)}
 
 ${when(
   fameRows,
