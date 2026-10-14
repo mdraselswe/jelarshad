@@ -4,7 +4,7 @@ import Link from "next/link";
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import { tileClass } from "@/lib/tone";
-import { BowlArt, MagnifierArt } from "@/components/illustration/food-art";
+import { MagnifierArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
@@ -102,7 +102,6 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                       {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
                     </span>
                   </span>
-                  <BowlArt className="pointer-events-none absolute top-3 right-44 hidden w-24 opacity-90 xl:block" />
                   <span className="relative flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
                     {t("search.openFood")}
                   </span>

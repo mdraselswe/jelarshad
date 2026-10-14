@@ -17,12 +17,12 @@ function SearchTopBar({ children }: { children: React.ReactNode }) {
   const t = getT();
   return (
     // Phones: the violet band of the approved canvas (back, white field, wave). Desktop: plain row.
-    <div className="relative flex items-start gap-3 overflow-hidden bg-grad-hero px-5 pt-5 pb-10 text-on-hero md:px-7 lg:mx-8 lg:mt-6 lg:block lg:rounded-[36px] lg:px-12 lg:pt-10 lg:pb-16">
+    <div className="relative flex items-start gap-3 overflow-hidden bg-grad-hero px-5 pt-5 pb-10 md:px-7 lg:mx-8 lg:mt-6 lg:block lg:rounded-[36px] lg:px-12 lg:pt-10 lg:pb-16">
       <div className="mt-0.5 on-hero-actions lg:hidden">
         <BackButton href={routes.home()} />
       </div>
       <div className="min-w-0 flex-1 lg:max-w-[640px]">
-        <p className="mb-3 hidden font-display text-[34px] leading-[1.25] font-extrabold lg:block">
+        <p className="mb-3 hidden font-display text-[34px] leading-[1.25] font-extrabold text-on-hero lg:block">
           {t("search.heroTitle")}
         </p>
         {children}
