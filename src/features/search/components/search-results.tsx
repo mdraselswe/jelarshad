@@ -4,7 +4,7 @@ import Link from "next/link";
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import { tileClass } from "@/lib/tone";
-import { MagnifierArt } from "@/components/illustration/food-art";
+import { BowlArt, MagnifierArt } from "@/components/illustration/food-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
@@ -62,8 +62,10 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
 
   return (
     <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${tab}`} initial={tab}>
-      <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-2">
-        <p className="px-1 text-meta text-muted-foreground">{t("search.resultsFor", { q })}</p>
+      <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-6">
+        <p className="px-1 text-meta text-muted-foreground lg:text-[17px] lg:font-semibold lg:text-foreground">
+          {t("search.resultsFor", { q })}
+        </p>
         <SearchTabs q={q} counts={counts} carry={{ type, price }} />
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
           <TabGroup tabs={["all", "place"]}>
@@ -84,7 +86,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
               <TabGroup tabs={["all", "food"]}>
                 <Link
                   href={routes.food(outcome.foods[0].slug)}
-                  className={`flex h-[92px] lift press items-center gap-3.5 overflow-hidden rounded-card-lg p-4 text-on-hero ${tileClass(outcome.foods[0].slug)}`}
+                  className={`relative flex h-[92px] lift press items-center gap-3.5 overflow-hidden rounded-card-lg p-4 text-on-hero lg:h-[132px] lg:rounded-[28px] lg:px-7 ${tileClass(outcome.foods[0].slug)}`}
                 >
                   <span
                     aria-hidden
@@ -100,7 +102,8 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                       {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
                     </span>
                   </span>
-                  <span className="flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
+                  <BowlArt className="pointer-events-none absolute top-3 right-44 hidden w-24 opacity-90 xl:block" />
+                  <span className="relative flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
                     {t("search.openFood")}
                   </span>
                 </Link>
@@ -113,9 +116,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   title={t("search.groups.foods")}
                   icon={<UtensilsIcon />}
                   tone="coral"
-                  cardClassName="p-3 lg:p-4"
+                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
-                  <GroupedList className="rounded-none border-0 bg-transparent">
+                  <GroupedList split className="rounded-none border-0 bg-transparent">
                     {outcome.foods.map((hit) => (
                       <FoodHitRow key={hit.slug} hit={hit} />
                     ))}
@@ -130,9 +133,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   title={t("search.groups.places")}
                   icon={<StoreIcon />}
                   tone="violet"
-                  cardClassName="p-3 lg:p-4"
+                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
-                  <GroupedList className="rounded-none border-0 bg-transparent">
+                  <GroupedList split className="rounded-none border-0 bg-transparent">
                     {places.map((hit) => (
                       <PlaceHitRow key={hit.slug} hit={hit} t={t} />
                     ))}
@@ -147,9 +150,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   title={t("search.groups.areas")}
                   icon={<MapPinIcon />}
                   tone="teal"
-                  cardClassName="p-3 lg:p-4"
+                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
-                  <GroupedList className="rounded-none border-0 bg-transparent">
+                  <GroupedList split className="rounded-none border-0 bg-transparent">
                     {outcome.areas.map((hit) => (
                       <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
                     ))}
@@ -164,9 +167,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   title={t("search.groups.districts")}
                   icon={<MapPinIcon />}
                   tone="sky"
-                  cardClassName="p-3 lg:p-4"
+                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
-                  <GroupedList className="rounded-none border-0 bg-transparent">
+                  <GroupedList split className="rounded-none border-0 bg-transparent">
                     {outcome.districts.map((hit) => (
                       <DistrictHitRow key={hit.slug} hit={hit} t={t} />
                     ))}
@@ -200,9 +203,9 @@ export function SearchResultsSkeleton() {
           bare
           title={<SkeletonText className="w-16" />}
           icon={<UtensilsIcon />}
-          cardClassName="p-3 lg:p-4"
+          cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
         >
-          <GroupedList className="rounded-none border-0 bg-transparent">
+          <GroupedList split className="rounded-none border-0 bg-transparent">
             {Array.from({ length: rows }, (_, index) => (
               <ListRowSkeleton key={index} />
             ))}

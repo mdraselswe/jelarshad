@@ -276,7 +276,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
 
   return (
     <form
-      className="flex flex-col gap-4 lg:mx-auto lg:max-w-2xl"
+      className="flex flex-col gap-4"
       onSubmit={(event) => {
         event.preventDefault();
         if (step === 3 || window.matchMedia("(min-width: 1024px)").matches) submit();

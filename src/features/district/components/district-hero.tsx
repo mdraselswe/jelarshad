@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { PinArt, RouteArt, SparkleArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
@@ -45,7 +46,13 @@ export function DistrictHero({
     .map((entry) => entry.food.nameBn)
     .join(" · ");
   return (
-    <HeroBand tone="district" bleed bar={bar} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="district"
+      bleed
+      bar={bar}
+      scene={<WorldStrip scene="village" />}
+      className="pb-[132px] lg:pb-[150px]"
+    >
       <SparkleArt className="pointer-events-none absolute top-3 right-12 size-3" />
       <SparkleArt
         tone="b"
@@ -70,7 +77,13 @@ export function DistrictHero({
 
 export function DistrictHeroSkeleton({ bar }: { bar?: ReactNode }) {
   return (
-    <HeroBand tone="district" bleed bar={bar} className="pb-12 lg:pb-12">
+    <HeroBand
+      tone="district"
+      bleed
+      bar={bar}
+      scene={<WorldStrip scene="village" />}
+      className="pb-[132px] lg:pb-12"
+    >
       <div className="flex min-h-[250px] flex-col justify-end lg:min-h-0">
         <div className="text-[14px]">
           <SkeletonText className="w-1/3" />

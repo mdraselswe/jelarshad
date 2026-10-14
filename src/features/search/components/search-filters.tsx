@@ -13,7 +13,14 @@ export function SearchFilters({ params }: { params: ParsedSearchParams }) {
   const { q, type, price } = params;
 
   return (
-    <div className="flex flex-col gap-2" role="group" aria-label={t("search.filters.label")}>
+    <div
+      className="flex flex-col gap-2 lg:gap-3 lg:rounded-[28px] lg:border lg:border-border lg:bg-card lg:p-5 lg:shadow-card"
+      role="group"
+      aria-label={t("search.filters.label")}
+    >
+      <p className="hidden font-display text-[18px] font-bold lg:block">
+        {t("search.filters.label")}
+      </p>
       <div className={ROW_CLASS}>
         <FilterChip q={q} type={undefined} price={price} active={type === undefined}>
           {t("search.filters.any")}

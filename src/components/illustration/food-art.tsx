@@ -291,7 +291,11 @@ export function NotFoundArt({ className }: ArtProps) {
 /** Cloud that drifts across a hero. */
 export function CloudArt({ className }: ArtProps) {
   return (
-    <svg viewBox="0 0 120 50" aria-hidden className={cn("animate-fx-drift", className)}>
+    <svg
+      viewBox="0 -10 120 60"
+      aria-hidden
+      className={cn("animate-fx-drift overflow-visible", className)}
+    >
       <path
         d="M20 40a14 14 0 0 1 4-27 20 20 0 0 1 38-4 16 16 0 0 1 30 8 12 12 0 0 1 8 23z"
         fill="var(--ill-steam)"

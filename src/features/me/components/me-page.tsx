@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookmarkIcon, FlameIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { TrophyArt } from "@/components/illustration/food-art";
+import { WorldStrip } from "@/components/illustration/world-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
@@ -139,7 +140,12 @@ export async function MePage({ user }: { user: AppUser }) {
   ]);
   return (
     <PageShell header={null}>
-      <HeroBand tone="home" bleed className="pb-14 lg:pb-12">
+      <HeroBand
+        tone="home"
+        bleed
+        scene={<WorldStrip scene="river" />}
+        className="pb-[132px] lg:pb-[150px]"
+      >
         <TrophyArt className="pointer-events-none absolute top-6 -right-2 hidden w-40 opacity-25 lg:block" />
         <div className="relative flex items-start justify-between gap-3">
           <h1 className="font-display text-[22px] leading-tight font-extrabold lg:text-[30px]">
@@ -191,7 +197,13 @@ export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }
   return (
     <PageShell>
       <section className="page-x pt-3 lg:pt-8">
-        <div className="flex items-center gap-4 rounded-[28px] border border-border bg-card p-4 shadow-card">
+        <div className="relative flex items-center gap-4 overflow-hidden rounded-[28px] border border-border bg-card p-4 shadow-card lg:rounded-[36px] lg:border-0 lg:bg-grad-hero lg:p-10 lg:pb-[150px] lg:text-on-hero">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 hidden lg:block"
+          >
+            <WorldStrip scene="village" />
+          </div>
           <span
             aria-hidden
             className="flex size-16 shrink-0 items-center justify-center rounded-[22px] bg-tile-1 font-display text-[28px] font-extrabold text-on-hero"
@@ -206,50 +218,55 @@ export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }
           </div>
           <Link
             href={routes.me()}
-            className="flex h-11 shrink-0 press items-center rounded-full bg-primary-soft px-4 text-[14px] font-semibold text-primary-soft-fg"
+            className="relative flex h-11 shrink-0 press items-center rounded-full bg-primary-soft px-4 text-[14px] font-semibold text-primary-soft-fg"
           >
             {t("nav.passport")}
           </Link>
         </div>
       </section>
 
-      <nav aria-label={t("me.tabs.label")} className="mt-5 page-x">
-        <div className="flex h-12 items-center gap-1 rounded-input bg-muted p-1">
-          {ME_TABS.map((id) => (
-            <Link
-              key={id}
-              href={id === "contrib" ? routes.profile() : `${routes.profile()}?tab=${id}`}
-              aria-current={id === tab ? "page" : undefined}
-              className={cn(
-                "flex h-full flex-1 items-center justify-center rounded-xl px-2 text-[15px] font-medium whitespace-nowrap text-muted-foreground",
-                id === tab && "bg-card font-semibold text-primary-text shadow-segment",
-              )}
-            >
-              {t(`me.tabs.${id}`)}
-            </Link>
-          ))}
-        </div>
-      </nav>
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-2">
+        <div className="lg:col-span-8">
+          <nav aria-label={t("me.tabs.label")} className="mt-5 page-x">
+            <div className="flex h-12 items-center gap-1 rounded-input bg-muted p-1">
+              {ME_TABS.map((id) => (
+                <Link
+                  key={id}
+                  href={id === "contrib" ? routes.profile() : `${routes.profile()}?tab=${id}`}
+                  aria-current={id === tab ? "page" : undefined}
+                  className={cn(
+                    "flex h-full flex-1 items-center justify-center rounded-xl px-2 text-[15px] font-medium whitespace-nowrap text-muted-foreground",
+                    id === tab && "bg-card font-semibold text-primary-text shadow-segment",
+                  )}
+                >
+                  {t(`me.tabs.${id}`)}
+                </Link>
+              ))}
+            </div>
+          </nav>
 
-      <section className="mt-4 page-x">
-        {tab === "contrib" && <Contributions userId={user.id} />}
-        {tab === "ate" && <Ate userId={user.id} />}
-        {tab === "saved" && <Saved userId={user.id} />}
-      </section>
-
-      <Section title={t("me.settings")}>
-        <div className="flex flex-col gap-4">
-          <div>
-            <p className="mb-2 text-card-title">{t("me.theme")}</p>
-            <ThemePreferenceControl />
-          </div>
-          <form action={routes.signOut()} method="post">
-            <Button type="submit" variant="outline">
-              {t("auth.signOut")}
-            </Button>
-          </form>
+          <section className="mt-4 page-x">
+            {tab === "contrib" && <Contributions userId={user.id} />}
+            {tab === "ate" && <Ate userId={user.id} />}
+            {tab === "saved" && <Saved userId={user.id} />}
+          </section>
         </div>
-      </Section>
+        <aside className="lg:sticky lg:top-24 lg:col-span-4">
+          <Section title={t("me.settings")}>
+            <div className="flex flex-col gap-4">
+              <div>
+                <p className="mb-2 text-card-title">{t("me.theme")}</p>
+                <ThemePreferenceControl />
+              </div>
+              <form action={routes.signOut()} method="post">
+                <Button type="submit" variant="outline">
+                  {t("auth.signOut")}
+                </Button>
+              </form>
+            </div>
+          </Section>
+        </aside>
+      </div>
     </PageShell>
   );
 }

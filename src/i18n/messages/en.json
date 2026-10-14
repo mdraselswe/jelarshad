@@ -41,6 +41,10 @@
     "updated": "Your answer was updated."
   },
   "add": {
+    "perksTitle": "What you earn",
+    "perkExperience": "Sharing an experience",
+    "perkPlace": "Adding a new place",
+    "perkDiscoverer": "Finding the first place of a famous food",
     "title": "Add",
     "stepOf": "Step {step}/3",
     "food": "What did you eat?",
@@ -273,6 +277,7 @@
     "lovedTitle": "What people love"
   },
   "search": {
+    "heroTitle": "What are you looking for?",
     "clear": "Clear",
     "label": "Search",
     "prompt": "Type a food, district or shop name",
@@ -488,8 +493,7 @@
     "boardLogin": "Sign in to appear on the list"
   },
   "footer": {
-    "builtWith": "Built with",
-    "by": "by",
+    "builtWith": "Made with love by",
     "linkedin": "LinkedIn profile"
   }
 }

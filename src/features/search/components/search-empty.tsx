@@ -2,6 +2,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 import { NotFoundArt } from "@/components/illustration/food-art";
+import { PersonArt, TreeArt } from "@/components/illustration/world-art";
 import { QUICK_SEARCHES } from "@/config/home";
 import { routes } from "@/config/routes";
 import { appConfig } from "@/config/app.config";
@@ -19,7 +20,11 @@ export function SearchEmpty({ q }: { q: string }) {
       aria-label={t("search.empty", { q })}
       className="animate-rise rounded-[28px] border border-border bg-card px-5 py-6 text-center shadow-card"
     >
-      <NotFoundArt className="mx-auto w-52" />
+      <div className="relative mx-auto w-full max-w-[17rem]">
+        <NotFoundArt className="mx-auto w-52" />
+        <TreeArt className="absolute bottom-1 left-0 w-10" />
+        <PersonArt shirt="c" className="absolute right-1 bottom-0 h-16 w-8" />
+      </div>
       <h2 className="mt-2 font-display text-[22px] leading-tight font-bold">
         {t("search.empty", { q })}
       </h2>
