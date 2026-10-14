@@ -31,6 +31,7 @@ export default function Loading() {
         add: <AddPageSkeleton />,
         login: <LoginPromptSkeleton />,
         legal: <LegalPageSkeleton />,
+        policy: <LegalPageSkeleton sections={5} titleLines={2} />,
         admin: <AdminFrameSkeleton />,
       }}
     />

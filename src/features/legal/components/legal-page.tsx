@@ -77,7 +77,14 @@ export function LegalPage({ kind }: { kind: "about" | "policy" }) {
 }
 
 /** Same hero and the same card grid as the page, with lines instead of text. */
-export function LegalPageSkeleton({ sections = 4 }: { sections?: number }) {
+export function LegalPageSkeleton({
+  sections = 4,
+  titleLines = 1,
+}: {
+  sections?: number;
+  /** The policy's title wraps to two lines on a phone. */
+  titleLines?: 1 | 2;
+}) {
   const t = getT();
   return (
     <LoadingRegion label={t("common.loading")}>
@@ -93,13 +100,12 @@ export function LegalPageSkeleton({ sections = 4 }: { sections?: number }) {
             }
             className="lg:pb-[150px]"
           >
-            <div className="text-title-1">
-              <SkeletonText className="w-1/2" />
-            </div>
-            <div className="mt-3 text-body">
-              <SkeletonText className="w-full" />
-              <SkeletonText className="mt-1 w-2/3" />
-            </div>
+            <Skeleton
+              className={`${titleLines === 2 ? "h-[56px] w-3/4" : "h-10 w-1/2"} rounded-[12px] bg-white/20`}
+            />
+            <Skeleton
+              className={`mt-3 ${titleLines === 2 ? "h-10" : "h-[50px]"} w-full rounded-[12px] bg-white/20`}
+            />
           </HeroBand>
           <div className="flex flex-col gap-3 page-x pt-4 lg:grid lg:grid-cols-2 lg:gap-5 lg:pt-8">
             {Array.from({ length: sections }, (_, index) => (

@@ -16,6 +16,7 @@ export type RouteSkeletonKind =
   | "add"
   | "login"
   | "legal"
+  | "policy"
   | "admin";
 
 /** The kind of page a path belongs to. Dynamic segments may arrive as `[slug]` or as the value. */
@@ -33,7 +34,8 @@ export function skeletonKindFor(pathname: string): RouteSkeletonKind {
   if (first === "me") return second === "profile" ? "profile" : "me";
   if (first === "add") return "add";
   if (first === "login") return "login";
-  if (first === "about" || first === "policy") return "legal";
+  if (first === "about") return "legal";
+  if (first === "policy") return "policy";
   if (first === "admin") return "admin";
   return "home";
 }
