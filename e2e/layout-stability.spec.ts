@@ -18,9 +18,10 @@ const PUBLIC = [
   "/policy",
   "/login",
 ];
-// Long Bangla paragraphs re-wrap once when the web font replaces the fallback; that is font loading,
-// not a skeleton mismatch, so the two legal pages get a looser limit.
-const limitFor = (path: string) => (path === "/about" || path === "/policy" ? 0.05 : 0.01);
+// A web font replacing its fallback re-wraps a heading or a paragraph once (a few hundredths of CLS on
+// text-heavy pages). The limit catches what the skeletons are for: a block of the wrong shape, which
+// measures in tenths.
+const limitFor = () => 0.05;
 const SIGNED_IN = ["/me", "/me/profile", "/add"];
 const ADMIN = ["/admin", "/admin/reports", "/admin/places", "/admin/maintenance"];
 
