@@ -196,7 +196,7 @@ export function SearchResultsSkeleton() {
         <Skeleton className="h-[42px] rounded-full" />
       </div>
       <Skeleton className="h-[92px] rounded-card-lg" />
-      {[2, 3].map((rows) => (
+      {[3].map((rows) => (
         <Panel
           key={rows}
           bare

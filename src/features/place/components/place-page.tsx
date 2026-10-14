@@ -6,7 +6,7 @@ import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { StickyCta } from "@/components/layout/sticky-cta";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
-import { LoadingRegion } from "@/components/ui/skeleton";
+import { LoadingRegion, Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { appConfig } from "@/config/app.config";
 import { routes } from "@/config/routes";
 import {
@@ -116,7 +116,28 @@ export function PlacePageSkeleton() {
       <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
         <PlaceHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
         <PlaceClaimsSectionSkeleton />
-        <PlaceDishesSectionSkeleton />
+        <div className="lg:grid lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <PlaceDishesSectionSkeleton />
+          </div>
+          <div className="lg:col-span-5">
+            <div className="page-x pt-6 lg:pt-10">
+              <ReactionCardSkeleton />
+            </div>
+            <Section title={<SkeletonText className="w-24" />}>
+              <Skeleton className="h-[120px] rounded-[20px] lg:h-[190px]" />
+            </Section>
+            <section className="page-x pt-5">
+              <Skeleton className="h-[148px] rounded-card-lg" />
+            </section>
+            <Section title={<SkeletonText className="w-36" />}>
+              <div className="flex gap-2.5">
+                <Skeleton className="h-11 w-36 rounded-full" />
+                <Skeleton className="h-11 w-28 rounded-full" />
+              </div>
+            </Section>
+          </div>
+        </div>
       </PageShell>
     </LoadingRegion>
   );

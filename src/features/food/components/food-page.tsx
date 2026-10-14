@@ -7,7 +7,7 @@ import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { StickyCta } from "@/components/layout/sticky-cta";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
-import { LoadingRegion } from "@/components/ui/skeleton";
+import { LoadingRegion, Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { appConfig } from "@/config/app.config";
 import { routes } from "@/config/routes";
 import {
@@ -151,6 +151,23 @@ export function FoodPageSkeleton() {
     <LoadingRegion label={t("common.loading")}>
       <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
         <FoodHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
+        <div className="relative z-10 -mt-5 page-x lg:hidden">
+          <ul className="grid grid-cols-3 gap-2.5">
+            {[0, 1, 2].map((index) => (
+              <li key={index}>
+                <Skeleton className="h-[73px] rounded-[22px]" />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Section
+          title={<SkeletonText className="w-32" />}
+          icon={<MapPinIcon />}
+          tone="teal"
+          className="lg:hidden"
+        >
+          <Skeleton className="h-11 w-44 rounded-full" />
+        </Section>
         <div className="page-x pt-5 lg:hidden">
           <ReactionCardSkeleton />
         </div>
@@ -158,7 +175,18 @@ export function FoodPageSkeleton() {
           <div className="lg:col-span-8">
             <FoodDishesSectionSkeleton />
             <FoodVoicesSectionSkeleton />
+            <Section title={<SkeletonText className="w-40" />}>
+              <div className="flex gap-2.5">
+                <Skeleton className="h-11 w-36 rounded-full" />
+                <Skeleton className="h-11 w-28 rounded-full" />
+              </div>
+            </Section>
           </div>
+          <aside className="hidden lg:col-span-4 lg:block">
+            <div className="flex flex-col gap-4 page-x pt-10">
+              <ReactionCardSkeleton />
+            </div>
+          </aside>
         </div>
       </PageShell>
     </LoadingRegion>
