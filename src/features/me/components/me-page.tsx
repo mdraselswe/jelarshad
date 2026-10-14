@@ -9,6 +9,9 @@ import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
 import { Button } from "@/components/ui/button";
+import { Band } from "@/components/layout/band";
+import { Panel } from "@/components/layout/panel";
+import { LoadingRegion, Skeleton } from "@/components/ui/skeleton";
 import { MeGame } from "@/features/game/components/me-game";
 import { levelNameKey, LevelRing } from "@/features/game/components/game-bits";
 import { MePassport } from "@/features/passport/components/passport-section";
@@ -268,5 +271,109 @@ export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }
         </aside>
       </div>
     </PageShell>
+  );
+}
+
+/** The passport's shape: hero with the ring, three counters, journey, missions, badges and the board. */
+export function MePageSkeleton() {
+  const t = getT();
+  return (
+    <LoadingRegion label={t("common.loading")}>
+      <PageShell header={null}>
+        <HeroBand
+          tone="home"
+          bleed
+          scene={<WorldStrip scene="river" />}
+          className="pb-[132px] lg:pb-[150px]"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <Skeleton className="h-8 w-40 bg-white/20" />
+            <Skeleton className="h-9 w-28 rounded-full bg-white/20" />
+          </div>
+          <div className="mt-3 flex flex-col items-center">
+            <Skeleton className="size-[130px] rounded-full bg-white/20" />
+            <Skeleton className="mt-3 h-7 w-44 bg-white/20" />
+            <Skeleton className="mt-1.5 h-5 w-56 bg-white/20" />
+            <Skeleton className="mt-3 h-8 w-28 rounded-full bg-white/20" />
+          </div>
+        </HeroBand>
+        <section className="page-x pt-5">
+          <div className="grid grid-cols-3 gap-2.5">
+            {[0, 1, 2].map((index) => (
+              <Skeleton key={index} className="h-20 rounded-[22px]" />
+            ))}
+          </div>
+        </section>
+        <Panel title={<Skeleton className="h-6 w-40" />} icon={<span />}>
+          <Skeleton className="h-[130px] rounded-[20px]" />
+        </Panel>
+        <Band tone="teal" title={<Skeleton className="h-6 w-44 bg-white/20" />} icon={<span />}>
+          <div className="flex flex-col gap-2">
+            {[0, 1, 2, 3].map((index) => (
+              <Skeleton key={index} className="h-16 rounded-[20px] bg-white/15" />
+            ))}
+          </div>
+        </Band>
+        <Panel title={<Skeleton className="h-6 w-32" />} icon={<span />} className="-mt-2">
+          <div className="grid grid-cols-3 gap-2.5 lg:grid-cols-6">
+            {[0, 1, 2, 3, 4, 5].map((index) => (
+              <Skeleton key={index} className="h-[134px] rounded-[22px]" />
+            ))}
+          </div>
+          <Skeleton className="mt-3 h-11 rounded-[16px]" />
+        </Panel>
+        <Band tone="warm" title={<Skeleton className="h-6 w-48" />} icon={<span />}>
+          <Skeleton className="h-[150px] rounded-[22px]" />
+          <Skeleton className="mt-3 h-[72px] rounded-[20px]" />
+        </Band>
+        <section className="page-x pt-5">
+          <Skeleton className="h-[100px] rounded-card-lg" />
+        </section>
+        <Panel title={<Skeleton className="h-6 w-36" />} icon={<span />}>
+          <Skeleton className="h-[176px] rounded-card-lg" />
+        </Panel>
+      </PageShell>
+    </LoadingRegion>
+  );
+}
+
+/** The profile's shape: header card, three tabs, a short list and the settings card. */
+export function MeProfilePageSkeleton() {
+  const t = getT();
+  return (
+    <LoadingRegion label={t("common.loading")}>
+      <PageShell>
+        <section className="page-x pt-3 lg:pt-8">
+          <div className="relative flex items-center gap-4 overflow-hidden rounded-[28px] border border-border bg-card p-4 shadow-card lg:rounded-[36px] lg:p-10 lg:pb-[150px]">
+            <Skeleton className="size-16 shrink-0 rounded-[22px]" />
+            <div className="min-w-0 flex-1">
+              <Skeleton className="h-8 w-2/3" />
+              <Skeleton className="mt-2 h-8 w-24 rounded-full" />
+            </div>
+          </div>
+        </section>
+        <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-2">
+          <div className="lg:col-span-8">
+            <div className="mt-5 page-x">
+              <Skeleton className="h-12 rounded-input" />
+            </div>
+            <div className="mt-4 page-x">
+              <div className="grid grid-cols-2 gap-2.5">
+                <Skeleton className="h-[78px] rounded-card-lg" />
+                <Skeleton className="h-[78px] rounded-card-lg" />
+              </div>
+              <Skeleton className="mt-5 mb-2 h-6 w-48" />
+              <Skeleton className="h-[203px] rounded-card-lg" />
+            </div>
+          </div>
+          <aside className="lg:col-span-4">
+            <Panel title={<Skeleton className="h-6 w-24" />}>
+              <Skeleton className="h-11 rounded-input" />
+              <Skeleton className="mt-4 h-11 w-28 rounded-button" />
+            </Panel>
+          </aside>
+        </div>
+      </PageShell>
+    </LoadingRegion>
   );
 }

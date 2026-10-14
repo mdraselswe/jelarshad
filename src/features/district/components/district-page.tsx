@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { HeroBar } from "@/components/layout/hero-bar";
 import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
-import { LoadingRegion } from "@/components/ui/skeleton";
+import { LoadingRegion, Skeleton, SkeletonText } from "@/components/ui/skeleton";
+import { Panel } from "@/components/layout/panel";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import type { DistrictHeader } from "@/services/catalog-service";
@@ -58,6 +59,17 @@ export function DistrictPageSkeleton() {
     <LoadingRegion label={t("common.loading")}>
       <PageShell header={<SubPageBar hideMobile backHref={routes.home()} />}>
         <DistrictHeroSkeleton bar={<HeroBar backHref={routes.home()} />} />
+        <DistrictStampCardSkeleton />
+        <Panel title={<SkeletonText className="w-32" />} icon={<span />}>
+          <div className="mb-3 text-meta">
+            <SkeletonText className="w-2/3" />
+          </div>
+          <div className="flex gap-3 overflow-hidden">
+            {[0, 1].map((index) => (
+              <Skeleton key={index} className="h-[172px] w-[150px] shrink-0 rounded-[26px]" />
+            ))}
+          </div>
+        </Panel>
         <DistrictPlacesSectionSkeleton />
         <DistrictBoardSkeleton />
       </PageShell>

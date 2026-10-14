@@ -101,8 +101,16 @@ export function DistrictFoodPageSkeleton() {
           <div className="text-title-1">
             <SkeletonText className="w-2/3" />
           </div>
+          <div className="mt-2 text-body">
+            <SkeletonText className="w-full" />
+          </div>
+          <div className="mt-2 text-meta">
+            <SkeletonText className="w-1/3" />
+          </div>
         </HeroBand>
-        <FoodDishesSectionSkeleton />
+        <div className="lg:max-w-[880px]">
+          <FoodDishesSectionSkeleton />
+        </div>
       </PageShell>
     </LoadingRegion>
   );

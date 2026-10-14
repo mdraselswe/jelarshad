@@ -6,6 +6,7 @@ import { PageShell } from "@/components/layout/page-shell";
 import { SubPageBar } from "@/components/layout/sub-page-bar";
 import { routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
+import { LoadingRegion, Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
 import { toBnDigits } from "@/lib/format/number";
 
@@ -72,5 +73,57 @@ export function LegalPage({ kind }: { kind: "about" | "policy" }) {
         </article>
       </div>
     </PageShell>
+  );
+}
+
+/** Same hero and the same card grid as the page, with lines instead of text. */
+export function LegalPageSkeleton({ sections = 4 }: { sections?: number }) {
+  const t = getT();
+  return (
+    <LoadingRegion label={t("common.loading")}>
+      <PageShell header={<SubPageBar backHref={routes.home()} />}>
+        <div>
+          <HeroBand
+            tone="home"
+            art={<BowlArt />}
+            scene={
+              <div className="hidden lg:block">
+                <WorldStrip scene="hills" />
+              </div>
+            }
+            className="lg:pb-[150px]"
+          >
+            <div className="text-title-1">
+              <SkeletonText className="w-1/2" />
+            </div>
+            <div className="mt-3 text-body">
+              <SkeletonText className="w-full" />
+              <SkeletonText className="mt-1 w-2/3" />
+            </div>
+          </HeroBand>
+          <div className="flex flex-col gap-3 page-x pt-4 lg:grid lg:grid-cols-2 lg:gap-5 lg:pt-8">
+            {Array.from({ length: sections }, (_, index) => (
+              <section
+                key={index}
+                className="rounded-[28px] border border-border bg-card p-5 shadow-card lg:p-7"
+              >
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-9 shrink-0 rounded-[12px]" />
+                  <div className="min-w-0 flex-1 text-heading">
+                    <SkeletonText className="w-1/2" />
+                  </div>
+                </div>
+                <div className="mt-3 text-body leading-relaxed">
+                  <SkeletonText className="w-full" />
+                  <SkeletonText className="mt-1 w-full" />
+                  <SkeletonText className="mt-1 w-full" />
+                  <SkeletonText className="mt-1 w-3/4" />
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </PageShell>
+    </LoadingRegion>
   );
 }
