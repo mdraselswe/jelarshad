@@ -440,3 +440,8 @@ Launch content ships as a migration, so DEV and PROD get it through the normal p
   select purge_seed_data(false);   -- removes ALL flagged rows, including experiences on them
   ```
   It returns how many rows of each kind were removed, refreshes `districts.place_count` and leaves districts alone.
+
+## Brands (migration 0069)
+`brands (id, slug, name_bn, name_en)` and `places.brand_id`. A chain's branches are separate places with
+their own dishes, reactions and claims; the brand only groups them so a place page can list its
+sibling branches (`PlaceRepository.branches`). Reactions are never summed across branches.

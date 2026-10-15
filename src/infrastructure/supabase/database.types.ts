@@ -615,10 +615,35 @@ export type Database = {
           },
         ];
       };
+      brands: {
+        Row: {
+          created_at: string;
+          id: string;
+          name_bn: string;
+          name_en: string | null;
+          slug: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name_bn: string;
+          name_en?: string | null;
+          slug: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name_bn?: string;
+          name_en?: string | null;
+          slug?: string;
+        };
+        Relationships: [];
+      };
       places: {
         Row: {
           address: string | null;
           area_id: number | null;
+          brand_id: string | null;
           created_at: string;
           created_by: string | null;
           district_id: number;
@@ -641,6 +666,7 @@ export type Database = {
         Insert: {
           address?: string | null;
           area_id?: number | null;
+          brand_id?: string | null;
           created_at?: string;
           created_by?: string | null;
           district_id: number;
@@ -663,6 +689,7 @@ export type Database = {
         Update: {
           address?: string | null;
           area_id?: number | null;
+          brand_id?: string | null;
           created_at?: string;
           created_by?: string | null;
           district_id?: number;

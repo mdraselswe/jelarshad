@@ -404,6 +404,38 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
       },
+      async branches(placeId) {
+        const own = check<{ brand_id: string | null } | null>(
+          await db.from("places").select("brand_id").eq("id", placeId).maybeSingle(),
+          "place brand",
+        );
+        if (!own?.brand_id) return null;
+        const brand = check<{ slug: string; name_bn: string } | null>(
+          await db.from("brands").select("slug, name_bn").eq("id", own.brand_id).maybeSingle(),
+          "brand",
+        );
+        if (!brand) return null;
+        const rows = check(
+          await db
+            .from("places")
+            .select(PLACE_SELECT)
+            .eq("brand_id", own.brand_id)
+            .eq("status", "active")
+            .neq("id", placeId)
+            .order("name_bn")
+            .limit(60),
+          "place branches",
+        );
+        const items = (rows as unknown as PlaceRow[]).map(toPlace).map((place) => ({
+          id: place.id,
+          slug: place.slug,
+          nameBn: place.nameBn,
+          district: place.district,
+          area: place.area,
+        }));
+        if (items.length === 0) return null;
+        return { brand: { slug: brand.slug, nameBn: brand.name_bn }, items };
+      },
       async dishes(placeId) {
         const rows = check(
           await db

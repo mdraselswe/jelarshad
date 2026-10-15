@@ -21,6 +21,7 @@ import { getT } from "@/i18n/server";
 import { formatNumber } from "@/lib/format/number";
 import type { PlaceHeader } from "@/services/catalog-service";
 
+import { PlaceBranchesSection } from "./place-branches-section";
 import { PlaceClaimsSection, PlaceClaimsSectionSkeleton } from "./place-claims-section";
 import { PlaceDishesSection, PlaceDishesSectionSkeleton } from "./place-dishes-section";
 import { PlaceHero, PlaceHeroSkeleton } from "./place-hero";
@@ -99,6 +100,9 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
           </Section>
         </div>
       </div>
+      <Suspense fallback={null}>
+        <PlaceBranchesSection placeId={place.id} />
+      </Suspense>
       <Suspense fallback={null}>
         <PlacePhotosSection placeId={place.id} />
       </Suspense>

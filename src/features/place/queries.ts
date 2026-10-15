@@ -20,6 +20,13 @@ export async function getPlaceDishes(placeId: string) {
   return getServices().catalog.placeDishes(placeId);
 }
 
+export async function getPlaceBranches(placeId: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`place:${placeId}`, "places");
+  return getServices().catalog.placeBranches(placeId);
+}
+
 export async function getPlacePhotos(placeId: string) {
   "use cache";
   cacheLife("hours");

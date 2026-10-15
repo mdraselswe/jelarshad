@@ -271,6 +271,21 @@ export function createMockRepositories(): Repositories {
         paginate(clone(active(db.places).filter((p) => p.district.id === districtId)), opts),
       inArea: async (areaId, opts) =>
         paginate(clone(active(db.places).filter((p) => p.area?.id === areaId)), opts),
+      branches: async (placeId) => {
+        const own = db.places.find((p) => p.id === placeId);
+        if (!own?.brand) return null;
+        const brand = own.brand;
+        const items = active(db.places)
+          .filter((p) => p.brand?.slug === brand.slug && p.id !== placeId)
+          .map((p) => ({
+            id: p.id,
+            slug: p.slug,
+            nameBn: p.nameBn,
+            district: p.district,
+            area: p.area,
+          }));
+        return items.length === 0 ? null : clone({ brand, items });
+      },
       dishes: async (placeId) =>
         active(db.dishes)
           .filter((d) => d.placeId === placeId)

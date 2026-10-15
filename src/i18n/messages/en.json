@@ -363,7 +363,9 @@
     "reactCta": "Share your experience",
     "addMoreTitle": "Know photos, prices or hours?",
     "addMoreBody": "Add them when you share your experience; it helps others.",
-    "addMoreCta": "Share your experience"
+    "addMoreCta": "Share your experience",
+    "branchesTitle": "Other branches of {brand}",
+    "branchesNote": "Each branch has its own experiences. One branch's reactions are not added to another's."
   },
   "district": {
     "stampTitle": "{district} stamp",
