@@ -6,27 +6,10 @@ import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format/number";
-import { toneClass } from "@/lib/tone";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import type { LeaderboardEntry } from "@/core/domain";
 
 type Entry = LeaderboardEntry;
-
-const initial = (name: string) => Array.from(name.trim())[0] ?? "?";
-
-function Avatar({ name, seed, className }: { name: string; seed: string; className?: string }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        "flex shrink-0 items-center justify-center rounded-full font-display font-bold",
-        toneClass(seed),
-        className,
-      )}
-    >
-      {initial(name)}
-    </span>
-  );
-}
 
 // Second, first, third from left to right; the pillars rise in that order.
 const SLOTS = [
@@ -45,7 +28,7 @@ function Podium({ entries, userId }: { entries: Entry[]; userId: string | null }
       {SLOTS.map((slot) => {
         const entry = entries[slot.place - 1];
         const mine = entry !== undefined && entry.userId === userId;
-        const name = entry ? (mine ? t("leaderboard.you") : entry.displayName) : null;
+        const name = entry ? entry.displayName : null;
         return (
           <li key={slot.place} className="flex min-w-0 flex-col items-center">
             <div className="relative">
@@ -53,8 +36,9 @@ function Podium({ entries, userId }: { entries: Entry[]; userId: string | null }
                 <CrownArt className="absolute -top-6 left-1/2 w-9 -translate-x-1/2" />
               ) : null}
               {entry ? (
-                <Avatar
+                <UserAvatar
                   name={entry.displayName}
+                  src={entry.avatarUrl}
                   seed={entry.userId}
                   className={cn(
                     slot.avatar,
@@ -82,6 +66,11 @@ function Podium({ entries, userId }: { entries: Entry[]; userId: string | null }
             >
               {name ?? "—"}
             </p>
+            {mine ? (
+              <span className="mt-0.5 rounded-full bg-primary-soft px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
+                {t("leaderboard.you")}
+              </span>
+            ) : null}
             <p className="text-[12.5px] font-semibold text-reward-soft-fg">
               {entry ? t("game.xp", { count: formatNumber(entry.xp) }) : " "}
             </p>
@@ -147,15 +136,21 @@ export function BoardView({ entries, userId }: { entries: Entry[]; userId: strin
                   <span className="w-7 shrink-0 text-center font-display text-[17px] font-bold text-muted-foreground">
                     {formatNumber(index + 4)}
                   </span>
-                  <Avatar
+                  <UserAvatar
                     name={entry.displayName}
+                    src={entry.avatarUrl}
                     seed={entry.userId}
                     className="size-11 text-lg"
                   />
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline justify-between gap-2">
-                      <span className="truncate text-card-title">
-                        {mine ? t("leaderboard.you") : entry.displayName}
+                      <span className="flex min-w-0 items-center gap-2">
+                        <span className="truncate text-card-title">{entry.displayName}</span>
+                        {mine ? (
+                          <span className="shrink-0 rounded-full bg-card px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
+                            {t("leaderboard.you")}
+                          </span>
+                        ) : null}
                       </span>
                       <span className="shrink-0 text-sm font-semibold text-reward-soft-fg">
                         {t("game.xp", { count: formatNumber(entry.xp) })}

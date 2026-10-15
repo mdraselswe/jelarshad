@@ -256,7 +256,9 @@ export async function MeGame({ userId, summary }: { userId: string; summary: Pas
                   {formatNumber(index + 1)}
                 </span>
                 <span className="min-w-0 flex-1 truncate font-semibold">
-                  {entry.userId === userId ? t("game.boardYou") : entry.displayName}
+                  {entry.userId === userId
+                    ? `${entry.displayName} (${t("game.boardYou")})`
+                    : entry.displayName}
                 </span>
                 <span className="text-sm font-semibold text-reward-soft-fg">
                   {t("game.xp", { count: formatNumber(entry.xp) })}
