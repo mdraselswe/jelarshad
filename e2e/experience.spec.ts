@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+import { openReactionPicker } from "./utils/reaction";
+
 test.describe("reaction picker", () => {
   test("a signed-out tap asks for login and returns to the page", async ({ page }) => {
     await page.goto("/place/second-sample-place");
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "দারুণ" }).first().click();
     await expect(page).toHaveURL(/\/login\?next=%2Fplace%2Fsecond-sample-place/);
     await page.getByRole("link", { name: "গুগল দিয়ে চালিয়ে যান" }).click();
@@ -15,6 +18,7 @@ test.describe("reaction picker", () => {
       .getByText(/[০-৯]+ জন/)
       .first()
       .textContent();
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "দারুণ" }).first().click();
     await expect(page.getByText("অভিজ্ঞতা যোগ হয়েছে। ধন্যবাদ!")).toBeVisible();
     // A level-up or mission reward opens a full-screen dialog over the page; close it if it did.
@@ -35,6 +39,7 @@ test.describe("reaction picker", () => {
 
   test("on a food page the person chooses where they ate, then submits", async ({ page }) => {
     await page.goto("/auth/sign-in?next=/food/doi");
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "মোটামুটি" }).first().click();
     await expect(page.getByLabel("কোথায় খেয়েছেন?").first()).toBeVisible();
     await page.getByRole("button", { name: "জমা দিন" }).first().click();

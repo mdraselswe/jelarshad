@@ -1,10 +1,13 @@
 import { expect, test } from "@playwright/test";
 
+import { openReactionPicker } from "./utils/reaction";
+
 test.describe("food passport and points", () => {
   test("a reaction shows a gold points toast, and the stamp lands in the passport", async ({
     page,
   }) => {
     await page.goto("/auth/sign-in?next=/place/second-sample-place");
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "দারুণ" }).first().click();
     // +10 on a first experience, or a plain thank-you when this dish was already answered
     await expect(

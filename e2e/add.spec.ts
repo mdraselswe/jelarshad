@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { openReactionPicker } from "./utils/reaction";
+
 import { addAsNewFood } from "./utils/add";
 
 test.describe("add flow", () => {
@@ -24,6 +26,7 @@ test.describe("add flow", () => {
     await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
 
     // 3 — how was it
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "দারুণ" }).click();
     await page.getByLabel("কত দিয়ে কিনলেন?").fill("80");
     await page.getByRole("button", { name: "জমা দিন" }).click();
