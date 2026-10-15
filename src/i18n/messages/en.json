@@ -411,6 +411,12 @@
     "iosBody": "Tap Share, then choose “Add to Home Screen”.",
     "dismiss": "Later"
   },
+  "brand": {
+    "statBranches": "branches",
+    "all": "All branches",
+    "note": "Each branch has its own experiences. One branch's reactions are not added to another's.",
+    "searchMeta": "{count} branches · {areas}"
+  },
   "area": {
     "statPlaces": "Places",
     "ranked": "Community favorites",

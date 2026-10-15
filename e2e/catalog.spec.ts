@@ -129,8 +129,9 @@ test.describe("district pages", () => {
 test.describe("neighbourhoods", () => {
   test("a neighbourhood is found by name and has its own page", async ({ page }) => {
     await page.goto("/search?q=%E0%A6%B8%E0%A6%BE%E0%A6%A4%E0%A6%AE%E0%A6%BE%E0%A6%A5%E0%A6%BE");
-    const area = page.getByRole("link", { name: /সাতমাথা/ }).first();
-    await expect(area).toHaveAttribute("href", "/district/bogura/area/satmatha");
+    // Place rows now name their neighbourhood too, so pick the area row by where it goes.
+    const area = page.locator('a[href="/district/bogura/area/satmatha"]').first();
+    await expect(area).toBeVisible();
     await area.click();
     await expect(page.getByRole("heading", { level: 1, name: "সাতমাথা" })).toBeVisible();
     await expect(page.getByRole("link", { name: /নমুনা দই ঘর/ })).toBeVisible();

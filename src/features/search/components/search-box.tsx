@@ -16,8 +16,10 @@ import { useDelayedFlag } from "@/hooks/use-delayed-flag";
 import { useT } from "@/i18n/client";
 import { formatNumber } from "@/lib/format/number";
 
+import { groupBranches } from "@/services/search-service";
+
 import type { SearchSuggestions } from "../types";
-import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
+import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceRowItemView } from "./search-hit-rows";
 
 const INPUT_WRAP_CLASS =
   "flex h-[50px] items-center gap-2.5 rounded-[18px] bg-card px-3.5 text-foreground shadow-floating lg:h-16 lg:rounded-[22px] lg:bg-card lg:px-5 lg:shadow-floating";
@@ -68,7 +70,13 @@ function Suggestions({ q }: { q: string }) {
     {
       key: "places",
       title: t("search.groups.places"),
-      rows: data.places.map((hit) => <PlaceHitRow key={hit.slug} hit={hit} t={t} />),
+      rows: groupBranches(data.places).map((item) => (
+        <PlaceRowItemView
+          key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
+          item={item}
+          t={t}
+        />
+      )),
     },
     {
       key: "districts",

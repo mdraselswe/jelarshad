@@ -3,6 +3,7 @@ import { AddPageSkeleton } from "@/features/add/components/add-page-skeleton";
 import { AdminFrameSkeleton } from "@/features/admin/components/admin-frame";
 import { LoginPromptSkeleton } from "@/features/auth/components/login-prompt";
 import { AreaPageSkeleton } from "@/features/district/components/area-page";
+import { BrandPageSkeleton } from "@/features/brand/components/brand-page";
 import { DistrictFoodPageSkeleton } from "@/features/district/components/district-food-page";
 import { DistrictPageSkeleton } from "@/features/district/components/district-page";
 import { FoodPageSkeleton } from "@/features/food/components/food-page";
@@ -23,6 +24,7 @@ export default function Loading() {
         search: <SearchPageSkeleton />,
         food: <FoodPageSkeleton />,
         place: <PlacePageSkeleton />,
+        brand: <BrandPageSkeleton />,
         district: <DistrictPageSkeleton />,
         districtFood: <DistrictFoodPageSkeleton />,
         area: <AreaPageSkeleton />,

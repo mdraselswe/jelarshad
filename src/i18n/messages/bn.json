@@ -411,6 +411,12 @@
     "iosBody": "শেয়ার বোতাম চেপে “Add to Home Screen” বেছে নিন।",
     "dismiss": "পরে"
   },
+  "brand": {
+    "statBranches": "শাখা",
+    "all": "সব শাখা",
+    "note": "প্রতিটি শাখার অভিজ্ঞতা আলাদা। এক শাখার পছন্দ অন্য শাখায় যোগ হয় না।",
+    "searchMeta": "{count}টি শাখা · {areas}"
+  },
   "area": {
     "statPlaces": "জায়গা",
     "ranked": "কমিউনিটির প্রিয় জায়গা",

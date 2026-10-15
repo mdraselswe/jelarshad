@@ -182,3 +182,31 @@ describe("catalogService district pages", () => {
     expect(elsewhere?.dishes.items).toEqual([]);
   });
 });
+
+describe("catalogService brands", () => {
+  it("lists every branch of a chain on the brand page, each ranked on its own", async () => {
+    const page = await service().brandPage("sample-chain");
+    expect(page?.brand.nameBn).toBe("নমুনা চেইন");
+    expect(page?.branches.map((branch) => branch.slug).sort()).toEqual([
+      "sample-kacchi-house",
+      "sample-mezbani",
+    ]);
+  });
+
+  it("returns null for an unknown brand", async () => {
+    expect(await service().brandPage("nope")).toBeNull();
+  });
+
+  it("lists the other branches of a place's chain, never the place itself", async () => {
+    const repos = createMockRepositories();
+    const place = await repos.places.bySlug("sample-kacchi-house");
+    const branches = await createCatalogService({ repos }).placeBranches(place?.id ?? "");
+    expect(branches?.items.map((branch) => branch.slug)).toEqual(["sample-mezbani"]);
+  });
+
+  it("has no branch section for a place without a chain", async () => {
+    const repos = createMockRepositories();
+    const place = await repos.places.bySlug("sample-place");
+    expect(await createCatalogService({ repos }).placeBranches(place?.id ?? "")).toBeNull();
+  });
+});

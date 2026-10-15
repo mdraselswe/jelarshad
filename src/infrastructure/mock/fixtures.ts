@@ -161,6 +161,7 @@ export const places: Place[] = [
     price: { min: 250, max: 380 },
     status: "active",
     mergedIntoId: null,
+    brand: { slug: "sample-chain", nameBn: "নমুনা চেইন" },
   },
   {
     id: fixtureIds.places.mezbani,
@@ -176,6 +177,7 @@ export const places: Place[] = [
     price: { min: 300, max: 450 },
     status: "active",
     mergedIntoId: null,
+    brand: { slug: "sample-chain", nameBn: "নমুনা চেইন" },
   },
 ];
 

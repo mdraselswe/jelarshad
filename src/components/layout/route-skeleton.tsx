@@ -8,6 +8,7 @@ export type RouteSkeletonKind =
   | "search"
   | "food"
   | "place"
+  | "brand"
   | "district"
   | "districtFood"
   | "area"
@@ -27,6 +28,7 @@ export function skeletonKindFor(pathname: string): RouteSkeletonKind {
   if (first === "search") return "search";
   if (first === "food") return "food";
   if (first === "place") return "place";
+  if (first === "brand") return "brand";
   if (first === "district") {
     if (parts.length <= 2) return "district";
     return third === "area" && parts.length >= 4 ? "area" : "districtFood";

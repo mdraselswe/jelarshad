@@ -22,6 +22,8 @@ export const routes = {
     }),
   food: (slug: string) => `/food/${segment(slug)}`,
   place: (slug: string) => `/place/${segment(slug)}`,
+  /** A chain and all its branches: /brand/khanas. */
+  brand: (slug: string) => `/brand/${segment(slug)}`,
   district: (slug: string) => `/district/${segment(slug)}`,
   districtFood: (districtSlug: string, foodSlug: string) =>
     `/district/${segment(districtSlug)}/${segment(foodSlug)}`,

@@ -50,9 +50,12 @@ export function toFood(row: Row<"foods">): Food {
 export type PlaceRow = Row<"places"> & {
   districts: Pick<Row<"districts">, "id" | "slug" | "name_bn"> | null;
   areas: Pick<Row<"areas">, "id" | "slug" | "name_bn"> | null;
+  /** The chain this place is a branch of; absent in rows selected without it. */
+  brands?: Pick<Row<"brands">, "slug" | "name_bn"> | null;
 };
 
-export const PLACE_SELECT = "*, districts(id, slug, name_bn), areas(id, slug, name_bn)";
+export const PLACE_SELECT =
+  "*, districts(id, slug, name_bn), areas(id, slug, name_bn), brands(slug, name_bn)";
 
 export function toPlace(row: PlaceRow): Place {
   if (!row.districts) throw new Error(`place ${row.id} has no district`);
@@ -70,6 +73,7 @@ export function toPlace(row: PlaceRow): Place {
     price: { min: row.price_min, max: row.price_max },
     status: row.status,
     mergedIntoId: row.merged_into,
+    brand: row.brands ? { slug: row.brands.slug, nameBn: row.brands.name_bn } : null,
   };
 }
 
