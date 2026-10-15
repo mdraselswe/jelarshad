@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useState, useTransition } from "react";
 import { toast } from "@/lib/toast";
 
 import { routes } from "@/config/routes";
@@ -64,14 +64,7 @@ function Face({ reaction }: { reaction: Reaction }) {
  * several (a food page lists many places) the person picks where they ate, then confirms. Signed-out
  * visitors are sent to log in and brought back.
  */
-export function ReactionPicker({
-  options,
-  mine = {},
-}: {
-  options: DishOption[];
-  /** The visitor's earlier reactions by dish id, so the box does not ask again what is answered. */
-  mine?: Record<string, Reaction>;
-}) {
+export function ReactionPicker({ options }: { options: DishOption[] }) {
   const t = useT();
   const router = useRouter();
   const pathname = usePathname();
@@ -80,6 +73,26 @@ export function ReactionPicker({
   // Reactions saved in this visit show at once; the server catches up in the background.
   const [saved, setSaved] = useState<Record<string, Reaction>>({});
   const [editing, setEditing] = useState(false);
+  // The visitor's earlier reactions, fetched once the page is up so the page itself stays static.
+  const [mine, setMine] = useState<Record<string, Reaction>>({});
+  const dishKey = options.map((option) => option.dishId).join(",");
+  useEffect(() => {
+    if (dishKey === "") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await fetch(`/api/reactions?dishes=${encodeURIComponent(dishKey)}`);
+        if (!response.ok) return;
+        const body = (await response.json()) as { mine?: Record<string, Reaction> };
+        if (!cancelled && body.mine) setMine(body.mine);
+      } catch {
+        // Offline or blocked: the plain picker still works.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [dishKey]);
   const known: Record<string, Reaction> = { ...mine, ...saved };
   const firstOpen = options.find((option) => known[option.dishId] === undefined);
   const [dishId, setDishId] = useState((firstOpen ?? options[0])?.dishId ?? "");
