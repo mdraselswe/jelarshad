@@ -7,6 +7,7 @@ import { DHAKA_SET_5 } from "./dhaka-data-5";
 import { DHAKA_SET_6 } from "./dhaka-data-6";
 import { DHAKA_SET_7, GAZIPUR_SET } from "./dhaka-data-7";
 import { DHAKA_SET_8, GAZIPUR_SET_2 } from "./dhaka-data-8";
+import { DHAKA_SET_9 } from "./dhaka-data-9";
 import { CHATTOGRAM_SET, SYLHET_SET } from "./districts-data";
 import { BOGURA_SET, CUMILLA_SET, KHULNA_SET, RAJSHAHI_SET } from "./districts-data-2";
 import { DISTRICT_SETS_4 } from "./districts-data-4";
@@ -53,6 +54,7 @@ export const DHAKA_SETS: DhakaSet[] = [
   DHAKA_SET_6,
   DHAKA_SET_7,
   DHAKA_SET_8,
+  DHAKA_SET_9,
   CHATTOGRAM_SET,
   SYLHET_SET,
   KHULNA_SET,
