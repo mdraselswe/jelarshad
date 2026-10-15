@@ -411,6 +411,15 @@
     "iosBody": "Tap Share, then choose “Add to Home Screen”.",
     "dismiss": "Later"
   },
+  "listFilter": {
+    "all": "All",
+    "searchLabel": "Search places or areas",
+    "searchPlaceholder": "Type a place or area",
+    "none": "Nothing matches this area or name.",
+    "more": "{count} more areas",
+    "less": "Show fewer",
+    "areasLabel": "By area"
+  },
   "brand": {
     "statBranches": "branches",
     "all": "All branches",

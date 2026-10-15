@@ -411,6 +411,15 @@
     "iosBody": "শেয়ার বোতাম চেপে “Add to Home Screen” বেছে নিন।",
     "dismiss": "পরে"
   },
+  "listFilter": {
+    "all": "সব",
+    "searchLabel": "দোকান বা এলাকা খুঁজুন",
+    "searchPlaceholder": "দোকান বা এলাকা লিখুন",
+    "none": "এই এলাকায় বা নামে কিছু মেলেনি।",
+    "more": "আরও {count}টি এলাকা",
+    "less": "কম দেখান",
+    "areasLabel": "এলাকা অনুযায়ী"
+  },
   "brand": {
     "statBranches": "শাখা",
     "all": "সব শাখা",
