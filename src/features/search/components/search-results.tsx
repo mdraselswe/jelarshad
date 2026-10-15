@@ -43,7 +43,12 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const outcome = await searchCatalog(q);
   const placeHits = filterPlaces(outcome.places, { type, price });
   const places = groupBranches(placeHits);
-  const areaChips = buildAreaOptions(placeHits.map((hit) => hit.areaNameBn ?? hit.district.nameBn));
+  const areaChips = buildAreaOptions(
+    placeHits.map((hit) => ({
+      area: hit.areaNameBn ?? hit.district.nameBn,
+      group: hit.district.nameBn,
+    })),
+  );
   const filtered = type !== undefined || price !== undefined;
   const counts = {
     food: outcome.foods.length,

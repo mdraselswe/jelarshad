@@ -23,7 +23,7 @@ type DishRowProps = {
   /** A thin loved-share bar under the meta line (place page). */
   showBar?: boolean;
   /** What a client-side list filter matches this row on (area key and searchable text). */
-  filter?: { key: string; text: string };
+  filter?: { key: string; group?: string; text: string };
 };
 
 const BAR_CLASS = "mt-1.5 flex h-1.5 overflow-hidden rounded-full bg-muted";
@@ -74,7 +74,13 @@ export function DishRow({
       trailing={<ScorePill display={display} />}
       footer={showBar ? <LikeBar percent={display.percent} /> : undefined}
       {...(filter
-        ? { data: { "data-filter-key": filter.key, "data-filter-text": filter.text } }
+        ? {
+            data: {
+              "data-filter-key": filter.key,
+              "data-filter-group": filter.group ?? "",
+              "data-filter-text": filter.text,
+            },
+          }
         : {})}
     />
   );

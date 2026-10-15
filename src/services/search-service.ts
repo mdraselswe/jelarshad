@@ -29,6 +29,8 @@ export type BrandGroup = {
   count: number;
   /** Neighbourhoods (or districts) of the matching branches, in result order. */
   areas: string[];
+  /** Districts of the matching branches, in result order. */
+  districts: string[];
 };
 
 export type PlaceRowItem = { kind: "place"; hit: PlaceHit } | { kind: "brand"; group: BrandGroup };
@@ -52,12 +54,17 @@ export function groupBranches(places: PlaceHit[]): PlaceRowItem[] {
     }
     if (emitted.has(brand.slug)) continue;
     emitted.add(brand.slug);
-    const areas = places
-      .filter((candidate) => candidate.brand?.slug === brand.slug)
-      .map((candidate) => candidate.areaNameBn ?? candidate.district.nameBn);
+    const branches = places.filter((candidate) => candidate.brand?.slug === brand.slug);
+    const areas = branches.map((candidate) => candidate.areaNameBn ?? candidate.district.nameBn);
     items.push({
       kind: "brand",
-      group: { slug: brand.slug, nameBn: brand.nameBn, count: areas.length, areas },
+      group: {
+        slug: brand.slug,
+        nameBn: brand.nameBn,
+        count: areas.length,
+        areas,
+        districts: branches.map((candidate) => candidate.district.nameBn),
+      },
     });
   }
   return items;

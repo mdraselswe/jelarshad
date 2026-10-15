@@ -57,6 +57,7 @@ export function DishGroups({
       rank={rank}
       filter={{
         key: areaKeyOf(dish.place),
+        group: dish.place.districtNameBn,
         text: `${dish.place.nameBn} ${placeContext(dish.place)}`,
       }}
     />
@@ -65,7 +66,9 @@ export function DishGroups({
   return (
     <div data-filter-root>
       <AreaFilter
-        areas={buildAreaOptions(items.map((dish) => areaKeyOf(dish.place)))}
+        areas={buildAreaOptions(
+          items.map((dish) => ({ area: areaKeyOf(dish.place), group: dish.place.districtNameBn })),
+        )}
         showSearch={items.length > SEARCH_FROM}
       />
       {ranked.length > 0 ? (
