@@ -6,6 +6,9 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { toggleVariants } from "@/components/ui/toggle-variants";
 import { useT } from "@/i18n/client";
 import { formatNumber } from "@/lib/format/number";
+import { toSearchKey } from "@/lib/text/normalize";
+
+import { looseMatch } from "./area-filter-match";
 
 export type AreaOption = {
   key: string;
@@ -72,14 +75,19 @@ export function AreaFilter({
     const root = rootRef.current?.closest(ROOT);
     if (!root) return;
     const needle = query.trim().toLowerCase();
+    // The same words in another spelling or script ("khilgaon", "খিলগাঁও") meet at the phonetic key.
+    const key = needle === "" ? "" : toSearchKey(needle);
     let shown = 0;
     root.querySelectorAll<HTMLElement>(ROW).forEach((row) => {
       // A row may stand for several areas (a chain with branches in more than one), joined by "|".
       const matchesArea = area === null || (row.dataset.filterKey ?? "").split("|").includes(area);
       const matchesGroup =
         group === null || (row.dataset.filterGroup ?? "").split("|").includes(group);
+      const text = (row.dataset.filterText ?? "").toLowerCase();
       const matchesText =
-        needle === "" || (row.dataset.filterText ?? "").toLowerCase().includes(needle);
+        needle === "" ||
+        text.includes(needle) ||
+        (key !== "" && (text.includes(key) || looseMatch(key, text)));
       const show = matchesArea && matchesGroup && matchesText;
       row.hidden = !show;
       if (show) shown += 1;

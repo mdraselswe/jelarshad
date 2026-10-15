@@ -7,6 +7,7 @@ import { routes } from "@/config/routes";
 import { DishRow, DishRowSkeleton } from "@/features/dish/components/dish-row";
 import { buildAreaOptions } from "@/features/catalog/area-options";
 import { AreaFilter } from "@/features/catalog/components/area-filter";
+import { filterText } from "@/features/catalog/filter-text";
 import { getT } from "@/i18n/server";
 import { formatPriceRange } from "@/lib/format/number";
 import type { DishRow as DishRowData, FoodDishes } from "@/services/catalog-service";
@@ -58,7 +59,7 @@ export function DishGroups({
       filter={{
         key: areaKeyOf(dish.place),
         group: dish.place.districtNameBn,
-        text: `${dish.place.nameBn} ${placeContext(dish.place)}`,
+        text: filterText(dish.place.nameBn, placeContext(dish.place)),
       }}
     />
   );
