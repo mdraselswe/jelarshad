@@ -418,7 +418,9 @@
     "none": "এই এলাকায় বা নামে কিছু মেলেনি।",
     "more": "আরও {count}টি এলাকা",
     "less": "কম দেখান",
-    "areasLabel": "এলাকা অনুযায়ী"
+    "areasLabel": "এলাকা অনুযায়ী",
+    "districtsLabel": "জেলা অনুযায়ী",
+    "allDistricts": "সব জেলা"
   },
   "brand": {
     "statBranches": "শাখা",

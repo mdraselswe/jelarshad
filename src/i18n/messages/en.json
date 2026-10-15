@@ -418,7 +418,9 @@
     "none": "Nothing matches this area or name.",
     "more": "{count} more areas",
     "less": "Show fewer",
-    "areasLabel": "By area"
+    "areasLabel": "By area",
+    "districtsLabel": "By district",
+    "allDistricts": "All districts"
   },
   "brand": {
     "statBranches": "branches",
