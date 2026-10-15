@@ -171,3 +171,11 @@ where they match the place's own name (Chinese, pizza, kacchi, tehari).
 
 Still not listed: Rampura, Aftabnagar, Mouchak, Badda and Malibagh shops other than the newspaper ones above;
 no listing stated an area for them. Contributors add them in the app.
+
+## Dhaka restaurants by area (migration 0068, decision T20)
+
+Names, area and a kind of food only, from the listing site's own area pages and kind labels. Hotels, bars and places whose area the page does not state are left out. New foods added for common dishes: biryani, fried rice, chicken fry, buffet, burger, steak, momo, Korean, Italian, seafood, sandwich, Arabian, Turkish, continental, ice cream, Bangladeshi meal, chicken roast, mutton curry, noodles, grill, cafe.
+
+| Area | Source |
+| --- | --- |
+| Dhanmondi, Gulshan, Mirpur, Uttara, Banani, Mohammadpur, Bashundhara, Old Dhaka (Lalbagh, Bangshal), Motijheel, Khilgaon (with Basabo, Malibagh, Tilpapara), Banasree, Mohakhali | [BDPlaces, Restaurants in Dhaka areas](https://bdplaces.com/restaurants-in-dhaka/) (area pages: dhanmondi, gulshan, mirpur, uttara, banani, mohammadpur, bashundhara, old-dhaka, motijheel, khilgaon, banasree, mohakhali) |
