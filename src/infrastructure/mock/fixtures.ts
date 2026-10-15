@@ -250,6 +250,7 @@ export const claims: Claim[] = [
     counts: { correct: 5, partial: 1, wrong: 0 },
     lastConfirmedAt: new Date("2026-09-20T00:00:00Z"),
     expiresAt: new Date("2026-10-20T00:00:00Z"),
+    createdBy: null,
   },
   {
     id: fixtureIds.claims.availability,
@@ -261,5 +262,6 @@ export const claims: Claim[] = [
     counts: { correct: 1, partial: 0, wrong: 0 },
     lastConfirmedAt: null,
     expiresAt: null,
+    createdBy: null,
   },
 ];

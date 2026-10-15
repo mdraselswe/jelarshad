@@ -1,3 +1,4 @@
+import { ClaimActions } from "@/features/claim/components/claim-actions";
 import { ClaimStatusBadge } from "@/features/claim/components/claim-status-badge";
 import { StillCorrectButton, VerifyPrompt } from "@/features/claim/components/verify-prompt";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -47,8 +48,10 @@ export async function PlaceClaimsSection({ placeId }: { placeId: string }) {
         return (
           <li key={claim.id} className={ROW_CLASS}>
             <ClaimStatusBadge claim={claim} now={asOf} />
-            {stale && <StillCorrectButton claimId={claim.id} />}
-            <VerifyPrompt claimId={claim.id} summary={summary} />
+            <ClaimActions createdBy={claim.createdBy}>
+              {stale && <StillCorrectButton claimId={claim.id} />}
+              <VerifyPrompt claimId={claim.id} summary={summary} />
+            </ClaimActions>
           </li>
         );
       })}

@@ -169,6 +169,7 @@ export function toClaim(row: Row<"claims">): Claim {
     counts: { correct: row.correct_count, partial: row.partial_count, wrong: row.wrong_count },
     lastConfirmedAt: date(row.last_confirmed_at),
     expiresAt: date(row.expires_at),
+    createdBy: row.created_by,
   };
 }
 

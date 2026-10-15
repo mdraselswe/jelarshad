@@ -94,6 +94,7 @@
   },
   "verify": {
     "open": "Verify",
+    "ownClaim": "You added this. Others will verify it and the result shows here.",
     "stillOk": "Still correct?",
     "title": "Is this correct?",
     "hint": "Tell us what you know.",

@@ -456,6 +456,7 @@ export function createMockRepositories(): Repositories {
             counts: { correct: 0, partial: 0, wrong: 0 },
             lastConfirmedAt: null,
             expiresAt: null,
+            createdBy: input.createdBy ?? null,
           };
           db.claims.push(claim);
         }

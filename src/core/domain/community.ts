@@ -36,6 +36,8 @@ export type Claim = {
   counts: { correct: number; partial: number; wrong: number };
   lastConfirmedAt: Date | null;
   expiresAt: Date | null;
+  /** Who added the fact; they cannot vote on it, others verify it. */
+  createdBy: string | null;
 };
 
 export type ClaimVote = {
