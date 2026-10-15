@@ -2,6 +2,7 @@ import { MapPinIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
+import { filterText } from "@/features/catalog/filter-text";
 import type { T } from "@/i18n/t";
 import { formatNumber, formatPriceRange } from "@/lib/format/number";
 import type {
@@ -46,7 +47,7 @@ export function PlaceHitRow({ hit, t }: { hit: PlaceHit; t: T }) {
       data={{
         "data-filter-key": hit.areaNameBn ?? hit.district.nameBn,
         "data-filter-group": hit.district.nameBn,
-        "data-filter-text": `${hit.nameBn} ${hit.areaNameBn ?? ""} ${hit.district.nameBn}`,
+        "data-filter-text": filterText(hit.nameBn, hit.areaNameBn, hit.district.nameBn),
       }}
     />
   );
@@ -68,7 +69,7 @@ export function BrandGroupRow({ group, t }: { group: BrandGroup; t: T }) {
       data={{
         "data-filter-key": Array.from(new Set(group.areas)).join("|"),
         "data-filter-group": Array.from(new Set(group.districts)).join("|"),
-        "data-filter-text": `${group.nameBn} ${group.areas.join(" ")}`,
+        "data-filter-text": filterText(group.nameBn, ...group.areas),
       }}
     />
   );
