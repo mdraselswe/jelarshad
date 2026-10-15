@@ -217,9 +217,10 @@ export function createCatalogService({ repos }: Deps) {
 
     /** Slugs worth prerendering at build time. */
     async staticSlugs() {
-      const [foods, places, districts, fame] = await Promise.all([
+      const [foods, places, brands, districts, fame] = await Promise.all([
         repos.foods.slugs(appConfig.seo.staticFoodCount),
         repos.places.slugs(appConfig.seo.staticPlaceCount),
+        repos.places.brandSlugs(appConfig.seo.staticPlaceCount),
         repos.districts.list(),
         repos.districts.allFame(),
       ]);
@@ -233,6 +234,7 @@ export function createCatalogService({ repos }: Deps) {
       return {
         foods,
         places,
+        brands,
         districts: ordered
           .slice(0, appConfig.seo.staticDistrictCount)
           .map((district) => district.slug),

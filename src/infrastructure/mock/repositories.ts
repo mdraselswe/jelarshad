@@ -271,6 +271,10 @@ export function createMockRepositories(): Repositories {
         paginate(clone(active(db.places).filter((p) => p.district.id === districtId)), opts),
       inArea: async (areaId, opts) =>
         paginate(clone(active(db.places).filter((p) => p.area?.id === areaId)), opts),
+      brandSlugs: async (limit) =>
+        Array.from(new Set(active(db.places).flatMap((p) => (p.brand ? [p.brand.slug] : []))))
+          .sort()
+          .slice(0, limit),
       byBrand: async (brandSlug) => {
         const items = active(db.places).filter((p) => p.brand?.slug === brandSlug);
         const brand = items[0]?.brand;

@@ -404,6 +404,13 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
       },
+      async brandSlugs(limit) {
+        const rows = check(
+          await db.from("brands").select("slug").order("slug").limit(limit),
+          "brand slugs",
+        );
+        return rows.map((row) => row.slug);
+      },
       async byBrand(brandSlug) {
         const brand = check<{ id: string; slug: string; name_bn: string } | null>(
           await db.from("brands").select("id, slug, name_bn").eq("slug", brandSlug).maybeSingle(),

@@ -3,11 +3,18 @@ import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
+import { getStaticSlugs } from "@/features/catalog/queries";
 import { BrandPage } from "@/features/brand/components/brand-page";
 import { getBrandPage } from "@/features/brand/queries";
 import { getT } from "@/i18n/server";
 import { breadcrumbLd } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
+
+export async function generateStaticParams() {
+  const { brands } = await getStaticSlugs();
+  // Cache Components needs at least one param to prerender this route; an empty list would fail the build.
+  return (brands.length > 0 ? brands : ["sample-chain"]).map((slug) => ({ slug }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

@@ -89,6 +89,8 @@ export interface PlaceRepository {
   inDistrict(districtId: number, opts?: PageOpts): Promise<Page<Place>>;
   /** Active places in one neighbourhood. */
   inArea(areaId: number, opts?: PageOpts): Promise<Page<Place>>;
+  /** Slugs of up to `limit` chains that have at least one active branch (static generation). */
+  brandSlugs(limit: number): Promise<string[]>;
   /** A chain and all its active branches (brand page); null when no such brand. */
   byBrand(
     brandSlug: string,
