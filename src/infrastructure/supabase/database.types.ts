@@ -1080,6 +1080,7 @@ export type Database = {
       district_leaderboard: {
         Args: { p_district: number; p_limit: number; p_since: string };
         Returns: {
+          avatar_url: string | null;
           display_name: string;
           user_id: string;
           xp: number;
@@ -1125,6 +1126,7 @@ export type Database = {
       weekly_leaderboard: {
         Args: { p_limit: number; p_since: string };
         Returns: {
+          avatar_url: string | null;
           display_name: string;
           user_id: string;
           xp: number;

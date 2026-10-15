@@ -86,6 +86,7 @@ export function createMockRepositories(): Repositories {
       .map(([userId, xp]) => ({
         userId,
         displayName: userId === fixtures.demoUser.id ? fixtures.demoUser.displayName : userId,
+        avatarUrl: userId === fixtures.demoUser.id ? fixtures.demoUser.avatarUrl : null,
         xp,
       }))
       .sort((a, b) => b.xp - a.xp)

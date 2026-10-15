@@ -1119,6 +1119,7 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         return (data ?? []).map((row) => ({
           userId: row.user_id,
           displayName: row.display_name,
+          avatarUrl: row.avatar_url,
           xp: row.xp,
         }));
       },
@@ -1132,6 +1133,7 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         return (data ?? []).map((row) => ({
           userId: row.user_id,
           displayName: row.display_name,
+          avatarUrl: row.avatar_url,
           xp: row.xp,
         }));
       },

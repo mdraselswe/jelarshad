@@ -18,6 +18,8 @@ export type PointEvent = {
 export type LeaderboardEntry = {
   userId: string;
   displayName: string;
+  /** The Google picture saved at sign-in, when there is one. */
+  avatarUrl: string | null;
   xp: number;
 };
 

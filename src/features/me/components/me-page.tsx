@@ -5,6 +5,7 @@ import { TrophyArt } from "@/components/illustration/food-art";
 import { WorldStrip } from "@/components/illustration/world-art";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { PageShell } from "@/components/layout/page-shell";
 import { Section } from "@/components/layout/section";
 import { ThemePreferenceControl } from "@/components/theme/theme-preference-control";
@@ -207,12 +208,12 @@ export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }
           >
             <WorldStrip scene="village" />
           </div>
-          <span
-            aria-hidden
-            className="flex size-16 shrink-0 items-center justify-center rounded-[22px] bg-tile-1 font-display text-[28px] font-extrabold text-on-hero"
-          >
-            {[...user.displayName][0]}
-          </span>
+          <UserAvatar
+            name={user.displayName}
+            src={user.avatarUrl}
+            seed={user.id}
+            className="size-16 text-[28px] ring-4 ring-card lg:ring-white/40"
+          />
           <div className="min-w-0 flex-1">
             <h1 className="text-title-1 break-words">{user.displayName}</h1>
             <span className="mt-1.5 inline-flex h-8 items-center rounded-full bg-reward-soft px-3 text-[14px] font-bold text-reward-soft-fg">

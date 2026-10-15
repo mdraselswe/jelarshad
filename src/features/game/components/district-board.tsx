@@ -69,7 +69,9 @@ export async function DistrictBoard({ districtId }: { districtId: number }) {
             <li key={entry.userId} className="flex h-14 items-center gap-3">
               <RankBadge rank={index + 1} className="size-9 rounded-[12px] text-base" />
               <span className="min-w-0 flex-1 truncate font-semibold">
-                {entry.userId === userId ? t("game.boardYou") : entry.displayName}
+                {entry.userId === userId
+                  ? `${entry.displayName} (${t("game.boardYou")})`
+                  : entry.displayName}
               </span>
               <span className="text-sm font-semibold text-reward-soft-fg">
                 {t("game.xp", { count: formatNumber(entry.xp) })}
