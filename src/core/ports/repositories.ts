@@ -13,6 +13,7 @@ import type {
   Page,
   PageOpts,
   Place,
+  PlaceBranches,
   PlaceType,
   Reaction,
   RegionalFame,
@@ -88,6 +89,11 @@ export interface PlaceRepository {
   inDistrict(districtId: number, opts?: PageOpts): Promise<Page<Place>>;
   /** Active places in one neighbourhood. */
   inArea(areaId: number, opts?: PageOpts): Promise<Page<Place>>;
+  /**
+   * The other branches of the chain this place belongs to. Every branch is a separate place with its
+   * own dishes and reactions; null when the place is not part of a chain or has no other branch.
+   */
+  branches(placeId: string): Promise<PlaceBranches | null>;
   /** All dishes of a place, best first ("প্রথমবার? এগুলো অর্ডার করুন"). */
   dishes(placeId: string): Promise<DishWithFood[]>;
   /** The slug of the place this one was merged into, for redirecting old links; null if none. */

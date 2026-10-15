@@ -68,6 +68,14 @@ export type Place = {
   status: ContentStatus;
   /** Set when an admin merged this duplicate into another place; pages redirect there. */
   mergedIntoId: string | null;
+  /** The chain this place is a branch of; only set by adapters that load it (mock). */
+  brand?: { slug: string; nameBn: string } | null;
+};
+
+/** The other branches of the chain a place belongs to ("সুলতানস ডাইন"); each is its own place. */
+export type PlaceBranches = {
+  brand: { slug: string; nameBn: string };
+  items: Pick<Place, "id" | "slug" | "nameBn" | "district" | "area">[];
 };
 
 /** A food at a place — ratings live here (decision P5). */

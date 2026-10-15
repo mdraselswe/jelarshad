@@ -322,6 +322,21 @@ export function createCatalogService({ repos }: Deps) {
       };
     },
 
+    /** Other branches of the same chain, each with its own page and reactions. */
+    async placeBranches(placeId: string) {
+      const branches = await repos.places.branches(placeId);
+      if (!branches) return null;
+      return {
+        brandNameBn: branches.brand.nameBn,
+        items: branches.items.map((branch) => ({
+          slug: branch.slug,
+          nameBn: branch.nameBn,
+          areaNameBn: branch.area?.nameBn ?? branch.district.nameBn,
+          districtNameBn: branch.district.nameBn,
+        })),
+      };
+    },
+
     async placeDishes(placeId: string): Promise<PlaceDishRow[]> {
       const dishes = await repos.places.dishes(placeId);
       return dishes.map((dish) => ({

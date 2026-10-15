@@ -59,6 +59,30 @@ export type Database = {
           },
         ];
       };
+      brands: {
+        Row: {
+          created_at: string;
+          id: string;
+          name_bn: string;
+          name_en: string | null;
+          slug: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name_bn: string;
+          name_en?: string | null;
+          slug: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name_bn?: string;
+          name_en?: string | null;
+          slug?: string;
+        };
+        Relationships: [];
+      };
       claim_votes: {
         Row: {
           claim_id: string;
@@ -619,6 +643,7 @@ export type Database = {
         Row: {
           address: string | null;
           area_id: number | null;
+          brand_id: string | null;
           created_at: string;
           created_by: string | null;
           district_id: number;
@@ -641,6 +666,7 @@ export type Database = {
         Insert: {
           address?: string | null;
           area_id?: number | null;
+          brand_id?: string | null;
           created_at?: string;
           created_by?: string | null;
           district_id: number;
@@ -663,6 +689,7 @@ export type Database = {
         Update: {
           address?: string | null;
           area_id?: number | null;
+          brand_id?: string | null;
           created_at?: string;
           created_by?: string | null;
           district_id?: number;
@@ -688,6 +715,13 @@ export type Database = {
             columns: ["area_id"];
             isOneToOne: false;
             referencedRelation: "areas";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "places_brand_id_fkey";
+            columns: ["brand_id"];
+            isOneToOne: false;
+            referencedRelation: "brands";
             referencedColumns: ["id"];
           },
           {
