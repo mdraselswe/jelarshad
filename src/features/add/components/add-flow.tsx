@@ -98,6 +98,9 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
   const [foodLatin, setFoodLatin] = useState<string | null>(null);
   const [districtId, setDistrictId] = useState<number | null>(null);
   const [placeQuery, setPlaceQuery] = useState("");
+  // The suggestions under the name field close when focus leaves it, on Escape, or when the person
+  // chooses to add the typed name as a new place; typing opens them again.
+  const [placeListOpen, setPlaceListOpen] = useState(true);
   const [place, setPlace] = useState<PlaceChoice>(null);
   const [placeType, setPlaceType] = useState<PlaceType>("restaurant");
   const [area, setArea] = useState("");
@@ -437,43 +440,62 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         <label htmlFor="add-place-name" className={cn(LABEL, "mt-3")}>
           {t("add.placeName")}
         </label>
-        <input
-          id="add-place-name"
-          className={INPUT}
-          value={placeQuery}
-          disabled={districtId === null}
-          onChange={(event) => {
-            setPlaceQuery(event.target.value);
-            setPlace(null);
-            setSimilar(null);
-            setConfirmNew(false);
+        <div
+          onBlur={(event) => {
+            // Moving between the field and its list keeps it open; leaving both closes it.
+            if (!event.currentTarget.contains(event.relatedTarget)) setPlaceListOpen(false);
           }}
-        />
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setPlaceListOpen(false);
+          }}
+        >
+          <input
+            id="add-place-name"
+            className={INPUT}
+            value={placeQuery}
+            disabled={districtId === null}
+            onFocus={() => setPlaceListOpen(true)}
+            onChange={(event) => {
+              setPlaceQuery(event.target.value);
+              setPlace(null);
+              setSimilar(null);
+              setConfirmNew(false);
+              setPlaceListOpen(true);
+            }}
+          />
+          {place === null && placeQuery.trim() !== "" && placeListOpen && (
+            <ul className="mt-2 divide-y divide-divider rounded-input border border-border">
+              {placeSuggestions.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className="w-full px-4 py-2 text-left"
+                    onClick={() => {
+                      setPlace({ id: item.id, nameBn: item.nameBn });
+                      setPlaceQuery(item.nameBn);
+                    }}
+                  >
+                    <span className="block font-semibold">{item.nameBn}</span>
+                    {item.meta && (
+                      <span className="block text-caption text-muted-foreground">{item.meta}</span>
+                    )}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  type="button"
+                  className="h-12 w-full px-4 text-left text-primary-text"
+                  onClick={() => setPlaceListOpen(false)}
+                >
+                  {t("add.newPlace", { name: placeQuery.trim() })}
+                </button>
+              </li>
+            </ul>
+          )}
+        </div>
         {place === null && placeQuery.trim() !== "" && (
           <>
-            {placeSuggestions.length > 0 && (
-              <ul className="mt-2 divide-y divide-divider rounded-input border border-border">
-                {placeSuggestions.map((item) => (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-2 text-left"
-                      onClick={() => {
-                        setPlace({ id: item.id, nameBn: item.nameBn });
-                        setPlaceQuery(item.nameBn);
-                      }}
-                    >
-                      <span className="block font-semibold">{item.nameBn}</span>
-                      {item.meta && (
-                        <span className="block text-caption text-muted-foreground">
-                          {item.meta}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
             <p className="mt-2 text-caption text-muted-foreground">{t("add.newPlaceHint")}</p>
 
             <label htmlFor="add-area" className={cn(LABEL, "mt-3")}>

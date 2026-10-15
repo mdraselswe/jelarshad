@@ -54,6 +54,7 @@
     "district": "District",
     "pickDistrict": "Choose a district",
     "placeName": "Shop or place name",
+    "newPlace": "Add “{name}” as a new place",
     "newPlaceHint": "Not in the list? Type the name and carry on",
     "area": "Area",
     "areaHint": "e.g. Mahasthangarh",
