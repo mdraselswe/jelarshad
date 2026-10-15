@@ -190,9 +190,10 @@ export function createCatalogService({ repos }: Deps) {
   return {
     /** Every public page worth listing in the sitemap (real content only: no empty pairs). */
     async sitemapEntries() {
-      const [foods, places, districts, fame, areas] = await Promise.all([
+      const [foods, places, brands, districts, fame, areas] = await Promise.all([
         repos.foods.slugs(appConfig.seo.sitemapPerType),
         repos.places.slugs(appConfig.seo.sitemapPerType),
+        repos.places.brandSlugs(appConfig.seo.sitemapPerType),
         repos.districts.list(),
         repos.districts.allFame(),
         repos.districts.areaSlugs(appConfig.seo.sitemapPerType),
@@ -208,6 +209,7 @@ export function createCatalogService({ repos }: Deps) {
         areas,
         foods,
         places,
+        brands,
         districtFoods: [...pairs].map((pair) => {
           const [district = "", food = ""] = pair.split("/");
           return { district, food };
