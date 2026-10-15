@@ -19,6 +19,12 @@ export function SiteFooter() {
         className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-meta"
       >
         <Link
+          href={routes.leaderboard()}
+          className="py-2 text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("leaderboard.navTitle")}
+        </Link>
+        <Link
           href={routes.about()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >

@@ -411,6 +411,24 @@
     "iosBody": "Tap Share, then choose “Add to Home Screen”.",
     "dismiss": "Later"
   },
+  "leaderboard": {
+    "title": "Active contributors",
+    "lead": "People whose shared experiences made it easier for others to pick what to eat.",
+    "navTitle": "Contributors",
+    "periodsLabel": "Period",
+    "week": "This week",
+    "month": "This month",
+    "all": "All time",
+    "podiumLabel": "Top three",
+    "rankN": "No. {rank}",
+    "you": "You",
+    "empty": "Nobody is on the list for this period yet",
+    "emptyHint": "Share an experience and put your name on the list; first place is open.",
+    "cta": "Share an experience",
+    "seeAll": "See the full list",
+    "note": "Only people who chose to show their name are listed.",
+    "listTitle": "More contributors"
+  },
   "listFilter": {
     "all": "All",
     "searchLabel": "Search places or areas",
