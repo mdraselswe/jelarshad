@@ -81,7 +81,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
         <SearchTabs q={q} counts={counts} carry={{ type, price }} />
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
           <TabGroup tabs={["all", "place"]}>
-            <div className="lg:sticky lg:top-6 lg:col-span-3">
+            <div className="lg:sticky lg:top-24 lg:col-span-3">
               <SearchFilters params={params} />
             </div>
           </TabGroup>

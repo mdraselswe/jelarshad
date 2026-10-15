@@ -124,7 +124,7 @@ export function FoodPage({ food }: { food: FoodHeader }) {
           </Section>
         </div>
         <aside className="hidden lg:col-span-4 lg:block">
-          <div className="sticky top-6 flex flex-col gap-4 page-x pt-10">
+          <div className="sticky top-20 flex flex-col gap-4 page-x pt-4">
             <Suspense fallback={<ReactionCardSkeleton />}>
               <FoodReactionCard foodId={food.id} />
             </Suspense>
