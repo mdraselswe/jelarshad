@@ -179,3 +179,12 @@ Names, area and a kind of food only, from the listing site's own area pages and 
 | Area | Source |
 | --- | --- |
 | Dhanmondi, Gulshan, Mirpur, Uttara, Banani, Mohammadpur, Bashundhara, Old Dhaka (Lalbagh, Bangshal), Motijheel, Khilgaon (with Basabo, Malibagh, Tilpapara), Banasree, Mohakhali | [BDPlaces, Restaurants in Dhaka areas](https://bdplaces.com/restaurants-in-dhaka/) (area pages: dhanmondi, gulshan, mirpur, uttara, banani, mohammadpur, bashundhara, old-dhaka, motijheel, khilgaon, banasree, mohakhali) |
+
+## More Dhaka places by area (migrations 0071 and 0072, decision T20)
+
+Found for the areas the first directory had no page for (Tejgaon, Farmgate, Wari, Moghbazar, Baridhara, Pallabi, Shantinagar, Malibagh, Elephant Road). Name, area and kind of food only. Listings that name no kind of food were left out. Rampura, Badda, Aftabnagar, Jatrabari, Lalmatia and Shahbagh have no named place in any source found, so they stay empty.
+
+| Places | Source |
+| --- | --- |
+| Hotel New Star & Kabab (Tejgaon); Vrinda's Kitchen, Cafe 99 (Farmgate); PizzaBurg, Swiss Bakery, Sub-Zero Icecream Parlour (Wari); New Dhaka Biriyani House, Mr Shawarma, Takeout (Moghbazar); Nabihah Restaurant, The Atrium (Baridhara); Milk & Cream, Posh Lounge Rooftop (Pallabi); Little Arabia (Shantinagar); Mr. Burger (Malibagh); Green House Restaurant (Elephant Road); PizzaBurg Dhanmondi; Sultan's Dine Gulshan | [DhakaEats neighbourhood pages](https://dhakaeats.com/neighbourhoods/) |
+| Star Kabab branches: Thatari Bazar, Wari, Kawran Bazar, Farmgate, Banani, Elephant Road, Johnson Road | [Wikipedia, Star Kabab](https://en.wikipedia.org/wiki/Star_Kabab) |
