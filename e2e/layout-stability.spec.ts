@@ -18,10 +18,9 @@ const PUBLIC = [
   "/policy",
   "/login",
 ];
-// A web font replacing its fallback re-wraps a heading or a paragraph once (a few hundredths of CLS on
-// text-heavy pages). The limit catches what the skeletons are for: a block of the wrong shape, which
-// measures in tenths.
-const LIMIT = 0.05;
+// The project's CLS budget. With the small Latin font preloaded, text no longer re-wraps late, so every
+// page holds it on a slow network.
+const LIMIT = 0.01;
 const SIGNED_IN = ["/me", "/me/profile", "/add"];
 const ADMIN = ["/admin", "/admin/reports", "/admin/places", "/admin/maintenance"];
 
