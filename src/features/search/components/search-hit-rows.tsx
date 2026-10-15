@@ -43,6 +43,10 @@ export function PlaceHitRow({ hit, t }: { hit: PlaceHit; t: T }) {
       }
       title={hit.nameBn}
       meta={[hit.areaNameBn, hit.district.nameBn, type, price].filter(Boolean).join(" · ")}
+      data={{
+        "data-filter-key": hit.areaNameBn ?? hit.district.nameBn,
+        "data-filter-text": `${hit.nameBn} ${hit.areaNameBn ?? ""} ${hit.district.nameBn}`,
+      }}
     />
   );
 }
@@ -60,6 +64,10 @@ export function BrandGroupRow({ group, t }: { group: BrandGroup; t: T }) {
       }
       title={group.nameBn}
       meta={t("brand.searchMeta", { count: formatNumber(group.count), areas: shown })}
+      data={{
+        "data-filter-key": Array.from(new Set(group.areas)).join("|"),
+        "data-filter-text": `${group.nameBn} ${group.areas.join(" ")}`,
+      }}
     />
   );
 }

@@ -5,7 +5,8 @@ import { GroupedList } from "@/components/ui/grouped-list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { routes } from "@/config/routes";
 import { DishRow, DishRowSkeleton } from "@/features/dish/components/dish-row";
-import { AreaFilter, type AreaOption } from "@/features/catalog/components/area-filter";
+import { buildAreaOptions } from "@/features/catalog/area-options";
+import { AreaFilter } from "@/features/catalog/components/area-filter";
 import { getT } from "@/i18n/server";
 import { formatPriceRange } from "@/lib/format/number";
 import type { DishRow as DishRowData, FoodDishes } from "@/services/catalog-service";
@@ -18,18 +19,6 @@ const SEARCH_FROM = 10;
 
 const areaKeyOf = (place: { areaNameBn: string | null; districtNameBn: string }) =>
   place.areaNameBn ?? place.districtNameBn;
-
-/** Area chips, most places first. */
-function areaOptions(items: DishRowData[]): AreaOption[] {
-  const counts = new Map<string, number>();
-  for (const dish of items) {
-    const key = areaKeyOf(dish.place);
-    counts.set(key, (counts.get(key) ?? 0) + 1);
-  }
-  return Array.from(counts, ([key, count]) => ({ key, label: key, count })).sort(
-    (a, b) => b.count - a.count || a.label.localeCompare(b.label, "bn"),
-  );
-}
 
 function placeContext(place: { areaNameBn: string | null; districtNameBn: string }) {
   return [place.areaNameBn, place.districtNameBn].filter(Boolean).join(", ");
@@ -75,7 +64,10 @@ export function DishGroups({
 
   return (
     <div data-filter-root>
-      <AreaFilter areas={areaOptions(items)} showSearch={items.length > SEARCH_FROM} />
+      <AreaFilter
+        areas={buildAreaOptions(items.map((dish) => areaKeyOf(dish.place)))}
+        showSearch={items.length > SEARCH_FROM}
+      />
       {ranked.length > 0 ? (
         <div data-filter-section>
           <Section title={t("food.dishesRanked")} icon={<TrophyIcon />} tone="amber">

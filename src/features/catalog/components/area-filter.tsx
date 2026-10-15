@@ -35,7 +35,15 @@ const readServerArea = () => null;
  * not match, so switching is instant and needs no request. The chosen area stays in the address
  * (`?area=`), so a shared link opens the same view.
  */
-export function AreaFilter({ areas, showSearch }: { areas: AreaOption[]; showSearch: boolean }) {
+export function AreaFilter({
+  areas,
+  showSearch,
+  className = "page-x pt-4",
+}: {
+  areas: AreaOption[];
+  showSearch: boolean;
+  className?: string;
+}) {
   const t = useT();
   const fromUrl = useSyncExternalStore(subscribe, readArea, readServerArea);
   // An address that names an area which is not in this list is ignored.
@@ -51,7 +59,8 @@ export function AreaFilter({ areas, showSearch }: { areas: AreaOption[]; showSea
     const needle = query.trim().toLowerCase();
     let shown = 0;
     root.querySelectorAll<HTMLElement>(ROW).forEach((row) => {
-      const matchesArea = area === null || row.dataset.filterKey === area;
+      // A row may stand for several areas (a chain with branches in more than one), joined by "|".
+      const matchesArea = area === null || (row.dataset.filterKey ?? "").split("|").includes(area);
       const matchesText =
         needle === "" || (row.dataset.filterText ?? "").toLowerCase().includes(needle);
       const show = matchesArea && matchesText;
@@ -82,7 +91,7 @@ export function AreaFilter({ areas, showSearch }: { areas: AreaOption[]; showSea
   const hiddenCount = areas.length - chips.length;
 
   return (
-    <div ref={rootRef} className="flex flex-col gap-3 page-x pt-4">
+    <div ref={rootRef} className={`flex flex-col gap-3 ${className}`}>
       {areas.length > 1 ? (
         <nav aria-label={t("listFilter.areasLabel")} className="flex flex-wrap items-center gap-2">
           <button

@@ -10,7 +10,12 @@ import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
+import { buildAreaOptions } from "@/features/catalog/area-options";
+import { AreaFilter } from "@/features/catalog/components/area-filter";
 import { filterPlaces, groupBranches } from "@/services/search-service";
+
+/** More place hits than this and a small search box joins the area chips. */
+const SEARCH_FROM = 10;
 
 import { searchCatalog } from "../queries";
 import { parseSearchParams, type RawSearchParams } from "../search-params";
@@ -36,7 +41,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   }
 
   const outcome = await searchCatalog(q);
-  const places = groupBranches(filterPlaces(outcome.places, { type, price }));
+  const placeHits = filterPlaces(outcome.places, { type, price });
+  const places = groupBranches(placeHits);
+  const areaChips = buildAreaOptions(placeHits.map((hit) => hit.areaNameBn ?? hit.district.nameBn));
   const filtered = type !== undefined || price !== undefined;
   const counts = {
     food: outcome.foods.length,
@@ -134,15 +141,22 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   tone="violet"
                   cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
-                  <GroupedList split className="rounded-none border-0 bg-transparent">
-                    {places.map((item) => (
-                      <PlaceRowItemView
-                        key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
-                        item={item}
-                        t={t}
-                      />
-                    ))}
-                  </GroupedList>
+                  <div data-filter-root>
+                    <AreaFilter
+                      areas={areaChips}
+                      showSearch={placeHits.length > SEARCH_FROM}
+                      className="pb-3 lg:pb-4"
+                    />
+                    <GroupedList split className="rounded-none border-0 bg-transparent">
+                      {places.map((item) => (
+                        <PlaceRowItemView
+                          key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
+                          item={item}
+                          t={t}
+                        />
+                      ))}
+                    </GroupedList>
+                  </div>
                 </Panel>
               </TabGroup>
             )}
