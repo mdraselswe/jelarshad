@@ -18,9 +18,9 @@ const PUBLIC = [
   "/policy",
   "/login",
 ];
-// A web font replacing its fallback re-wraps a heading or a paragraph once (a few hundredths of CLS on
-// text-heavy pages). The limit catches what the skeletons are for: a block of the wrong shape, which
-// measures in tenths.
+// A web font replacing its stand-in can re-wrap a heading once (a few hundredths of CLS). The stand-ins
+// are tuned for Windows (Nirmala UI); CI runs Linux, where they differ, so the limit is 0.05. It still
+// catches what the skeletons are for: a block of the wrong shape, which measures in tenths.
 const LIMIT = 0.05;
 const SIGNED_IN = ["/me", "/me/profile", "/add"];
 const ADMIN = ["/admin", "/admin/reports", "/admin/places", "/admin/maintenance"];

@@ -14,4 +14,6 @@
 export const FONT_PRELOADS = [
   "/fonts/noto-sans-bengali-400-bengali.woff2",
   "/fonts/anek-bangla-700-bengali.woff2",
+  // 10 KB: Latin letters and digits in body text (a name, a number) re-wrapped lines when it arrived late.
+  "/fonts/noto-sans-bengali-400-latin.woff2",
 ] as const;
