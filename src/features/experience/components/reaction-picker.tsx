@@ -64,22 +64,39 @@ function Face({ reaction }: { reaction: Reaction }) {
  * several (a food page lists many places) the person picks where they ate, then confirms. Signed-out
  * visitors are sent to log in and brought back.
  */
-export function ReactionPicker({ options }: { options: DishOption[] }) {
+export function ReactionPicker({
+  options,
+  mine = {},
+}: {
+  options: DishOption[];
+  /** The visitor's earlier reactions by dish id, so the box does not ask again what is answered. */
+  mine?: Record<string, Reaction>;
+}) {
   const t = useT();
   const router = useRouter();
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
   const [picked, setPicked] = useState<Reaction | null>(null);
-  const [dishId, setDishId] = useState(options[0]?.dishId ?? "");
+  // Reactions saved in this visit show at once; the server catches up in the background.
+  const [saved, setSaved] = useState<Record<string, Reaction>>({});
+  const [editing, setEditing] = useState(false);
+  const known: Record<string, Reaction> = { ...mine, ...saved };
+  const firstOpen = options.find((option) => known[option.dishId] === undefined);
+  const [dishId, setDishId] = useState((firstOpen ?? options[0])?.dishId ?? "");
   const single = options.length <= 1;
+  const allAnswered = options.length > 0 && firstOpen === undefined;
   const headingId = useId();
   const selectId = useId();
 
   function save(reaction: Reaction, forDish: string) {
     setPicked(reaction);
+    const before = saved[forDish];
+    setSaved((current) => ({ ...current, [forDish]: reaction }));
+    setEditing(false);
     startTransition(async () => {
       const result = await addExperience({ dishId: forDish, reaction });
       if (result.ok) {
+        setPicked(null);
         showReward(
           t,
           result.data.reward,
@@ -88,6 +105,12 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
         return;
       }
       setPicked(null);
+      setSaved((current) => {
+        const next = { ...current };
+        if (before === undefined) delete next[forDish];
+        else next[forDish] = before;
+        return next;
+      });
       if (result.error.code === "auth_required") {
         router.push(routes.login({ next: pathname }));
         return;
@@ -97,6 +120,46 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
   }
 
   if (options.length === 0) return null;
+
+  if (allAnswered && !editing) {
+    const tone = (id: Reaction) => REACTIONS.find((reaction) => reaction.id === id);
+    return (
+      <div>
+        <p className={REACTION_HEADING_CLASS}>{t("experience.mine")}</p>
+        <ul className="mt-2.5 flex flex-col gap-2">
+          {options.map((option) => {
+            const current = known[option.dishId];
+            const reaction = current ? tone(current) : undefined;
+            if (!current || !reaction) return null;
+            return (
+              <li
+                key={option.dishId}
+                className={cn(
+                  "flex min-h-12 items-center gap-2.5 rounded-[16px] border-2 px-3 text-[15px] font-semibold",
+                  reaction.tone,
+                )}
+              >
+                <Face reaction={current} />
+                <span className="min-w-0 flex-1 truncate">
+                  {single ? t(reaction.label) : `${option.label}: ${t(reaction.label)}`}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        <button
+          type="button"
+          onClick={() => {
+            setEditing(true);
+            setPicked(null);
+          }}
+          className="mt-3 flex h-11 w-full press items-center justify-center rounded-button bg-primary-soft text-[15px] font-semibold text-primary-soft-fg"
+        >
+          {t("experience.change")}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -138,7 +201,7 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
           >
             {options.map((option) => (
               <option key={option.dishId} value={option.dishId}>
-                {option.label}
+                {known[option.dishId] !== undefined ? `✓ ${option.label}` : option.label}
               </option>
             ))}
           </select>

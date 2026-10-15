@@ -2,6 +2,9 @@ import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getFoodDishes } from "@/features/food/queries";
 import { getPlaceDishes } from "@/features/place/queries";
 
+import type { Reaction } from "@/core/domain";
+import { getServices } from "@/infrastructure/container";
+
 import { ReactionPicker, type DishOption } from "./reaction-picker";
 import { REACTION_HEADING_CLASS } from "./reaction-styles";
 
@@ -9,6 +12,22 @@ const CARD_CLASS = "rounded-card-lg border border-border bg-card p-4.5";
 
 function Card({ children }: { children: React.ReactNode }) {
   return <div className={CARD_CLASS}>{children}</div>;
+}
+
+/** What the signed-in visitor already said about these dishes ({} for a guest). */
+async function myReactions(dishIds: string[]): Promise<Record<string, Reaction>> {
+  const services = getServices();
+  const session = await services.auth.getSession();
+  if (!session || dishIds.length === 0) return {};
+  const wanted = new Set(dishIds);
+  const { items } = await services.repos.experiences.byUser(session.user.id, { limit: 200 });
+  const mine: Record<string, Reaction> = {};
+  for (const experience of items) {
+    if (wanted.has(experience.dishId) && experience.status === "active") {
+      mine[experience.dishId] ??= experience.reaction;
+    }
+  }
+  return mine;
 }
 
 /** The picker for a food page: the dishes are the places that serve it. */
@@ -19,9 +38,10 @@ export async function FoodReactionCard({ foodId }: { foodId: string }) {
     label: [dish.place.nameBn, dish.place.areaNameBn ?? dish.place.districtNameBn].join(", "),
   }));
   if (options.length === 0) return null;
+  const mine = await myReactions(options.map((option) => option.dishId));
   return (
     <Card>
-      <ReactionPicker options={options} />
+      <ReactionPicker options={options} mine={mine} />
     </Card>
   );
 }
@@ -34,9 +54,10 @@ export async function PlaceReactionCard({ placeId }: { placeId: string }) {
     label: dish.displayName ?? dish.food.nameBn,
   }));
   if (options.length === 0) return null;
+  const mine = await myReactions(options.map((option) => option.dishId));
   return (
     <Card>
-      <ReactionPicker options={options} />
+      <ReactionPicker options={options} mine={mine} />
     </Card>
   );
 }

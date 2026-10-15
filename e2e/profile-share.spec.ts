@@ -42,20 +42,33 @@ test.describe("profile", () => {
 });
 
 test.describe("sharing", () => {
-  test("copies the link when the browser has no share sheet", async ({ page, context }) => {
+  test("a desktop browser gets a menu: copy, WhatsApp, Facebook, Telegram", async ({
+    page,
+    context,
+  }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.addInitScript(() => {
       Object.defineProperty(navigator, "share", { value: undefined, configurable: true });
     });
     await page.goto("/food/doi");
     await page.getByRole("button", { name: "শেয়ার করুন" }).first().click();
+    await expect(page.getByRole("menuitem", { name: /WhatsApp/ })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: /Facebook/ })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: /Telegram/ })).toBeVisible();
+    await page.getByRole("menuitem", { name: "লিংক কপি করুন" }).click();
     await expect(page.getByText("লিংক কপি হয়েছে।")).toBeVisible();
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     expect(copied).toMatch(/\/food\/doi$/);
   });
 
-  test("uses the share sheet when there is one", async ({ page }) => {
+  test("a touch device uses the share sheet when there is one", async ({ page }) => {
     await page.addInitScript(() => {
+      // A phone: a coarse pointer and a system share sheet.
+      const original = window.matchMedia.bind(window);
+      window.matchMedia = (query: string) =>
+        query.includes("pointer: coarse")
+          ? ({ ...original(query), matches: true } as MediaQueryList)
+          : original(query);
       (window as unknown as { __shared: unknown }).__shared = null;
       navigator.share = async (data) => {
         (window as unknown as { __shared: unknown }).__shared = data;

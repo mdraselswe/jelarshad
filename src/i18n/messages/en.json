@@ -38,7 +38,9 @@
     "where": "Where did you eat it?",
     "submit": "Submit",
     "added": "Added. Thank you!",
-    "updated": "Your answer was updated."
+    "updated": "Your answer was updated.",
+    "mine": "What you shared",
+    "change": "Change or add more"
   },
   "add": {
     "perksTitle": "What you earn",
@@ -181,7 +183,11 @@
   },
   "share": {
     "label": "Share",
-    "copied": "Link copied."
+    "copied": "Link copied.",
+    "copy": "Copy link",
+    "whatsapp": "Send on WhatsApp",
+    "facebook": "Share on Facebook",
+    "telegram": "Send on Telegram"
   },
   "reward": {
     "stampUnlocked": "{district} unlocked",

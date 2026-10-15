@@ -20,10 +20,9 @@ test.describe("reaction picker", () => {
     // A level-up or mission reward opens a full-screen dialog over the page; close it if it did.
     const carryOn = page.getByRole("button", { name: "চালিয়ে যান" });
     if (await carryOn.isVisible()) await carryOn.click();
-    await expect(page.getByRole("button", { name: "দারুণ" }).first()).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
+    // The box now shows what the person said instead of asking again.
+    await expect(page.getByText("আপনি জানিয়েছেন")).toBeVisible();
+    await expect(page.getByRole("button", { name: "মতামত বদলান বা আরও জানান" })).toBeVisible();
     await expect
       .poll(async () =>
         page
