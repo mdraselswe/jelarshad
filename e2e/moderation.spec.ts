@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { openReactionPicker } from "./utils/reaction";
+
 test.describe("corrections and reports", () => {
   test("a signed-out visitor is sent to login first", async ({ page }) => {
     await page.goto("/food/doi");
@@ -34,6 +36,7 @@ test.describe("corrections and reports", () => {
     await page.getByLabel("দোকান বা জায়গার নাম").fill("নমুনা মিষ্টিমুখ");
     await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
     await page.getByRole("button", { name: "এটাই" }).first().click();
+    await openReactionPicker(page);
     await page.getByRole("button", { name: "দারুণ" }).click();
     await page.getByLabel("এক লাইনে বলুন").fill("what the fuck");
     await page.getByRole("button", { name: "জমা দিন" }).click();

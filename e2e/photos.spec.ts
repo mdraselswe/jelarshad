@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { openReactionPicker } from "./utils/reaction";
+
 import { addAsNewFood } from "./utils/add";
 
 // 1x1 transparent PNG: enough for the browser to decode, shrink to WebP and upload.
@@ -18,6 +20,7 @@ test("a photo added with the experience shows on the place page and opens in a v
   await page.getByLabel("জেলা", { exact: true }).selectOption({ label: "বগুড়া" });
   await page.getByLabel("দোকান বা জায়গার নাম").fill("ছবিওয়ালা দোকান");
   await page.getByRole("button", { name: "পরের ধাপ" }).last().click();
+  await openReactionPicker(page);
   await page.getByRole("button", { name: "দারুণ" }).click();
   await page.locator("input[type=file]").setInputFiles({
     name: "dish.png",
