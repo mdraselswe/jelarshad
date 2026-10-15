@@ -56,6 +56,8 @@ export function createClaimService({ repos, cache, rewards, now = () => new Date
     async vote(user: AppUser, input: VoteInput): Promise<Result<VoteOutcome>> {
       const before = await repos.claims.byId(input.claimId);
       if (!before) return fail("not_found");
+      // Whoever added a fact cannot confirm it themselves; verifying is for other people.
+      if (before.createdBy === user.id) return fail("forbidden");
 
       const wrongish = input.verdict !== "correct";
       const evidenceUrl = cleanEvidenceUrl(input.evidenceUrl);

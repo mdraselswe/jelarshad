@@ -63,6 +63,9 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
       <Suspense fallback={<PlaceClaimsSectionSkeleton />}>
         <PlaceClaimsSection placeId={place.id} />
       </Suspense>
+      <Suspense fallback={null}>
+        <PlacePhotosSection placeId={place.id} />
+      </Suspense>
       <div className="lg:grid lg:grid-cols-12">
         <div className="lg:col-span-7">
           <Suspense fallback={<PlaceDishesSectionSkeleton />}>
@@ -102,9 +105,6 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
       </div>
       <Suspense fallback={null}>
         <PlaceBranchesSection placeId={place.id} />
-      </Suspense>
-      <Suspense fallback={null}>
-        <PlacePhotosSection placeId={place.id} />
       </Suspense>
       <StickyCta href="#react" chip={`+${formatNumber(appConfig.points.experience)}`}>
         {t("place.reactCta")}

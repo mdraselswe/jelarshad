@@ -109,6 +109,8 @@ export type PlaceClaimRow = {
   status: ClaimStatus;
   lastConfirmedAt: Date | null;
   expiresAt: Date | null;
+  /** Who added the fact (they see a note instead of the verify buttons). */
+  createdBy: string | null;
 };
 
 export type DistrictHeader = {
@@ -397,6 +399,7 @@ export function createCatalogService({ repos }: Deps) {
         status: claim.status,
         lastConfirmedAt: claim.lastConfirmedAt,
         expiresAt: claim.expiresAt,
+        createdBy: claim.createdBy,
       }));
     },
 
