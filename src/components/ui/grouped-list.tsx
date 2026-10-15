@@ -112,9 +112,20 @@ type ListRowProps = {
   external?: boolean;
   /** Under the meta line (a like bar). */
   footer?: ReactNode;
+  /** `data-*` attributes on the row (client-side list filters find rows by them). */
+  data?: Record<`data-${string}`, string>;
 };
 
-export function ListRow({ href, leading, title, meta, trailing, external, footer }: ListRowProps) {
+export function ListRow({
+  href,
+  leading,
+  title,
+  meta,
+  trailing,
+  external,
+  footer,
+  data,
+}: ListRowProps) {
   const Icon = external ? ExternalLinkIcon : ChevronRightIcon;
   const className = cn(ROW_CLASS, "press hover:bg-muted/50");
   const body = (
@@ -127,7 +138,7 @@ export function ListRow({ href, leading, title, meta, trailing, external, footer
     />
   );
   return (
-    <li>
+    <li {...data}>
       {external ? (
         <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
           {body}

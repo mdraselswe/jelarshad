@@ -22,6 +22,8 @@ type DishRowProps = {
   leading?: ReactNode;
   /** A thin loved-share bar under the meta line (place page). */
   showBar?: boolean;
+  /** What a client-side list filter matches this row on (area key and searchable text). */
+  filter?: { key: string; text: string };
 };
 
 const BAR_CLASS = "mt-1.5 flex h-1.5 overflow-hidden rounded-full bg-muted";
@@ -50,6 +52,7 @@ export function DishRow({
   rank,
   leading,
   showBar = false,
+  filter,
 }: DishRowProps) {
   const t = getT();
   const meta = [
@@ -70,6 +73,9 @@ export function DishRow({
       meta={meta || " "}
       trailing={<ScorePill display={display} />}
       footer={showBar ? <LikeBar percent={display.percent} /> : undefined}
+      {...(filter
+        ? { data: { "data-filter-key": filter.key, "data-filter-text": filter.text } }
+        : {})}
     />
   );
 }
