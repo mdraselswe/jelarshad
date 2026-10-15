@@ -7,6 +7,7 @@ import {
   collapseSameFoods,
   createSearchService,
   filterPlaces,
+  groupBranches,
   type PlaceHit,
 } from "./search-service";
 
@@ -87,6 +88,8 @@ describe("filterPlaces", () => {
     nameBn: slug,
     type,
     district: { slug: "d", nameBn: "d" },
+    areaNameBn: null,
+    brand: null,
     price: { min, max },
   });
   const places = [
@@ -119,5 +122,33 @@ describe("filterPlaces", () => {
     expect(slugs(filterPlaces(places, { type: "restaurant", price: "budget" }))).toEqual([
       "overlap",
     ]);
+  });
+});
+
+describe("groupBranches", () => {
+  const hit = (slug: string, area: string, brand: string | null): PlaceHit => ({
+    slug,
+    nameBn: slug,
+    type: "restaurant",
+    district: { slug: "dhaka", nameBn: "ঢাকা" },
+    areaNameBn: area,
+    brand: brand ? { slug: brand, nameBn: brand } : null,
+    price: { min: null, max: null },
+  });
+
+  it("collapses two or more branches of one chain into one row at the first one's position", () => {
+    const items = groupBranches([
+      hit("a", "মিরপুর", "khanas"),
+      hit("solo", "ধানমন্ডি", null),
+      hit("b", "উত্তরা", "khanas"),
+    ]);
+    expect(items.map((item) => item.kind)).toEqual(["brand", "place"]);
+    const brand = items[0];
+    expect(brand?.kind === "brand" && brand.group.areas).toEqual(["মিরপুর", "উত্তরা"]);
+  });
+
+  it("keeps a single branch as a normal place row", () => {
+    const items = groupBranches([hit("a", "মিরপুর", "khanas"), hit("b", "উত্তরা", "kudos")]);
+    expect(items.map((item) => item.kind)).toEqual(["place", "place"]);
   });
 });

@@ -153,6 +153,14 @@ export type AreaPlaceRow = {
   experienceCount: number;
 };
 
+/** One branch on a brand page: where it is and how its best dish is doing. */
+export type BranchRow = AreaPlaceRow & { areaNameBn: string | null; districtNameBn: string };
+
+export type BrandPage = {
+  brand: { slug: string; nameBn: string };
+  branches: BranchRow[];
+};
+
 export type AreaPage = {
   district: DistrictRef;
   area: { slug: string; nameBn: string };
@@ -437,6 +445,39 @@ export function createCatalogService({ repos }: Deps) {
      * One neighbourhood: its places, with the best-liked ones first. "Best" is only ever what people
      * have said (decision P9); a place nobody has rated yet is listed after, not ranked.
      */
+    /** A chain with every branch; each branch ranks on its own reactions, never on the chain's. */
+    async brandPage(brandSlug: string): Promise<BrandPage | null> {
+      const found = await repos.places.byBrand(brandSlug);
+      if (!found) return null;
+      const rows = await Promise.all(
+        found.items.map(async (place): Promise<{ row: BranchRow; score: number }> => {
+          const dishes = await repos.places.dishes(place.id);
+          const shown = dishes.map((dish) => ({ dish, display: dishDisplay(dish) }));
+          const bestRanked = shown.find((entry) => entry.display.rankable);
+          const first = bestRanked ?? shown[0];
+          return {
+            row: {
+              id: place.id,
+              slug: place.slug,
+              nameBn: place.nameBn,
+              type: place.type,
+              price: place.price,
+              foods: dishes.map((dish) => dish.displayName ?? dish.food.nameBn),
+              best: first?.display ?? { percent: null, rankable: false, favorite: false },
+              experienceCount: dishes.reduce((sum, dish) => sum + dish.experienceCount, 0),
+              areaNameBn: place.area?.nameBn ?? null,
+              districtNameBn: place.district.nameBn,
+            },
+            score: bestRanked?.dish.wilsonScore ?? -1,
+          };
+        }),
+      );
+      const branches = rows
+        .sort((a, b) => b.score - a.score || a.row.nameBn.localeCompare(b.row.nameBn, "bn"))
+        .map((entry) => entry.row);
+      return { brand: found.brand, branches };
+    },
+
     async areaPage(districtSlug: string, areaSlug: string): Promise<AreaPage | null> {
       const district = await repos.districts.bySlug(districtSlug);
       if (!district) return null;

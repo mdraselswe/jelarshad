@@ -10,11 +10,11 @@ import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
-import { filterPlaces } from "@/services/search-service";
+import { filterPlaces, groupBranches } from "@/services/search-service";
 
 import { searchCatalog } from "../queries";
 import { parseSearchParams, type RawSearchParams } from "../search-params";
-import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceHitRow } from "./search-hit-rows";
+import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceRowItemView } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
 import { SearchTabs } from "./search-tabs";
 import { ResultsColumn, TabGroup, TabState } from "./tab-state";
@@ -36,7 +36,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   }
 
   const outcome = await searchCatalog(q);
-  const places = filterPlaces(outcome.places, { type, price });
+  const places = groupBranches(filterPlaces(outcome.places, { type, price }));
   const filtered = type !== undefined || price !== undefined;
   const counts = {
     food: outcome.foods.length,
@@ -135,8 +135,12 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
                   cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
                 >
                   <GroupedList split className="rounded-none border-0 bg-transparent">
-                    {places.map((hit) => (
-                      <PlaceHitRow key={hit.slug} hit={hit} t={t} />
+                    {places.map((item) => (
+                      <PlaceRowItemView
+                        key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
+                        item={item}
+                        t={t}
+                      />
                     ))}
                   </GroupedList>
                 </Panel>

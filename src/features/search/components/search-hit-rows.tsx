@@ -3,8 +3,15 @@ import { MapPinIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 import { ListRow, ListTile } from "@/components/ui/grouped-list";
 import { routes } from "@/config/routes";
 import type { T } from "@/i18n/t";
-import { formatPriceRange } from "@/lib/format/number";
-import type { AreaHit, DistrictHit, FoodHit, PlaceHit } from "@/services/search-service";
+import { formatNumber, formatPriceRange } from "@/lib/format/number";
+import type {
+  AreaHit,
+  BrandGroup,
+  DistrictHit,
+  FoodHit,
+  PlaceHit,
+  PlaceRowItem,
+} from "@/services/search-service";
 
 // One row per kind of hit. Used by the results page and by the typing dropdown, so both look alike.
 
@@ -35,8 +42,33 @@ export function PlaceHitRow({ hit, t }: { hit: PlaceHit; t: T }) {
         </ListTile>
       }
       title={hit.nameBn}
-      meta={[hit.district.nameBn, type, price].filter(Boolean).join(" · ")}
+      meta={[hit.areaNameBn, hit.district.nameBn, type, price].filter(Boolean).join(" · ")}
     />
+  );
+}
+
+/** Several branches of one chain as one row; the brand page lists each branch separately. */
+export function BrandGroupRow({ group, t }: { group: BrandGroup; t: T }) {
+  const shown = Array.from(new Set(group.areas)).slice(0, 3).join(", ");
+  return (
+    <ListRow
+      href={routes.brand(group.slug)}
+      leading={
+        <ListTile tone="place">
+          <StoreIcon />
+        </ListTile>
+      }
+      title={group.nameBn}
+      meta={t("brand.searchMeta", { count: formatNumber(group.count), areas: shown })}
+    />
+  );
+}
+
+export function PlaceRowItemView({ item, t }: { item: PlaceRowItem; t: T }) {
+  return item.kind === "brand" ? (
+    <BrandGroupRow group={item.group} t={t} />
+  ) : (
+    <PlaceHitRow hit={item.hit} t={t} />
   );
 }
 

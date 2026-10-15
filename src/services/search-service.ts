@@ -15,8 +15,53 @@ export type PlaceHit = {
   nameBn: string;
   type: PlaceType;
   district: { slug: string; nameBn: string };
+  /** The neighbourhood, so branches of one chain can be told apart. */
+  areaNameBn: string | null;
+  /** The chain this place is a branch of, when it is one. */
+  brand: { slug: string; nameBn: string } | null;
   price: { min: number | null; max: number | null };
 };
+
+/** Several branches of one chain, shown as one row that opens the brand page. */
+export type BrandGroup = {
+  slug: string;
+  nameBn: string;
+  count: number;
+  /** Neighbourhoods (or districts) of the matching branches, in result order. */
+  areas: string[];
+};
+
+export type PlaceRowItem = { kind: "place"; hit: PlaceHit } | { kind: "brand"; group: BrandGroup };
+
+/**
+ * Two or more hits of the same chain collapse into one brand row at the position of the first;
+ * a single branch stays a normal place row (its area is in the row, so it can be told apart).
+ */
+export function groupBranches(places: PlaceHit[]): PlaceRowItem[] {
+  const count = new Map<string, number>();
+  for (const place of places) {
+    if (place.brand) count.set(place.brand.slug, (count.get(place.brand.slug) ?? 0) + 1);
+  }
+  const emitted = new Set<string>();
+  const items: PlaceRowItem[] = [];
+  for (const place of places) {
+    const brand = place.brand;
+    if (!brand || (count.get(brand.slug) ?? 0) < 2) {
+      items.push({ kind: "place", hit: place });
+      continue;
+    }
+    if (emitted.has(brand.slug)) continue;
+    emitted.add(brand.slug);
+    const areas = places
+      .filter((candidate) => candidate.brand?.slug === brand.slug)
+      .map((candidate) => candidate.areaNameBn ?? candidate.district.nameBn);
+    items.push({
+      kind: "brand",
+      group: { slug: brand.slug, nameBn: brand.nameBn, count: areas.length, areas },
+    });
+  }
+  return items;
+}
 export type DistrictHit = { slug: string; nameBn: string; divisionBn: string };
 /** A neighbourhood ("ধানমন্ডি, ঢাকা"); its places are added to `places` of the same outcome. */
 export type AreaHit = {
@@ -72,6 +117,8 @@ const toPlaceHit = (place: Place): PlaceHit => ({
   nameBn: place.nameBn,
   type: place.type,
   district: { slug: place.district.slug, nameBn: place.district.nameBn },
+  areaNameBn: place.area?.nameBn ?? null,
+  brand: place.brand ?? null,
   price: place.price,
 });
 
