@@ -31,6 +31,7 @@ export function DistrictBoardSkeleton() {
   return (
     <BoardShell>
       <Skeleton className={cn(LIST, "rounded-[20px]")} />
+      <Skeleton className="mt-3 h-11 rounded-full" />
       <Skeleton className={cn(SWITCH, "mt-3 rounded-[20px]")} />
     </BoardShell>
   );
@@ -77,6 +78,12 @@ export async function DistrictBoard({ districtId }: { districtId: number }) {
           ))}
         </ol>
       )}
+      <Link
+        href={routes.leaderboard()}
+        className="mt-3 flex h-11 press items-center justify-center rounded-full bg-primary-soft text-[15px] font-semibold text-primary-soft-fg"
+      >
+        {t("leaderboard.seeAll")}
+      </Link>
       <div className="mt-3">
         {userId ? (
           <LeaderboardToggle initial={board.optedIn ?? false} className={SWITCH} />

@@ -8,6 +8,7 @@ import { DistrictFoodPageSkeleton } from "@/features/district/components/distric
 import { DistrictPageSkeleton } from "@/features/district/components/district-page";
 import { FoodPageSkeleton } from "@/features/food/components/food-page";
 import { HomePageSkeleton } from "@/features/home/components/home-page";
+import { LeaderboardPageSkeleton } from "@/features/leaderboard/components/leaderboard-page";
 import { LegalPageSkeleton } from "@/features/legal/components/legal-page";
 import { MePageSkeleton, MeProfilePageSkeleton } from "@/features/me/components/me-page";
 import { PlacePageSkeleton } from "@/features/place/components/place-page";
@@ -25,6 +26,7 @@ export default function Loading() {
         food: <FoodPageSkeleton />,
         place: <PlacePageSkeleton />,
         brand: <BrandPageSkeleton />,
+        leaderboard: <LeaderboardPageSkeleton />,
         district: <DistrictPageSkeleton />,
         districtFood: <DistrictFoodPageSkeleton />,
         area: <AreaPageSkeleton />,

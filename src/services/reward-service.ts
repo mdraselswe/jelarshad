@@ -1,5 +1,11 @@
 import { appConfig } from "@/config/app.config";
-import type { AppUser, LeaderboardEntry, PointKind, StampKind } from "@/core/domain";
+import type {
+  AppUser,
+  LeaderboardEntry,
+  LeaderboardPage,
+  PointKind,
+  StampKind,
+} from "@/core/domain";
 import type { Repositories } from "@/core/ports";
 import { badgeStatuses, type BadgeStatus } from "@/lib/gamification/badges";
 import { levelFor, type LevelInfo } from "@/lib/gamification/levels";
@@ -284,6 +290,27 @@ export function createRewardService({ repos }: Deps) {
         userId ? repos.rewards.leaderboardOptIn(userId) : Promise.resolve(null),
       ]);
       return { entries, optedIn };
+    },
+
+    /**
+     * The contributors page: this week, this month and all time (only people who opted in). Counts
+     * come from the same opted-in, not-revoked actions as the weekly board.
+     */
+    async leaderboardPage(userId: string | null, now: Date = new Date()): Promise<LeaderboardPage> {
+      const week = periodStart(now, "week", ZONE.offsetMinutes, ZONE.weekStartsOn);
+      // First day of the local month, as a UTC instant.
+      const local = new Date(now.getTime() + ZONE.offsetMinutes * 60_000);
+      const month = new Date(
+        Date.UTC(local.getUTCFullYear(), local.getUTCMonth(), 1) - ZONE.offsetMinutes * 60_000,
+      );
+      const size = gamification.pageBoardSize;
+      const [weekly, monthly, all, optedIn] = await Promise.all([
+        repos.rewards.weeklyTop(week, size),
+        repos.rewards.weeklyTop(month, size),
+        repos.rewards.weeklyTop(new Date(0), size),
+        userId ? repos.rewards.leaderboardOptIn(userId) : Promise.resolve(null),
+      ]);
+      return { week: weekly, month: monthly, all, optedIn };
     },
 
     /** The weekly board of one district (only people who opted in). */

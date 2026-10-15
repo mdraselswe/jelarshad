@@ -215,6 +215,32 @@ describe("levels, streak and missions", () => {
   });
 });
 
+describe("contributors page", () => {
+  it("ranks opted-in people for the week, the month and all time", async () => {
+    const { experience, rewards } = setup();
+    await experience.add(user, {
+      placeId: fixtureIds.places.second,
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    expect((await rewards.leaderboardPage(user.id)).all).toEqual([]);
+    await rewards.setLeaderboardOptIn(user.id, true);
+    const page = await rewards.leaderboardPage(user.id);
+    expect(page.optedIn).toBe(true);
+    for (const board of [page.week, page.month, page.all]) {
+      expect(board).toHaveLength(1);
+      expect(board[0]?.xp).toBe(40);
+    }
+  });
+
+  it("is open to guests and says nothing about their opt-in", async () => {
+    const { rewards } = setup();
+    const page = await rewards.leaderboardPage(null);
+    expect(page.optedIn).toBeNull();
+    expect(page.all).toEqual([]);
+  });
+});
+
 describe("district board", () => {
   it("counts only the actions of that district, for people who opted in", async () => {
     const { experience, rewards } = setup();

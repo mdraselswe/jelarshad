@@ -21,6 +21,14 @@ export type LeaderboardEntry = {
   xp: number;
 };
 
+/** The contributors page: the same people ranked over three periods. */
+export type LeaderboardPage = {
+  week: LeaderboardEntry[];
+  month: LeaderboardEntry[];
+  all: LeaderboardEntry[];
+  optedIn: boolean | null;
+};
+
 export type StampKind = "visit" | "discoverer";
 
 export type Stamp = {

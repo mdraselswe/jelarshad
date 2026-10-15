@@ -26,6 +26,8 @@ type HeroBandProps = {
   bar?: ReactNode;
   /** A faint illustration behind the content (docs/06-design-system.md §2d). */
   art?: ReactNode;
+  /** Moving decoration over the whole band, behind the content (confetti). */
+  fx?: ReactNode;
   /** A countryside strip along the bottom of the band on phones; give the band room with padding. */
   scene?: ReactNode;
 };
@@ -42,6 +44,7 @@ export function HeroBand({
   bleed = false,
   bar,
   art,
+  fx,
   scene,
 }: HeroBandProps) {
   return (
@@ -54,6 +57,7 @@ export function HeroBand({
           className,
         )}
       >
+        {fx}
         {art ? (
           <div
             aria-hidden
