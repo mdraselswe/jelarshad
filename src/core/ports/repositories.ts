@@ -250,6 +250,8 @@ export interface RewardRepository {
   /** The same, counting only actions in one district. */
   districtTop(districtId: number, since: Date, limit: number): Promise<LeaderboardEntry[]>;
   leaderboardOptIn(userId: string): Promise<boolean>;
+  /** A person's public face (name, photo); null when there is no such active person. */
+  publicProfile(userId: string): Promise<{ displayName: string; avatarUrl: string | null } | null>;
   setLeaderboardOptIn(userId: string, optIn: boolean): Promise<void>;
 }
 

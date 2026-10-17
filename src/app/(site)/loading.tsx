@@ -4,6 +4,7 @@ import { AdminFrameSkeleton } from "@/features/admin/components/admin-frame";
 import { LoginPromptSkeleton } from "@/features/auth/components/login-prompt";
 import { AreaPageSkeleton } from "@/features/district/components/area-page";
 import { BrandPageSkeleton } from "@/features/brand/components/brand-page";
+import { PersonPageSkeleton } from "@/features/leaderboard/components/person-page";
 import { IndexPageSkeleton } from "@/features/catalog/components/index-page";
 import { DistrictFoodPageSkeleton } from "@/features/district/components/district-food-page";
 import { DistrictPageSkeleton } from "@/features/district/components/district-page";
@@ -29,6 +30,7 @@ export default function Loading() {
         brand: <BrandPageSkeleton />,
         leaderboard: <LeaderboardPageSkeleton />,
         index: <IndexPageSkeleton />,
+        people: <PersonPageSkeleton />,
         district: <DistrictPageSkeleton />,
         districtFood: <DistrictFoodPageSkeleton />,
         area: <AreaPageSkeleton />,

@@ -721,6 +721,17 @@ export function createMockRepositories(): Repositories {
       },
       weeklyTop: async (since, limit) => topOf(since, limit, null),
       districtTop: async (districtId, since, limit) => topOf(since, limit, districtId),
+      publicProfile: async (userId) => {
+        const isDemo = userId === fixtures.demoUser.id;
+        // Only people the store knows about: the demo person, or anyone with points or an opt-in.
+        const known =
+          isDemo || db.leaderboardOptIn.has(userId) || db.points.some((e) => e.userId === userId);
+        if (!known) return null;
+        return {
+          displayName: isDemo ? fixtures.demoUser.displayName : userId,
+          avatarUrl: isDemo ? (fixtures.demoUser.avatarUrl ?? null) : null,
+        };
+      },
       leaderboardOptIn: async (userId) => db.leaderboardOptIn.has(userId),
       setLeaderboardOptIn: async (userId, optIn) => {
         if (optIn) db.leaderboardOptIn.add(userId);
