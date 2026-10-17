@@ -10,6 +10,7 @@ import type { MessageKey } from "@/i18n/t";
 import { cn } from "@/lib/cn";
 import type { Reaction } from "@/core/domain";
 
+import { offerLeaderboard } from "@/features/game/offer-leaderboard";
 import { showReward } from "@/features/reward/show-reward";
 
 import { addExperience } from "../actions";
@@ -115,6 +116,7 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
           result.data.reward,
           t(result.data.isNew ? "experience.added" : "experience.updated"),
         );
+        if (result.data.isNew) offerLeaderboard(t);
         return;
       }
       setPicked(null);

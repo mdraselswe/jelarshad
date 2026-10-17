@@ -16,6 +16,7 @@ import { cn } from "@/lib/cn";
 
 import { appConfig } from "@/config/app.config";
 import { attachPhotos } from "@/features/media/actions";
+import { offerLeaderboard } from "@/features/game/offer-leaderboard";
 import { showReward, stampText } from "@/features/reward/show-reward";
 import { levelNameKey } from "@/features/game/components/game-bits";
 import type { Reward } from "@/services/reward-service";
@@ -224,6 +225,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         setDone({ placeSlug: result.data.placeSlug, reward: result.data.reward });
         // The success screen below is the celebration, so the toast stays a toast.
         showReward(t, result.data.reward, t("add.doneTitle"), { celebrate: false });
+        offerLeaderboard(t);
         router.refresh();
         return;
       }
