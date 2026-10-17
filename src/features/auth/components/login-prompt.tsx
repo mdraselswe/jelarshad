@@ -6,6 +6,7 @@ import { HeroBand } from "@/components/layout/hero-band";
 import { PageShell } from "@/components/layout/page-shell";
 import { IconChip } from "@/components/ui/icon-chip";
 import { LoadingRegion, Skeleton, SkeletonText } from "@/components/ui/skeleton";
+import { clientEnv } from "@/config/env";
 import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 
@@ -55,6 +56,14 @@ export function LoginPrompt({ next, failed = false }: { next: string; failed?: b
             >
               {t("auth.google")}
             </a>
+            {clientEnv.NEXT_PUBLIC_FACEBOOK_LOGIN ? (
+              <a
+                href={routes.signIn(next, "facebook")}
+                className="mt-3 flex h-14 press items-center justify-center rounded-button border border-border bg-card px-5 text-[17px] font-semibold"
+              >
+                {t("auth.facebook")}
+              </a>
+            ) : null}
           </section>
         </div>
         <div

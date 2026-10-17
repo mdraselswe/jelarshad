@@ -31,8 +31,8 @@ export function createMockAuth(): AuthProvider {
       if (!user) throw new AuthRequiredError();
       return user;
     },
-    async signInWithGoogleUrl(redirectTo) {
-      // Skips Google: the callback route sees `mock=1` and signs in the demo user.
+    async signInUrl(_provider, redirectTo) {
+      // Skips the provider: the callback route sees `mock=1` and signs in the demo user.
       return `${redirectTo}${redirectTo.includes("?") ? "&" : "?"}mock=1`;
     },
     async completeSignIn(code) {

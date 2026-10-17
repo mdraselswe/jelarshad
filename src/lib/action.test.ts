@@ -29,7 +29,7 @@ function setup({
       if (!signedIn) throw new AuthRequiredError();
       return { ...user, role, isBanned: banned };
     },
-    signInWithGoogleUrl: async () => "",
+    signInUrl: async () => "",
     completeSignIn: async () => true,
     signOut: async () => {},
   };
