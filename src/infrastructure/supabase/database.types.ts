@@ -31,6 +31,8 @@ export type Database = {
         Row: {
           district_id: number;
           id: number;
+          lat: number | null;
+          lng: number | null;
           name_bn: string;
           name_en: string | null;
           slug: string;
@@ -38,6 +40,8 @@ export type Database = {
         Insert: {
           district_id: number;
           id?: number;
+          lat?: number | null;
+          lng?: number | null;
           name_bn: string;
           name_en?: string | null;
           slug: string;
@@ -45,6 +49,8 @@ export type Database = {
         Update: {
           district_id?: number;
           id?: number;
+          lat?: number | null;
+          lng?: number | null;
           name_bn?: string;
           name_en?: string | null;
           slug?: string;

@@ -1,4 +1,5 @@
 import type {
+  AreaCenter,
   AreaWithDistrict,
   Claim,
   ClaimVote,
@@ -44,6 +45,8 @@ export interface DistrictRepository {
   areasMatching(text: string, limit: number): Promise<AreaWithDistrict[]>;
   /** Every neighbourhood of one district, by name. */
   areasOf(districtId: number, limit: number): Promise<AreaWithDistrict[]>;
+  /** Every neighbourhood that has a centre point (for "near me"). */
+  areaCenters(): Promise<AreaCenter[]>;
   /** Neighbourhoods that have active places (static generation, sitemap). */
   areaSlugs(limit: number): Promise<{ districtSlug: string; areaSlug: string }[]>;
 }

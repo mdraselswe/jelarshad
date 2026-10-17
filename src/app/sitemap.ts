@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     routes.foods(),
     routes.brands(),
     routes.districts(),
+    routes.near(),
     ...entries.districts.map((slug) => routes.district(slug)),
     ...entries.areas.map(({ districtSlug, areaSlug }) => routes.area(districtSlug, areaSlug)),
     ...entries.foods.map((slug) => routes.food(slug)),

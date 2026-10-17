@@ -21,6 +21,9 @@ export type Area = {
   nameEn: string | null;
 };
 
+/** A neighbourhood's centre point (from OpenStreetMap); only neighbourhoods that have one. */
+export type AreaCenter = { area: AreaWithDistrict; lat: number; lng: number };
+
 /** A neighbourhood with the district it belongs to (search, area page). */
 export type AreaWithDistrict = Area & { district: Pick<District, "id" | "slug" | "nameBn"> };
 

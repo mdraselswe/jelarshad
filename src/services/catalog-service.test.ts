@@ -257,3 +257,28 @@ describe("catalogService browse indexes", () => {
     expect(districts[0]).toHaveProperty("divisionBn");
   });
 });
+
+describe("catalogService.nearby", () => {
+  it("groups the places of the nearest neighbourhoods, with a rounded distance", async () => {
+    // A point a few hundred metres from the fixture neighbourhood's centre (Satmatha, Bogura).
+    const result = await service().nearby({ lat: 24.848, lng: 89.379 });
+    expect(result.areas).toHaveLength(1);
+    expect(result.areas[0]).toMatchObject({ slug: "satmatha", districtSlug: "bogura" });
+    expect(result.areas[0]?.distanceKm).toBeLessThan(1);
+    expect(result.areas[0]?.places.map((place) => place.slug)).toContain("sample-place");
+  });
+
+  it("offers nothing far from every neighbourhood, but says how far the nearest is", async () => {
+    // Dhaka city centre is far from the only fixture neighbourhood.
+    const result = await service().nearby({ lat: 23.8103, lng: 90.4125 });
+    expect(result.areas).toEqual([]);
+    expect(result.nearestKm).toBeGreaterThan(100);
+  });
+
+  it("ignores a point that is not a number", async () => {
+    expect(await service().nearby({ lat: Number.NaN, lng: 90 })).toEqual({
+      areas: [],
+      nearestKm: null,
+    });
+  });
+});

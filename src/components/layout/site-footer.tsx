@@ -19,6 +19,12 @@ export function SiteFooter() {
         className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-meta"
       >
         <Link
+          href={routes.near()}
+          className="py-2 text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("near.footer")}
+        </Link>
+        <Link
           href={routes.foods()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >
