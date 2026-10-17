@@ -18,12 +18,15 @@ export class AuthRequiredError extends Error {
   }
 }
 
+/** The ways to sign in. Facebook is shown only when NEXT_PUBLIC_FACEBOOK_LOGIN is on. */
+export type SignInProvider = "google" | "facebook";
+
 export interface AuthProvider {
   getSession(): Promise<Session | null>;
   /** The signed-in user, or throws AuthRequiredError. */
   requireUser(): Promise<AppUser>;
-  /** URL to send the visitor to for Google sign-in; `redirectTo` is our absolute /auth/callback URL. */
-  signInWithGoogleUrl(redirectTo: string): Promise<string>;
+  /** URL to send the visitor to for sign-in with `provider`; `redirectTo` is our absolute /auth/callback URL. */
+  signInUrl(provider: SignInProvider, redirectTo: string): Promise<string>;
   /** Finishes sign-in on /auth/callback (exchanges the one-time `code`); false = it failed. */
   completeSignIn(code: string | null): Promise<boolean>;
   signOut(): Promise<void>;

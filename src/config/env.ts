@@ -18,6 +18,8 @@ const optionalString = z.string().trim().min(1).optional();
 const clientSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.url(),
   NEXT_PUBLIC_LAUNCHED: z.stringbool().default(false),
+  /** Shows "Continue with Facebook"; turn on only once the Facebook provider is set up in Supabase. */
+  NEXT_PUBLIC_FACEBOOK_LOGIN: z.stringbool().default(false),
   NEXT_PUBLIC_DEFAULT_LOCALE: z.enum(["bn", "en"]).default("bn"),
   NEXT_PUBLIC_STORAGE_PROVIDER: z.enum(storageProviders).default("mock"),
   NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
@@ -182,6 +184,7 @@ export const clientEnv: ClientEnv = parseClientEnv({
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   NEXT_PUBLIC_VERCEL_BRANCH_URL: process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL,
   NEXT_PUBLIC_LAUNCHED: process.env.NEXT_PUBLIC_LAUNCHED,
+  NEXT_PUBLIC_FACEBOOK_LOGIN: process.env.NEXT_PUBLIC_FACEBOOK_LOGIN,
   NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
   NEXT_PUBLIC_STORAGE_PROVIDER: process.env.NEXT_PUBLIC_STORAGE_PROVIDER,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,

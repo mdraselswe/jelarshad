@@ -105,10 +105,10 @@ export function createSupabaseAuth(): AuthProvider {
       if (!session) throw new AuthRequiredError();
       return session.user;
     },
-    async signInWithGoogleUrl(redirectTo) {
+    async signInUrl(provider, redirectTo) {
       const supabase = await userClient();
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider,
         options: { redirectTo, skipBrowserRedirect: true },
       });
       if (error || !data.url) throw error ?? new Error("Supabase returned no sign-in URL");

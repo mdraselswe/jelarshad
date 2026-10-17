@@ -24,6 +24,13 @@ describe("parseClientEnv", () => {
     expect(() => parseClientEnv({ NEXT_PUBLIC_LAUNCHED: "yes please" })).toThrow();
   });
 
+  it("keeps Facebook sign-in off until it is switched on", () => {
+    expect(parseClientEnv({}).NEXT_PUBLIC_FACEBOOK_LOGIN).toBe(false);
+    expect(parseClientEnv({ NEXT_PUBLIC_FACEBOOK_LOGIN: "true" }).NEXT_PUBLIC_FACEBOOK_LOGIN).toBe(
+      true,
+    );
+  });
+
   it("falls back to the Vercel branch URL on previews", () => {
     expect(
       parseClientEnv({ NEXT_PUBLIC_VERCEL_BRANCH_URL: "jelarshad-git-x.vercel.app" })

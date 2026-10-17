@@ -50,7 +50,8 @@ export const routes = {
   /** Login page; `next` is where to land afterwards (a site path). */
   login: (opts?: { next?: string | undefined; error?: boolean }) =>
     withSearchParams("/login", { next: opts?.next, error: opts?.error ? "1" : undefined }),
-  signIn: (next?: string) => withSearchParams("/auth/sign-in", { next }),
+  signIn: (next?: string, provider?: "google" | "facebook") =>
+    withSearchParams("/auth/sign-in", { next, provider }),
   signOut: () => "/auth/sign-out",
   admin: () => "/admin",
   policy: () => "/policy",
