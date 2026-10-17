@@ -30,9 +30,9 @@ export type Database = {
       areas: {
         Row: {
           district_id: number;
+          id: number;
           lat: number | null;
           lng: number | null;
-          id: number;
           name_bn: string;
           name_en: string | null;
           slug: string;
@@ -40,15 +40,17 @@ export type Database = {
         Insert: {
           district_id: number;
           id?: number;
+          lat?: number | null;
+          lng?: number | null;
           name_bn: string;
           name_en?: string | null;
           slug: string;
         };
         Update: {
           district_id?: number;
+          id?: number;
           lat?: number | null;
           lng?: number | null;
-          id?: number;
           name_bn?: string;
           name_en?: string | null;
           slug?: string;
