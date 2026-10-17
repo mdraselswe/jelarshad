@@ -32,7 +32,7 @@ test("a photo added with the experience shows on the place page and opens in a v
   await expect(page.getByRole("heading", { name: "যোগ হয়েছে!" })).toBeVisible();
 
   await page.getByRole("link", { name: "জায়গাটা দেখুন" }).click();
-  await page.getByRole("button", { name: "ছবি ১ দেখুন" }).click();
+  await page.getByRole("button", { name: "ছবি ১ দেখুন" }).first().click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();

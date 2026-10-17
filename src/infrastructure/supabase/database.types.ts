@@ -707,6 +707,7 @@ export type Database = {
           created_at: string;
           created_by: string | null;
           district_id: number;
+          hours_text: string | null;
           id: string;
           is_seed: boolean;
           location: unknown;
@@ -715,8 +716,6 @@ export type Database = {
           name_en: string | null;
           opening_hours: Json | null;
           phone: string | null;
-          website: string | null;
-          hours_text: string | null;
           price_max: number | null;
           price_min: number | null;
           search_key: string;
@@ -725,6 +724,7 @@ export type Database = {
           status: Database["public"]["Enums"]["content_status"];
           type: Database["public"]["Enums"]["place_type"];
           updated_at: string;
+          website: string | null;
         };
         Insert: {
           address?: string | null;
@@ -733,6 +733,7 @@ export type Database = {
           created_at?: string;
           created_by?: string | null;
           district_id: number;
+          hours_text?: string | null;
           id?: string;
           is_seed?: boolean;
           location?: unknown;
@@ -741,8 +742,6 @@ export type Database = {
           name_en?: string | null;
           opening_hours?: Json | null;
           phone?: string | null;
-          website?: string | null;
-          hours_text?: string | null;
           price_max?: number | null;
           price_min?: number | null;
           search_key?: string;
@@ -751,6 +750,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["content_status"];
           type?: Database["public"]["Enums"]["place_type"];
           updated_at?: string;
+          website?: string | null;
         };
         Update: {
           address?: string | null;
@@ -759,6 +759,7 @@ export type Database = {
           created_at?: string;
           created_by?: string | null;
           district_id?: number;
+          hours_text?: string | null;
           id?: string;
           is_seed?: boolean;
           location?: unknown;
@@ -767,8 +768,6 @@ export type Database = {
           name_en?: string | null;
           opening_hours?: Json | null;
           phone?: string | null;
-          website?: string | null;
-          hours_text?: string | null;
           price_max?: number | null;
           price_min?: number | null;
           search_key?: string;
@@ -777,6 +776,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["content_status"];
           type?: Database["public"]["Enums"]["place_type"];
           updated_at?: string;
+          website?: string | null;
         };
         Relationships: [
           {
