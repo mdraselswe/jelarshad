@@ -493,6 +493,21 @@
       "other": "Other"
     }
   },
+  "person": {
+    "title": "Contributor",
+    "levelWord": "Level",
+    "xp": "{count} XP",
+    "streakBest": "Longest streak: {count} days",
+    "badges": "Badges earned",
+    "noBadges": "No badges earned yet.",
+    "stats": {
+      "districts": "Districts tasted",
+      "experiences": "Experiences",
+      "places": "Places added",
+      "discoveries": "Discoveries"
+    },
+    "note": "Only people who chose to show their name on the contributors list have a page here."
+  },
   "listFilter": {
     "all": "All",
     "searchLabel": "Search places or areas",

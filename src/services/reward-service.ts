@@ -91,6 +91,18 @@ export type GameProgress = {
   counts: { districts: number; experiences: number; places: number; discoveries: number };
 };
 
+/** What the public profile page shows about one person. */
+export type PublicProfile = {
+  displayName: string;
+  avatarUrl: string | null;
+  xp: number;
+  level: LevelInfo;
+  bestStreak: number;
+  counts: GameProgress["counts"];
+  /** Only the badges they have earned. */
+  badges: BadgeStatus[];
+};
+
 export type Leaderboard = {
   entries: LeaderboardEntry[];
   /** Null for a visitor who is not signed in. */
@@ -325,6 +337,27 @@ export function createRewardService({ repos }: Deps) {
         userId ? repos.rewards.leaderboardOptIn(userId) : Promise.resolve(null),
       ]);
       return { entries, optedIn };
+    },
+
+    /**
+     * What anyone may see of a person: name, photo, level and what they have done. Only people who
+     * chose to be on the contributors list have a public profile; for everyone else this is null.
+     */
+    async publicProfile(userId: string): Promise<PublicProfile | null> {
+      const optedIn = await repos.rewards.leaderboardOptIn(userId);
+      if (!optedIn) return null;
+      const person = await repos.rewards.publicProfile(userId);
+      if (!person) return null;
+      const game = await progress(userId);
+      return {
+        displayName: person.displayName,
+        avatarUrl: person.avatarUrl,
+        xp: game.xp,
+        level: game.level,
+        bestStreak: game.streak.best,
+        counts: game.counts,
+        badges: game.badges.filter((badge) => badge.earned),
+      };
     },
 
     setLeaderboardOptIn(userId: string, optIn: boolean) {

@@ -37,6 +37,8 @@ export const routes = {
   area: (districtSlug: string, areaSlug: string) =>
     `/district/${segment(districtSlug)}/area/${segment(areaSlug)}`,
   add: () => "/add",
+  /** A person who chose to be on the contributors list. */
+  person: (id: string) => `/people/${segment(id)}`,
   /** Top contributors by period. */
   leaderboard: () => "/leaderboard",
   /** The passport: level, stamps, badges, missions. */

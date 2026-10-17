@@ -1197,6 +1197,22 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           xp: row.xp,
         }));
       },
+      async publicProfile(userId) {
+        const row = check<{
+          display_name: string;
+          avatar_url: string | null;
+          is_banned: boolean;
+        } | null>(
+          await writer(clients)
+            .from("profiles")
+            .select("display_name, avatar_url, is_banned")
+            .eq("id", userId)
+            .maybeSingle(),
+          "public profile",
+        );
+        if (!row || row.is_banned) return null;
+        return { displayName: row.display_name, avatarUrl: row.avatar_url };
+      },
       async leaderboardOptIn(userId) {
         const row = check<{ leaderboard_opt_in: boolean } | null>(
           await writer(clients)

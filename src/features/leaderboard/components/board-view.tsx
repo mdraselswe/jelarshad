@@ -11,6 +11,25 @@ import type { LeaderboardEntry } from "@/core/domain";
 
 type Entry = LeaderboardEntry;
 
+/** A link to a person's page; a plain box when the slot is empty. */
+function PersonLink({
+  userId,
+  className,
+  children,
+}: {
+  userId: string | undefined;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return userId ? (
+    <Link href={routes.person(userId)} className={className}>
+      {children}
+    </Link>
+  ) : (
+    <div className={className}>{children}</div>
+  );
+}
+
 // Second, first, third from left to right; the pillars rise in that order.
 const SLOTS = [
   { place: 2, height: "h-[92px]", delay: "150ms", avatar: "size-14 text-[24px]" },
@@ -31,49 +50,54 @@ function Podium({ entries, userId }: { entries: Entry[]; userId: string | null }
         const name = entry ? entry.displayName : null;
         return (
           <li key={slot.place} className="flex min-w-0 flex-col items-center">
-            <div className="relative">
-              {slot.place === 1 && entry ? (
-                <CrownArt className="absolute -top-6 left-1/2 w-9 -translate-x-1/2" />
-              ) : null}
-              {entry ? (
-                <UserAvatar
-                  name={entry.displayName}
-                  src={entry.avatarUrl}
-                  seed={entry.userId}
-                  className={cn(
-                    slot.avatar,
-                    "animate-fx-pop ring-4",
-                    slot.place === 1 ? "ring-reward" : "ring-card",
-                  )}
-                />
-              ) : (
-                <span
-                  aria-hidden
-                  className={cn(
-                    "flex items-center justify-center rounded-full border-2 border-dashed border-border text-muted-foreground",
-                    slot.avatar,
-                  )}
-                >
-                  ?
-                </span>
-              )}
-            </div>
-            <p
-              className={cn(
-                "mt-2 w-full truncate text-center text-[14px] leading-tight font-semibold",
-                !entry && "text-muted-foreground",
-              )}
+            <PersonLink
+              userId={entry?.userId}
+              className="flex w-full min-w-0 flex-col items-center"
             >
-              {name ?? "—"}
-            </p>
-            {mine ? (
-              <span className="mt-0.5 rounded-full bg-primary-soft px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
-                {t("leaderboard.you")}
-              </span>
-            ) : null}
-            <p className="text-[12.5px] font-semibold text-reward-soft-fg">
-              {entry ? t("game.xp", { count: formatNumber(entry.xp) }) : " "}
-            </p>
+              <div className="relative">
+                {slot.place === 1 && entry ? (
+                  <CrownArt className="absolute -top-6 left-1/2 w-9 -translate-x-1/2" />
+                ) : null}
+                {entry ? (
+                  <UserAvatar
+                    name={entry.displayName}
+                    src={entry.avatarUrl}
+                    seed={entry.userId}
+                    className={cn(
+                      slot.avatar,
+                      "animate-fx-pop ring-4",
+                      slot.place === 1 ? "ring-reward" : "ring-card",
+                    )}
+                  />
+                ) : (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "flex items-center justify-center rounded-full border-2 border-dashed border-border text-muted-foreground",
+                      slot.avatar,
+                    )}
+                  >
+                    ?
+                  </span>
+                )}
+              </div>
+              <p
+                className={cn(
+                  "mt-2 w-full truncate text-center text-[14px] leading-tight font-semibold",
+                  !entry && "text-muted-foreground",
+                )}
+              >
+                {name ?? "—"}
+              </p>
+              {mine ? (
+                <span className="mt-0.5 rounded-full bg-primary-soft px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
+                  {t("leaderboard.you")}
+                </span>
+              ) : null}
+              <p className="text-[12.5px] font-semibold text-reward-soft-fg">
+                {entry ? t("game.xp", { count: formatNumber(entry.xp) }) : " "}
+              </p>
+            </PersonLink>
             <div
               aria-hidden
               style={{ animationDelay: slot.delay }}
@@ -129,43 +153,45 @@ export function BoardView({ entries, userId }: { entries: Entry[]; userId: strin
               const mine = entry.userId === userId;
               const percent = Math.max(6, Math.round((entry.xp / top) * 100));
               return (
-                <li
-                  key={entry.userId}
-                  className={cn("flex items-center gap-3 p-3.5", mine && "bg-primary-soft")}
-                >
-                  <span className="w-7 shrink-0 text-center font-display text-[17px] font-bold text-muted-foreground">
-                    {formatNumber(index + 4)}
-                  </span>
-                  <UserAvatar
-                    name={entry.displayName}
-                    src={entry.avatarUrl}
-                    seed={entry.userId}
-                    className="size-11 text-lg"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-baseline justify-between gap-2">
-                      <span className="flex min-w-0 items-center gap-2">
-                        <span className="truncate text-card-title">{entry.displayName}</span>
-                        {mine ? (
-                          <span className="shrink-0 rounded-full bg-card px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
-                            {t("leaderboard.you")}
-                          </span>
-                        ) : null}
-                      </span>
-                      <span className="shrink-0 text-sm font-semibold text-reward-soft-fg">
-                        {t("game.xp", { count: formatNumber(entry.xp) })}
-                      </span>
+                <li key={entry.userId} className={cn(mine && "bg-primary-soft")}>
+                  <Link
+                    href={routes.person(entry.userId)}
+                    className="flex press items-center gap-3 p-3.5 hover:bg-muted/50"
+                  >
+                    <span className="w-7 shrink-0 text-center font-display text-[17px] font-bold text-muted-foreground">
+                      {formatNumber(index + 4)}
                     </span>
-                    <span
-                      aria-hidden
-                      className="mt-1.5 block h-2 overflow-hidden rounded-full bg-muted"
-                    >
+                    <UserAvatar
+                      name={entry.displayName}
+                      src={entry.avatarUrl}
+                      seed={entry.userId}
+                      className="size-11 text-lg"
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="flex min-w-0 items-center gap-2">
+                          <span className="truncate text-card-title">{entry.displayName}</span>
+                          {mine ? (
+                            <span className="shrink-0 rounded-full bg-card px-2 py-px text-[11.5px] font-semibold text-primary-soft-fg">
+                              {t("leaderboard.you")}
+                            </span>
+                          ) : null}
+                        </span>
+                        <span className="shrink-0 text-sm font-semibold text-reward-soft-fg">
+                          {t("game.xp", { count: formatNumber(entry.xp) })}
+                        </span>
+                      </span>
                       <span
-                        className="block h-full origin-left animate-fx-fill rounded-full bg-grad-reward"
-                        style={{ width: `${percent}%` }}
-                      />
+                        aria-hidden
+                        className="mt-1.5 block h-2 overflow-hidden rounded-full bg-muted"
+                      >
+                        <span
+                          className="block h-full origin-left animate-fx-fill rounded-full bg-grad-reward"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </span>
                     </span>
-                  </span>
+                  </Link>
                 </li>
               );
             })}

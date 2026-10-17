@@ -215,6 +215,32 @@ describe("levels, streak and missions", () => {
   });
 });
 
+describe("public profile", () => {
+  it("exists only for people who chose to be on the contributors list", async () => {
+    const { experience, rewards } = setup();
+    await experience.add(user, {
+      placeId: fixtureIds.places.second,
+      foodId: fixtureIds.foods.doi,
+      reaction: "loved",
+    });
+    expect(await rewards.publicProfile(user.id)).toBeNull();
+    await rewards.setLeaderboardOptIn(user.id, true);
+    const profile = await rewards.publicProfile(user.id);
+    expect(profile?.displayName).toBeTruthy();
+    expect(profile?.xp).toBeGreaterThan(0);
+    expect(profile?.counts.experiences).toBe(1);
+    // Only earned badges are public; locked ones stay private.
+    expect(profile?.badges.every((badge) => badge.earned)).toBe(true);
+    await rewards.setLeaderboardOptIn(user.id, false);
+    expect(await rewards.publicProfile(user.id)).toBeNull();
+  });
+
+  it("is null for someone who does not exist", async () => {
+    const { rewards } = setup();
+    expect(await rewards.publicProfile("nobody")).toBeNull();
+  });
+});
+
 describe("contributors page", () => {
   it("ranks opted-in people for the week, the month and all time", async () => {
     const { experience, rewards } = setup();
