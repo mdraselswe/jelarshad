@@ -13,7 +13,7 @@ import { getT } from "@/i18n/server";
 import { EventTracker } from "@/components/analytics/event-tracker";
 import { buildAreaOptions } from "@/features/catalog/area-options";
 import { AreaFilter } from "@/features/catalog/components/area-filter";
-import { filterPlaces, groupBranches } from "@/services/search-service";
+import { filterPlaces, groupBranches, sortPlaces } from "@/services/search-service";
 
 /** More place hits than this and a small search box joins the area chips. */
 const SEARCH_FROM = 10;
@@ -29,7 +29,7 @@ import { ResultsColumn, TabGroup, TabState } from "./tab-state";
 export async function SearchResults({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
   const t = getT();
   const params = parseSearchParams(await searchParams);
-  const { q, tab, type, price } = params;
+  const { q, tab, type, price, sort } = params;
 
   if (q === "") {
     return (
@@ -45,7 +45,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const tracker = (
     <EventTracker name="search" props={{ query: q.slice(0, 80), results: outcome.total }} />
   );
-  const placeHits = filterPlaces(outcome.places, { type, price });
+  const placeHits = sortPlaces(filterPlaces(outcome.places, { type, price }), sort);
   const places = groupBranches(placeHits);
   const areaChips = buildAreaOptions(
     placeHits.map((hit) => ({
@@ -79,12 +79,16 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   return (
     <>
       {tracker}
-      <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${tab}`} initial={tab}>
+      <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${sort}|${tab}`} initial={tab}>
         <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-6">
           <p className="px-1 text-meta text-muted-foreground lg:text-[17px] lg:font-semibold lg:text-foreground">
             {t("search.resultsFor", { q })}
           </p>
-          <SearchTabs q={q} counts={counts} carry={{ type, price }} />
+          <SearchTabs
+            q={q}
+            counts={counts}
+            carry={{ type, price, sort: sort === "relevance" ? undefined : sort }}
+          />
           <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
             <TabGroup tabs={["all", "place"]}>
               <div className="lg:sticky lg:top-24 lg:col-span-3">

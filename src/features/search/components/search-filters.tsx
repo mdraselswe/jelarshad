@@ -1,4 +1,5 @@
 import { appConfig } from "@/config/app.config";
+import { PLACE_SORTS } from "@/services/search-service";
 import { getT } from "@/i18n/server";
 
 import { PLACE_TYPES, type ParsedSearchParams } from "../search-params";
@@ -10,7 +11,7 @@ const ROW_CLASS =
 
 export function SearchFilters({ params }: { params: ParsedSearchParams }) {
   const t = getT();
-  const { q, type, price } = params;
+  const { q, type, price, sort } = params;
 
   return (
     <div
@@ -22,7 +23,7 @@ export function SearchFilters({ params }: { params: ParsedSearchParams }) {
         {t("search.filters.label")}
       </p>
       <div className={ROW_CLASS}>
-        <FilterChip q={q} type={undefined} price={price} active={type === undefined}>
+        <FilterChip q={q} type={undefined} price={price} sort={sort} active={type === undefined}>
           {t("search.filters.any")}
         </FilterChip>
         {PLACE_TYPES.filter((candidate) => candidate !== "other").map((candidate) => (
@@ -31,6 +32,7 @@ export function SearchFilters({ params }: { params: ParsedSearchParams }) {
             q={q}
             type={candidate}
             price={price}
+            sort={sort}
             active={type === candidate}
           >
             {t(`placeType.${candidate}`)}
@@ -38,12 +40,35 @@ export function SearchFilters({ params }: { params: ParsedSearchParams }) {
         ))}
       </div>
       <div className={ROW_CLASS}>
-        <FilterChip q={q} type={type} price={undefined} active={price === undefined}>
+        <FilterChip q={q} type={type} price={undefined} sort={sort} active={price === undefined}>
           {t("search.filters.price")}: {t("search.filters.any")}
         </FilterChip>
         {appConfig.search.priceTiers.map((tier) => (
-          <FilterChip key={tier.id} q={q} type={type} price={tier.id} active={price === tier.id}>
+          <FilterChip
+            key={tier.id}
+            q={q}
+            type={type}
+            price={tier.id}
+            sort={sort}
+            active={price === tier.id}
+          >
             {t(`search.price.${tier.id}`)}
+          </FilterChip>
+        ))}
+      </div>
+      <div className={ROW_CLASS}>
+        {PLACE_SORTS.map((candidate) => (
+          <FilterChip
+            key={candidate}
+            q={q}
+            type={type}
+            price={price}
+            sort={candidate}
+            active={sort === candidate}
+          >
+            {candidate === "relevance"
+              ? `${t("search.sort.label")}: ${t("search.sort.relevance")}`
+              : t(`search.sort.${candidate}`)}
           </FilterChip>
         ))}
       </div>

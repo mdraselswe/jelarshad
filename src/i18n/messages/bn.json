@@ -312,6 +312,13 @@
       "districts": "জেলা",
       "areas": "এলাকা"
     },
+    "sort": {
+      "label": "সাজান",
+      "relevance": "মিল অনুযায়ী",
+      "name": "নাম অনুযায়ী",
+      "price_low": "দাম কম থেকে বেশি",
+      "price_high": "দাম বেশি থেকে কম"
+    },
     "filters": {
       "label": "ফিল্টার",
       "price": "দাম",

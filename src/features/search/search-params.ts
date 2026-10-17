@@ -1,6 +1,6 @@
 import { appConfig } from "@/config/app.config";
 import type { PlaceType } from "@/core/domain";
-import type { PriceTierId } from "@/services/search-service";
+import { PLACE_SORTS, type PlaceSort, type PriceTierId } from "@/services/search-service";
 
 // Reading the search page's URL: unknown values fall back to "no filter" instead of erroring.
 
@@ -25,6 +25,7 @@ export type ParsedSearchParams = {
   tab: SearchTab;
   type: PlaceType | undefined;
   price: PriceTierId | undefined;
+  sort: PlaceSort;
 };
 
 export function parseSearchParams(raw: RawSearchParams): ParsedSearchParams {
@@ -35,5 +36,6 @@ export function parseSearchParams(raw: RawSearchParams): ParsedSearchParams {
   const tab = SEARCH_TABS.find((candidate) => candidate === first(raw.tab)) ?? "all";
   const type = PLACE_TYPES.find((candidate) => candidate === first(raw.type));
   const price = appConfig.search.priceTiers.find((tier) => tier.id === first(raw.price))?.id;
-  return { q, tab, type, price };
+  const sort = PLACE_SORTS.find((candidate) => candidate === first(raw.sort)) ?? "relevance";
+  return { q, tab, type, price, sort };
 }
