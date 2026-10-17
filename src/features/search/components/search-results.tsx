@@ -47,12 +47,13 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           <p className="text-caption font-semibold text-muted-foreground">
             {t(popular.length >= 4 ? "search.popular" : "search.tryTitle")}
           </p>
-          <ul className="mt-2 flex flex-wrap justify-center gap-2">
+          {/* One scrolling row, not a wrapping block, so a late font cannot change its height. */}
+          <ul className="mt-2 flex [scrollbar-width:none] gap-2 overflow-x-auto pb-1 lg:justify-center">
             {ideas.map((term) => (
               <li key={term}>
                 <Link
                   href={routes.search({ q: term })}
-                  className="flex h-10 press items-center rounded-full bg-primary-soft px-4 text-[14.5px] font-semibold text-primary-soft-fg"
+                  className="flex h-10 shrink-0 press items-center rounded-full bg-primary-soft px-4 text-[14.5px] font-semibold text-primary-soft-fg"
                 >
                   {term}
                 </Link>

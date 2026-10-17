@@ -80,12 +80,12 @@ export function RecentSearches() {
           {t("search.recentClear")}
         </button>
       </div>
-      <ul className="mt-2 flex flex-wrap justify-center gap-2">
+      <ul className="mt-2 flex [scrollbar-width:none] gap-2 overflow-x-auto pb-1 lg:justify-center">
         {recent.map((term) => (
           <li key={term}>
             <Link
               href={routes.search({ q: term })}
-              className="flex h-10 press items-center rounded-full border border-border bg-card px-4 text-[14.5px] font-semibold"
+              className="flex h-10 shrink-0 press items-center rounded-full border border-border bg-card px-4 text-[14.5px] font-semibold"
             >
               {term}
             </Link>
