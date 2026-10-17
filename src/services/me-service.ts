@@ -10,6 +10,8 @@ export type AteRow = {
   reaction: Reaction;
   comment: string | null;
   createdAt: Date;
+  /** Photos already attached (a person may attach a few per experience). */
+  photoCount: number;
   food: { slug: string; nameBn: string };
   place: { slug: string; nameBn: string; districtNameBn: string };
 };
@@ -41,6 +43,7 @@ export function createMeService({ repos }: Deps) {
           reaction: experience.reaction,
           comment: experience.comment,
           createdAt: experience.createdAt,
+          photoCount: experience.photos.length,
           food: { slug: food.slug, nameBn: food.nameBn },
           place: {
             slug: dish.place.slug,

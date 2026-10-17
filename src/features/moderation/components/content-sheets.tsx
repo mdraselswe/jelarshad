@@ -77,7 +77,7 @@ export function SuggestEditSheet({
         note: note || null,
       });
       if (result.ok) {
-        toast.success(t("moderation.sent"));
+        toast.success(t(result.data.applied ? "moderation.applied" : "moderation.sent"));
         onClose();
         return;
       }

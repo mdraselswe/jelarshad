@@ -98,6 +98,8 @@ export interface PlaceRepository {
   brandSlugs(limit: number): Promise<string[]>;
   /** Every chain with how many active branches it has (the brands index). */
   brandList(limit: number): Promise<{ slug: string; nameBn: string; branchCount: number }[]>;
+  /** The person who added this place, or null (seeded places have none). */
+  creatorOf(placeId: string): Promise<string | null>;
   /** A chain and all its active branches (brand page); null when no such brand. */
   byBrand(
     brandSlug: string,

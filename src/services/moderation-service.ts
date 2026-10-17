@@ -4,6 +4,7 @@ import type { CacheInvalidator, Repositories } from "@/core/ports";
 import { fail, ok, type Result } from "@/lib/result";
 import { containsProfanity } from "@/lib/text/profanity";
 
+import { applyPlaceFieldEdit, CREATOR_EDITABLE_FIELDS } from "./place-edit";
 import type { RewardService } from "./reward-service";
 
 // Edit suggestions (✏️ সংশোধন) and reports (ভুল তথ্য, আপত্তিকর…): everything lands in the admin
@@ -72,7 +73,7 @@ export function createModerationService({ repos, cache, rewards }: Deps) {
         proposedValue: string;
         note?: string | null | undefined;
       },
-    ): Promise<Result<{ id: string }>> {
+    ): Promise<Result<{ id: string; applied: boolean }>> {
       const allowed: readonly string[] = EDITABLE_FIELDS[input.entity];
       if (!allowed.includes(input.field))
         return fail("validation", { fields: { field: "invalid" } });
@@ -89,6 +90,28 @@ export function createModerationService({ repos, cache, rewards }: Deps) {
 
       const current = await currentValue(input.entity, input.entityId, input.field);
       if (!current.found) return fail("not_found");
+
+      // The person who added a place corrects its contact details and address at once; every other
+      // change, and everyone else's, waits for an admin.
+      if (
+        input.entity === "place" &&
+        (CREATOR_EDITABLE_FIELDS as readonly string[]).includes(input.field) &&
+        (await repos.places.creatorOf(input.entityId)) === user.id
+      ) {
+        const outcome = await applyPlaceFieldEdit(
+          repos.places,
+          input.entityId,
+          input.field,
+          proposedValue,
+        );
+        if (outcome === "invalid")
+          return fail("validation", { fields: { proposedValue: "invalid" } });
+        if (outcome === "applied") {
+          await cache.invalidate([`place:${input.entityId}`, "search"]);
+          return ok({ id: "", applied: true });
+        }
+      }
+
       const saved = await repos.editSuggestions.create({
         entity: input.entity,
         entityId: input.entityId,
@@ -98,7 +121,7 @@ export function createModerationService({ repos, cache, rewards }: Deps) {
         note,
         userId: user.id,
       });
-      return ok({ id: saved.id });
+      return ok({ id: saved.id, applied: false });
     },
 
     async report(

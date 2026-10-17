@@ -49,7 +49,14 @@ export const addExperience = defineAction(
       name: "experience_added",
       dishId: input.dishId ?? input.placeId ?? "",
     });
-    return { ok: true as const, data: { isNew: result.data.isNew, reward: result.data.reward } };
+    return {
+      ok: true as const,
+      data: {
+        isNew: result.data.isNew,
+        reward: result.data.reward,
+        experienceId: result.data.experience.id,
+      },
+    };
   },
   { auth: true, rateLimit: "experience" },
 );

@@ -16,14 +16,22 @@ export async function GET(request: NextRequest) {
   const services = getServices();
   const session = await services.auth.getSession();
   const mine: Record<string, string> = {};
+  const experiences: Record<string, { id: string; photos: number }> = {};
   if (session && ids.length > 0) {
     const wanted = new Set(ids);
     const { items } = await services.repos.experiences.byUser(session.user.id, { limit: 200 });
     for (const experience of items) {
       if (wanted.has(experience.dishId) && experience.status === "active") {
         mine[experience.dishId] ??= experience.reaction;
+        experiences[experience.dishId] ??= {
+          id: experience.id,
+          photos: experience.photos.length,
+        };
       }
     }
   }
-  return Response.json({ mine }, { headers: { "Cache-Control": "private, no-store" } });
+  return Response.json(
+    { mine, experiences },
+    { headers: { "Cache-Control": "private, no-store" } },
+  );
 }

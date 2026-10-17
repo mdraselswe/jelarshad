@@ -145,6 +145,7 @@
     "note": "Why change it? (optional)",
     "send": "Send",
     "sent": "Thanks, we will take a look.",
+    "applied": "Changed. You added this place, so it applies straight away.",
     "reasonLabel": "What is the problem?",
     "reasons": {
       "wrong_info": "Wrong information",
@@ -166,6 +167,8 @@
     "previous": "Previous photo",
     "next": "Next photo",
     "add": "Add photo",
+    "added": "Photo added.",
+    "addHint": "You can add a photo of the food",
     "addOptional": "Add photos (optional, up to 2)",
     "remove": "Remove photo",
     "notImage": "Please pick a picture.",

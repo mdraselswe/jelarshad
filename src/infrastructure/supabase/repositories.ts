@@ -421,6 +421,13 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
       },
+      async creatorOf(placeId) {
+        const row = check<{ created_by: string | null } | null>(
+          await db.from("places").select("created_by").eq("id", placeId).maybeSingle(),
+          "place creator",
+        );
+        return row?.created_by ?? null;
+      },
       async brandList(limit) {
         const rows = check(
           await db
