@@ -125,6 +125,72 @@ describe("edit suggestions", () => {
   });
 });
 
+describe("updatePlace", () => {
+  const placeId = fixtureIds.places.sample;
+
+  it("edits a place directly, cleaning contact details", async () => {
+    const { repos, service } = setup();
+    const result = await service.updatePlace({
+      placeId,
+      nameBn: "  নতুন  নাম ",
+      address: "সাতমাথা মোড়",
+      phone: "০১৭১১২২৩৩৪৪",
+      website: "facebook.com/amar-dokan",
+      hoursText: "প্রতিদিন ১০টা–১০টা",
+      type: "bakery",
+    });
+    expect(result).toEqual({ ok: true, data: { updated: true } });
+    expect(await repos.places.byId(placeId)).toMatchObject({
+      nameBn: "নতুন নাম",
+      address: "সাতমাথা মোড়",
+      phone: "01711223344",
+      website: "https://facebook.com/amar-dokan",
+      hoursText: "প্রতিদিন ১০টা–১০টা",
+      type: "bakery",
+    });
+  });
+
+  it("clears contact details when they are emptied, and keeps untouched fields", async () => {
+    const { repos, service } = setup();
+    await service.updatePlace({ placeId, phone: "01711223344" });
+    await service.updatePlace({ placeId, phone: "" });
+    const place = await repos.places.byId(placeId);
+    expect(place?.phone).toBeNull();
+    expect(place?.nameBn).toBe("নমুনা দই ঘর");
+  });
+
+  it("refuses an empty name, a bad phone number and an unknown kind", async () => {
+    const { service } = setup();
+    expect(await service.updatePlace({ placeId, nameBn: "  " })).toMatchObject({ ok: false });
+    expect(await service.updatePlace({ placeId, phone: "call me" })).toMatchObject({ ok: false });
+    expect(await service.updatePlace({ placeId, type: "spaceship" })).toMatchObject({ ok: false });
+  });
+
+  it("moves a place to a neighbourhood and into a new chain, then out of it", async () => {
+    const { repos, service } = setup();
+    await service.updatePlace({ placeId, areaName: "নতুন পাড়া", brand: { nameBn: "আমার চেইন" } });
+    const joined = await repos.places.byId(placeId);
+    expect(joined?.area?.nameBn).toBe("নতুন পাড়া");
+    expect(joined?.brand?.nameBn).toBe("আমার চেইন");
+    await service.updatePlace({ placeId, areaName: "", brand: null });
+    const left = await repos.places.byId(placeId);
+    expect(left?.area).toBeNull();
+    expect(left?.brand).toBeNull();
+  });
+
+  it("renames a neighbourhood for every place in it", async () => {
+    const { repos, service } = setup();
+    const area = (await repos.places.byId(placeId))?.area;
+    if (!area) throw new Error("fixture area missing");
+    expect(await service.renameArea(area.id, " সাতমাথা মোড় ")).toEqual({
+      ok: true,
+      data: { renamed: true },
+    });
+    expect((await repos.places.byId(placeId))?.area?.nameBn).toBe("সাতমাথা মোড়");
+    expect(await service.renameArea(area.id, " ")).toMatchObject({ ok: false });
+  });
+});
+
 describe("reports", () => {
   it("hides content and takes its points back, or dismisses and restores it", async () => {
     const { repos, service } = setup();

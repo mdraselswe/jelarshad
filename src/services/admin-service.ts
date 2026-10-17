@@ -15,6 +15,8 @@ import type { CacheInvalidator, CacheTag, Repositories, StorageProvider } from "
 import { fail, ok, type Result } from "@/lib/result";
 import { containsProfanity } from "@/lib/text/profanity";
 
+import { slugify } from "@/lib/text/slug";
+
 import { applyPlaceFieldEdit } from "./place-edit";
 
 import type { RewardService } from "./reward-service";
@@ -40,6 +42,21 @@ const PLACE_TYPES: readonly PlaceType[] = [
 ];
 
 export type QueueTarget = { label: string; href: string | null };
+
+/** What an admin may change about one place; a field left out stays as it is. */
+export type PlaceUpdate = {
+  placeId: string;
+  nameBn?: string | undefined;
+  type?: string | undefined;
+  address?: string | undefined;
+  phone?: string | undefined;
+  website?: string | undefined;
+  hoursText?: string | undefined;
+  /** A neighbourhood name of the place's district (new names create the neighbourhood); "" clears. */
+  areaName?: string | undefined;
+  /** null takes it out of its chain; { slug } joins an existing one; { nameBn } makes a new chain. */
+  brand?: { slug: string } | { nameBn: string } | null | undefined;
+};
 export type QueueReport = Report & { target: QueueTarget };
 export type QueueEdit = EditSuggestion & { target: QueueTarget };
 
@@ -152,6 +169,80 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
       await rewards.forAcceptedEdit(edit.userId, edit.id);
       if (applied) await refresh(edit.entity, edit.entityId);
       return ok({ applied });
+    },
+
+    /**
+     * An admin edits a place directly (the same cleaning as an approved suggestion): name, address,
+     * contact details, hours, type, neighbourhood and chain. An empty contact or address clears it.
+     */
+    async updatePlace(input: PlaceUpdate): Promise<Result<{ updated: true }>> {
+      const place = await repos.places.byId(input.placeId);
+      if (!place) return fail("not_found");
+      const fields: Record<string, string | undefined> = {
+        name_bn: input.nameBn,
+        type: input.type,
+        address: input.address,
+        phone: input.phone,
+        website: input.website,
+        hours_text: input.hoursText,
+      };
+      for (const [field, raw] of Object.entries(fields)) {
+        if (raw === undefined) continue;
+        const value = raw.replace(/\s+/g, " ").trim();
+        if (field === "name_bn" && (value === "" || containsProfanity(value))) {
+          return fail("validation", {
+            fields: { nameBn: value === "" ? "required" : "profanity" },
+          });
+        }
+        if (value === "" && ["address", "phone", "website", "hours_text"].includes(field)) {
+          const clear = {
+            address: "address",
+            phone: "phone",
+            website: "website",
+            hours_text: "hoursText",
+          }[field] as "address" | "phone" | "website" | "hoursText";
+          await repos.places.update(place.id, { [clear]: null });
+          continue;
+        }
+        const outcome = await applyPlaceFieldEdit(repos.places, place.id, field, value);
+        if (outcome === "invalid") return fail("validation", { fields: { [field]: "invalid" } });
+      }
+      if (input.areaName !== undefined) {
+        await repos.admin.setPlaceArea(place.id, input.areaName.trim() || null);
+      }
+      const brand = input.brand;
+      if (brand === null) {
+        await repos.admin.setPlaceBrand(place.id, null);
+      } else if (brand !== undefined) {
+        if ("nameBn" in brand) {
+          const nameBn = brand.nameBn.replace(/\s+/g, " ").trim();
+          if (nameBn === "") return fail("validation", { fields: { brand: "required" } });
+          await repos.admin.setPlaceBrand(place.id, {
+            nameBn,
+            slug: slugify(nameBn) || `brand-${place.id.slice(0, 8)}`,
+          });
+        } else {
+          await repos.admin.setPlaceBrand(place.id, { slug: brand.slug });
+        }
+      }
+      await cache.invalidate([
+        `place:${place.id}`,
+        `district:${place.district.id}`,
+        "districts",
+        "search",
+      ]);
+      return ok({ updated: true });
+    },
+
+    /** Changes a neighbourhood's Bangla name everywhere it shows. */
+    async renameArea(areaId: number, nameBn: string): Promise<Result<{ renamed: true }>> {
+      const name = nameBn.replace(/\s+/g, " ").trim();
+      if (name === "" || containsProfanity(name)) {
+        return fail("validation", { fields: { nameBn: name === "" ? "required" : "profanity" } });
+      }
+      await repos.admin.renameArea(areaId, name);
+      await cache.invalidate(["districts", "search"]);
+      return ok({ renamed: true });
     },
 
     newPlaces(sinceDays = 7, limit = 30): Promise<Place[]> {

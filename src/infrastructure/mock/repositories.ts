@@ -759,6 +759,34 @@ export function createMockRepositories(): Repositories {
         clone(
           db.claims.filter((c) => c.status === "disputed" || c.status === "mixed").slice(0, limit),
         ),
+      setPlaceArea: async (placeId, areaName) => {
+        const place = db.places.find((p) => p.id === placeId);
+        if (!place) return;
+        const known = db.places.find(
+          (p) => p.district.id === place.district.id && p.area?.nameBn === areaName,
+        )?.area;
+        place.area = areaName
+          ? (known ?? { id: 1000 + db.places.length, slug: areaName, nameBn: areaName })
+          : null;
+      },
+      setPlaceBrand: async (placeId, brand) => {
+        const place = db.places.find((p) => p.id === placeId);
+        if (!place) return;
+        if (!brand) {
+          place.brand = null;
+          return;
+        }
+        const known = db.places.find((p) => p.brand?.slug === brand.slug)?.brand;
+        place.brand = known ?? {
+          slug: brand.slug,
+          nameBn: "nameBn" in brand ? brand.nameBn : brand.slug,
+        };
+      },
+      renameArea: async (areaId, nameBn) => {
+        for (const place of db.places) {
+          if (place.area?.id === areaId) place.area = { ...place.area, nameBn };
+        }
+      },
       mergePlaces: async (fromId, intoId) => {
         const from = db.places.find((p) => p.id === fromId);
         const into = db.places.find((p) => p.id === intoId);
