@@ -447,6 +447,10 @@
     "emptyHint": "Share an experience and put your name on the list; first place is open.",
     "cta": "Share an experience",
     "seeAll": "See the full list",
+    "offerTitle": "Show your name on the contributors list?",
+    "offerHint": "You can turn this off any time.",
+    "offerYes": "Yes, show it",
+    "offerNo": "Not now",
     "note": "Only people who chose to show their name are listed.",
     "listTitle": "More contributors"
   },
