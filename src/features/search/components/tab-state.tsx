@@ -61,7 +61,7 @@ export function TabPills({
 }: {
   q: string;
   pills: TabPill[];
-  carry: { type?: string | undefined; price?: string | undefined };
+  carry: { type?: string | undefined; price?: string | undefined; sort?: string | undefined };
   label: string;
 }) {
   const { tab, setTab } = useSearchTab();
@@ -100,19 +100,28 @@ export function FilterChip({
   q,
   type,
   price,
+  sort,
   active,
   children,
 }: {
   q: string;
   type: string | undefined;
   price: string | undefined;
+  /** The order to keep ('relevance' or nothing leaves it out of the address). */
+  sort?: string | undefined;
   active: boolean;
   children: ReactNode;
 }) {
   const { tab } = useSearchTab();
   return (
     <Link
-      href={routes.search({ q, ...(tab === "all" ? {} : { tab }), type, price })}
+      href={routes.search({
+        q,
+        ...(tab === "all" ? {} : { tab }),
+        type,
+        price,
+        sort: sort === "relevance" ? undefined : sort,
+      })}
       scroll={false}
       aria-current={active ? "true" : undefined}
       data-state={active ? "on" : "off"}

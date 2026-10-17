@@ -8,6 +8,7 @@ import {
   createSearchService,
   filterPlaces,
   groupBranches,
+  sortPlaces,
   type PlaceHit,
 } from "./search-service";
 
@@ -150,5 +151,38 @@ describe("groupBranches", () => {
   it("keeps a single branch as a normal place row", () => {
     const items = groupBranches([hit("a", "মিরপুর", "khanas"), hit("b", "উত্তরা", "kudos")]);
     expect(items.map((item) => item.kind)).toEqual(["place", "place"]);
+  });
+});
+
+describe("sortPlaces", () => {
+  const hit = (slug: string, min: number | null, max: number | null = min): PlaceHit => ({
+    slug,
+    nameBn: slug,
+    type: "restaurant",
+    district: { slug: "d", nameBn: "d" },
+    areaNameBn: null,
+    brand: null,
+    price: { min, max },
+  });
+  const places = [hit("c", 300), hit("a", null), hit("b", 100), hit("d", null, 250)];
+  const slugs = (list: PlaceHit[]) => list.map((place) => place.slug);
+
+  it("keeps the search order for relevance", () => {
+    expect(slugs(sortPlaces(places, "relevance"))).toEqual(["c", "a", "b", "d"]);
+  });
+
+  it("sorts by name", () => {
+    expect(slugs(sortPlaces(places, "name"))).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("sorts by lowest known price and always puts unknown prices last", () => {
+    expect(slugs(sortPlaces(places, "price_low"))).toEqual(["b", "d", "c", "a"]);
+    expect(slugs(sortPlaces(places, "price_high"))).toEqual(["c", "d", "b", "a"]);
+  });
+
+  it("does not change the list it was given", () => {
+    const before = slugs(places);
+    sortPlaces(places, "price_low");
+    expect(slugs(places)).toEqual(before);
   });
 });

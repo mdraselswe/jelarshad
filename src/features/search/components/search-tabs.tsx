@@ -17,7 +17,7 @@ export function SearchTabs({
   q: string;
   counts: Counts;
   /** Filters kept when switching tabs. */
-  carry: { type?: string | undefined; price?: string | undefined };
+  carry: { type?: string | undefined; price?: string | undefined; sort?: string | undefined };
 }) {
   const t = getT();
   return (

@@ -312,6 +312,13 @@
       "districts": "Districts",
       "areas": "Areas"
     },
+    "sort": {
+      "label": "Sort",
+      "relevance": "Best match",
+      "name": "By name",
+      "price_low": "Price: low to high",
+      "price_high": "Price: high to low"
+    },
     "filters": {
       "label": "Filters",
       "price": "Price",

@@ -13,12 +13,14 @@ export const routes = {
     tab?: string | undefined;
     type?: string | undefined;
     price?: string | undefined;
+    sort?: string | undefined;
   }) =>
     withSearchParams("/search", {
       q: query?.q,
       tab: query?.tab,
       type: query?.type,
       price: query?.price,
+      sort: query?.sort,
     }),
   /** The index pages: every food, every chain, every district. */
   foods: () => "/food",

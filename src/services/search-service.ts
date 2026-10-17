@@ -197,6 +197,31 @@ export function createSearchService({ repos }: Deps) {
 
 export type SearchService = ReturnType<typeof createSearchService>;
 
+export const PLACE_SORTS = ["relevance", "name", "price_low", "price_high"] as const;
+export type PlaceSort = (typeof PLACE_SORTS)[number];
+
+/** The lowest known price of a place, or null when it has none. */
+const lowPrice = (place: PlaceHit) => place.price.min ?? place.price.max;
+
+/**
+ * Orders place hits. "relevance" keeps the order search returned. Prices sort by the lowest known
+ * price, and places with no known price go last either way, so they are never mistaken for cheap.
+ */
+export function sortPlaces(places: PlaceHit[], sort: PlaceSort): PlaceHit[] {
+  if (sort === "relevance") return places;
+  const sorted = [...places];
+  if (sort === "name") return sorted.sort((a, b) => a.nameBn.localeCompare(b.nameBn, "bn"));
+  const direction = sort === "price_low" ? 1 : -1;
+  return sorted.sort((a, b) => {
+    const first = lowPrice(a);
+    const second = lowPrice(b);
+    if (first === null && second === null) return 0;
+    if (first === null) return 1;
+    if (second === null) return -1;
+    return (first - second) * direction;
+  });
+}
+
 /** Keep places of one type and/or price tier. A place with no known price is hidden by a price filter. */
 export function filterPlaces(places: PlaceHit[], filters: SearchFilters): PlaceHit[] {
   const tier = appConfig.search.priceTiers.find((candidate) => candidate.id === filters.price);
