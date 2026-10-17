@@ -62,6 +62,54 @@ describe("edit suggestions", () => {
     expect((await service.edits()).items).toHaveLength(0);
   });
 
+  it("applies an approved phone, website and hours suggestion, cleaned", async () => {
+    const { repos, service } = setup();
+    const suggest = (field: string, proposedValue: string) =>
+      repos.editSuggestions.create({
+        entity: "place",
+        entityId: fixtureIds.places.sample,
+        field,
+        currentValue: null,
+        proposedValue,
+        note: null,
+        userId: suggester.id,
+      });
+    for (const [field, value] of [
+      ["phone", "০১৭১১-২২৩৩৪৪"],
+      ["website", "facebook.com/dohi-ghor"],
+      ["hours_text", "প্রতিদিন ১০টা–১০টা"],
+    ] as const) {
+      const edit = await suggest(field, value);
+      expect(await service.decideEdit(admin, edit.id, "approve")).toEqual({
+        ok: true,
+        data: { applied: true },
+      });
+    }
+    const place = await repos.places.byId(fixtureIds.places.sample);
+    expect(place?.phone).toBe("01711-223344");
+    expect(place?.website).toBe("https://facebook.com/dohi-ghor");
+    expect(place?.hoursText).toBe("প্রতিদিন ১০টা–১০টা");
+  });
+
+  it("refuses a phone number or web address that is not one", async () => {
+    const { repos, service } = setup();
+    for (const [field, value] of [
+      ["phone", "call me maybe"],
+      ["website", "javascript:alert(1)"],
+    ] as const) {
+      const edit = await repos.editSuggestions.create({
+        entity: "place",
+        entityId: fixtureIds.places.sample,
+        field,
+        currentValue: null,
+        proposedValue: value,
+        note: null,
+        userId: suggester.id,
+      });
+      expect(await service.decideEdit(admin, edit.id, "approve")).toMatchObject({ ok: false });
+    }
+  });
+
   it("refuses a place type that does not exist", async () => {
     const { repos, service } = setup();
     const edit = await repos.editSuggestions.create({

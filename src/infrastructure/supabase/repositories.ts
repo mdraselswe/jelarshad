@@ -521,6 +521,9 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
             ...(patch.nameBn !== undefined ? { name_bn: patch.nameBn } : {}),
             ...(patch.address !== undefined ? { address: patch.address } : {}),
             ...(patch.type !== undefined ? { type: patch.type } : {}),
+            ...(patch.phone !== undefined ? { phone: patch.phone } : {}),
+            ...(patch.website !== undefined ? { website: patch.website } : {}),
+            ...(patch.hoursText !== undefined ? { hours_text: patch.hoursText } : {}),
           })
           .eq("id", id);
         if (error) throw new Error(`Supabase update place: ${error.message}`);
@@ -578,6 +581,9 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
               district_id: input.districtId,
               area_id: areaId,
               address: input.address ?? null,
+              phone: input.phone ?? null,
+              website: input.website ?? null,
+              hours_text: input.hoursText ?? null,
               ...(input.location
                 ? {
                     location:

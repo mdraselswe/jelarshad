@@ -48,6 +48,9 @@ const submitSchema = z.object({
       location: z
         .object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) })
         .nullish(),
+      phone: z.string().trim().max(30).nullish(),
+      website: z.string().trim().max(200).nullish(),
+      hoursText: z.string().trim().max(120).nullish(),
     }),
   ]),
   reaction,

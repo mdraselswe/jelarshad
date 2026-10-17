@@ -714,6 +714,9 @@ export type Database = {
           name_bn: string;
           name_en: string | null;
           opening_hours: Json | null;
+          phone: string | null;
+          website: string | null;
+          hours_text: string | null;
           price_max: number | null;
           price_min: number | null;
           search_key: string;
@@ -737,6 +740,9 @@ export type Database = {
           name_bn: string;
           name_en?: string | null;
           opening_hours?: Json | null;
+          phone?: string | null;
+          website?: string | null;
+          hours_text?: string | null;
           price_max?: number | null;
           price_min?: number | null;
           search_key?: string;
@@ -760,6 +766,9 @@ export type Database = {
           name_bn?: string;
           name_en?: string | null;
           opening_hours?: Json | null;
+          phone?: string | null;
+          website?: string | null;
+          hours_text?: string | null;
           price_max?: number | null;
           price_min?: number | null;
           search_key?: string;

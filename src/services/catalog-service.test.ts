@@ -183,6 +183,26 @@ describe("catalogService district pages", () => {
   });
 });
 
+describe("catalogService place voices", () => {
+  it("lists what people wrote about the place's dishes, with the dish named", async () => {
+    const repos = createMockRepositories();
+    const place = await repos.places.bySlug("sample-place");
+    const voices = await createCatalogService({ repos }).placeExperiences(place?.id ?? "");
+    for (const voice of voices) {
+      expect(voice.subject).toBeTruthy();
+      expect(voice.comment !== null || voice.photos.length > 0).toBe(true);
+    }
+  });
+
+  it("puts the contact details in the header", async () => {
+    const repos = createMockRepositories();
+    const place = await repos.places.bySlug("sample-place");
+    await repos.places.update(place?.id ?? "", { phone: "01711-223344" });
+    const header = await createCatalogService({ repos }).placeHeader("sample-place");
+    expect(header).toMatchObject({ phone: "01711-223344", website: null, hoursText: null });
+  });
+});
+
 describe("catalogService brands", () => {
   it("lists every branch of a chain on the brand page, each ranked on its own", async () => {
     const page = await service().brandPage("sample-chain");

@@ -20,6 +20,15 @@ export async function getPlaceDishes(placeId: string) {
   return getServices().catalog.placeDishes(placeId);
 }
 
+export async function getPlaceExperiences(placeId: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`place:${placeId}`);
+  const items = await getServices().catalog.placeExperiences(placeId);
+  // Ages are shown relative to when the cache was filled (a request-time clock cannot be prerendered).
+  return { items, asOf: new Date() };
+}
+
 export async function getPlaceBranches(placeId: string) {
   "use cache";
   cacheLife("hours");

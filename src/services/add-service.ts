@@ -2,6 +2,7 @@ import { appConfig } from "@/config/app.config";
 import type { AppUser, Place, PlaceType, Reaction } from "@/core/domain";
 import type { CacheInvalidator, RateLimiter, Repositories } from "@/core/ports";
 import { fail, ok, type Result } from "@/lib/result";
+import { cleanHours, cleanPhone, cleanWebsite } from "@/lib/place-contact";
 import { slugify } from "@/lib/text/slug";
 import { isLatinText } from "@/lib/text/to-bangla";
 import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
@@ -28,6 +29,9 @@ export type NewPlaceInput = {
   type: PlaceType;
   areaName?: string | null | undefined;
   location?: { lat: number; lng: number } | null | undefined;
+  phone?: string | null | undefined;
+  website?: string | null | undefined;
+  hoursText?: string | null | undefined;
 };
 
 export type AddInput = {
@@ -174,6 +178,9 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
               ? clean(draft.areaName).slice(0, appConfig.text.nameMax)
               : null,
             location: draft.location ?? null,
+            phone: cleanPhone(draft.phone),
+            website: cleanWebsite(draft.website),
+            hoursText: cleanHours(draft.hoursText),
             slug,
           },
           user.id,

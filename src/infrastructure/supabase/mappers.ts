@@ -70,6 +70,9 @@ export function toPlace(row: PlaceRow): Place {
     address: row.address,
     location: null, // geography → lat/lng mapping arrives with "nearby" (V1.5)
     openingHours: (row.opening_hours as OpeningHours | null) ?? null,
+    phone: row.phone,
+    website: row.website,
+    hoursText: row.hours_text,
     price: { min: row.price_min, max: row.price_max },
     status: row.status,
     mergedIntoId: row.merged_into,
