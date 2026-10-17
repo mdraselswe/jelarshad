@@ -186,3 +186,28 @@ describe("sortPlaces", () => {
     expect(slugs(places)).toEqual(before);
   });
 });
+
+describe("didYouMean", () => {
+  it("offers the near name for a typo, and nothing for an exact or unrelated query", async () => {
+    const repos = createMockRepositories();
+    const search = createSearchService({ repos });
+    const near = await search.didYouMean("dooi");
+    expect(near.map((suggestion) => suggestion.nameBn)).toContain("দই");
+    expect(await search.didYouMean("doi")).toEqual([]);
+    expect(await search.didYouMean("zzzzqqxx")).toEqual([]);
+    expect(await search.didYouMean("d")).toEqual([]);
+  });
+});
+
+describe("popular searches", () => {
+  it("lists words people search often and that mostly found something", async () => {
+    const repos = createMockRepositories();
+    const search = createSearchService({ repos });
+    const record = (query: string, results: number) =>
+      repos.insights.record({ name: "search", props: { query, results } });
+    for (let i = 0; i < 4; i += 1) await record("biryani", 5);
+    for (let i = 0; i < 5; i += 1) await record("unicorn", 0);
+    await record("rare", 2);
+    expect(await search.popular()).toEqual(["biryani"]);
+  });
+});

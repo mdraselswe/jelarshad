@@ -347,6 +347,10 @@
     "areaMeta": "Area in {district}",
     "addCta": "Add it if you know it",
     "addHint": "Adding a place you know helps others find it.",
+    "popular": "What everyone is searching",
+    "recent": "Your recent searches",
+    "recentClear": "Clear",
+    "didYouMean": "Did you mean one of these?",
     "tryTitle": "Try these too"
   },
   "placeType": {

@@ -13,7 +13,14 @@ import { formatNumber } from "@/lib/format/number";
  * "Nothing found" for a query: a live illustration, what happened, what to try, and the one action
  * that fills the gap (add it, with the XP it earns). Replaces the plain dashed box.
  */
-export function SearchEmpty({ q }: { q: string }) {
+export function SearchEmpty({
+  q,
+  suggestions = [],
+}: {
+  q: string;
+  /** Names close to what was typed ("কাচ্চি" for "kacci"). */
+  suggestions?: { nameBn: string }[];
+}) {
   const t = getT();
   return (
     <section
@@ -29,6 +36,26 @@ export function SearchEmpty({ q }: { q: string }) {
         {t("search.empty", { q })}
       </h2>
       <p className="mt-1.5 text-meta text-muted-foreground">{t("search.emptyHint")}</p>
+
+      {suggestions.length > 0 ? (
+        <div className="mt-4">
+          <p className="text-caption font-semibold text-muted-foreground">
+            {t("search.didYouMean")}
+          </p>
+          <ul className="mt-2 flex flex-wrap justify-center gap-2">
+            {suggestions.map((suggestion) => (
+              <li key={suggestion.nameBn}>
+                <Link
+                  href={routes.search({ q: suggestion.nameBn })}
+                  className="flex h-10 press items-center rounded-full bg-primary px-4 text-[14.5px] font-semibold text-primary-foreground"
+                >
+                  {suggestion.nameBn}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <Link
         href={routes.add()}

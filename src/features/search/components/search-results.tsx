@@ -18,7 +18,9 @@ import { filterPlaces, groupBranches, sortPlaces } from "@/services/search-servi
 /** More place hits than this and a small search box joins the area chips. */
 const SEARCH_FROM = 10;
 
-import { searchCatalog } from "../queries";
+import { QUICK_SEARCHES } from "@/config/home";
+import { RecentSearches, RememberSearch } from "./recent-searches";
+import { getDidYouMean, getPopularSearches, searchCatalog } from "../queries";
 import { parseSearchParams, type RawSearchParams } from "../search-params";
 import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceRowItemView } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
@@ -32,16 +34,39 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const { q, tab, type, price, sort } = params;
 
   if (q === "") {
+    // What people search most lately; until enough people have searched, the fixed ideas.
+    const popular = await getPopularSearches();
+    const ideas = popular.length >= 4 ? popular : [...QUICK_SEARCHES];
     return (
       <div data-search-results className="page-x pt-6 text-center">
         <MagnifierArt className="mx-auto w-40" />
         <p className="text-card-title">{t("search.prompt")}</p>
         <p className="mt-1 text-meta text-muted-foreground">{t("search.promptHint")}</p>
+        <RecentSearches />
+        <section className="mt-5" aria-label={t("search.popular")}>
+          <p className="text-caption font-semibold text-muted-foreground">
+            {t(popular.length >= 4 ? "search.popular" : "search.tryTitle")}
+          </p>
+          <ul className="mt-2 flex flex-wrap justify-center gap-2">
+            {ideas.map((term) => (
+              <li key={term}>
+                <Link
+                  href={routes.search({ q: term })}
+                  className="flex h-10 press items-center rounded-full bg-primary-soft px-4 text-[14.5px] font-semibold text-primary-soft-fg"
+                >
+                  {term}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     );
   }
 
   const outcome = await searchCatalog(q);
+  const suggestions = outcome.total === 0 ? await getDidYouMean(q) : [];
+  const remember = outcome.total > 0 ? <RememberSearch q={q} /> : null;
   const tracker = (
     <EventTracker name="search" props={{ query: q.slice(0, 80), results: outcome.total }} />
   );
@@ -73,12 +98,13 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
         }
       />
     ) : (
-      <SearchEmpty q={q} />
+      <SearchEmpty q={q} suggestions={suggestions} />
     );
 
   return (
     <>
       {tracker}
+      {remember}
       <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${sort}|${tab}`} initial={tab}>
         <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-6">
           <p className="px-1 text-meta text-muted-foreground lg:text-[17px] lg:font-semibold lg:text-foreground">
