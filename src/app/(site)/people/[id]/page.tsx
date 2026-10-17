@@ -16,12 +16,15 @@ export const metadata: Metadata = buildMetadata({
 
 // Cache Components needs at least one param to prerender this route; every real page renders per
 // request (it depends on the person's current opt-in), so this entry is only a placeholder.
+const PLACEHOLDER = "placeholder";
 export function generateStaticParams() {
-  return [{ id: "placeholder" }];
+  return [{ id: PLACEHOLDER }];
 }
 
 export default async function Person({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // The build prerenders the placeholder; it is not a person, and the build has no database key.
+  if (id === PLACEHOLDER) notFound();
   const profile = await getServices().rewards.publicProfile(id);
   if (!profile) notFound();
   return <PersonPage id={id} profile={profile} />;
