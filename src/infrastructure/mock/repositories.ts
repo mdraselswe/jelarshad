@@ -37,6 +37,11 @@ function paginate<T>(items: T[], opts: PageOpts = {}): Page<T> {
 
 const byWilson = (a: Dish, b: Dish) => b.wilsonScore - a.wilsonScore;
 const clone = <T>(value: T): T => structuredClone(value);
+/** Centre points of the fixture neighbourhoods (the real ones come from the database). */
+const MOCK_CENTERS: Record<string, { lat: number; lng: number }> = {
+  satmatha: { lat: 24.8465, lng: 89.3777 },
+};
+
 let sequence = 0;
 const newId = (prefix: string) =>
   `${prefix}-${Date.now().toString(36)}-${(sequence++).toString(36)}`;
@@ -199,6 +204,11 @@ export function createMockRepositories(): Repositories {
       // The mock keeps areas on its places, so areas are derived from them.
       areaBySlug: async (districtId, areaSlug) =>
         mockAreas().find((a) => a.districtId === districtId && a.slug === areaSlug) ?? null,
+      areaCenters: async () =>
+        mockAreas().flatMap((area) => {
+          const center = MOCK_CENTERS[area.slug];
+          return center ? [{ area, lat: center.lat, lng: center.lng }] : [];
+        }),
       areasMatching: async (text, limit) => {
         const needle = text.trim();
         return mockAreas()

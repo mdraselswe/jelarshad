@@ -29,7 +29,10 @@ export function skeletonKindFor(pathname: string): RouteSkeletonKind {
   const [first, second, third] = parts;
   if (parts.length === 0) return "home";
   // /food, /brand and /district alone are the browse pages.
-  if (parts.length === 1 && (first === "food" || first === "brand" || first === "district"))
+  if (
+    parts.length === 1 &&
+    (first === "food" || first === "brand" || first === "district" || first === "near")
+  )
     return "index";
   if (first === "search") return "search";
   if (first === "food") return "food";

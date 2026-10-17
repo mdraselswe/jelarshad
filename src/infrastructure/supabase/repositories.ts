@@ -237,6 +237,24 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return row ? toAreaWithDistrict(row as unknown as AreaRow) : null;
       },
+      async areaCenters() {
+        const rows = check(
+          await db
+            .from("areas")
+            .select(
+              "id, district_id, slug, name_bn, name_en, lat, lng, districts(id, slug, name_bn)",
+            )
+            .not("lat", "is", null)
+            .not("lng", "is", null)
+            .limit(1000),
+          "area centres",
+        );
+        return (rows as unknown as (AreaRow & { lat: number; lng: number })[]).map((row) => ({
+          area: toAreaWithDistrict(row),
+          lat: row.lat,
+          lng: row.lng,
+        }));
+      },
       async areasMatching(text, limit) {
         // Strip characters that mean something inside a PostgREST filter string.
         const needle = text.trim().replace(/[%_,()*]/g, "");

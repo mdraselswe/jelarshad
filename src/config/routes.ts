@@ -22,6 +22,8 @@ export const routes = {
       price: query?.price,
       sort: query?.sort,
     }),
+  /** "Near me": neighbourhoods and places around the browser's position. */
+  near: () => "/near",
   /** The index pages: every food, every chain, every district. */
   foods: () => "/food",
   brands: () => "/brand",

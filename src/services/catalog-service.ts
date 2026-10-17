@@ -1,5 +1,6 @@
 import { appConfig } from "@/config/app.config";
 import { kindOf } from "@/config/food-kinds";
+import { distanceKm } from "@/lib/geo";
 import type {
   ClaimStatus,
   ClaimType,
@@ -166,6 +167,27 @@ export type AreaPlaceRow = {
 /** One branch on a brand page: where it is and how its best dish is doing. */
 export type BranchRow = AreaPlaceRow & { areaNameBn: string | null; districtNameBn: string };
 
+/** Places near a point, grouped by neighbourhood (nearest first). */
+export type NearbyArea = {
+  slug: string;
+  nameBn: string;
+  districtSlug: string;
+  districtNameBn: string;
+  /** Kilometres from the point to the neighbourhood's centre. */
+  distanceKm: number;
+  places: { slug: string; nameBn: string; type: PlaceType }[];
+};
+
+export type NearbyResult = {
+  areas: NearbyArea[];
+  /** Distance to the nearest neighbourhood with a centre (even without places); null if none. */
+  nearestKm: number | null;
+};
+
+const NEARBY_AREAS = 4;
+const NEARBY_PLACES = 8;
+const NEARBY_MAX_KM = 30;
+
 export type BrandPage = {
   brand: { slug: string; nameBn: string };
   branches: BranchRow[];
@@ -225,6 +247,40 @@ export function createCatalogService({ repos }: Deps) {
           return { district, food };
         }),
       };
+    },
+
+    /**
+     * Places near a point, by neighbourhood: the nearest neighbourhoods that have a centre point and
+     * places, each with its distance. Approximate on purpose: the distance is to the neighbourhood's
+     * centre, not to the door, and the page says so. Nothing is kept about where the person is.
+     */
+    async nearby(point: { lat: number; lng: number }): Promise<NearbyResult> {
+      if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng))
+        return { areas: [], nearestKm: null };
+      const centers = await repos.districts.areaCenters();
+      const ranked = centers
+        .map((center) => ({ center, km: distanceKm(point, center) }))
+        .sort((a, b) => a.km - b.km);
+      const nearestKm = ranked[0] ? Math.round(ranked[0].km * 10) / 10 : null;
+      const areas: NearbyArea[] = [];
+      for (const { center, km } of ranked) {
+        if (areas.length >= NEARBY_AREAS || km > NEARBY_MAX_KM) break;
+        const page = await repos.places.inArea(center.area.id, { limit: NEARBY_PLACES });
+        if (page.items.length === 0) continue;
+        areas.push({
+          slug: center.area.slug,
+          nameBn: center.area.nameBn,
+          districtSlug: center.area.district.slug,
+          districtNameBn: center.area.district.nameBn,
+          distanceKm: Math.round(km * 10) / 10,
+          places: page.items.map((place) => ({
+            slug: place.slug,
+            nameBn: place.nameBn,
+            type: place.type,
+          })),
+        });
+      }
+      return { areas, nearestKm };
     },
 
     /** Every food with its kind and how many places serve it (the foods index). */

@@ -472,6 +472,24 @@
     "note": "Only people who chose to show their name are listed.",
     "listTitle": "More contributors"
   },
+  "near": {
+    "title": "Near me",
+    "footer": "Near me",
+    "lead": "See the neighbourhoods and places around where you are.",
+    "prompt": "Where can I eat nearby?",
+    "privacy": "Your position is used only to answer this and is not stored anywhere.",
+    "useLocation": "Use my location",
+    "asking": "Finding your position…",
+    "denied": "Location access was not allowed. Allow it in the browser settings and try again.",
+    "failed": "Could not get your position. Try again.",
+    "none": "No place near you yet",
+    "noneHint": "Browse by district instead.",
+    "noneHintFar": "The nearest neighbourhood is about {km} km away. Browse by district instead.",
+    "browseDistricts": "Browse districts",
+    "about": "about {km} km",
+    "seeArea": "All places in {area}",
+    "approximate": "Distances are to the neighbourhood centre, not to the door."
+  },
   "index": {
     "foodsTitle": "All foods",
     "foodsLead": "Browse any food by kind and find where it is served.",

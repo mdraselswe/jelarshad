@@ -1,4 +1,5 @@
 import { MapPinIcon, StoreIcon, UtensilsIcon } from "lucide-react";
+import { LocateFixedIcon } from "lucide-react";
 import Link from "next/link";
 
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
@@ -49,6 +50,15 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
           </p>
           {/* One scrolling row, not a wrapping block, so a late font cannot change its height. */}
           <ul className="mt-2 flex [scrollbar-width:none] gap-2 overflow-x-auto pb-1 lg:justify-center">
+            <li>
+              <Link
+                href={routes.near()}
+                className="flex h-10 shrink-0 press items-center gap-1.5 rounded-full bg-primary px-4 text-[14.5px] font-semibold text-primary-foreground"
+              >
+                <LocateFixedIcon className="size-4" aria-hidden />
+                {t("near.title")}
+              </Link>
+            </li>
             {ideas.map((term) => (
               <li key={term}>
                 <Link
