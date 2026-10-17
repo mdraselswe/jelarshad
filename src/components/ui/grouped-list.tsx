@@ -102,7 +102,8 @@ export function ListTile({
 }
 
 type ListRowProps = {
-  href: string;
+  /** Without it the row is plain text (a fact, not a link). */
+  href?: string;
   leading: ReactNode;
   title: ReactNode;
   meta: ReactNode;
@@ -128,6 +129,21 @@ export function ListRow({
 }: ListRowProps) {
   const Icon = external ? ExternalLinkIcon : ChevronRightIcon;
   const className = cn(ROW_CLASS, "press hover:bg-muted/50");
+  if (href === undefined) {
+    return (
+      <li {...data}>
+        <div className={ROW_CLASS}>
+          <ListRowBody
+            leading={leading}
+            title={title}
+            meta={meta}
+            footer={footer}
+            trailing={trailing}
+          />
+        </div>
+      </li>
+    );
+  }
   const body = (
     <ListRowBody
       leading={leading}

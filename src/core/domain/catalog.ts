@@ -64,6 +64,10 @@ export type Place = {
   address: string | null;
   location: { lat: number; lng: number } | null;
   openingHours: OpeningHours | null;
+  /** Phone, web address (website or Facebook page) and opening hours as text; all optional. */
+  phone: string | null;
+  website: string | null;
+  hoursText: string | null;
   price: PriceRange;
   status: ContentStatus;
   /** Set when an admin merged this duplicate into another place; pages redirect there. */

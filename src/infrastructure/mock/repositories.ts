@@ -339,6 +339,9 @@ export function createMockRepositories(): Repositories {
         if (patch.nameBn !== undefined) place.nameBn = patch.nameBn;
         if (patch.address !== undefined) place.address = patch.address;
         if (patch.type !== undefined) place.type = patch.type;
+        if (patch.phone !== undefined) place.phone = patch.phone;
+        if (patch.website !== undefined) place.website = patch.website;
+        if (patch.hoursText !== undefined) place.hoursText = patch.hoursText;
       },
       byCreator: async (userId, opts) =>
         paginate(
@@ -370,6 +373,9 @@ export function createMockRepositories(): Repositories {
           address: input.address ?? null,
           location: input.location ?? null,
           openingHours: null,
+          phone: input.phone ?? null,
+          website: input.website ?? null,
+          hoursText: input.hoursText ?? null,
           price: { min: null, max: null },
           status: "active",
           mergedIntoId: null,

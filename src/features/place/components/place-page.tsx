@@ -27,6 +27,7 @@ import { PlaceDishesSection, PlaceDishesSectionSkeleton } from "./place-dishes-s
 import { PlaceHero, PlaceHeroSkeleton } from "./place-hero";
 import { PlaceInfoSection } from "./place-info-section";
 import { PlacePhotosSection } from "./place-photos-section";
+import { PlaceVoicesSection } from "./place-voices-section";
 
 /**
  * Place page (docs/design: M-Place, D-Place): gradient hero, a floating "are these facts still
@@ -71,6 +72,9 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
           <Suspense fallback={<PlaceDishesSectionSkeleton />}>
             <PlaceDishesSection placeId={place.id} />
           </Suspense>
+          <Suspense fallback={null}>
+            <PlaceVoicesSection placeId={place.id} />
+          </Suspense>
         </div>
         <div className="lg:col-span-5">
           <div id="react" className="scroll-mt-4 page-x pt-6 lg:pt-10">
@@ -98,6 +102,9 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
                 { id: "name_bn", current: place.nameBn },
                 { id: "address", current: place.address },
                 { id: "type", current: t(`placeType.${place.type}`) },
+                { id: "phone", current: place.phone },
+                { id: "website", current: place.website },
+                { id: "hours_text", current: place.hoursText },
               ]}
             />
           </Section>

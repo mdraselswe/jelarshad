@@ -121,6 +121,9 @@ const PAIRS: readonly SkeletonPair[] = [
           district: { slug: "bogura", nameBn: "বগুড়া" },
           areaNameBn: "সাতমাথা",
           address: null,
+          phone: null,
+          website: null,
+          hoursText: null,
           mapQuery: "",
         }}
       />

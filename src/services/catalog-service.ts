@@ -69,6 +69,8 @@ export type FoodDishes = { items: DishRow[]; hasMore: boolean; priceRange: Price
 export type ExperienceRow = {
   id: string;
   userName: string;
+  /** The dish it is about, on a place page ("ফ্রাইড রাইস"); null on a food page. */
+  subject?: string | null;
   reaction: Reaction;
   comment: string | null;
   pricePaid: number | null;
@@ -85,6 +87,11 @@ export type PlaceHeader = {
   district: DistrictRef;
   areaNameBn: string | null;
   address: string | null;
+  phone: string | null;
+  /** A website or a Facebook page. */
+  website: string | null;
+  /** Opening hours as the person wrote them. */
+  hoursText: string | null;
   /** Text a map search can use to find the place (no coordinates are stored yet). */
   mapQuery: string;
 };
@@ -302,6 +309,32 @@ export function createCatalogService({ repos }: Deps) {
       };
     },
 
+    /** What people wrote about the dishes of one place, newest first. */
+    async placeExperiences(placeId: string): Promise<ExperienceRow[]> {
+      const dishes = await repos.places.dishes(placeId);
+      const pages = await Promise.all(
+        dishes.map(async (dish) => ({
+          subject: dish.displayName ?? dish.food.nameBn,
+          page: await repos.experiences.forDish(dish.id, { limit: 5 }),
+        })),
+      );
+      return pages
+        .flatMap(({ subject, page }) => page.items.map((experience) => ({ experience, subject })))
+        .filter(({ experience }) => experience.comment || experience.photos.length > 0)
+        .sort((a, b) => b.experience.createdAt.getTime() - a.experience.createdAt.getTime())
+        .slice(0, 8)
+        .map(({ experience, subject }) => ({
+          id: experience.id,
+          userName: experience.user.displayName,
+          subject,
+          reaction: experience.reaction,
+          comment: experience.comment,
+          pricePaid: experience.pricePaid,
+          photos: experience.photos,
+          createdAt: experience.createdAt,
+        }));
+    },
+
     async foodExperiences(foodId: string): Promise<ExperienceRow[]> {
       const page = await repos.experiences.forFood(foodId, { limit: 5 });
       return page.items
@@ -330,6 +363,9 @@ export function createCatalogService({ repos }: Deps) {
         district: { slug: place.district.slug, nameBn: place.district.nameBn },
         areaNameBn,
         address: place.address,
+        phone: place.phone,
+        website: place.website,
+        hoursText: place.hoursText,
         mapQuery: [place.nameBn, areaNameBn, place.district.nameBn, "বাংলাদেশ"]
           .filter(Boolean)
           .join(" "),

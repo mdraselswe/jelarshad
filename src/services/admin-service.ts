@@ -13,6 +13,7 @@ import type {
 import type { AdminCounts, OrphanMedia } from "@/core/ports";
 import type { CacheInvalidator, CacheTag, Repositories, StorageProvider } from "@/core/ports";
 import { fail, ok, type Result } from "@/lib/result";
+import { cleanHours, cleanPhone, cleanWebsite } from "@/lib/place-contact";
 import { containsProfanity } from "@/lib/text/profanity";
 
 import type { RewardService } from "./reward-service";
@@ -138,7 +139,20 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
         if (edit.field === "name_bn") await repos.places.update(edit.entityId, { nameBn: value });
         else if (edit.field === "address")
           await repos.places.update(edit.entityId, { address: value });
-        else if (edit.field === "type") {
+        else if (edit.field === "phone") {
+          const phone = cleanPhone(value);
+          if (phone === null) return fail("validation", { fields: { proposedValue: "invalid" } });
+          await repos.places.update(edit.entityId, { phone });
+        } else if (edit.field === "website") {
+          const website = cleanWebsite(value);
+          if (website === null) return fail("validation", { fields: { proposedValue: "invalid" } });
+          await repos.places.update(edit.entityId, { website });
+        } else if (edit.field === "hours_text") {
+          const hoursText = cleanHours(value);
+          if (hoursText === null)
+            return fail("validation", { fields: { proposedValue: "invalid" } });
+          await repos.places.update(edit.entityId, { hoursText });
+        } else if (edit.field === "type") {
           if (!PLACE_TYPES.includes(value as PlaceType)) {
             return fail("validation", { fields: { proposedValue: "invalid" } });
           }

@@ -79,6 +79,9 @@ export type NewPlace = {
   areaName?: string | null;
   address?: string | null;
   location?: { lat: number; lng: number } | null;
+  phone?: string | null;
+  website?: string | null;
+  hoursText?: string | null;
 };
 
 export interface PlaceRepository {
@@ -107,7 +110,14 @@ export interface PlaceRepository {
   /** Admin-approved changes to a place's own fields. */
   update(
     id: string,
-    patch: { nameBn?: string; address?: string | null; type?: PlaceType },
+    patch: {
+      nameBn?: string;
+      address?: string | null;
+      type?: PlaceType;
+      phone?: string | null;
+      website?: string | null;
+      hoursText?: string | null;
+    },
   ): Promise<void>;
   /** Active places this person added, newest first (profile: আমার অবদান). */
   byCreator(userId: string, opts?: PageOpts): Promise<Page<Place>>;

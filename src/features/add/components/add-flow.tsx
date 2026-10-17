@@ -104,6 +104,9 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
   const [place, setPlace] = useState<PlaceChoice>(null);
   const [placeType, setPlaceType] = useState<PlaceType>("restaurant");
   const [area, setArea] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
+  const [hours, setHours] = useState("");
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [similar, setSimilar] = useState<Suggestion[] | null>(null);
   const [confirmNew, setConfirmNew] = useState(false);
@@ -199,6 +202,9 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
                 type: placeType,
                 areaName: area || null,
                 location,
+                phone: phone || null,
+                website: website || null,
+                hoursText: hours || null,
               },
         reaction,
         comment: comment || null,
@@ -524,6 +530,46 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
                 </option>
               ))}
             </select>
+            <details className="mt-3 rounded-input border border-border px-3.5 py-2.5">
+              <summary className="cursor-pointer text-meta font-semibold">
+                {t("add.moreDetails")}
+              </summary>
+              <label htmlFor="add-phone" className={cn(LABEL, "mt-3")}>
+                {t("add.phone")}
+              </label>
+              <input
+                id="add-phone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="off"
+                className={INPUT}
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+              <label htmlFor="add-website" className={cn(LABEL, "mt-3")}>
+                {t("add.website")}
+              </label>
+              <input
+                id="add-website"
+                inputMode="url"
+                autoComplete="off"
+                className={INPUT}
+                value={website}
+                placeholder={t("add.websiteHint")}
+                onChange={(event) => setWebsite(event.target.value)}
+              />
+              <label htmlFor="add-hours" className={cn(LABEL, "mt-3")}>
+                {t("add.hours")}
+              </label>
+              <input
+                id="add-hours"
+                className={INPUT}
+                value={hours}
+                maxLength={120}
+                placeholder={t("add.hoursHint")}
+                onChange={(event) => setHours(event.target.value)}
+              />
+            </details>
             <button
               type="button"
               onClick={useMyLocation}
