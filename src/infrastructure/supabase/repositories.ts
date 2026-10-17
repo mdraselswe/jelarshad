@@ -722,6 +722,19 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         if (stats.error) throw new Error(`Supabase refresh_dish_stats: ${stats.error.message}`);
         return toExperience(row as unknown as ExperienceRow);
       },
+      async remove(id) {
+        const service = writer(clients);
+        const found = check<{ dish_id: string } | null>(
+          await service.from("experiences").select("dish_id").eq("id", id).maybeSingle(),
+          "experience to remove",
+        );
+        if (!found) return null;
+        const { error } = await service.from("experiences").delete().eq("id", id);
+        if (error) throw new Error(`Supabase delete experience: ${error.message}`);
+        const stats = await service.rpc("refresh_dish_stats", { p_dish: found.dish_id });
+        if (stats.error) throw new Error(`Supabase refresh_dish_stats: ${stats.error.message}`);
+        return { dishId: found.dish_id };
+      },
     },
 
     claims: {

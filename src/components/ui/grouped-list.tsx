@@ -115,6 +115,8 @@ type ListRowProps = {
   footer?: ReactNode;
   /** `data-*` attributes on the row (client-side list filters find rows by them). */
   data?: Record<`data-${string}`, string>;
+  /** Beside the link, not inside it (a button that must not navigate). */
+  action?: ReactNode;
 };
 
 export function ListRow({
@@ -126,9 +128,10 @@ export function ListRow({
   external,
   footer,
   data,
+  action,
 }: ListRowProps) {
   const Icon = external ? ExternalLinkIcon : ChevronRightIcon;
-  const className = cn(ROW_CLASS, "press hover:bg-muted/50");
+  const className = cn(ROW_CLASS, action ? "min-w-0 flex-1" : "", "press hover:bg-muted/50");
   if (href === undefined) {
     return (
       <li {...data}>
@@ -153,17 +156,19 @@ export function ListRow({
       trailing={trailing ?? <Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden />}
     />
   );
+  const link = external ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {body}
+    </a>
+  ) : (
+    <Link href={href} className={className}>
+      {body}
+    </Link>
+  );
   return (
-    <li {...data}>
-      {external ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-          {body}
-        </a>
-      ) : (
-        <Link href={href} className={className}>
-          {body}
-        </Link>
-      )}
+    <li {...data} className={action ? "flex items-center" : undefined}>
+      {link}
+      {action}
     </li>
   );
 }

@@ -89,3 +89,49 @@ describe("experienceService.add", () => {
     }
   });
 });
+
+describe("experienceService.withdraw", () => {
+  async function addOne() {
+    const context = setup();
+    const [dish] = await context.repos.places.dishes(fixtureIds.places.second);
+    if (!dish) throw new Error("fixture dish missing");
+    const added = await context.service.add(user, { dishId: dish.id, reaction: "loved" });
+    if (!added.ok) throw new Error("add failed");
+    return { ...context, dish, experienceId: added.data.experience.id };
+  }
+
+  it("lets a person take back their own experience, refreshing the caches", async () => {
+    const { repos, service, invalidate, dish, experienceId } = await addOne();
+    invalidate.mockClear();
+    expect(await service.withdraw(user, experienceId)).toEqual({
+      ok: true,
+      data: { removed: true },
+    });
+    expect(await repos.experiences.byId(experienceId)).toBeNull();
+    expect(invalidate).toHaveBeenCalledWith(expect.arrayContaining([`dish:${dish.id}`]));
+  });
+
+  it("takes the experience's own points back (a weekly mission bonus is paid once and stays)", async () => {
+    const { repos, service, experienceId } = await addOne();
+    expect((await repos.rewards.kindCounts(user.id)).experience).toBe(1);
+    await service.withdraw(user, experienceId);
+    expect((await repos.rewards.kindCounts(user.id)).experience ?? 0).toBe(0);
+  });
+
+  it("refuses to remove someone else's experience", async () => {
+    const { service, experienceId } = await addOne();
+    const other = { ...demoUser, id: "00000000-0000-4000-8000-0000000000bb" };
+    expect(await service.withdraw(other, experienceId)).toMatchObject({
+      ok: false,
+      error: { code: "forbidden" },
+    });
+  });
+
+  it("says not found for an experience that does not exist", async () => {
+    const { service } = setup();
+    expect(await service.withdraw(user, "nope")).toMatchObject({
+      ok: false,
+      error: { code: "not_found" },
+    });
+  });
+});

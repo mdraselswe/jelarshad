@@ -39,6 +39,10 @@
     "submit": "Submit",
     "added": "Added. Thank you!",
     "updated": "Your answer was updated.",
+    "withdraw": "Remove my experience",
+    "withdrawConfirm": "Yes, remove",
+    "withdrawCancel": "Keep it",
+    "withdrawn": "Your experience was removed.",
     "mine": "What you shared",
     "change": "Change or add more"
   },
