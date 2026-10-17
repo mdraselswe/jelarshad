@@ -1346,6 +1346,78 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return rows.map(toClaim);
       },
+      async setPlaceArea(placeId, areaName) {
+        const service = writer(clients);
+        let areaId: number | null = null;
+        if (areaName) {
+          const place = check<{ district_id: number } | null>(
+            await service.from("places").select("district_id").eq("id", placeId).maybeSingle(),
+            "place district",
+          );
+          if (!place) throw new Error("Supabase set area: place not found");
+          const areaSlug = slugify(areaName) || "area";
+          const found = check<{ id: number } | null>(
+            await service
+              .from("areas")
+              .select("id")
+              .eq("district_id", place.district_id)
+              .eq("slug", areaSlug)
+              .maybeSingle(),
+            "area",
+          );
+          if (found) areaId = found.id;
+          else {
+            const created = checkOne<{ id: number }>(
+              await service
+                .from("areas")
+                .insert({ district_id: place.district_id, slug: areaSlug, name_bn: areaName })
+                .select("id")
+                .single(),
+              "create area",
+            );
+            areaId = created.id;
+          }
+        }
+        const { error } = await service
+          .from("places")
+          .update({ area_id: areaId })
+          .eq("id", placeId);
+        if (error) throw new Error(`Supabase set area: ${error.message}`);
+      },
+      async setPlaceBrand(placeId, brand) {
+        const service = writer(clients);
+        let brandId: string | null = null;
+        if (brand) {
+          const found = check<{ id: string } | null>(
+            await service.from("brands").select("id").eq("slug", brand.slug).maybeSingle(),
+            "brand",
+          );
+          if (found) brandId = found.id;
+          else if ("nameBn" in brand) {
+            const created = checkOne<{ id: string }>(
+              await service
+                .from("brands")
+                .insert({ slug: brand.slug, name_bn: brand.nameBn })
+                .select("id")
+                .single(),
+              "create brand",
+            );
+            brandId = created.id;
+          } else throw new Error("Supabase set brand: unknown brand");
+        }
+        const { error } = await service
+          .from("places")
+          .update({ brand_id: brandId })
+          .eq("id", placeId);
+        if (error) throw new Error(`Supabase set brand: ${error.message}`);
+      },
+      async renameArea(areaId, nameBn) {
+        const { error } = await writer(clients)
+          .from("areas")
+          .update({ name_bn: nameBn })
+          .eq("id", areaId);
+        if (error) throw new Error(`Supabase rename area: ${error.message}`);
+      },
       async mergePlaces(fromId, intoId) {
         const { data, error } = await writer(clients).rpc("merge_places", {
           p_from: fromId,

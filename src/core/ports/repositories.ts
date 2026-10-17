@@ -303,6 +303,15 @@ export interface AdminRepository {
   /** Uploaded photos whose experience no longer exists or is hidden. */
   orphanMedia(limit: number): Promise<OrphanMedia[]>;
   deleteMedia(id: string): Promise<void>;
+  /** Moves a place to a neighbourhood of its district, creating the neighbourhood if it is new. */
+  setPlaceArea(placeId: string, areaName: string | null): Promise<void>;
+  /** Puts a place under a chain (found by slug, or created from a name), or takes it out of one. */
+  setPlaceBrand(
+    placeId: string,
+    brand: { slug: string } | { nameBn: string; slug: string } | null,
+  ): Promise<void>;
+  /** Changes the Bangla name of a neighbourhood (the area's slug stays). */
+  renameArea(areaId: number, nameBn: string): Promise<void>;
   /** Hides content (status `hidden`) until an admin restores or removes it. */
   hide(entity: Report["entity"], entityId: string): Promise<void>;
   openReports(opts?: PageOpts): Promise<Page<Report>>;
