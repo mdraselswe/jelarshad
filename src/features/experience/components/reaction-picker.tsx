@@ -10,6 +10,7 @@ import type { MessageKey } from "@/i18n/t";
 import { cn } from "@/lib/cn";
 import type { Reaction } from "@/core/domain";
 
+import { AddPhotoButton } from "@/features/media/components/add-photo-button";
 import { offerLeaderboard } from "@/features/game/offer-leaderboard";
 import { showReward } from "@/features/reward/show-reward";
 
@@ -76,6 +77,11 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
   const [editing, setEditing] = useState(false);
   // The visitor's earlier reactions, fetched once the page is up so the page itself stays static.
   const [mine, setMine] = useState<Record<string, Reaction>>({});
+  const [experiences, setExperiences] = useState<Record<string, { id: string; photos: number }>>(
+    {},
+  );
+  // Photos attached in this visit, per experience id.
+  const [addedPhotos, setAddedPhotos] = useState<Record<string, number>>({});
   const dishKey = options.map((option) => option.dishId).join(",");
   useEffect(() => {
     if (dishKey === "") return;
@@ -84,8 +90,13 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
       try {
         const response = await fetch(`/api/reactions?dishes=${encodeURIComponent(dishKey)}`);
         if (!response.ok) return;
-        const body = (await response.json()) as { mine?: Record<string, Reaction> };
-        if (!cancelled && body.mine) setMine(body.mine);
+        const body = (await response.json()) as {
+          mine?: Record<string, Reaction>;
+          experiences?: Record<string, { id: string; photos: number }>;
+        };
+        if (cancelled) return;
+        if (body.mine) setMine(body.mine);
+        if (body.experiences) setExperiences(body.experiences);
       } catch {
         // Offline or blocked: the plain picker still works.
       }
@@ -111,6 +122,10 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
       const result = await addExperience({ dishId: forDish, reaction });
       if (result.ok) {
         setPicked(null);
+        setExperiences((current) => ({
+          ...current,
+          [forDish]: current[forDish] ?? { id: result.data.experienceId, photos: 0 },
+        }));
         showReward(
           t,
           result.data.reward,
@@ -162,6 +177,25 @@ export function ReactionPicker({ options }: { options: DishOption[] }) {
             );
           })}
         </ul>
+        {single && options[0] && experiences[options[0].dishId] ? (
+          <div className="mt-3 flex items-center gap-2 text-meta text-muted-foreground">
+            <AddPhotoButton
+              experienceId={experiences[options[0].dishId]?.id ?? ""}
+              photoCount={
+                (experiences[options[0].dishId]?.photos ?? 0) +
+                (addedPhotos[experiences[options[0].dishId]?.id ?? ""] ?? 0)
+              }
+              onAdded={(count) =>
+                setAddedPhotos((current) => {
+                  const id = experiences[options[0]?.dishId ?? ""]?.id ?? "";
+                  return { ...current, [id]: (current[id] ?? 0) + count };
+                })
+              }
+              className="border border-border"
+            />
+            <span>{t("photos.addHint")}</span>
+          </div>
+        ) : null}
         <button
           type="button"
           onClick={() => {

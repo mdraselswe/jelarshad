@@ -15,6 +15,69 @@ function setup() {
   return { repos, cache, service: createModerationService({ repos, cache, rewards }) };
 }
 
+describe("moderationService.suggestEdit by the person who added the place", () => {
+  async function addedBy(creator: { id: string }) {
+    const context = setup();
+    const place = await context.repos.places.create(
+      {
+        nameBn: "আমার দোকান",
+        type: "restaurant",
+        districtId: 2,
+        slug: "amar-dokan",
+      },
+      creator.id,
+    );
+    return { ...context, placeId: place.id };
+  }
+
+  it("applies a correction to contact details and address at once", async () => {
+    const owner = person(1);
+    const { repos, service, placeId } = await addedBy(owner);
+    const result = await service.suggestEdit(owner, {
+      entity: "place",
+      entityId: placeId,
+      field: "phone",
+      proposedValue: "০১৭১১-২২৩৩৪৪",
+    });
+    expect(result).toMatchObject({ ok: true, data: { applied: true } });
+    expect((await repos.places.byId(placeId))?.phone).toBe("01711-223344");
+    expect((await repos.admin.openEditSuggestions()).items).toHaveLength(0);
+  });
+
+  it("still sends a name change, or anyone else's change, to the admin queue", async () => {
+    const owner = person(1);
+    const { repos, service, placeId } = await addedBy(owner);
+    const rename = await service.suggestEdit(owner, {
+      entity: "place",
+      entityId: placeId,
+      field: "name_bn",
+      proposedValue: "নতুন নাম",
+    });
+    expect(rename).toMatchObject({ ok: true, data: { applied: false } });
+    const stranger = await service.suggestEdit(person(2), {
+      entity: "place",
+      entityId: placeId,
+      field: "phone",
+      proposedValue: "01711223344",
+    });
+    expect(stranger).toMatchObject({ ok: true, data: { applied: false } });
+    expect((await repos.admin.openEditSuggestions()).items).toHaveLength(2);
+    expect((await repos.places.byId(placeId))?.phone).toBeNull();
+  });
+
+  it("refuses a phone number that is not one, even from the creator", async () => {
+    const owner = person(1);
+    const { service, placeId } = await addedBy(owner);
+    const result = await service.suggestEdit(owner, {
+      entity: "place",
+      entityId: placeId,
+      field: "phone",
+      proposedValue: "call me",
+    });
+    expect(result).toMatchObject({ ok: false });
+  });
+});
+
 describe("moderationService.suggestEdit", () => {
   it("queues a suggestion with the value it would replace", async () => {
     const { repos, service } = setup();

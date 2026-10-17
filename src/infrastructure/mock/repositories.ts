@@ -296,6 +296,7 @@ export function createMockRepositories(): Repositories {
         paginate(clone(active(db.places).filter((p) => p.district.id === districtId)), opts),
       inArea: async (areaId, opts) =>
         paginate(clone(active(db.places).filter((p) => p.area?.id === areaId)), opts),
+      creatorOf: async (placeId) => db.placeCreators.get(placeId) ?? null,
       brandList: async (limit) => {
         const byBrand = new Map<string, { slug: string; nameBn: string; branchCount: number }>();
         for (const place of active(db.places)) {
