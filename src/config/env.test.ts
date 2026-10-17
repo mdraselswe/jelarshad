@@ -47,7 +47,7 @@ describe("parseServerEnv", () => {
     expect(parseServerEnv({})).toMatchObject({
       DB_PROVIDER: "mock",
       AUTH_PROVIDER: "mock",
-      ANALYTICS_PROVIDER: "noop",
+      ANALYTICS_PROVIDER: "first-party",
       ADMIN_EMAILS: [],
     });
   });

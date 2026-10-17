@@ -5,6 +5,7 @@ import {
   StarIcon,
   StoreIcon,
   UtensilsIcon,
+  ActivityIcon,
   WrenchIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -30,6 +31,7 @@ export const ADMIN_SECTIONS = [
   "foods",
   "claims",
   "fame",
+  "insights",
   "maintenance",
 ] as const;
 export type AdminSection = (typeof ADMIN_SECTIONS)[number];
@@ -41,6 +43,7 @@ const SECTION_LOOK: Record<AdminSection, { icon: ReactNode; tone: IconChipTone }
   foods: { icon: <UtensilsIcon />, tone: "amber" },
   claims: { icon: <ScaleIcon />, tone: "teal" },
   fame: { icon: <StarIcon />, tone: "reward" },
+  insights: { icon: <ActivityIcon />, tone: "sky" },
   maintenance: { icon: <WrenchIcon />, tone: "green" },
 };
 

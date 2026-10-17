@@ -3,6 +3,6 @@
 export const DB_PROVIDERS = ["supabase", "mock"] as const;
 export const AUTH_PROVIDERS = ["supabase", "mock"] as const;
 export const STORAGE_PROVIDERS = ["cloudinary", "imagekit", "supabase", "mock"] as const;
-export const ANALYTICS_PROVIDERS = ["noop", "vercel"] as const;
+export const ANALYTICS_PROVIDERS = ["first-party", "noop", "vercel"] as const;
 
 export type StorageProviderId = (typeof STORAGE_PROVIDERS)[number];

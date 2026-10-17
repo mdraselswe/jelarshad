@@ -10,6 +10,7 @@ import { SearchEmpty } from "./search-empty";
 import { Panel } from "@/components/layout/panel";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getT } from "@/i18n/server";
+import { EventTracker } from "@/components/analytics/event-tracker";
 import { buildAreaOptions } from "@/features/catalog/area-options";
 import { AreaFilter } from "@/features/catalog/components/area-filter";
 import { filterPlaces, groupBranches } from "@/services/search-service";
@@ -41,6 +42,9 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   }
 
   const outcome = await searchCatalog(q);
+  const tracker = (
+    <EventTracker name="search" props={{ query: q.slice(0, 80), results: outcome.total }} />
+  );
   const placeHits = filterPlaces(outcome.places, { type, price });
   const places = groupBranches(placeHits);
   const areaChips = buildAreaOptions(
@@ -73,136 +77,139 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
     );
 
   return (
-    <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${tab}`} initial={tab}>
-      <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-6">
-        <p className="px-1 text-meta text-muted-foreground lg:text-[17px] lg:font-semibold lg:text-foreground">
-          {t("search.resultsFor", { q })}
-        </p>
-        <SearchTabs q={q} counts={counts} carry={{ type, price }} />
-        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
-          <TabGroup tabs={["all", "place"]}>
-            <div className="lg:sticky lg:top-24 lg:col-span-3">
-              <SearchFilters params={params} />
-            </div>
-          </TabGroup>
-          <ResultsColumn>
-            {(["all", "food", "place", "district"] as const).map((id) =>
-              counts[id] === 0 ? (
-                <TabGroup key={id} tabs={[id]}>
-                  {emptyState}
-                </TabGroup>
-              ) : null,
-            )}
+    <>
+      {tracker}
+      <TabState key={`${q}|${type ?? ""}|${price ?? ""}|${tab}`} initial={tab}>
+        <div data-search-results className="flex flex-col gap-4 page-x pt-1 lg:pt-6">
+          <p className="px-1 text-meta text-muted-foreground lg:text-[17px] lg:font-semibold lg:text-foreground">
+            {t("search.resultsFor", { q })}
+          </p>
+          <SearchTabs q={q} counts={counts} carry={{ type, price }} />
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
+            <TabGroup tabs={["all", "place"]}>
+              <div className="lg:sticky lg:top-24 lg:col-span-3">
+                <SearchFilters params={params} />
+              </div>
+            </TabGroup>
+            <ResultsColumn>
+              {(["all", "food", "place", "district"] as const).map((id) =>
+                counts[id] === 0 ? (
+                  <TabGroup key={id} tabs={[id]}>
+                    {emptyState}
+                  </TabGroup>
+                ) : null,
+              )}
 
-            {outcome.foods[0] && (
-              <TabGroup tabs={["all", "food"]}>
-                <Link
-                  href={routes.food(outcome.foods[0].slug)}
-                  className={`relative flex h-[92px] lift press items-center gap-3.5 overflow-hidden rounded-card-lg p-4 text-on-hero lg:h-[132px] lg:rounded-[28px] lg:px-7 ${tileClass(outcome.foods[0].slug)}`}
-                >
-                  <span
-                    aria-hidden
-                    className="flex size-[60px] shrink-0 items-center justify-center rounded-[20px] bg-white/20 font-display text-[30px] font-bold"
+              {outcome.foods[0] && (
+                <TabGroup tabs={["all", "food"]}>
+                  <Link
+                    href={routes.food(outcome.foods[0].slug)}
+                    className={`relative flex h-[92px] lift press items-center gap-3.5 overflow-hidden rounded-card-lg p-4 text-on-hero lg:h-[132px] lg:rounded-[28px] lg:px-7 ${tileClass(outcome.foods[0].slug)}`}
                   >
-                    {outcome.foods[0].nameBn.slice(0, 1)}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="line-clamp-1 font-display text-2xl leading-[1.4] font-bold">
-                      {outcome.foods[0].nameBn}
+                    <span
+                      aria-hidden
+                      className="flex size-[60px] shrink-0 items-center justify-center rounded-[20px] bg-white/20 font-display text-[30px] font-bold"
+                    >
+                      {outcome.foods[0].nameBn.slice(0, 1)}
                     </span>
-                    <span className="line-clamp-1 text-[14px] leading-normal opacity-95">
-                      {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
+                    <span className="min-w-0 flex-1">
+                      <span className="line-clamp-1 font-display text-2xl leading-[1.4] font-bold">
+                        {outcome.foods[0].nameBn}
+                      </span>
+                      <span className="line-clamp-1 text-[14px] leading-normal opacity-95">
+                        {outcome.foods[0].aboutBn ?? t("search.foodBannerMeta")}
+                      </span>
                     </span>
-                  </span>
-                  <span className="relative flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
-                    {t("search.openFood")}
-                  </span>
-                </Link>
-              </TabGroup>
-            )}
-            {outcome.foods.length > 0 && (
-              <TabGroup tabs={["all", "food"]}>
-                <Panel
-                  bare
-                  title={t("search.groups.foods")}
-                  icon={<UtensilsIcon />}
-                  tone="coral"
-                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
-                >
-                  <GroupedList split className="rounded-none border-0 bg-transparent">
-                    {outcome.foods.map((hit) => (
-                      <FoodHitRow key={hit.slug} hit={hit} />
-                    ))}
-                  </GroupedList>
-                </Panel>
-              </TabGroup>
-            )}
-            {places.length > 0 && (
-              <TabGroup tabs={["all", "place"]}>
-                <Panel
-                  bare
-                  title={t("search.groups.places")}
-                  icon={<StoreIcon />}
-                  tone="violet"
-                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
-                >
-                  <div data-filter-root>
-                    <AreaFilter
-                      areas={areaChips}
-                      showSearch={placeHits.length > SEARCH_FROM}
-                      className="pb-3 lg:pb-4"
-                    />
+                    <span className="relative flex h-10 shrink-0 items-center rounded-full bg-card px-4 text-sm font-bold text-foreground">
+                      {t("search.openFood")}
+                    </span>
+                  </Link>
+                </TabGroup>
+              )}
+              {outcome.foods.length > 0 && (
+                <TabGroup tabs={["all", "food"]}>
+                  <Panel
+                    bare
+                    title={t("search.groups.foods")}
+                    icon={<UtensilsIcon />}
+                    tone="coral"
+                    cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+                  >
                     <GroupedList split className="rounded-none border-0 bg-transparent">
-                      {places.map((item) => (
-                        <PlaceRowItemView
-                          key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
-                          item={item}
-                          t={t}
-                        />
+                      {outcome.foods.map((hit) => (
+                        <FoodHitRow key={hit.slug} hit={hit} />
                       ))}
                     </GroupedList>
-                  </div>
-                </Panel>
-              </TabGroup>
-            )}
-            {outcome.areas.length > 0 && (
-              <TabGroup tabs={["all", "district"]}>
-                <Panel
-                  bare
-                  title={t("search.groups.areas")}
-                  icon={<MapPinIcon />}
-                  tone="teal"
-                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
-                >
-                  <GroupedList split className="rounded-none border-0 bg-transparent">
-                    {outcome.areas.map((hit) => (
-                      <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
-                    ))}
-                  </GroupedList>
-                </Panel>
-              </TabGroup>
-            )}
-            {outcome.districts.length > 0 && (
-              <TabGroup tabs={["all", "district"]}>
-                <Panel
-                  bare
-                  title={t("search.groups.districts")}
-                  icon={<MapPinIcon />}
-                  tone="sky"
-                  cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
-                >
-                  <GroupedList split className="rounded-none border-0 bg-transparent">
-                    {outcome.districts.map((hit) => (
-                      <DistrictHitRow key={hit.slug} hit={hit} t={t} />
-                    ))}
-                  </GroupedList>
-                </Panel>
-              </TabGroup>
-            )}
-          </ResultsColumn>
+                  </Panel>
+                </TabGroup>
+              )}
+              {places.length > 0 && (
+                <TabGroup tabs={["all", "place"]}>
+                  <Panel
+                    bare
+                    title={t("search.groups.places")}
+                    icon={<StoreIcon />}
+                    tone="violet"
+                    cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+                  >
+                    <div data-filter-root>
+                      <AreaFilter
+                        areas={areaChips}
+                        showSearch={placeHits.length > SEARCH_FROM}
+                        className="pb-3 lg:pb-4"
+                      />
+                      <GroupedList split className="rounded-none border-0 bg-transparent">
+                        {places.map((item) => (
+                          <PlaceRowItemView
+                            key={item.kind === "brand" ? `brand:${item.group.slug}` : item.hit.slug}
+                            item={item}
+                            t={t}
+                          />
+                        ))}
+                      </GroupedList>
+                    </div>
+                  </Panel>
+                </TabGroup>
+              )}
+              {outcome.areas.length > 0 && (
+                <TabGroup tabs={["all", "district"]}>
+                  <Panel
+                    bare
+                    title={t("search.groups.areas")}
+                    icon={<MapPinIcon />}
+                    tone="teal"
+                    cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+                  >
+                    <GroupedList split className="rounded-none border-0 bg-transparent">
+                      {outcome.areas.map((hit) => (
+                        <AreaHitRow key={`${hit.district.slug}/${hit.slug}`} hit={hit} t={t} />
+                      ))}
+                    </GroupedList>
+                  </Panel>
+                </TabGroup>
+              )}
+              {outcome.districts.length > 0 && (
+                <TabGroup tabs={["all", "district"]}>
+                  <Panel
+                    bare
+                    title={t("search.groups.districts")}
+                    icon={<MapPinIcon />}
+                    tone="sky"
+                    cardClassName="p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+                  >
+                    <GroupedList split className="rounded-none border-0 bg-transparent">
+                      {outcome.districts.map((hit) => (
+                        <DistrictHitRow key={hit.slug} hit={hit} t={t} />
+                      ))}
+                    </GroupedList>
+                  </Panel>
+                </TabGroup>
+              )}
+            </ResultsColumn>
+          </div>
         </div>
-      </div>
-    </TabState>
+      </TabState>
+    </>
   );
 }
 

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useShare } from "@/hooks/use-share";
 import { useT } from "@/i18n/client";
+import { track } from "@/lib/analytics/client";
 import { toast } from "@/lib/toast";
 
 /** True on a phone or tablet: a touch screen, where the system share sheet is the right tool. */
@@ -28,12 +29,14 @@ export function ShareButton({ title, path }: { title: string; path: string }) {
   const [open, setOpen] = useState(false);
 
   async function systemShare() {
+    track("share", { path });
     const result = await share({ title, path });
     if (result === "copied") toast.success(t("share.copied"));
     if (result === "failed") toast.error(t("errors.unknown"));
   }
 
   async function copy() {
+    track("share", { path, via: "copy" });
     try {
       await navigator.clipboard.writeText(new URL(path, window.location.origin).toString());
       toast.success(t("share.copied"));
@@ -78,7 +81,10 @@ export function ShareButton({ title, path }: { title: string; path: string }) {
         {channels.map((channel) => (
           <DropdownMenuItem
             key={channel.id}
-            onSelect={() => window.open(channel.href(), "_blank", "noopener,noreferrer")}
+            onSelect={() => {
+              track("share", { path, via: channel.id });
+              window.open(channel.href(), "_blank", "noopener,noreferrer");
+            }}
           >
             {t(`share.${channel.id}`)}
           </DropdownMenuItem>

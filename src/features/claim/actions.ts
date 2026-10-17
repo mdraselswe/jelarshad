@@ -16,6 +16,10 @@ const schema = z.object({
 /** One vote per person per claim; voting again changes it. Signed-in only, daily limit applies. */
 export const voteClaim = defineAction(
   schema,
-  async (input, { services, user }) => services.claims.vote(user, input),
+  async (input, { services, user }) => {
+    const result = await services.claims.vote(user, input);
+    if (result.ok) services.analytics.track({ name: "claim_voted", claimId: input.claimId });
+    return result;
+  },
   { auth: true, rateLimit: "claim_vote" },
 );

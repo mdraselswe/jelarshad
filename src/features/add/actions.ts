@@ -59,6 +59,15 @@ const submitSchema = z.object({
 /** The whole add flow in one call: food, place, reaction. Counts against the daily experience limit. */
 export const submitAdd = defineAction(
   submitSchema,
-  async (input, { services, user }) => services.add.submit(user, input),
+  async (input, { services, user }) => {
+    const result = await services.add.submit(user, input);
+    if (result.ok) {
+      services.analytics.track({ name: "experience_added", dishId: result.data.placeSlug });
+      if (result.data.createdPlace) {
+        services.analytics.track({ name: "place_added", placeId: result.data.placeSlug });
+      }
+    }
+    return result;
+  },
   { auth: true, rateLimit: "experience" },
 );

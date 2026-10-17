@@ -72,6 +72,20 @@ export function createMockRepositories(): Repositories {
     stamps: [] as (Stamp & { userId: string })[],
     media: [] as (MediaRef & { entity: string; entityId: string })[],
     rateEvents: [] as { userId: string; action: string; at: Date }[],
+    insights: [] as {
+      at: Date;
+      name: string;
+      path: string | null;
+      props: Record<string, unknown>;
+      session: string | null;
+    }[],
+    errors: [] as {
+      at: Date;
+      source: "server" | "client";
+      message: string;
+      path: string | null;
+      digest: string | null;
+    }[],
   };
 
   // Opted-in people with the most XP since a date, optionally only for one district.
@@ -847,6 +861,64 @@ export function createMockRepositories(): Repositories {
         paginate(clone(db.reports.filter((r) => r.status === "open")), opts),
       openEditSuggestions: async (opts) =>
         paginate(clone(db.edits.filter((e) => e.status === "open")), opts),
+    },
+
+    insights: {
+      record: async (event) => {
+        db.insights.push({
+          at: new Date(),
+          name: event.name,
+          path: event.path ?? null,
+          props: event.props ?? {},
+          session: event.session ?? null,
+        });
+      },
+      recordError: async (error) => {
+        db.errors.push({
+          at: new Date(),
+          source: error.source,
+          message: error.message,
+          path: error.path ?? null,
+          digest: error.digest ?? null,
+        });
+      },
+      summary: async (since) => {
+        const byName = new Map<string, { events: number; sessions: Set<string | null> }>();
+        for (const event of db.insights) {
+          if (event.at < since) continue;
+          const row = byName.get(event.name) ?? { events: 0, sessions: new Set() };
+          row.events += 1;
+          row.sessions.add(event.session);
+          byName.set(event.name, row);
+        }
+        return [...byName.entries()]
+          .map(([name, row]) => ({ name, events: row.events, sessions: row.sessions.size }))
+          .sort((a, b) => b.events - a.events);
+      },
+      topSearches: async (since, limit) => {
+        const byQuery = new Map<string, { searches: number; empty: number }>();
+        for (const event of db.insights) {
+          if (event.name !== "search" || event.at < since) continue;
+          const query = String(event.props.query ?? "").toLowerCase();
+          if (!query) continue;
+          const row = byQuery.get(query) ?? { searches: 0, empty: 0 };
+          row.searches += 1;
+          if (event.props.results === 0) row.empty += 1;
+          byQuery.set(query, row);
+        }
+        return [...byQuery.entries()]
+          .map(([query, row]) => ({ query, ...row }))
+          .sort((a, b) => b.searches - a.searches)
+          .slice(0, limit);
+      },
+      recentErrors: async (limit) => [...db.errors].reverse().slice(0, limit),
+      purge: async (days) => {
+        const cutoff = new Date(Date.now() - days * 86_400_000);
+        const before = db.insights.length;
+        db.insights = db.insights.filter((event) => event.at >= cutoff);
+        db.errors = db.errors.filter((error) => error.at >= cutoff);
+        return before - db.insights.length;
+      },
     },
   };
 }

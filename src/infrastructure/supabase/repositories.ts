@@ -1420,5 +1420,76 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         if (error) throw new Error(`Supabase delete media: ${error.message}`);
       },
     },
+
+    insights: {
+      // Bookkeeping must never break a page: writes swallow their own failures.
+      async record(event) {
+        if (!clients.service) return;
+        const { error } = await clients.service.from("insight_events").insert({
+          name: event.name.slice(0, 40),
+          path: event.path?.slice(0, 200) ?? null,
+          props: event.props ?? {},
+          session: event.session?.slice(0, 40) ?? null,
+        });
+        if (error) console.error("[jelarshad] insight record failed:", error.message);
+      },
+      async recordError(error) {
+        if (!clients.service) return;
+        const { error: failed } = await clients.service.from("error_logs").insert({
+          source: error.source,
+          message: error.message.slice(0, 500),
+          stack: error.stack?.slice(0, 4000) ?? null,
+          path: error.path?.slice(0, 200) ?? null,
+          digest: error.digest?.slice(0, 80) ?? null,
+          context: (error.context ?? {}) as never,
+        });
+        if (failed) console.error("[jelarshad] error log failed:", failed.message);
+      },
+      async summary(since) {
+        const { data, error } = await writer(clients).rpc("insights_summary", {
+          p_since: since.toISOString(),
+        });
+        if (error) throw new Error(`Supabase insights_summary: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          name: row.name,
+          events: Number(row.events),
+          sessions: Number(row.sessions),
+        }));
+      },
+      async topSearches(since, limit) {
+        const { data, error } = await writer(clients).rpc("insights_top_searches", {
+          p_since: since.toISOString(),
+          p_limit: limit,
+        });
+        if (error) throw new Error(`Supabase insights_top_searches: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          query: row.query,
+          searches: Number(row.searches),
+          empty: Number(row.empty),
+        }));
+      },
+      async recentErrors(limit) {
+        const rows = check(
+          await writer(clients)
+            .from("error_logs")
+            .select("at, source, message, path, digest")
+            .order("at", { ascending: false })
+            .limit(limit),
+          "recent errors",
+        );
+        return rows.map((row) => ({
+          at: new Date(row.at),
+          source: row.source as "server" | "client",
+          message: row.message,
+          path: row.path,
+          digest: row.digest,
+        }));
+      },
+      async purge(days) {
+        const { data, error } = await writer(clients).rpc("purge_insights", { p_days: days });
+        if (error) throw new Error(`Supabase purge_insights: ${error.message}`);
+        return Number(data ?? 0);
+      },
+    },
   };
 }
