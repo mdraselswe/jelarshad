@@ -4,6 +4,8 @@ import { BookmarkIcon, FlameIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 import { TrophyArt } from "@/components/illustration/food-art";
 import { WorldStrip } from "@/components/illustration/world-art";
 import { WithdrawButton } from "@/features/experience/components/withdraw-button";
+import { clientEnv } from "@/config/env";
+import { PushToggle } from "@/features/push/components/push-toggle";
 import { AddPhotoButton } from "@/features/media/components/add-photo-button";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
@@ -270,6 +272,7 @@ export async function MeProfilePage({ user, tab }: { user: AppUser; tab: MeTab }
                 <p className="mb-2 text-card-title">{t("me.theme")}</p>
                 <ThemePreferenceControl />
               </div>
+              <PushToggle publicKey={clientEnv.NEXT_PUBLIC_VAPID_PUBLIC_KEY} />
               <form action={routes.signOut()} method="post">
                 <Button type="submit" variant="outline">
                   {t("auth.signOut")}

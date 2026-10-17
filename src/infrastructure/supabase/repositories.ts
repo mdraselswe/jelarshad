@@ -1587,6 +1587,43 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
       },
     },
 
+    push: {
+      async save(subscription) {
+        const { error } = await writer(clients).from("push_subscriptions").upsert(
+          {
+            user_id: subscription.userId,
+            endpoint: subscription.endpoint,
+            p256dh: subscription.p256dh,
+            auth: subscription.auth,
+          },
+          { onConflict: "endpoint" },
+        );
+        if (error) throw new Error(`Supabase save push subscription: ${error.message}`);
+      },
+      async remove(endpoint) {
+        const { error } = await writer(clients)
+          .from("push_subscriptions")
+          .delete()
+          .eq("endpoint", endpoint);
+        if (error) throw new Error(`Supabase remove push subscription: ${error.message}`);
+      },
+      async all(limit) {
+        const rows = check(
+          await writer(clients)
+            .from("push_subscriptions")
+            .select("user_id, endpoint, p256dh, auth")
+            .limit(limit),
+          "push subscriptions",
+        );
+        return rows.map((row) => ({
+          userId: row.user_id,
+          endpoint: row.endpoint,
+          p256dh: row.p256dh,
+          auth: row.auth,
+        }));
+      },
+    },
+
     insights: {
       // Bookkeeping must never break a page: writes swallow their own failures.
       async record(event) {
