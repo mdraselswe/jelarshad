@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 
 import { BowlArt } from "@/components/illustration/food-art";
 import { HeroBand } from "@/components/layout/hero-band";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/config/routes";
 import { useT } from "@/i18n/client";
+import { reportClientError } from "@/lib/analytics/client";
 
 /** A page failed to render: say so plainly and offer a retry (docs: errors never dead-end). */
 export default function SiteError({
@@ -17,6 +19,9 @@ export default function SiteError({
   retry: () => void;
 }) {
   const t = useT();
+  useEffect(() => {
+    reportClientError(error);
+  }, [error]);
   return (
     // Not PageShell: that is a server component and would drag the server i18n and zod (config/env)
     // into the client bundle of every page that sits under this error boundary.

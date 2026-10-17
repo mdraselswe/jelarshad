@@ -1,12 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { ThemeScript } from "@/components/theme/theme-script";
 import { useT } from "@/i18n/client";
+import { reportClientError } from "@/lib/analytics/client";
 import "@/styles/globals.css";
 
 /** Last resort: the root layout itself failed, so this renders its own <html>. A full reload home, since the router may be what failed. */
-export default function GlobalError({ retry }: { retry: () => void }) {
+export default function GlobalError({
+  error,
+  retry,
+}: {
+  error: Error & { digest?: string };
+  retry: () => void;
+}) {
   const t = useT();
+  useEffect(() => {
+    reportClientError(error);
+  }, [error]);
   return (
     <html lang="bn" suppressHydrationWarning>
       <head>

@@ -1,3 +1,4 @@
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -8,6 +9,7 @@ import { LazyPwa } from "@/features/pwa/components/lazy-pwa";
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
+      <PageViewTracker />
       <DesktopNav />
       {children}
       <SiteFooter />

@@ -38,6 +38,10 @@ export const addExperience = defineAction(
       pricePaid: input.pricePaid,
     });
     if (!result.ok) return result;
+    services.analytics.track({
+      name: "experience_added",
+      dishId: input.dishId ?? input.placeId ?? "",
+    });
     return { ok: true as const, data: { isNew: result.data.isNew, reward: result.data.reward } };
   },
   { auth: true, rateLimit: "experience" },

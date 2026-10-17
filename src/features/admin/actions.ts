@@ -31,6 +31,7 @@ const schema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("fame-remove"), districtId: z.number().int().positive(), foodId: id }),
   z.object({ kind: z.literal("purge-rate-events") }),
   z.object({ kind: z.literal("clean-media") }),
+  z.object({ kind: z.literal("purge-insights") }),
 ]);
 
 export const adminAct = defineAction(
@@ -63,6 +64,8 @@ export const adminAct = defineAction(
         return ok({ removed: await admin.purgeRateEvents(7) });
       case "clean-media":
         return ok(await admin.cleanOrphanMedia());
+      case "purge-insights":
+        return ok({ removed: await services.repos.insights.purge(90) });
     }
   },
   { auth: true, role: "admin" },

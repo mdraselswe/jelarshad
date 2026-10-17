@@ -30,7 +30,7 @@ const clientSchema = z.object({
 const serverSchema = z.object({
   AUTH_PROVIDER: z.enum(authProviders).default("mock"),
   DB_PROVIDER: z.enum(dbProviders).default("mock"),
-  ANALYTICS_PROVIDER: z.enum(analyticsProviders).default("noop"),
+  ANALYTICS_PROVIDER: z.enum(analyticsProviders).default("first-party"),
   PREVIEW_ACCESS_SECRET: optionalString,
   SUPABASE_SERVICE_ROLE_KEY: optionalString,
   CLOUDINARY_API_KEY: optionalString,

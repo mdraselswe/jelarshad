@@ -291,6 +291,44 @@ export interface AdminRepository {
   openEditSuggestions(opts?: PageOpts): Promise<Page<EditSuggestion>>;
 }
 
+/** One usage event (no person, no IP): a name, a path, small properties and a per-tab session id. */
+export type InsightEvent = {
+  name: string;
+  path?: string | null;
+  props?: Record<string, string | number | boolean | null>;
+  session?: string | null;
+};
+
+export type InsightErrorRow = {
+  at: Date;
+  source: "server" | "client";
+  message: string;
+  path: string | null;
+  digest: string | null;
+};
+
+export interface InsightRepository {
+  record(event: InsightEvent): Promise<void>;
+  recordError(error: {
+    source: "server" | "client";
+    message: string;
+    stack?: string | null;
+    path?: string | null;
+    digest?: string | null;
+    context?: Record<string, unknown>;
+  }): Promise<void>;
+  /** Events per name with distinct sessions since a date, most events first. */
+  summary(since: Date): Promise<{ name: string; events: number; sessions: number }[]>;
+  /** The most searched words since a date, with how many of those searches found nothing. */
+  topSearches(
+    since: Date,
+    limit: number,
+  ): Promise<{ query: string; searches: number; empty: number }[]>;
+  recentErrors(limit: number): Promise<InsightErrorRow[]>;
+  /** Drops events and errors older than this many days; returns the events removed. */
+  purge(days: number): Promise<number>;
+}
+
 export type Repositories = {
   districts: DistrictRepository;
   foods: FoodRepository;
@@ -306,4 +344,5 @@ export type Repositories = {
   rateLimits: RateLimitRepository;
   rewards: RewardRepository;
   admin: AdminRepository;
+  insights: InsightRepository;
 };

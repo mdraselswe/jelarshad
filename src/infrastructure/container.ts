@@ -23,9 +23,10 @@ import { createSavedService, type SavedService } from "@/services/saved-service"
 import { createSearchService, type SearchService } from "@/services/search-service";
 import { createDefineAction } from "@/lib/action";
 
+import { createFirstPartyAnalytics } from "./analytics/first-party";
 import { noopAnalytics } from "./analytics/noop";
 import { createCloudinaryStorage } from "./cloudinary/storage";
-import { consoleErrorReporter } from "./errors/console";
+import { createFirstPartyErrorReporter } from "./errors/first-party";
 import { createMockAuth } from "./mock/auth";
 import { createMockRepositories } from "./mock/repositories";
 import { createMockStorage } from "./mock/storage";
@@ -96,9 +97,11 @@ export function getServices(): Services {
         : assertNever(storageProvider);
 
   const analytics =
-    env.ANALYTICS_PROVIDER === "noop" || env.ANALYTICS_PROVIDER === "vercel"
-      ? noopAnalytics // Vercel analytics adapter arrives when it is enabled
-      : assertNever(env.ANALYTICS_PROVIDER);
+    env.ANALYTICS_PROVIDER === "first-party"
+      ? createFirstPartyAnalytics(repos.insights)
+      : env.ANALYTICS_PROVIDER === "noop" || env.ANALYTICS_PROVIDER === "vercel"
+        ? noopAnalytics // a Vercel analytics adapter arrives only if it is enabled
+        : assertNever(env.ANALYTICS_PROVIDER);
 
   const rateLimiter = createRateLimiter(repos.rateLimits);
   const rewards = createRewardService({ repos });
@@ -134,7 +137,7 @@ export function getServices(): Services {
     storage,
     cache: nextCacheInvalidator,
     analytics,
-    errors: consoleErrorReporter,
+    errors: createFirstPartyErrorReporter(repos.insights),
     rateLimiter,
   };
   return services;

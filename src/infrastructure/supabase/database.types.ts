@@ -59,6 +59,66 @@ export type Database = {
           },
         ];
       };
+      error_logs: {
+        Row: {
+          at: string;
+          context: Json;
+          digest: string | null;
+          id: number;
+          message: string;
+          path: string | null;
+          source: string;
+          stack: string | null;
+        };
+        Insert: {
+          at?: string;
+          context?: Json;
+          digest?: string | null;
+          id?: number;
+          message: string;
+          path?: string | null;
+          source: string;
+          stack?: string | null;
+        };
+        Update: {
+          at?: string;
+          context?: Json;
+          digest?: string | null;
+          id?: number;
+          message?: string;
+          path?: string | null;
+          source?: string;
+          stack?: string | null;
+        };
+        Relationships: [];
+      };
+      insight_events: {
+        Row: {
+          at: string;
+          id: number;
+          name: string;
+          path: string | null;
+          props: Json;
+          session: string | null;
+        };
+        Insert: {
+          at?: string;
+          id?: number;
+          name: string;
+          path?: string | null;
+          props?: Json;
+          session?: string | null;
+        };
+        Update: {
+          at?: string;
+          id?: number;
+          name?: string;
+          path?: string | null;
+          props?: Json;
+          session?: string | null;
+        };
+        Relationships: [];
+      };
       brands: {
         Row: {
           created_at: string;
@@ -1086,6 +1146,15 @@ export type Database = {
           xp: number;
         }[];
       };
+      insights_summary: {
+        Args: { p_since: string };
+        Returns: { events: number; name: string; sessions: number }[];
+      };
+      insights_top_searches: {
+        Args: { p_limit: number; p_since: string };
+        Returns: { empty: number; query: string; searches: number }[];
+      };
+      purge_insights: { Args: { p_days: number }; Returns: number };
       is_active_user: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       merge_foods: { Args: { p_from: string; p_into: string }; Returns: number };
