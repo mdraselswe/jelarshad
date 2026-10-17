@@ -72,7 +72,7 @@ add ~1 s. We keep the design and treat 2.5 s / 95 as targets; Phase 8.5 tries to
 - `app/manifest.ts`: `name: "Jelar Shad — জেলার স্বাদ"`, `short_name: "Jelar Shad"`, `lang: "bn"`,
   `start_url: "/?source=pwa"`, `display: "standalone"`, theme/background colors from tokens,
   icons 192, 512, maskable 512, apple-touch-icon 180, `shortcuts` (খুঁজুন, যোগ করুন).
-- Minimal service worker `public/sw.js` registered in production only: no caching logic in MVP
+- Service worker `public/sw.js` registered in production only: caches build assets, fonts and icons on first use; public pages network-first with a copy kept for offline; never caches signed-in pages (`/me`, `/add`, `/admin`, `/login`), API calls or non-GET requests; `/offline` is the fallback page
   (keeps install criteria satisfied across browsers, avoids cache bugs). Offline caching (Serwist) is V1.5.
 - Custom install card: shown after 2nd visit or first save; `beforeinstallprompt` on Android,
   short "Share → Add to Home Screen" hint on iOS Safari.
