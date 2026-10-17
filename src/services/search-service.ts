@@ -1,11 +1,14 @@
 import { appConfig } from "@/config/app.config";
 import type { Place, PlaceType } from "@/core/domain";
 import type { Repositories, SearchHit } from "@/core/ports";
+import { closest } from "@/lib/text/closest";
 import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
 
 // Search business rules: input limits, grouping, filters. Pure (ports only).
 
-type Deps = { repos: Pick<Repositories, "search" | "districts" | "places"> };
+type Deps = {
+  repos: Pick<Repositories, "search" | "districts" | "places" | "foods" | "insights">;
+};
 
 export type PriceTierId = (typeof appConfig.search.priceTiers)[number]["id"];
 
@@ -77,6 +80,11 @@ export type AreaHit = {
   district: { slug: string; nameBn: string };
 };
 
+/** A name close to what was typed ("কাচ্চি" for "kacci"), to offer when nothing was found. */
+export type NameSuggestion = { nameBn: string };
+
+const DAY_MS = 86_400_000;
+
 export type SearchOutcome = {
   /** The cleaned query that was run ("" when the input was too short to search). */
   query: { text: string; key: string };
@@ -131,6 +139,45 @@ const toPlaceHit = (place: Place): PlaceHit => ({
 
 export function createSearchService({ repos }: Deps) {
   return {
+    /**
+     * Names close to a query that found nothing: foods, districts and chains within a typo or two
+     * (compared on the phonetic key). Never more than three, and none when the query is exact.
+     */
+    async didYouMean(raw: string): Promise<NameSuggestion[]> {
+      const input = cleanQueryInput(raw);
+      if (input.length < appConfig.search.minQueryLength) return [];
+      const queryKey = toSearchQuery(input).key;
+      if (queryKey === "") return [];
+      const [foods, districts, brands] = await Promise.all([
+        repos.foods.listActive(300),
+        repos.districts.list(),
+        repos.places.brandList(200),
+      ]);
+      const names = [
+        ...foods.flatMap(({ food }) => [food.nameBn, food.nameEn]),
+        ...districts.flatMap((district) => [district.nameBn, district.nameEn]),
+        ...brands.map((brand) => brand.nameBn),
+      ].filter((name): name is string => Boolean(name));
+      const unique = [...new Set(names)];
+      return closest(
+        queryKey,
+        unique.map((name) => ({ key: toSearchKey(name), item: name })),
+        3,
+      ).map((nameBn) => ({ nameBn }));
+    },
+
+    /**
+     * What people search most (last 30 days), only words that found something, for the empty
+     * search page. Empty until enough people have searched; the page then shows fixed ideas.
+     */
+    async popular(limit = 8, now: Date = new Date()): Promise<string[]> {
+      const rows = await repos.insights.topSearches(new Date(now.getTime() - 30 * DAY_MS), 40);
+      return rows
+        .filter((row) => row.searches >= 3 && row.empty * 2 < row.searches)
+        .map((row) => row.query)
+        .slice(0, limit);
+    },
+
     async search(raw: string): Promise<SearchOutcome> {
       const input = cleanQueryInput(raw);
       if (input.length < appConfig.search.minQueryLength) return EMPTY;

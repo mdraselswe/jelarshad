@@ -21,3 +21,19 @@ export async function searchCatalog(input: string) {
   }
   return outcome;
 }
+
+/** Names close to a query that found nothing ("কাচ্চি" for "kacci"). */
+export async function getDidYouMean(input: string) {
+  "use cache";
+  cacheTag("search");
+  cacheLife("hours");
+  return getServices().search.didYouMean(input);
+}
+
+/** What people search most lately, for the empty search page. */
+export async function getPopularSearches() {
+  "use cache";
+  cacheTag("search");
+  cacheLife("hours");
+  return getServices().search.popular();
+}
