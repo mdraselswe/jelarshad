@@ -17,6 +17,12 @@ export const metadata: Metadata = buildMetadata({
   noindex: true,
 });
 
+// Cache Components needs at least one param to prerender this route; the page itself is behind
+// the admin check and renders per request, so this one entry is only a placeholder.
+export function generateStaticParams() {
+  return [{ slug: "placeholder" }];
+}
+
 export default function AdminManagePlace({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <AdminFrame section="manage">
