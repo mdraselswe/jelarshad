@@ -20,6 +20,10 @@ export const routes = {
       type: query?.type,
       price: query?.price,
     }),
+  /** The index pages: every food, every chain, every district. */
+  foods: () => "/food",
+  brands: () => "/brand",
+  districts: () => "/district",
   food: (slug: string) => `/food/${segment(slug)}`,
   place: (slug: string) => `/place/${segment(slug)}`,
   /** A chain and all its branches: /brand/khanas. */

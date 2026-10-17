@@ -1,0 +1,160 @@
+import type { MessageKey } from "@/i18n/t";
+
+/**
+ * The kinds the foods index groups foods into. A food belongs to the first kind that lists its
+ * slug; a slug nobody lists falls under "other". Editorial and cheap to extend: add a slug here.
+ */
+export const FOOD_KINDS: readonly { id: string; label: MessageKey; slugs: readonly string[] }[] = [
+  {
+    id: "rice",
+    label: "index.kinds.rice",
+    slugs: [
+      "kacchi",
+      "tehari",
+      "biryani",
+      "morog-polao",
+      "khasir-biryani",
+      "chanar-polao",
+      "khichuri",
+      "mezbani",
+      "bangladeshi-meal",
+      "buffet",
+      "haleem",
+      "akhni",
+    ],
+  },
+  {
+    id: "meat",
+    label: "index.kinds.meat",
+    slugs: [
+      "kabab",
+      "bbq",
+      "grill",
+      "chaap",
+      "nihari",
+      "paya",
+      "shawarma",
+      "steak",
+      "mutton-curry",
+      "beef-bhuna",
+      "shatkora-beef",
+      "chicken-fry",
+      "chicken-roast",
+      "seekh-burger",
+      "chui-jhal",
+      "malaikari",
+    ],
+  },
+  {
+    id: "fast",
+    label: "index.kinds.fast",
+    slugs: [
+      "fast-food",
+      "burger",
+      "pizza",
+      "sandwich",
+      "fuchka",
+      "chotpoti",
+      "singara",
+      "ghugni",
+      "puri-burger",
+      "kaliza-singara",
+      "momo",
+    ],
+  },
+  {
+    id: "world",
+    label: "index.kinds.world",
+    slugs: [
+      "chinese",
+      "thai-food",
+      "japanese-food",
+      "korean-food",
+      "italian-food",
+      "arabian-food",
+      "turkish-food",
+      "continental-food",
+      "noodles",
+      "fried-rice",
+    ],
+  },
+  {
+    id: "fish",
+    label: "index.kinds.fish",
+    slugs: [
+      "ilish",
+      "fish-bbq",
+      "seafood",
+      "shutki",
+      "loitta-fry",
+      "rupchanda-fry",
+      "spicy-crab",
+      "boro-baper-polay-khay",
+    ],
+  },
+  {
+    id: "sweets",
+    label: "index.kinds.sweets",
+    slugs: [
+      "rasmalai",
+      "chomchom",
+      "monda",
+      "roshogolla",
+      "shondesh",
+      "jilapi",
+      "kalo-jam",
+      "malai-chop",
+      "pantua",
+      "mishti",
+      "pera",
+      "rasmanjuri",
+      "khirpuri",
+      "nizamer-mishti",
+      "para-shondesh",
+      "chhanamukhi",
+      "balish-mishti",
+      "til-khaja",
+      "kataribhog",
+      "khejur-gur",
+    ],
+  },
+  {
+    id: "drinks",
+    label: "index.kinds.drinks",
+    slugs: [
+      "doi",
+      "lassi",
+      "faluda",
+      "borhani",
+      "cha",
+      "coffee",
+      "sat-rongi-cha",
+      "cafe-snacks",
+      "ice-cream",
+    ],
+  },
+  {
+    id: "breakfast",
+    label: "index.kinds.breakfast",
+    slugs: [
+      "luchi",
+      "puri-bhaji",
+      "paratha-bhaji",
+      "chitoi-pitha",
+      "bhapa-pitha",
+      "patishapta",
+      "puli-pitha",
+      "nakshi-pitha",
+      "shahi-nashta",
+      "biscuit",
+      "bakarkhani",
+    ],
+  },
+];
+
+export const OTHER_KIND = { id: "other", label: "index.kinds.other" } as const;
+
+/** The kind a food slug belongs to. */
+export function kindOf(slug: string): { id: string; label: MessageKey } {
+  return FOOD_KINDS.find((kind) => kind.slugs.includes(slug)) ?? OTHER_KIND;
+}

@@ -226,6 +226,16 @@ export function createMockRepositories(): Repositories {
         const list = db.foodAliases.get(foodId) ?? [];
         if (!list.includes(alias)) db.foodAliases.set(foodId, [...list, alias]);
       },
+      listActive: async (limit) =>
+        db.foods
+          .filter((f) => f.status === "active")
+          .map(foodWithStats)
+          .map((food) => ({
+            food,
+            placeCount: db.dishes.filter((d) => d.foodId === food.id && d.status === "active")
+              .length,
+          }))
+          .slice(0, limit),
       slugs: async (limit) =>
         db.foods
           .filter((f) => f.status === "active")
@@ -286,6 +296,20 @@ export function createMockRepositories(): Repositories {
         paginate(clone(active(db.places).filter((p) => p.district.id === districtId)), opts),
       inArea: async (areaId, opts) =>
         paginate(clone(active(db.places).filter((p) => p.area?.id === areaId)), opts),
+      brandList: async (limit) => {
+        const byBrand = new Map<string, { slug: string; nameBn: string; branchCount: number }>();
+        for (const place of active(db.places)) {
+          if (!place.brand) continue;
+          const row = byBrand.get(place.brand.slug) ?? {
+            slug: place.brand.slug,
+            nameBn: place.brand.nameBn,
+            branchCount: 0,
+          };
+          row.branchCount += 1;
+          byBrand.set(place.brand.slug, row);
+        }
+        return [...byBrand.values()].slice(0, limit);
+      },
       brandSlugs: async (limit) =>
         Array.from(new Set(active(db.places).flatMap((p) => (p.brand ? [p.brand.slug] : []))))
           .sort()

@@ -59,6 +59,8 @@ export interface FoodRepository {
   byId(id: string): Promise<Food | null>;
   /** Slugs of the `limit` most experienced active foods (static generation, sitemap). */
   slugs(limit: number): Promise<string[]>;
+  /** Every active food with how many places serve it (the foods index). */
+  listActive(limit: number): Promise<{ food: Food; placeCount: number }[]>;
   /** Dishes of this food ranked by Wilson score (decision P10). */
   topDishes(
     foodId: string,
@@ -94,6 +96,8 @@ export interface PlaceRepository {
   inArea(areaId: number, opts?: PageOpts): Promise<Page<Place>>;
   /** Slugs of up to `limit` chains that have at least one active branch (static generation). */
   brandSlugs(limit: number): Promise<string[]>;
+  /** Every chain with how many active branches it has (the brands index). */
+  brandList(limit: number): Promise<{ slug: string; nameBn: string; branchCount: number }[]>;
   /** A chain and all its active branches (brand page); null when no such brand. */
   byBrand(
     brandSlug: string,

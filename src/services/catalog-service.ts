@@ -1,4 +1,5 @@
 import { appConfig } from "@/config/app.config";
+import { kindOf } from "@/config/food-kinds";
 import type {
   ClaimStatus,
   ClaimType,
@@ -224,6 +225,40 @@ export function createCatalogService({ repos }: Deps) {
           return { district, food };
         }),
       };
+    },
+
+    /** Every food with its kind and how many places serve it (the foods index). */
+    async foodIndex() {
+      const rows = await repos.foods.listActive(300);
+      return rows
+        .map(({ food, placeCount }) => ({
+          slug: food.slug,
+          nameBn: food.nameBn,
+          nameEn: food.nameEn,
+          aboutBn: food.aboutBn,
+          placeCount,
+          kind: kindOf(food.slug),
+        }))
+        .sort((a, b) => b.placeCount - a.placeCount || a.nameBn.localeCompare(b.nameBn, "bn"));
+    },
+
+    /** Every chain with its number of branches (the brands index). */
+    async brandIndex() {
+      const rows = await repos.places.brandList(200);
+      return rows.sort(
+        (a, b) => b.branchCount - a.branchCount || a.nameBn.localeCompare(b.nameBn, "bn"),
+      );
+    },
+
+    /** Every district with its division and number of places (the districts index). */
+    async districtIndex() {
+      const districts = await repos.districts.list();
+      return districts.map((district) => ({
+        slug: district.slug,
+        nameBn: district.nameBn,
+        divisionBn: district.divisionBn,
+        placeCount: district.placeCount,
+      }));
     },
 
     /** Slugs worth prerendering at build time. */

@@ -303,6 +303,23 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return target?.slug ?? null;
       },
+      async listActive(limit) {
+        const rows = check(
+          await db
+            .from("foods")
+            .select("*, dishes(count)")
+            .eq("status", "active")
+            .order("experience_count", { ascending: false })
+            .order("slug")
+            .limit(limit),
+          "food list",
+        );
+        return (
+          rows as unknown as (Database["public"]["Tables"]["foods"]["Row"] & {
+            dishes: { count: number }[];
+          })[]
+        ).map((row) => ({ food: toFood(row), placeCount: row.dishes[0]?.count ?? 0 }));
+      },
       async slugs(limit) {
         const rows = check(
           await db
@@ -403,6 +420,23 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           "places in area",
         );
         return toPage((rows as unknown as PlaceRow[]).map(toPlace), window);
+      },
+      async brandList(limit) {
+        const rows = check(
+          await db
+            .from("brands")
+            .select("slug, name_bn, places(count)")
+            .order("name_bn")
+            .limit(limit),
+          "brand list",
+        );
+        return (rows as unknown as { slug: string; name_bn: string; places: { count: number }[] }[])
+          .map((row) => ({
+            slug: row.slug,
+            nameBn: row.name_bn,
+            branchCount: row.places[0]?.count ?? 0,
+          }))
+          .filter((row) => row.branchCount > 0);
       },
       async brandSlugs(limit) {
         const rows = check(
