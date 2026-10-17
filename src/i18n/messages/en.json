@@ -473,6 +473,16 @@
     "note": "Only people who chose to show their name are listed.",
     "listTitle": "More contributors"
   },
+  "push": {
+    "title": "Keep your streak",
+    "body": "Share one experience today and your {count}-day streak goes on.",
+    "toggle": "Streak reminder",
+    "hint": "One evening nudge before your streak would break.",
+    "on": "Reminder is on.",
+    "off": "Reminder is off.",
+    "blocked": "Notifications are blocked in the browser. Allow them in its settings.",
+    "unsupported": "This browser cannot show reminders."
+  },
   "offline": {
     "title": "You are offline",
     "body": "This page cannot open right now. Try again when you are back online. Pages you have already visited also open without internet.",

@@ -20,6 +20,8 @@ const clientSchema = z.object({
   NEXT_PUBLIC_LAUNCHED: z.stringbool().default(false),
   /** Shows "Continue with Facebook"; turn on only once the Facebook provider is set up in Supabase. */
   NEXT_PUBLIC_FACEBOOK_LOGIN: z.stringbool().default(false),
+  /** The public half of the web-push key pair; reminders are offered only when it is set. */
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: optionalString,
   NEXT_PUBLIC_DEFAULT_LOCALE: z.enum(["bn", "en"]).default("bn"),
   NEXT_PUBLIC_STORAGE_PROVIDER: z.enum(storageProviders).default("mock"),
   NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
@@ -34,6 +36,11 @@ const serverSchema = z.object({
   DB_PROVIDER: z.enum(dbProviders).default("mock"),
   ANALYTICS_PROVIDER: z.enum(analyticsProviders).default("first-party"),
   PREVIEW_ACCESS_SECRET: optionalString,
+  /** The private half of the web-push key pair, and who the push service may contact about it. */
+  VAPID_PRIVATE_KEY: optionalString,
+  VAPID_SUBJECT: z.string().trim().min(1).default("mailto:rrasel141@gmail.com"),
+  /** Protects /api/cron/*: Vercel sends it as a bearer token. */
+  CRON_SECRET: optionalString,
   SUPABASE_SERVICE_ROLE_KEY: optionalString,
   CLOUDINARY_API_KEY: optionalString,
   CLOUDINARY_API_SECRET: optionalString,
@@ -185,6 +192,7 @@ export const clientEnv: ClientEnv = parseClientEnv({
   NEXT_PUBLIC_VERCEL_BRANCH_URL: process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL,
   NEXT_PUBLIC_LAUNCHED: process.env.NEXT_PUBLIC_LAUNCHED,
   NEXT_PUBLIC_FACEBOOK_LOGIN: process.env.NEXT_PUBLIC_FACEBOOK_LOGIN,
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || undefined,
   NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
   NEXT_PUBLIC_STORAGE_PROVIDER: process.env.NEXT_PUBLIC_STORAGE_PROVIDER,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,

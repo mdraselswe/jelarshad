@@ -931,6 +931,48 @@ export type Database = {
           },
         ];
       };
+      push_subscriptions: {
+        Row: {
+          auth: string;
+          created_at: string;
+          endpoint: string;
+          id: number;
+          p256dh: string;
+          user_id: string;
+        };
+        Insert: {
+          auth: string;
+          created_at?: string;
+          endpoint: string;
+          id?: number;
+          p256dh: string;
+          user_id: string;
+        };
+        Update: {
+          auth?: string;
+          created_at?: string;
+          endpoint?: string;
+          id?: number;
+          p256dh?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "push_subscriptions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "push_subscriptions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "public_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       rate_limit_events: {
         Row: {
           action: string;

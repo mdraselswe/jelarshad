@@ -361,6 +361,23 @@ export interface InsightRepository {
   purge(days: number): Promise<number>;
 }
 
+/** One device a person allowed reminders on (a Web Push subscription). */
+export type PushSubscriptionRecord = {
+  userId: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+};
+
+export interface PushRepository {
+  /** Remembers a device; the same endpoint again just updates it. */
+  save(subscription: PushSubscriptionRecord): Promise<void>;
+  /** Forgets a device (the person turned reminders off, or the push service said it is gone). */
+  remove(endpoint: string): Promise<void>;
+  /** Devices that allowed reminders, for the daily run. */
+  all(limit: number): Promise<PushSubscriptionRecord[]>;
+}
+
 export type Repositories = {
   districts: DistrictRepository;
   foods: FoodRepository;
@@ -377,4 +394,5 @@ export type Repositories = {
   rewards: RewardRepository;
   admin: AdminRepository;
   insights: InsightRepository;
+  push: PushRepository;
 };

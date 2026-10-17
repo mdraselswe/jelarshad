@@ -18,11 +18,13 @@ import { createMeService, type MeService } from "@/services/me-service";
 import { createMediaService, type MediaService } from "@/services/media-service";
 import { createAdminService, type AdminService } from "@/services/admin-service";
 import { createModerationService, type ModerationService } from "@/services/moderation-service";
+import { createPushService, type PushService } from "@/services/push-service";
 import { createRewardService, type RewardService } from "@/services/reward-service";
 import { createSavedService, type SavedService } from "@/services/saved-service";
 import { createSearchService, type SearchService } from "@/services/search-service";
 import { createDefineAction } from "@/lib/action";
 
+import { createWebPushSender } from "./push/web-push";
 import { createFirstPartyAnalytics } from "./analytics/first-party";
 import { noopAnalytics } from "./analytics/noop";
 import { createCloudinaryStorage } from "./cloudinary/storage";
@@ -63,6 +65,7 @@ export type Services = {
   analytics: AnalyticsProvider;
   errors: ErrorReporter;
   rateLimiter: RateLimiter;
+  push: PushService;
 };
 
 let services: Services | undefined;
@@ -105,6 +108,14 @@ export function getServices(): Services {
 
   const rateLimiter = createRateLimiter(repos.rateLimits);
   const rewards = createRewardService({ repos });
+  const pushSender =
+    env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY
+      ? createWebPushSender({
+          publicKey: env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+          privateKey: env.VAPID_PRIVATE_KEY,
+          subject: env.VAPID_SUBJECT,
+        })
+      : null;
   const experience = createExperienceService({ repos, cache: nextCacheInvalidator, rewards });
   const claims = createClaimService({ repos, cache: nextCacheInvalidator, rewards });
 
@@ -139,6 +150,7 @@ export function getServices(): Services {
     analytics,
     errors: createFirstPartyErrorReporter(repos.insights),
     rateLimiter,
+    push: createPushService({ repos, rewards, sender: pushSender }),
   };
   return services;
 }

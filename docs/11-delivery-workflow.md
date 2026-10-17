@@ -116,3 +116,10 @@ Phase 9 flips `NEXT_PUBLIC_LAUNCHED=true` → full site, indexing on, sitemap su
 - Smoke test in `deploy.yml` (fails the run if home, `/food/doi` or `/api/health` don't return 200).
 - Vercel logs for errors; weekly quota check (`09-security-and-limits.md` §6).
 - Lighthouse budgets on every PR keep performance from sliding.
+
+## Optional features that need an owner step
+
+| Feature | What to set (Vercel Production, then redeploy) |
+| --- | --- |
+| Streak reminders (Web Push) | `npx web-push generate-vapid-keys`; set `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `CRON_SECRET` (any long random string). The daily run is `/api/cron/streak` at 13:00 UTC (7 pm in Bangladesh), declared in `vercel.json`. Until the keys are set the toggle on the profile does not appear and nothing is sent |
+| Facebook sign-in | Create a Facebook app, add the Facebook provider in Supabase Auth with its app id and secret, then set `NEXT_PUBLIC_FACEBOOK_LOGIN=true`. Until then the button is hidden |

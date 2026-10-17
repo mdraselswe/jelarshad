@@ -84,6 +84,7 @@ export function createMockRepositories(): Repositories {
       props: Record<string, unknown>;
       session: string | null;
     }[],
+    push: [] as { userId: string; endpoint: string; p256dh: string; auth: string }[],
     errors: [] as {
       at: Date;
       source: "server" | "client";
@@ -948,6 +949,17 @@ export function createMockRepositories(): Repositories {
         paginate(clone(db.reports.filter((r) => r.status === "open")), opts),
       openEditSuggestions: async (opts) =>
         paginate(clone(db.edits.filter((e) => e.status === "open")), opts),
+    },
+
+    push: {
+      save: async (subscription) => {
+        db.push = db.push.filter((row) => row.endpoint !== subscription.endpoint);
+        db.push.push({ ...subscription });
+      },
+      remove: async (endpoint) => {
+        db.push = db.push.filter((row) => row.endpoint !== endpoint);
+      },
+      all: async (limit) => clone(db.push.slice(0, limit)),
     },
 
     insights: {
