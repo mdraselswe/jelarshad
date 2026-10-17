@@ -19,6 +19,24 @@ export function SiteFooter() {
         className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-meta"
       >
         <Link
+          href={routes.foods()}
+          className="py-2 text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("index.foodsTitle")}
+        </Link>
+        <Link
+          href={routes.districts()}
+          className="py-2 text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("index.districtsTitle")}
+        </Link>
+        <Link
+          href={routes.brands()}
+          className="py-2 text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("index.brandsTitle")}
+        </Link>
+        <Link
           href={routes.leaderboard()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >

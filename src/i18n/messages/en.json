@@ -454,6 +454,28 @@
     "note": "Only people who chose to show their name are listed.",
     "listTitle": "More contributors"
   },
+  "index": {
+    "foodsTitle": "All foods",
+    "foodsLead": "Browse any food by kind and find where it is served.",
+    "brandsTitle": "All chains",
+    "brandsLead": "Branches of one name in one place; each branch has its own experiences.",
+    "districtsTitle": "All districts",
+    "districtsLead": "Browse districts by division.",
+    "places": "{count} places",
+    "branches": "{count} branches",
+    "noPlaces": "No place yet",
+    "kinds": {
+      "rice": "Rice and biryani",
+      "meat": "Kebab, grill and meat",
+      "fast": "Fast food and snacks",
+      "world": "Chinese and international",
+      "fish": "Fish and seafood",
+      "sweets": "Sweets",
+      "drinks": "Doi, tea and drinks",
+      "breakfast": "Breakfast and pitha",
+      "other": "Other"
+    }
+  },
   "listFilter": {
     "all": "All",
     "searchLabel": "Search places or areas",

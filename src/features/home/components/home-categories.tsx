@@ -43,7 +43,7 @@ export function HomeCategories() {
       tone="coral"
       className="pt-5 lg:pt-7"
       action={
-        <Link href={routes.search()} className="text-[13px] font-semibold text-primary-text">
+        <Link href={routes.foods()} className="text-[13px] font-semibold text-primary-text">
           {t("home.seeAll")}
         </Link>
       }
@@ -58,7 +58,7 @@ export function HomeCategories() {
           return (
             <li key={category.id} className={category.phone ? undefined : "hidden md:block"}>
               <Link
-                href={category.id === "more" ? routes.search() : routes.search({ q: label })}
+                href={category.id === "more" ? routes.foods() : routes.search({ q: label })}
                 className="flex press flex-col items-center gap-2 lg:rounded-card-lg lg:border lg:border-border lg:bg-primary-soft/40 lg:px-2 lg:py-4"
               >
                 <span

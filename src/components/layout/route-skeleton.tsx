@@ -10,6 +10,7 @@ export type RouteSkeletonKind =
   | "place"
   | "brand"
   | "leaderboard"
+  | "index"
   | "district"
   | "districtFood"
   | "area"
@@ -26,6 +27,9 @@ export function skeletonKindFor(pathname: string): RouteSkeletonKind {
   const parts = pathname.split("/").filter(Boolean);
   const [first, second, third] = parts;
   if (parts.length === 0) return "home";
+  // /food, /brand and /district alone are the browse pages.
+  if (parts.length === 1 && (first === "food" || first === "brand" || first === "district"))
+    return "index";
   if (first === "search") return "search";
   if (first === "food") return "food";
   if (first === "place") return "place";

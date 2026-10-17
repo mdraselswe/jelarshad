@@ -230,3 +230,30 @@ describe("catalogService brands", () => {
     expect(await createCatalogService({ repos }).placeBranches(place?.id ?? "")).toBeNull();
   });
 });
+
+describe("catalogService browse indexes", () => {
+  it("lists every active food with its kind and how many places serve it", async () => {
+    const foods = await service().foodIndex();
+    expect(foods.length).toBeGreaterThan(0);
+    const doi = foods.find((food) => food.slug === "doi");
+    expect(doi?.kind.id).toBe("drinks");
+    expect(doi?.placeCount).toBeGreaterThan(0);
+    // Most-served foods come first.
+    const counts = foods.map((food) => food.placeCount);
+    expect(counts).toEqual([...counts].sort((a, b) => b - a));
+  });
+
+  it("puts a food nobody has classified under other", async () => {
+    const { kindOf } = await import("@/config/food-kinds");
+    expect(kindOf("kacchi").id).toBe("rice");
+    expect(kindOf("a-food-nobody-listed").id).toBe("other");
+  });
+
+  it("lists chains with their branch counts and all districts with their division", async () => {
+    const brands = await service().brandIndex();
+    expect(brands).toEqual([{ slug: "sample-chain", nameBn: "নমুনা চেইন", branchCount: 2 }]);
+    const districts = await service().districtIndex();
+    expect(districts).toHaveLength(4);
+    expect(districts[0]).toHaveProperty("divisionBn");
+  });
+});
