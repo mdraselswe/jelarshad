@@ -97,3 +97,25 @@ Decision P12 promised 10-15 districts with real depth. Today only Dhaka has it.
 - Competitor features (Google Maps, delivery apps, Facebook groups) and how people use them today.
 - Photo moderation behaviour beyond the flag queue.
 - Any data in the production database beyond what the seed files contain.
+
+## 5. Status (end of the day)
+
+| # | Gap | Status |
+| --- | --- | --- |
+| 1 | No usage measurement | Done: first-party counts, `/admin/insights` (PR 101) |
+| 2 | No error reporting | Done: server, action and browser errors in the same page (PR 101) |
+| 3 | Thin content outside Dhaka | Partly: about 130 places in seven more districts and 24 more in Dhaka areas; areas with no source (Rampura, Badda, Aftabnagar, Jatrabari, Lalmatia, Shahbagh) stay empty until people add them |
+| 4 | Leaderboard empty on day one | Done: asked once after the first experience (PR 103) |
+| 5 | Place page facts | Done: phone, website or Facebook page, hours, what people say (PR 102) |
+| 6 | No "near me" | Done by neighbourhood (centre points from OpenStreetMap for 103 of 173 neighbourhoods); exact distances to a door need coordinates people add (PR 112) |
+| 7 | Search-only browsing | Done: foods, chains and districts index pages; sort by match, name or price; area chips (PRs 104, 105, 88, 89) |
+| 8 | One-way contributions | Done: take back an experience, add a photo later, creators correct their own place (PRs 106, 107) |
+| 9 | Chain tooling | Done: `/admin/manage` edits a place, its neighbourhood and its chain; chain index and pages (PRs 108, 87, 104) |
+| 10 | Google only | Code done, off until the owner sets up the Facebook provider (PR 114) |
+| 11 | No way to bring people back | Code done, off until the owner sets the key pair: evening streak reminders (PR 115) |
+| 12 | No public profile | Done: `/people/<id>` for people on the list (PR 109) |
+| 13 | Slow networks | Done: static files cached, visited pages open offline, offline page (PR 113); real-device testing still to do |
+| 14 | Every data fix needs a migration | Done: `/admin/manage` (PR 108) |
+| 15 | Seeds can go stale | Done: every place has a "still open?" fact to confirm (PR 111) |
+| 16 | Search soft spots | Done: did-you-mean, popular and recent searches (PR 110) |
+| 17 | Bangla only | Left on purpose: a per-visitor language needs locale routing and would touch every page; not started |
