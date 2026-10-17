@@ -188,3 +188,11 @@ Found for the areas the first directory had no page for (Tejgaon, Farmgate, Wari
 | --- | --- |
 | Hotel New Star & Kabab (Tejgaon); Vrinda's Kitchen, Cafe 99 (Farmgate); PizzaBurg, Swiss Bakery, Sub-Zero Icecream Parlour (Wari); New Dhaka Biriyani House, Mr Shawarma, Takeout (Moghbazar); Nabihah Restaurant, The Atrium (Baridhara); Milk & Cream, Posh Lounge Rooftop (Pallabi); Little Arabia (Shantinagar); Mr. Burger (Malibagh); Green House Restaurant (Elephant Road); PizzaBurg Dhanmondi; Sultan's Dine Gulshan | [DhakaEats neighbourhood pages](https://dhakaeats.com/neighbourhoods/) |
 | Star Kabab branches: Thatari Bazar, Wari, Kawran Bazar, Farmgate, Banani, Elephant Road, Johnson Road | [Wikipedia, Star Kabab](https://en.wikipedia.org/wiki/Star_Kabab) |
+
+## Restaurants in seven more districts (migrations 0079 to 0086, decision T20)
+
+Chattogram, Sylhet, Khulna, Rajshahi, Mymensingh, Rangpur and Cox's Bazar: name, where the listing says it is (a neighbourhood when it names one, otherwise the city) and a kind of food. A place is here only when the listing states a kind of food or its own name names one; listings that say only "Restaurant", hotels and bars are left out, and a listing whose kind contradicted its name was left out. Neighbourhoods added: Khulshi, Nayasarak, Kumarpara, Sonadanga, Kolatoli, Inani and one "city" neighbourhood each for Sylhet, Rajshahi and Rangpur.
+
+| District | Source |
+| --- | --- |
+| Chattogram, Sylhet, Khulna, Rajshahi, Mymensingh, Rangpur, Cox's Bazar | [BDPlaces city pages](https://bdplaces.com/restaurants-in-sylhet/) (restaurants-in-chattogram, -sylhet, -khulna, -rajshahi, -mymensingh, -rangpur, -coxs-bazar) |

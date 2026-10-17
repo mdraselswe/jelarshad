@@ -9,6 +9,7 @@ import { DHAKA_SET_7, GAZIPUR_SET } from "./dhaka-data-7";
 import { DHAKA_SET_8, GAZIPUR_SET_2 } from "./dhaka-data-8";
 import { DHAKA_SET_9 } from "./dhaka-data-9";
 import { DHAKA_SET_10 } from "./dhaka-data-10";
+import { DISTRICT_SETS_11 } from "./dhaka-data-11";
 import { CHATTOGRAM_SET, SYLHET_SET } from "./districts-data";
 import { BOGURA_SET, CUMILLA_SET, KHULNA_SET, RAJSHAHI_SET } from "./districts-data-2";
 import { DISTRICT_SETS_4 } from "./districts-data-4";
@@ -70,6 +71,7 @@ export const DHAKA_SETS: DhakaSet[] = [
   ...DISTRICT_SETS_4,
   GAZIPUR_SET,
   GAZIPUR_SET_2,
+  ...DISTRICT_SETS_11,
 ];
 
 export const migrationPath = (set: DhakaSet) => `supabase/migrations/${set.migration}`;
