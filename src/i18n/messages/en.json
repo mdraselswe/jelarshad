@@ -464,6 +464,9 @@
     "places": "{count} places",
     "branches": "{count} branches",
     "noPlaces": "No place yet",
+    "footerFoods": "Foods",
+    "footerDistricts": "Districts",
+    "footerBrands": "Chains",
     "kinds": {
       "rice": "Rice and biryani",
       "meat": "Kebab, grill and meat",

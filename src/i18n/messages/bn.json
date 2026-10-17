@@ -464,6 +464,9 @@
     "places": "{count}টি জায়গা",
     "branches": "{count}টি শাখা",
     "noPlaces": "এখনও কোনো জায়গা নেই",
+    "footerFoods": "খাবারের তালিকা",
+    "footerDistricts": "জেলার তালিকা",
+    "footerBrands": "চেইনের তালিকা",
     "kinds": {
       "rice": "ভাত ও বিরিয়ানি",
       "meat": "কাবাব, গ্রিল ও মাংস",

@@ -22,19 +22,19 @@ export function SiteFooter() {
           href={routes.foods()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >
-          {t("index.foodsTitle")}
+          {t("index.footerFoods")}
         </Link>
         <Link
           href={routes.districts()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >
-          {t("index.districtsTitle")}
+          {t("index.footerDistricts")}
         </Link>
         <Link
           href={routes.brands()}
           className="py-2 text-muted-foreground underline-offset-4 hover:underline"
         >
-          {t("index.brandsTitle")}
+          {t("index.footerBrands")}
         </Link>
         <Link
           href={routes.leaderboard()}
