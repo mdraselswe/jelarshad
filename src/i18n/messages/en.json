@@ -472,6 +472,12 @@
     "note": "Only people who chose to show their name are listed.",
     "listTitle": "More contributors"
   },
+  "offline": {
+    "title": "You are offline",
+    "body": "This page cannot open right now. Try again when you are back online. Pages you have already visited also open without internet.",
+    "retry": "Try again",
+    "home": "Go home"
+  },
   "near": {
     "title": "Near me",
     "footer": "Near me",
