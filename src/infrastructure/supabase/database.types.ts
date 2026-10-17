@@ -59,66 +59,6 @@ export type Database = {
           },
         ];
       };
-      error_logs: {
-        Row: {
-          at: string;
-          context: Json;
-          digest: string | null;
-          id: number;
-          message: string;
-          path: string | null;
-          source: string;
-          stack: string | null;
-        };
-        Insert: {
-          at?: string;
-          context?: Json;
-          digest?: string | null;
-          id?: number;
-          message: string;
-          path?: string | null;
-          source: string;
-          stack?: string | null;
-        };
-        Update: {
-          at?: string;
-          context?: Json;
-          digest?: string | null;
-          id?: number;
-          message?: string;
-          path?: string | null;
-          source?: string;
-          stack?: string | null;
-        };
-        Relationships: [];
-      };
-      insight_events: {
-        Row: {
-          at: string;
-          id: number;
-          name: string;
-          path: string | null;
-          props: Json;
-          session: string | null;
-        };
-        Insert: {
-          at?: string;
-          id?: number;
-          name: string;
-          path?: string | null;
-          props?: Json;
-          session?: string | null;
-        };
-        Update: {
-          at?: string;
-          id?: number;
-          name?: string;
-          path?: string | null;
-          props?: Json;
-          session?: string | null;
-        };
-        Relationships: [];
-      };
       brands: {
         Row: {
           created_at: string;
@@ -505,6 +445,39 @@ export type Database = {
           },
         ];
       };
+      error_logs: {
+        Row: {
+          at: string;
+          context: NonNullable<Json>;
+          digest: string | null;
+          id: number;
+          message: string;
+          path: string | null;
+          source: string;
+          stack: string | null;
+        };
+        Insert: {
+          at?: string;
+          context?: NonNullable<Json>;
+          digest?: string | null;
+          id?: number;
+          message: string;
+          path?: string | null;
+          source: string;
+          stack?: string | null;
+        };
+        Update: {
+          at?: string;
+          context?: NonNullable<Json>;
+          digest?: string | null;
+          id?: number;
+          message?: string;
+          path?: string | null;
+          source?: string;
+          stack?: string | null;
+        };
+        Relationships: [];
+      };
       experiences: {
         Row: {
           comment: string | null;
@@ -641,6 +614,33 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      insight_events: {
+        Row: {
+          at: string;
+          id: number;
+          name: string;
+          path: string | null;
+          props: NonNullable<Json>;
+          session: string | null;
+        };
+        Insert: {
+          at?: string;
+          id?: number;
+          name: string;
+          path?: string | null;
+          props?: NonNullable<Json>;
+          session?: string | null;
+        };
+        Update: {
+          at?: string;
+          id?: number;
+          name?: string;
+          path?: string | null;
+          props?: NonNullable<Json>;
+          session?: string | null;
+        };
+        Relationships: [];
       };
       media: {
         Row: {
@@ -1148,17 +1148,25 @@ export type Database = {
       };
       insights_summary: {
         Args: { p_since: string };
-        Returns: { events: number; name: string; sessions: number }[];
+        Returns: {
+          events: number;
+          name: string;
+          sessions: number;
+        }[];
       };
       insights_top_searches: {
         Args: { p_limit: number; p_since: string };
-        Returns: { empty: number; query: string; searches: number }[];
+        Returns: {
+          empty: number;
+          query: string;
+          searches: number;
+        }[];
       };
-      purge_insights: { Args: { p_days: number }; Returns: number };
       is_active_user: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       merge_foods: { Args: { p_from: string; p_into: string }; Returns: number };
       merge_places: { Args: { p_from: string; p_into: string }; Returns: number };
+      purge_insights: { Args: { p_days: number }; Returns: number };
       purge_seed_data: { Args: { p_keep_used?: boolean }; Returns: Json };
       record_search_miss: { Args: { p_key: string; p_text: string }; Returns: undefined };
       refresh_dish_stats: { Args: { p_dish: string }; Returns: undefined };
