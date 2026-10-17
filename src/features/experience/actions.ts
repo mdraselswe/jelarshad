@@ -20,6 +20,13 @@ const schema = z
     message: "dish_required",
   });
 
+/** A person takes back one of their own experiences (they cannot remove anyone else's). */
+export const withdrawExperience = defineAction(
+  z.object({ experienceId: id }),
+  async (input, { services, user }) => services.experience.withdraw(user, input.experienceId),
+  { auth: true },
+);
+
 /**
  * "আমি খেয়েছি": saves (or changes) the signed-in user's reaction to a dish. Signed-out visitors get
  * `auth_required`, which the picker turns into a trip to the login page and back.

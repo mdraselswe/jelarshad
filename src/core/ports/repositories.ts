@@ -152,6 +152,8 @@ export interface ExperienceRepository {
   byUser(userId: string, opts?: PageOpts): Promise<Page<Experience>>;
   /** One experience per user per dish (decision P6): a second one updates the first. */
   upsert(input: ExperienceInput): Promise<Experience>;
+  /** Deletes one experience and refreshes its dish's numbers; returns the dish it was about, or null. */
+  remove(id: string): Promise<{ dishId: string } | null>;
 }
 
 export interface ClaimRepository {

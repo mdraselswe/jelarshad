@@ -77,6 +77,21 @@ export function createExperienceService({ repos, cache, rewards }: Deps) {
       });
       return ok({ experience, dish, isNew, reward });
     },
+
+    /** A person takes back their own experience: it goes, its numbers refresh, its points are revoked. */
+    async withdraw(user: AppUser, experienceId: string): Promise<Result<{ removed: true }>> {
+      const experience = await repos.experiences.byId(experienceId);
+      if (!experience) return fail("not_found");
+      if (experience.user.id !== user.id) return fail("forbidden");
+      const removed = await repos.experiences.remove(experienceId);
+      if (!removed) return fail("not_found");
+      await rewards.revokeFor("experience", experienceId);
+      const dish = await repos.dishes.byId(removed.dishId);
+      if (dish) {
+        await cache.invalidate([`food:${dish.foodId}`, `place:${dish.placeId}`, `dish:${dish.id}`]);
+      }
+      return ok({ removed: true });
+    },
   };
 }
 

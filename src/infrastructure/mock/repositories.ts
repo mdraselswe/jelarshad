@@ -450,6 +450,13 @@ export function createMockRepositories(): Repositories {
       },
       byUser: async (userId, opts) =>
         paginate(clone(active(db.experiences).filter((e) => e.user.id === userId)), opts),
+      remove: async (id) => {
+        const index = db.experiences.findIndex((e) => e.id === id);
+        const found = db.experiences[index];
+        if (!found) return null;
+        db.experiences.splice(index, 1);
+        return { dishId: found.dishId };
+      },
       upsert: async (input) => {
         const dish = db.dishes.find((d) => d.id === input.dishId);
         if (!dish) throw new Error(`mock: unknown dish ${input.dishId}`);

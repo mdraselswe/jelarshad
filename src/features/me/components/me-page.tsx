@@ -3,6 +3,7 @@ import { BookmarkIcon, FlameIcon, StoreIcon, UtensilsIcon } from "lucide-react";
 
 import { TrophyArt } from "@/components/illustration/food-art";
 import { WorldStrip } from "@/components/illustration/world-art";
+import { WithdrawButton } from "@/features/experience/components/withdraw-button";
 import { EmptyState } from "@/components/layout/empty-state";
 import { HeroBand } from "@/components/layout/hero-band";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -103,6 +104,7 @@ async function Ate({ userId }: { userId: string }) {
             timeAgo(row.createdAt),
             t(`reaction.${row.reaction}`),
           ].join(" · ")}
+          action={<WithdrawButton experienceId={row.experienceId} />}
         />
       ))}
     </GroupedList>
