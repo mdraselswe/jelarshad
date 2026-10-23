@@ -38,6 +38,8 @@ function SheetOverlay({
   );
 }
 
+// Children keep their height ([&>*]:shrink-0): when the content is taller than the screen the sheet
+// scrolls, instead of squeezing its rows until they overlap.
 function SheetContent({
   className,
   children,
@@ -51,7 +53,7 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[90dvh] w-full max-w-lg flex-col gap-4 overflow-y-auto rounded-t-sheet bg-card px-5 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground outline-none data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:animate-sheet-up",
+          "fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[90dvh] w-full max-w-lg flex-col gap-4 overflow-y-auto rounded-t-sheet bg-card px-5 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground outline-none data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:animate-sheet-up [&>*]:shrink-0",
           className,
         )}
         {...props}
