@@ -1,6 +1,10 @@
 import type { NextRequest } from "next/server";
 
 import { getServices } from "@/infrastructure/container";
+import { clientAddress, createIpRateLimiter, tooManyRequests } from "@/lib/ip-rate-limit";
+
+/** 60 requests a minute per visitor; more is not a person using the app. */
+const limiter = createIpRateLimiter({ limit: 60, windowMs: 60_000 });
 
 const MAX_DISHES = 200;
 
@@ -8,6 +12,7 @@ const MAX_DISHES = 200;
 // who is asking. The reaction boxes call it after the page has loaded, so the page itself stays
 // cacheable and static.
 export async function GET(request: NextRequest) {
+  if (!limiter.allow(clientAddress(request.headers))) return tooManyRequests();
   const ids = (request.nextUrl.searchParams.get("dishes") ?? "")
     .split(",")
     .map((id) => id.trim())
