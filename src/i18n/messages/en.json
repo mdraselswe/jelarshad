@@ -352,6 +352,8 @@
     "recent": "Your recent searches",
     "recentClear": "Clear",
     "didYouMean": "Did you mean one of these?",
+    "startTitle": "What to search?",
+    "browseTitle": "Browse",
     "tryTitle": "Try these too"
   },
   "placeType": {

@@ -1,5 +1,4 @@
 import { MapPinIcon, StoreIcon, UtensilsIcon } from "lucide-react";
-import { LocateFixedIcon } from "lucide-react";
 import Link from "next/link";
 
 import { GroupedList, ListRowSkeleton } from "@/components/ui/grouped-list";
@@ -19,9 +18,9 @@ import { filterPlaces, groupBranches, sortPlaces } from "@/services/search-servi
 /** More place hits than this and a small search box joins the area chips. */
 const SEARCH_FROM = 10;
 
-import { QUICK_SEARCHES } from "@/config/home";
-import { RecentSearches, RememberSearch } from "./recent-searches";
-import { getDidYouMean, getPopularSearches, searchCatalog } from "../queries";
+import { RememberSearch } from "./recent-searches";
+import { SearchStart } from "./search-start";
+import { getDidYouMean, searchCatalog } from "../queries";
 import { parseSearchParams, type RawSearchParams } from "../search-params";
 import { AreaHitRow, DistrictHitRow, FoodHitRow, PlaceRowItemView } from "./search-hit-rows";
 import { SearchFilters } from "./search-filters";
@@ -34,46 +33,7 @@ export async function SearchResults({ searchParams }: { searchParams: Promise<Ra
   const params = parseSearchParams(await searchParams);
   const { q, tab, type, price, sort } = params;
 
-  if (q === "") {
-    // What people search most lately; until enough people have searched, the fixed ideas.
-    const popular = await getPopularSearches();
-    const ideas = popular.length >= 4 ? popular : [...QUICK_SEARCHES];
-    return (
-      <div data-search-results className="page-x pt-6 text-center">
-        <MagnifierArt className="mx-auto w-40" />
-        <p className="text-card-title">{t("search.prompt")}</p>
-        <p className="mt-1 text-meta text-muted-foreground">{t("search.promptHint")}</p>
-        <RecentSearches />
-        <section className="mt-5" aria-label={t("search.popular")}>
-          <p className="text-caption font-semibold text-muted-foreground">
-            {t(popular.length >= 4 ? "search.popular" : "search.tryTitle")}
-          </p>
-          {/* One scrolling row, not a wrapping block, so a late font cannot change its height. */}
-          <ul className="mt-2 flex [scrollbar-width:none] gap-2 overflow-x-auto pb-1 lg:justify-center">
-            <li>
-              <Link
-                href={routes.near()}
-                className="flex h-10 shrink-0 press items-center gap-1.5 rounded-full bg-primary px-4 text-[14.5px] font-semibold text-primary-foreground"
-              >
-                <LocateFixedIcon className="size-4" aria-hidden />
-                {t("near.title")}
-              </Link>
-            </li>
-            {ideas.map((term) => (
-              <li key={term}>
-                <Link
-                  href={routes.search({ q: term })}
-                  className="flex h-10 shrink-0 press items-center rounded-full bg-primary-soft px-4 text-[14.5px] font-semibold text-primary-soft-fg"
-                >
-                  {term}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
-    );
-  }
+  if (q === "") return <SearchStart />;
 
   const outcome = await searchCatalog(q);
   const suggestions = outcome.total === 0 ? await getDidYouMean(q) : [];
