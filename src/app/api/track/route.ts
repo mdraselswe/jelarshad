@@ -2,6 +2,10 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 import { getServices } from "@/infrastructure/container";
+import { clientAddress, createIpRateLimiter, tooManyRequests } from "@/lib/ip-rate-limit";
+
+/** 120 requests a minute per visitor; more is not a person using the app. */
+const limiter = createIpRateLimiter({ limit: 120, windowMs: 60_000 });
 
 // Usage counts from the browser: no cookie, no IP, no user id. Only these names are accepted and
 // everything is size-capped, so the endpoint cannot be used to fill the table with junk.
@@ -19,6 +23,7 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  if (!limiter.allow(clientAddress(request.headers))) return tooManyRequests();
   const text = await request.text();
   if (text.length > MAX_BYTES) return new Response(null, { status: 413 });
   let json: unknown;

@@ -2,6 +2,10 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 import { getServices } from "@/infrastructure/container";
+import { clientAddress, createIpRateLimiter, tooManyRequests } from "@/lib/ip-rate-limit";
+
+/** 20 requests a minute per visitor; more is not a person using the app. */
+const limiter = createIpRateLimiter({ limit: 20, windowMs: 60_000 });
 
 // Errors thrown in the browser, sent by the error boundaries. Size-capped like /api/track.
 const MAX_BYTES = 8_000;
@@ -14,6 +18,7 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  if (!limiter.allow(clientAddress(request.headers))) return tooManyRequests();
   const text = await request.text();
   if (text.length > MAX_BYTES) return new Response(null, { status: 413 });
   let json: unknown;
