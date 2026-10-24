@@ -101,7 +101,10 @@
       "claim_voted": "Facts verified",
       "share": "Shares"
     },
-    "errorSource": { "server": "Server", "client": "Browser" },
+    "errorSource": {
+      "server": "Server",
+      "client": "Browser"
+    },
     "orphanTitle": "Photos with no live experience: {count}",
     "orphanHint": "Photos whose experience was removed or hidden. Running this deletes them from storage.",
     "orphanConfirm": "Delete these photos for good?",
@@ -142,7 +145,7 @@
       "sections": {
         "s1": {
           "h": "What we store",
-          "p": "When you sign in with Google we receive your name, photo and email. The email is never shown to anyone. Your name and the experiences, comments and photos you add are public."
+          "p": "When you sign in with Google or Facebook we receive your name, photo and email. The email is never shown to anyone. Your name and the experiences, comments and photos you add are public. You decide whether your name appears on the contributors list."
         },
         "s2": {
           "h": "Why",
@@ -153,12 +156,16 @@
           "p": "You are responsible for the photos and comments you add. Do not post other people's photos, or anything offensive or false. We may hide or remove content after a report, and repeated rule-breaking can lead to a ban."
         },
         "s4": {
-          "h": "Cookies and tracking",
-          "p": "A few cookies and browser storage keep you signed in and remember your theme. There are no advertising cookies and no personal tracking."
+          "h": "Cookies and usage counts",
+          "p": "A few cookies and browser storage keep you signed in and remember your theme; your recent searches stay in your browser only. To learn what helps and what breaks, we keep our own anonymous counts (pages opened, searches made, errors that happened). They hold no name, account, IP address or cookie, and records older than 90 days are deleted. There are no advertising cookies and no outside trackers."
         },
         "s5": {
+          "h": "Location, reminders and abuse limits",
+          "p": "\"Near me\" asks for your permission in the browser; your location is used once to find nearby neighbourhoods and is not stored. Neighbourhood centre points come from OpenStreetMap. If you turn on streak reminders we keep a notification address for your device; turning them off deletes it. To stop floods of requests the server briefly counts requests per address in memory; this is never written down."
+        },
+        "s6": {
           "h": "Deleting your data",
-          "p": "To delete your account and data, tell us at the address below and we will remove it as soon as we can."
+          "p": "You can take back any experience yourself. To delete your whole account and data, tell us at the address below and we will remove it as soon as we can."
         }
       },
       "contact": "Contact: {email}"

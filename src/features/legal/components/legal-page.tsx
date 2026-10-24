@@ -29,6 +29,7 @@ export function LegalPage({ kind }: { kind: "about" | "policy" }) {
           [t("legal.policy.sections.s3.h"), t("legal.policy.sections.s3.p")],
           [t("legal.policy.sections.s4.h"), t("legal.policy.sections.s4.p")],
           [t("legal.policy.sections.s5.h"), t("legal.policy.sections.s5.p")],
+          [t("legal.policy.sections.s6.h"), t("legal.policy.sections.s6.p")],
         ] as const);
   const title = t(kind === "about" ? "legal.about.title" : "legal.policy.title");
   const lead = t(kind === "about" ? "legal.about.lead" : "legal.policy.lead");
