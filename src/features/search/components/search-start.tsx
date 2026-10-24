@@ -64,8 +64,11 @@ export async function SearchStart() {
       data-search-results
       className="flex flex-col gap-4 page-x pt-5 lg:grid lg:grid-cols-12 lg:items-start lg:gap-6 lg:pt-8"
     >
-      <Panel bare className="lg:col-span-7" icon={<SearchIcon />} title={t("search.prompt")}>
-        <p className="text-meta text-muted-foreground">{t("search.promptHint")}</p>
+      <Panel bare className="lg:col-span-7" icon={<SearchIcon />} title={t("search.startTitle")}>
+        {/* Three lines held on phones: the wrap changes when the web font arrives, the height must not. */}
+        <p className="min-h-[3lh] text-meta text-muted-foreground lg:min-h-0">
+          {t("search.prompt")}। {t("search.promptHint")}
+        </p>
         <section className="mt-5" aria-label={t("search.popular")}>
           <p className="text-caption font-semibold text-muted-foreground">
             {t(popular.length >= 4 ? "search.popular" : "search.tryTitle")}
