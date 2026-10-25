@@ -19,7 +19,7 @@ import { SaveControl } from "@/features/saved/components/save-control";
 import { ShareButton } from "@/features/share/components/share-button";
 import { getT } from "@/i18n/server";
 import { formatNumber } from "@/lib/format/number";
-import { isLatinText } from "@/lib/text/to-bangla";
+import { isEnglishName } from "@/lib/text/to-bangla";
 import type { PlaceHeader } from "@/services/catalog-service";
 
 import { PlaceBranchesSection } from "./place-branches-section";
@@ -102,7 +102,7 @@ export function PlacePage({ place }: { place: PlaceHeader }) {
               fields={[
                 { id: "name_bn", current: place.nameBn },
                 // A place added in English asks for its Bangla name, the others for the English one.
-                isLatinText(place.nameBn)
+                isEnglishName(place.nameBn)
                   ? { id: "name_bangla", current: null }
                   : { id: "name_en", current: place.nameEn },
                 { id: "alias", current: place.searchNames.join(", ") || null },

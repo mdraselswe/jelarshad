@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isLatinText, latinToBangla } from "./to-bangla";
+import { isEnglishName, isLatinText, latinToBangla } from "./to-bangla";
 
 describe("latinToBangla", () => {
   it.each([
@@ -38,5 +38,15 @@ describe("isLatinText", () => {
     expect(isLatinText("সালাদ")).toBe(false);
     expect(isLatinText("salad সালাদ")).toBe(false);
     expect(isLatinText("  ")).toBe(false);
+  });
+});
+
+describe("isEnglishName", () => {
+  it("accepts English names with signs and digits, not Bangla or mixed ones", () => {
+    expect(isEnglishName("Grill & Thrill by Shahnaj Kitchen")).toBe(true);
+    expect(isEnglishName("Cafe 21")).toBe(true);
+    expect(isEnglishName("আইডিয়াল")).toBe(false);
+    expect(isEnglishName("Ideal আইডিয়াল")).toBe(false);
+    expect(isEnglishName("21 & 22")).toBe(false);
   });
 });
