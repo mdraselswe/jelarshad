@@ -8,6 +8,7 @@ import { isLatinText } from "@/lib/text/to-bangla";
 import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
 
 import type { ClaimService } from "./claim-service";
+import { matchArea } from "./area-match";
 import { cleanSearchNames, placeNames } from "./place-names";
 import type { ExperienceService } from "./experience-service";
 import { mergeRewards, NO_REWARD, type Reward, type RewardService } from "./reward-service";
@@ -72,14 +73,10 @@ async function freeSlug(base: string, exists: (slug: string) => Promise<boolean>
   return `${root}-${Date.now().toString(36)}`;
 }
 
-/** Spelling-blind form of a neighbourhood name: "আফতাব নগর" and "আফতাবনগর" become the same. */
-const areaKey = (name: string) => toSearchKey(name).replace(/ /g, "");
-
 export function createAddService({ repos, experience, claims, rewards, rateLimiter, cache }: Deps) {
   /**
-   * The neighbourhood a person typed, matched to one the district already has whatever the
-   * spacing or spelling ("আফতাব নগর, আড্ডার মোড়" is আফতাবনগর). The other comma-separated parts
-   * become the address. A name that matches nothing makes a new neighbourhood, as before.
+   * The neighbourhood a person typed: an existing one when the name matches (see matchArea), with
+   * the rest of the text as the address; otherwise a new neighbourhood of that name.
    */
   async function resolveArea(
     districtId: number,
@@ -87,21 +84,8 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
   ): Promise<{ areaId: number | null; areaName: string | null; address: string | null }> {
     const text = clean(typed ?? "").slice(0, appConfig.text.nameMax);
     if (text === "") return { areaId: null, areaName: null, address: null };
-    const parts = text
-      .split(/[,،;]/)
-      .map((part) => part.trim())
-      .filter(Boolean);
-    const areas = await repos.districts.areasOf(districtId, 1000);
-    for (const [index, part] of parts.entries()) {
-      const key = areaKey(part);
-      const match = areas.find(
-        (area) => areaKey(area.nameBn) === key || (area.nameEn && areaKey(area.nameEn) === key),
-      );
-      if (match) {
-        const rest = parts.filter((_, other) => other !== index).join(", ");
-        return { areaId: match.id, areaName: null, address: rest || null };
-      }
-    }
+    const { area, rest } = matchArea(await repos.districts.areasOf(districtId, 1000), text);
+    if (area) return { areaId: area.id, areaName: null, address: rest };
     return { areaId: null, areaName: text, address: null };
   }
 

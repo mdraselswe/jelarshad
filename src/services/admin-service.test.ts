@@ -174,6 +174,13 @@ describe("updatePlace", () => {
     expect(await service.updatePlace({ placeId, type: "spaceship" })).toMatchObject({ ok: false });
   });
 
+  it("puts a place in the existing neighbourhood whatever the spacing, not a new one", async () => {
+    const { repos, service } = setup();
+    await service.updatePlace({ placeId: fixtureIds.places.second, areaName: "সাত মাথা" });
+    const moved = await repos.places.byId(fixtureIds.places.second);
+    expect(moved?.area).toMatchObject({ id: 1, nameBn: "সাতমাথা" });
+  });
+
   it("moves a place to a neighbourhood and into a new chain, then out of it", async () => {
     const { repos, service } = setup();
     await service.updatePlace({ placeId, areaName: "নতুন পাড়া", brand: { nameBn: "আমার চেইন" } });
