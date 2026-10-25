@@ -16,7 +16,7 @@ import { mergeRewards, NO_REWARD, type Reward, type RewardService } from "./rewa
 // submission, creating the food and/or place when they are new. Pure: ports only.
 
 type Deps = {
-  repos: Pick<Repositories, "foods" | "places" | "search">;
+  repos: Pick<Repositories, "foods" | "places" | "search" | "districts">;
   experience: ExperienceService;
   claims: ClaimService;
   rewards: RewardService;
@@ -72,7 +72,39 @@ async function freeSlug(base: string, exists: (slug: string) => Promise<boolean>
   return `${root}-${Date.now().toString(36)}`;
 }
 
+/** Spelling-blind form of a neighbourhood name: "আফতাব নগর" and "আফতাবনগর" become the same. */
+const areaKey = (name: string) => toSearchKey(name).replace(/ /g, "");
+
 export function createAddService({ repos, experience, claims, rewards, rateLimiter, cache }: Deps) {
+  /**
+   * The neighbourhood a person typed, matched to one the district already has whatever the
+   * spacing or spelling ("আফতাব নগর, আড্ডার মোড়" is আফতাবনগর). The other comma-separated parts
+   * become the address. A name that matches nothing makes a new neighbourhood, as before.
+   */
+  async function resolveArea(
+    districtId: number,
+    typed: string | null | undefined,
+  ): Promise<{ areaId: number | null; areaName: string | null; address: string | null }> {
+    const text = clean(typed ?? "").slice(0, appConfig.text.nameMax);
+    if (text === "") return { areaId: null, areaName: null, address: null };
+    const parts = text
+      .split(/[,،;]/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+    const areas = await repos.districts.areasOf(districtId, 1000);
+    for (const [index, part] of parts.entries()) {
+      const key = areaKey(part);
+      const match = areas.find(
+        (area) => areaKey(area.nameBn) === key || (area.nameEn && areaKey(area.nameEn) === key),
+      );
+      if (match) {
+        const rest = parts.filter((_, other) => other !== index).join(", ");
+        return { areaId: match.id, areaName: null, address: rest || null };
+      }
+    }
+    return { areaId: null, areaName: text, address: null };
+  }
+
   return {
     /** Foods or places matching what the person is typing, with ids for the form. */
     async suggest(input: {
@@ -180,15 +212,16 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
           slugify(nameBn),
           async (s) => (await repos.places.bySlug(s)) !== null,
         );
+        const area = await resolveArea(draft.districtId, draft.areaName);
         place = await repos.places.create(
           {
             nameBn,
             nameEn: names.nameEn,
             type: draft.type,
             districtId: draft.districtId,
-            areaName: draft.areaName
-              ? clean(draft.areaName).slice(0, appConfig.text.nameMax)
-              : null,
+            areaId: area.areaId,
+            areaName: area.areaName,
+            address: area.address,
             location: draft.location ?? null,
             phone: cleanPhone(draft.phone),
             website: cleanWebsite(draft.website),

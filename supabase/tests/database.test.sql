@@ -5,7 +5,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(73);
+select plan(76);
 
 -- Fixtures (as the migration owner, RLS bypassed) -------------------------------------------
 insert into auth.users (id, email) values
@@ -398,6 +398,27 @@ select is_empty(
 select is(
   (select district_id from point_events where entity_id = 'board-1'),
   null, 'an action without a district is kept without one'
+);
+
+-- Part of a long name finds the place (0089), and so does a search name people added (0087).
+insert into places (id, slug, name_bn, name_en, district_id, search_text, search_key) values
+  ('00000000-0000-4000-8000-00000000c0aa', 'grill-thrill-by-shahnaj-kitchen',
+   'Grill & Thrill by Shahnaj Kitchen', 'Grill & Thrill by Shahnaj Kitchen', 900,
+   'grill & thrill by shahnaj kitchen grill-thrill-by-shahnaj-kitchen', 'gril tril bi sahnaj kitcen');
+insert into aliases (entity, entity_id, alias, search_key) values
+  ('place', '00000000-0000-4000-8000-00000000c0aa', 'মামার দোকান', 'mamar dakan');
+select ok(
+  exists (select 1 from search_all('grill', 'gril') where slug = 'grill-thrill-by-shahnaj-kitchen'),
+  'search_all finds a place by one word of a long name'
+);
+select ok(
+  exists (select 1 from search_all('গ্রিল', 'gril') where slug = 'grill-thrill-by-shahnaj-kitchen'),
+  'search_all finds an English-named place typed in Bangla'
+);
+select ok(
+  exists (select 1 from search_all('মামার দোকান', 'mamar dakan')
+          where slug = 'grill-thrill-by-shahnaj-kitchen'),
+  'search_all finds a place by a search name people added'
 );
 
 select * from finish();

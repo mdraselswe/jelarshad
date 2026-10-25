@@ -421,7 +421,12 @@ export function createMockRepositories(): Repositories {
           nameEn: input.nameEn ?? null,
           type: input.type,
           district: { id: home.id, slug: home.slug, nameBn: home.nameBn },
-          area: input.areaName ? areaNamed(home.id, input.areaName) : null,
+          area:
+            input.areaId != null
+              ? (db.places.find((p) => p.area?.id === input.areaId)?.area ?? null)
+              : input.areaName
+                ? areaNamed(home.id, input.areaName)
+                : null,
           address: input.address ?? null,
           location: input.location ?? null,
           openingHours: null,
