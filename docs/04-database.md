@@ -267,6 +267,8 @@ create index on foods  using gin (search_text gin_trgm_ops);
 create index on foods  using gin (search_key  gin_trgm_ops);
 create index on places using gin (search_text gin_trgm_ops);
 create index on places using gin (search_key  gin_trgm_ops);
+-- search_all matches by similarity (%) or word similarity (<%), so part of a long name
+-- finds the row (0089); both use these indexes.
 create index on districts using gin (search_key gin_trgm_ops);
 create index on aliases using gin (search_key gin_trgm_ops);
 create index on places (district_id, status);

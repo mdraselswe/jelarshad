@@ -40,6 +40,26 @@ describe("addService.submit", () => {
     expect(dishes.find((dish) => dish.foodId === fixtureIds.foods.doi)?.experienceCount).toBe(4);
   });
 
+  it("puts a new place in the neighbourhood it names, whatever the spacing, and keeps the rest", async () => {
+    const { repos, service } = setup();
+    const result = await service.submit(user, {
+      food: { id: fixtureIds.foods.doi },
+      place: {
+        nameBn: "নতুন দই ঘর",
+        districtId: bogura,
+        type: "shop",
+        areaName: "সাত মাথা, বাসস্ট্যান্ডের পাশে",
+      },
+      reaction: "loved",
+      confirmNewPlace: true,
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const place = await repos.places.bySlug(result.data.placeSlug);
+    expect(place?.area?.nameBn).toBe("সাতমাথা");
+    expect(place?.address).toBe("বাসস্ট্যান্ডের পাশে");
+  });
+
   it("shows the Bangla name of a place typed in English and keeps its search names", async () => {
     const { repos, service } = setup();
     const result = await service.submit(user, {
