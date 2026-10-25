@@ -1,4 +1,12 @@
-import { ClockIcon, GlobeIcon, InfoIcon, MapIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import {
+  ClockIcon,
+  GlobeIcon,
+  InfoIcon,
+  MapIcon,
+  MapPinIcon,
+  PhoneIcon,
+  SearchIcon,
+} from "lucide-react";
 
 import { Section } from "@/components/layout/section";
 import { GroupedList, ListRow, ListTile } from "@/components/ui/grouped-list";
@@ -6,6 +14,8 @@ import { routes } from "@/config/routes";
 import { getT } from "@/i18n/server";
 import { phoneHref } from "@/lib/place-contact";
 import type { PlaceHeader } from "@/services/catalog-service";
+
+import { AddSearchName } from "@/features/moderation/components/add-search-name";
 
 import { mapSearchUrl } from "../map-url";
 
@@ -25,9 +35,24 @@ function hostOf(url: string) {
  */
 export function PlaceInfoSection({ place }: { place: PlaceHeader }) {
   const t = getT();
+  // The English name (when it is not just the shown name again) and the extra search names.
+  const otherNames = [
+    ...(place.nameEn && place.nameEn !== place.nameBn ? [place.nameEn] : []),
+    ...place.searchNames,
+  ];
   return (
     <Section title={t("place.info")} icon={<InfoIcon />} tone="sky">
       <GroupedList>
+        <ListRow
+          leading={
+            <ListTile>
+              <SearchIcon />
+            </ListTile>
+          }
+          title={t("place.searchNames")}
+          meta={otherNames.length > 0 ? otherNames.join(", ") : t("place.noSearchNames")}
+          trailing={<AddSearchName placeId={place.id} />}
+        />
         {place.phone ? (
           <ListRow
             href={phoneHref(place.phone)}

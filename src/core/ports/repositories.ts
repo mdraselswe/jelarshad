@@ -116,6 +116,12 @@ export interface PlaceRepository {
   dishes(placeId: string): Promise<DishWithFood[]>;
   /** The slug of the place this one was merged into, for redirecting old links; null if none. */
   redirectFor(slug: string): Promise<string | null>;
+  /** Extra names the place can be found by (a nickname, an old name, another spelling). */
+  aliases(placeId: string): Promise<string[]>;
+  /** Adds a search name; a name with the same search key is kept once. */
+  addAlias(placeId: string, alias: string, searchKey: string): Promise<void>;
+  /** Removes the search name with this search key. */
+  removeAlias(placeId: string, searchKey: string): Promise<void>;
   /** Admin-approved changes to a place's own fields. */
   update(
     id: string,

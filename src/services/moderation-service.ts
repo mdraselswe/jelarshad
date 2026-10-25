@@ -20,7 +20,18 @@ export type EditTarget = Extract<EntityType, "place" | "food">;
 
 /** Fields a person may suggest a change to, per kind of content. */
 export const EDITABLE_FIELDS = {
-  place: ["name_bn", "address", "type", "phone", "website", "hours_text", "other"],
+  place: [
+    "name_bn",
+    "name_en",
+    "name_bangla",
+    "alias",
+    "address",
+    "type",
+    "phone",
+    "website",
+    "hours_text",
+    "other",
+  ],
   food: ["name_bn", "about_bn", "other"],
 } as const satisfies Record<EditTarget, readonly string[]>;
 
@@ -49,6 +60,9 @@ export function createModerationService({ repos, cache, rewards }: Deps) {
       if (!place) return { found: false as const };
       const values: Record<string, string | null> = {
         name_bn: place.nameBn,
+        name_en: place.nameEn,
+        name_bangla: place.nameBn,
+        alias: (await repos.places.aliases(entityId)).join(", ") || null,
         address: place.address,
         type: place.type,
         phone: place.phone,

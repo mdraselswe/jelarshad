@@ -42,6 +42,8 @@ const submitSchema = z.object({
     z.object({ id: z.string().min(1).max(64) }),
     z.object({
       nameBn: name,
+      otherName: z.string().trim().max(appConfig.text.nameMax).nullish(),
+      searchNames: z.array(z.string().trim().max(appConfig.text.nameMax)).max(5).optional(),
       districtId: z.number().int().positive(),
       type: z.enum(PLACE_TYPES),
       areaName: z.string().trim().max(appConfig.text.nameMax).nullish(),

@@ -125,7 +125,13 @@
     "editNameEn": "English name",
     "editNameEnPlaceholder": "e.g. Ideal",
     "editNameEnHint": "Typing this in English or Banglish will find the place too. The page link does not change.",
-    "manageAll": "Edit all details"
+    "manageAll": "Edit all details",
+    "editNameBangla": "Bangla name",
+    "searchNames": "Other names people search for",
+    "searchNamesHint": "A nickname, an old name or another spelling, up to 5. Type and press Enter.",
+    "searchNameAdd": "Add",
+    "searchNameRemove": "Remove {name}",
+    "editNameBanglaPlaceholder": "e.g. আইডিয়াল"
   },
   "legal": {
     "aboutLink": "About us",

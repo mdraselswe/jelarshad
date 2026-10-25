@@ -7,6 +7,7 @@ import { useEffect, useState, useTransition } from "react";
 import { toast } from "@/lib/toast";
 
 import { IconChip } from "@/components/ui/icon-chip";
+import { NameChipsInput } from "@/components/ui/name-chips-input";
 import { routes } from "@/config/routes";
 import type { PlaceType, Reaction } from "@/core/domain";
 import { useT } from "@/i18n/client";
@@ -104,6 +105,9 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
   const [placeListOpen, setPlaceListOpen] = useState(true);
   const [place, setPlace] = useState<PlaceChoice>(null);
   const [placeType, setPlaceType] = useState<PlaceType>("restaurant");
+  // The new place's name in the other script, and extra names people search it by.
+  const [otherName, setOtherName] = useState("");
+  const [searchNames, setSearchNames] = useState<string[]>([]);
   const [area, setArea] = useState("");
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
@@ -126,6 +130,8 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
   );
 
   const needFood = foodQuery.trim() === "" && food === null;
+  // A new place typed in English asks for its Bangla name, and the other way round.
+  const placeLatin = isLatinText(placeQuery);
   const needPlace = districtId === null || (place === null && placeQuery.trim() === "");
 
   function chooseFood(next: FoodChoice) {
@@ -199,6 +205,8 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
             ? { id: place.id }
             : {
                 nameBn: placeQuery,
+                otherName: otherName || null,
+                searchNames,
                 districtId: districtId ?? 0,
                 type: placeType,
                 areaName: area || null,
@@ -505,6 +513,36 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
         {place === null && placeQuery.trim() !== "" && (
           <>
             <p className="mt-2 text-caption text-muted-foreground">{t("add.newPlaceHint")}</p>
+
+            <label htmlFor="add-other-name" className={cn(LABEL, "mt-3")}>
+              {t(placeLatin ? "add.nameBangla" : "add.nameEnglish")}{" "}
+              <span className="font-normal text-muted-foreground">({t("add.optional")})</span>
+            </label>
+            <input
+              id="add-other-name"
+              className={INPUT}
+              value={otherName}
+              maxLength={appConfig.text.nameMax}
+              placeholder={t(placeLatin ? "add.nameBanglaHint" : "add.nameEnglishHint")}
+              onChange={(event) => setOtherName(event.target.value)}
+            />
+            <div className="mt-3">
+              <NameChipsInput
+                value={searchNames}
+                onChange={setSearchNames}
+                max={5}
+                label={
+                  <>
+                    {t("add.searchNames")}{" "}
+                    <span className="font-normal text-muted-foreground">({t("add.optional")})</span>
+                  </>
+                }
+                hint={t("add.searchNamesHint")}
+                addLabel={t("add.searchNameAdd")}
+                removeLabel={(name) => t("add.searchNameRemove", { name })}
+                inputClassName="h-14 px-4"
+              />
+            </div>
 
             <label htmlFor="add-area" className={cn(LABEL, "mt-3")}>
               {t("add.area")}{" "}

@@ -96,7 +96,15 @@
     "similarFoodTitle": "Do you mean one of these?",
     "similarFoodHint": "A food added twice splits its page. If it matches, pick it.",
     "similarFoodNone": "No, “{name}” is a new food",
-    "inBangla": "Write it in Bangla: “{name}”"
+    "inBangla": "Write it in Bangla: “{name}”",
+    "nameBangla": "Bangla name",
+    "nameEnglish": "English name",
+    "nameBanglaHint": "e.g. আইডিয়াল",
+    "nameEnglishHint": "e.g. Ideal",
+    "searchNames": "Other names people search for",
+    "searchNamesHint": "A nickname, an old name or another spelling. Type it and press Enter. Searching any of these finds the place too.",
+    "searchNameAdd": "Add",
+    "searchNameRemove": "Remove {name}"
   },
   "save": {
     "label": "Save to want-to-try",
@@ -139,7 +147,10 @@
       "website": "Website or Facebook page",
       "hours_text": "Opening hours",
       "about_bn": "Description",
-      "other": "Something else"
+      "other": "Something else",
+      "name_en": "English name",
+      "name_bangla": "Bangla name",
+      "alias": "Another name people search for"
     },
     "current": "Now: {value}",
     "proposed": "Your suggestion",
@@ -407,7 +418,10 @@
     "hours": "Opening hours",
     "voices": "What people say",
     "branchesTitle": "Other branches of {brand}",
-    "branchesNote": "Each branch has its own experiences. One branch's reactions are not added to another's."
+    "branchesNote": "Each branch has its own experiences. One branch's reactions are not added to another's.",
+    "searchNames": "Also found as",
+    "addSearchName": "Add a name",
+    "noSearchNames": "Know it by another name? Add it so searching that name finds it too."
   },
   "district": {
     "stampTitle": "{district} stamp",

@@ -573,6 +573,36 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return target?.slug ?? null;
       },
+      async aliases(placeId) {
+        const rows = check(
+          await db
+            .from("aliases")
+            .select("alias")
+            .eq("entity", "place")
+            .eq("entity_id", placeId)
+            .order("id"),
+          "place aliases",
+        );
+        return rows.map((row) => row.alias);
+      },
+      async addAlias(placeId, alias, searchKey) {
+        const { error } = await writer(clients)
+          .from("aliases")
+          .upsert(
+            { entity: "place", entity_id: placeId, alias, search_key: searchKey },
+            { onConflict: "entity,entity_id,search_key", ignoreDuplicates: true },
+          );
+        if (error) throw new Error(`Supabase add place alias: ${error.message}`);
+      },
+      async removeAlias(placeId, searchKey) {
+        const { error } = await writer(clients)
+          .from("aliases")
+          .delete()
+          .eq("entity", "place")
+          .eq("entity_id", placeId)
+          .eq("search_key", searchKey);
+        if (error) throw new Error(`Supabase remove place alias: ${error.message}`);
+      },
       async update(id, patch) {
         // A new name must stay findable: rebuild the search fields from both names and the slug.
         let search: { search_text: string; search_key: string } | null = null;

@@ -65,6 +65,34 @@ describe("moderationService.suggestEdit by the person who added the place", () =
     expect((await repos.places.byId(placeId))?.phone).toBeNull();
   });
 
+  it("lets the creator add the English name and search names at once; others wait", async () => {
+    const owner = person(1);
+    const { repos, service, placeId } = await addedBy(owner);
+    const english = await service.suggestEdit(owner, {
+      entity: "place",
+      entityId: placeId,
+      field: "name_en",
+      proposedValue: "Amar Dokan",
+    });
+    expect(english).toMatchObject({ ok: true, data: { applied: true } });
+    expect((await repos.places.byId(placeId))?.nameEn).toBe("Amar Dokan");
+    await service.suggestEdit(owner, {
+      entity: "place",
+      entityId: placeId,
+      field: "alias",
+      proposedValue: "মামার দোকান",
+    });
+    expect(await repos.places.aliases(placeId)).toEqual(["মামার দোকান"]);
+    const stranger = await service.suggestEdit(person(2), {
+      entity: "place",
+      entityId: placeId,
+      field: "alias",
+      proposedValue: "পুরোনো নাম",
+    });
+    expect(stranger).toMatchObject({ ok: true, data: { applied: false } });
+    expect(await repos.places.aliases(placeId)).toEqual(["মামার দোকান"]);
+  });
+
   it("refuses a phone number that is not one, even from the creator", async () => {
     const owner = person(1);
     const { service, placeId } = await addedBy(owner);

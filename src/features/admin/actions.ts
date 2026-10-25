@@ -37,6 +37,7 @@ const schema = z.discriminatedUnion("kind", [
     placeId: id,
     nameBn: z.string().max(120).optional(),
     nameEn: z.string().max(120).optional(),
+    searchNames: z.array(z.string().max(80)).max(5).optional(),
     type: z.string().max(20).optional(),
     address: z.string().max(200).optional(),
     phone: z.string().max(30).optional(),

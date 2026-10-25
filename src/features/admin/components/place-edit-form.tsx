@@ -5,6 +5,8 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NameChipsInput } from "@/components/ui/name-chips-input";
+import { isLatinText } from "@/lib/text/to-bangla";
 import { useAdminT } from "@/i18n/admin-client";
 import { toast } from "@/lib/toast";
 
@@ -14,6 +16,8 @@ export type PlaceEditValues = {
   placeId: string;
   nameBn: string;
   nameEn: string;
+  /** Extra names people search the place by. */
+  searchNames: string[];
   type: string;
   address: string;
   phone: string;
@@ -41,7 +45,7 @@ export function PlaceEditForm({
   const [values, setValues] = useState(initial);
   const [newBrand, setNewBrand] = useState("");
   const [pending, startTransition] = useTransition();
-  const set = (key: keyof PlaceEditValues) => (value: string) =>
+  const set = (key: Exclude<keyof PlaceEditValues, "searchNames">) => (value: string) =>
     setValues((current) => ({ ...current, [key]: value }));
 
   function submit(event: React.FormEvent) {
@@ -57,7 +61,8 @@ export function PlaceEditForm({
         kind: "place-update",
         placeId: values.placeId,
         nameBn: values.nameBn,
-        nameEn: values.nameEn,
+        ...(values.nameEn !== initial.nameEn ? { nameEn: values.nameEn } : {}),
+        searchNames: values.searchNames,
         type: values.type,
         address: values.address,
         phone: values.phone,
@@ -73,7 +78,11 @@ export function PlaceEditForm({
     });
   }
 
-  const field = (key: keyof PlaceEditValues, label: string, type?: string) => (
+  const field = (
+    key: Exclude<keyof PlaceEditValues, "searchNames">,
+    label: string,
+    type?: string,
+  ) => (
     <label className="flex flex-col gap-1 text-meta font-semibold">
       {label}
       <Input
@@ -88,7 +97,16 @@ export function PlaceEditForm({
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       {field("nameBn", t("admin.editName"))}
-      {field("nameEn", t("admin.editNameEn"))}
+      {field("nameEn", t(isLatinText(values.nameBn) ? "admin.editNameBangla" : "admin.editNameEn"))}
+      <NameChipsInput
+        value={values.searchNames}
+        onChange={(searchNames) => setValues((current) => ({ ...current, searchNames }))}
+        max={5}
+        label={t("admin.searchNames")}
+        hint={t("admin.searchNamesHint")}
+        addLabel={t("admin.searchNameAdd")}
+        removeLabel={(name) => t("admin.searchNameRemove", { name })}
+      />
       <label className="flex flex-col gap-1 text-meta font-semibold">
         {t("admin.editType")}
         <select

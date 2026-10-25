@@ -6,7 +6,9 @@ import { toast } from "@/lib/toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NameChipsInput } from "@/components/ui/name-chips-input";
 import { routes } from "@/config/routes";
+import { isLatinText } from "@/lib/text/to-bangla";
 import { useAdminT } from "@/i18n/admin-client";
 
 import { adminAct, adminFindPlaces, type MergeCandidate } from "../actions";
@@ -130,17 +132,39 @@ export function MergeForm({
   );
 }
 
-/** The English or Banglish name people may type to find this place ("Ideal"). */
-export function EnglishNameForm({ placeId, current }: { placeId: string; current: string }) {
+/**
+ * The names a new place can be found by: the name in the other script (its English name, or its
+ * Bangla name when it was added in English) and a few extra search names.
+ */
+export function PlaceNamesForm({
+  placeId,
+  nameBn,
+  nameEn,
+  searchNames,
+}: {
+  placeId: string;
+  nameBn: string;
+  nameEn: string | null;
+  searchNames: string[];
+}) {
   const t = useAdminT();
   const router = useRouter();
-  const [name, setName] = useState(current);
+  const addedInEnglish = isLatinText(nameBn);
+  const initialOther = addedInEnglish ? "" : (nameEn ?? "");
+  const [other, setOther] = useState(initialOther);
+  const [names, setNames] = useState(searchNames);
   const [pending, startTransition] = useTransition();
+  const changed = other !== initialOther || names.join("|") !== searchNames.join("|");
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
     startTransition(async () => {
-      const result = await adminAct({ kind: "place-update", placeId, nameEn: name });
+      const result = await adminAct({
+        kind: "place-update",
+        placeId,
+        ...(other !== initialOther ? { nameEn: other } : {}),
+        searchNames: names,
+      });
       if (result.ok) {
         toast.success(t("admin.done"));
         router.refresh();
@@ -149,23 +173,35 @@ export function EnglishNameForm({ placeId, current }: { placeId: string; current
   }
 
   return (
-    <form onSubmit={submit} className="mt-3 flex flex-col gap-1">
-      <label htmlFor={`name-en-${placeId}`} className="text-meta font-semibold">
-        {t("admin.editNameEn")}
-      </label>
-      <div className="flex gap-2">
+    <form onSubmit={submit} className="mt-3 flex flex-col gap-3">
+      <div className="flex flex-col gap-1">
+        <label htmlFor={`name-other-${placeId}`} className="text-meta font-semibold">
+          {t(addedInEnglish ? "admin.editNameBangla" : "admin.editNameEn")}
+        </label>
         <Input
-          id={`name-en-${placeId}`}
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder={t("admin.editNameEnPlaceholder")}
+          id={`name-other-${placeId}`}
+          value={other}
+          onChange={(event) => setOther(event.target.value)}
+          placeholder={t(
+            addedInEnglish ? "admin.editNameBanglaPlaceholder" : "admin.editNameEnPlaceholder",
+          )}
           className="h-10"
         />
-        <Button type="submit" size="sm" variant="soft" disabled={pending || name === current}>
-          {t("admin.save")}
-        </Button>
       </div>
+      <NameChipsInput
+        value={names}
+        onChange={setNames}
+        max={5}
+        label={t("admin.searchNames")}
+        hint={t("admin.searchNamesHint")}
+        addLabel={t("admin.searchNameAdd")}
+        removeLabel={(name) => t("admin.searchNameRemove", { name })}
+        inputClassName="h-10"
+      />
       <p className="text-caption text-muted-foreground">{t("admin.editNameEnHint")}</p>
+      <Button type="submit" size="sm" variant="soft" disabled={pending || !changed}>
+        {t("admin.save")}
+      </Button>
     </form>
   );
 }
