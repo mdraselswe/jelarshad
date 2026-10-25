@@ -131,7 +131,14 @@
     "searchNamesHint": "A nickname, an old name or another spelling, up to 5. Type and press Enter.",
     "searchNameAdd": "Add",
     "searchNameRemove": "Remove {name}",
-    "editNameBanglaPlaceholder": "e.g. আইডিয়াল"
+    "editNameBanglaPlaceholder": "e.g. আইডিয়াল",
+    "insightsNote": "Page views count pages opened, not people. Distinct visits count browser tabs, roughly the number of people. Experiences, new places and confirmations are counted on the server, so their visits show 0. Admin pages (your own visits) are not counted.",
+    "insightsDay": "Last 24 hours",
+    "insightsHourly": "Page views by hour (last 24 hours, Bangladesh time)",
+    "insightsHour": "Hour",
+    "insightsViews": "Page views",
+    "insightsTopPaths": "Most opened pages (last 7 days)",
+    "insightsPath": "Page"
   },
   "legal": {
     "aboutLink": "About us",

@@ -1709,6 +1709,29 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
           sessions: Number(row.sessions),
         }));
       },
+      async hourly(since) {
+        const { data, error } = await writer(clients).rpc("insights_hourly", {
+          p_since: since.toISOString(),
+        });
+        if (error) throw new Error(`Supabase insights_hourly: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          hour: new Date(row.hour),
+          views: Number(row.views),
+          sessions: Number(row.sessions),
+        }));
+      },
+      async topPaths(since, limit) {
+        const { data, error } = await writer(clients).rpc("insights_top_paths", {
+          p_since: since.toISOString(),
+          p_limit: limit,
+        });
+        if (error) throw new Error(`Supabase insights_top_paths: ${error.message}`);
+        return (data ?? []).map((row) => ({
+          path: row.path,
+          views: Number(row.views),
+          sessions: Number(row.sessions),
+        }));
+      },
       async topSearches(since, limit) {
         const { data, error } = await writer(clients).rpc("insights_top_searches", {
           p_since: since.toISOString(),

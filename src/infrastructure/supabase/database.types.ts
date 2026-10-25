@@ -1203,12 +1203,28 @@ export type Database = {
           xp: number;
         }[];
       };
+      insights_hourly: {
+        Args: { p_since: string };
+        Returns: {
+          hour: string;
+          sessions: number;
+          views: number;
+        }[];
+      };
       insights_summary: {
         Args: { p_since: string };
         Returns: {
           events: number;
           name: string;
           sessions: number;
+        }[];
+      };
+      insights_top_paths: {
+        Args: { p_limit: number; p_since: string };
+        Returns: {
+          path: string;
+          sessions: number;
+          views: number;
         }[];
       };
       insights_top_searches: {
