@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NameChipsInput } from "@/components/ui/name-chips-input";
-import { isLatinText } from "@/lib/text/to-bangla";
+import { isEnglishName } from "@/lib/text/to-bangla";
 import { useAdminT } from "@/i18n/admin-client";
 import { toast } from "@/lib/toast";
 
@@ -97,7 +97,10 @@ export function PlaceEditForm({
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       {field("nameBn", t("admin.editName"))}
-      {field("nameEn", t(isLatinText(values.nameBn) ? "admin.editNameBangla" : "admin.editNameEn"))}
+      {field(
+        "nameEn",
+        t(isEnglishName(values.nameBn) ? "admin.editNameBangla" : "admin.editNameEn"),
+      )}
       <NameChipsInput
         value={values.searchNames}
         onChange={(searchNames) => setValues((current) => ({ ...current, searchNames }))}

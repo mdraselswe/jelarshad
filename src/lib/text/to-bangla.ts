@@ -127,6 +127,14 @@ export function isLatinText(input: string): boolean {
   return input.trim() !== "" && LATIN_ONLY.test(input);
 }
 
+/**
+ * True for a name written in English rather than Bangla: it has a Latin letter and no Bangla one.
+ * Unlike isLatinText it allows "&", digits and other signs ("Grill & Thrill", "Cafe 21").
+ */
+export function isEnglishName(input: string): boolean {
+  return /[A-Za-z]/.test(input) && !/[ঀ-৿]/.test(input);
+}
+
 /** "salad" → "সালাদ". Words are converted one by one; anything that is not a Latin letter stays. */
 export function latinToBangla(input: string): string {
   return input

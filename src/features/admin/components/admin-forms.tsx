@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NameChipsInput } from "@/components/ui/name-chips-input";
 import { routes } from "@/config/routes";
-import { isLatinText } from "@/lib/text/to-bangla";
+import { isEnglishName } from "@/lib/text/to-bangla";
 import { useAdminT } from "@/i18n/admin-client";
 
 import { adminAct, adminFindPlaces, type MergeCandidate } from "../actions";
@@ -149,7 +149,7 @@ export function PlaceNamesForm({
 }) {
   const t = useAdminT();
   const router = useRouter();
-  const addedInEnglish = isLatinText(nameBn);
+  const addedInEnglish = isEnglishName(nameBn);
   const initialOther = addedInEnglish ? "" : (nameEn ?? "");
   const [other, setOther] = useState(initialOther);
   const [names, setNames] = useState(searchNames);

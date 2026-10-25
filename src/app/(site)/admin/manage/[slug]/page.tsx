@@ -10,7 +10,7 @@ import { AreaRenameForm, PlaceEditForm } from "@/features/admin/components/place
 import { getT } from "@/i18n/server";
 import { getServices } from "@/infrastructure/container";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { isLatinText } from "@/lib/text/to-bangla";
+import { isEnglishName } from "@/lib/text/to-bangla";
 
 export const metadata: Metadata = buildMetadata({
   title: getT()("admin.sections.manage"),
@@ -51,7 +51,7 @@ export default function AdminManagePlace({ params }: { params: Promise<{ slug: s
                   placeId: place.id,
                   nameBn: place.nameBn,
                   // A place added in English shows an empty "Bangla name" field instead.
-                  nameEn: isLatinText(place.nameBn) ? "" : (place.nameEn ?? ""),
+                  nameEn: isEnglishName(place.nameBn) ? "" : (place.nameEn ?? ""),
                   searchNames: await repos.places.aliases(place.id),
                   type: place.type,
                   address: place.address ?? "",

@@ -2,7 +2,7 @@ import { appConfig } from "@/config/app.config";
 import type { Repositories } from "@/core/ports";
 import { containsProfanity } from "@/lib/text/profanity";
 import { toSearchKey } from "@/lib/text/normalize";
-import { isLatinText } from "@/lib/text/to-bangla";
+import { isEnglishName } from "@/lib/text/to-bangla";
 
 // The names a place can be found by: the name shown (Bangla first), the name in the other script
 // ("Ideal" for "আইডিয়াল"), and a few extra search names people add (a nickname, an old name).
@@ -24,9 +24,9 @@ export function placeNames(
 ): { nameBn: string; nameEn: string | null; extra: string[] } {
   const first = clean(main);
   const second = clean(other);
-  const firstLatin = isLatinText(first);
+  const firstLatin = isEnglishName(first);
   if (second === "") return { nameBn: first, nameEn: firstLatin ? first : null, extra: [] };
-  const secondLatin = isLatinText(second);
+  const secondLatin = isEnglishName(second);
   if (firstLatin && !secondLatin) return { nameBn: second, nameEn: first, extra: [] };
   if (!firstLatin && secondLatin) return { nameBn: first, nameEn: second, extra: [] };
   return { nameBn: first, nameEn: firstLatin ? first : null, extra: [second] };

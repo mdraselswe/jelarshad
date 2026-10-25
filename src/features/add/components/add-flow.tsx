@@ -11,7 +11,7 @@ import { NameChipsInput } from "@/components/ui/name-chips-input";
 import { routes } from "@/config/routes";
 import type { PlaceType, Reaction } from "@/core/domain";
 import { useT } from "@/i18n/client";
-import { isLatinText, latinToBangla } from "@/lib/text/to-bangla";
+import { isEnglishName, isLatinText, latinToBangla } from "@/lib/text/to-bangla";
 import type { MessageKey } from "@/i18n/t";
 import { cn } from "@/lib/cn";
 
@@ -131,7 +131,7 @@ export function AddFlow({ districts }: { districts: DistrictOption[] }) {
 
   const needFood = foodQuery.trim() === "" && food === null;
   // A new place typed in English asks for its Bangla name, and the other way round.
-  const placeLatin = isLatinText(placeQuery);
+  const placeLatin = isEnglishName(placeQuery);
   const needPlace = districtId === null || (place === null && placeQuery.trim() === "");
 
   function chooseFood(next: FoodChoice) {
