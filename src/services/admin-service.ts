@@ -47,6 +47,8 @@ export type QueueTarget = { label: string; href: string | null };
 export type PlaceUpdate = {
   placeId: string;
   nameBn?: string | undefined;
+  /** The English or Banglish name people search with; "" clears it. */
+  nameEn?: string | undefined;
   type?: string | undefined;
   address?: string | undefined;
   phone?: string | undefined;
@@ -206,6 +208,13 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
         }
         const outcome = await applyPlaceFieldEdit(repos.places, place.id, field, value);
         if (outcome === "invalid") return fail("validation", { fields: { [field]: "invalid" } });
+      }
+      if (input.nameEn !== undefined) {
+        const nameEn = input.nameEn.replace(/\s+/g, " ").trim();
+        if (containsProfanity(nameEn)) {
+          return fail("validation", { fields: { nameEn: "profanity" } });
+        }
+        await repos.places.update(place.id, { nameEn: nameEn === "" ? null : nameEn });
       }
       if (input.areaName !== undefined) {
         await repos.admin.setPlaceArea(place.id, input.areaName.trim() || null);

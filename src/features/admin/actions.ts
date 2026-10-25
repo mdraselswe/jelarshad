@@ -36,6 +36,7 @@ const schema = z.discriminatedUnion("kind", [
     kind: z.literal("place-update"),
     placeId: id,
     nameBn: z.string().max(120).optional(),
+    nameEn: z.string().max(120).optional(),
     type: z.string().max(20).optional(),
     address: z.string().max(200).optional(),
     phone: z.string().max(30).optional(),
@@ -96,6 +97,30 @@ export const adminAct = defineAction(
       case "purge-insights":
         return ok({ removed: await services.repos.insights.purge(90) });
     }
+  },
+  { auth: true, role: "admin" },
+);
+
+export type MergeCandidate = {
+  slug: string;
+  nameBn: string;
+  districtNameBn: string;
+  areaNameBn: string | null;
+};
+
+/** Places matching a typed name, for picking the place a duplicate should be merged into. */
+export const adminFindPlaces = defineAction(
+  z.object({ q: z.string().max(80) }),
+  async (input, { services }): Promise<Result<MergeCandidate[]>> => {
+    const outcome = await services.search.search(input.q);
+    return ok(
+      outcome.places.slice(0, 8).map((hit) => ({
+        slug: hit.slug,
+        nameBn: hit.nameBn,
+        districtNameBn: hit.district.nameBn,
+        areaNameBn: hit.areaNameBn,
+      })),
+    );
   },
   { auth: true, role: "admin" },
 );

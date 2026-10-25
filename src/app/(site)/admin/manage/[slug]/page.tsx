@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { routes } from "@/config/routes";
 import { AdminButton } from "@/features/admin/components/admin-button";
 import { MergeForm } from "@/features/admin/components/admin-forms";
+import { mergeCandidates } from "@/features/admin/merge-candidates";
 import { AdminCard, AdminFrame } from "@/features/admin/components/admin-frame";
 import { AreaRenameForm, PlaceEditForm } from "@/features/admin/components/place-edit-form";
 import { getT } from "@/i18n/server";
@@ -48,6 +49,7 @@ export default function AdminManagePlace({ params }: { params: Promise<{ slug: s
                 initial={{
                   placeId: place.id,
                   nameBn: place.nameBn,
+                  nameEn: place.nameEn ?? "",
                   type: place.type,
                   address: place.address ?? "",
                   phone: place.phone ?? "",
@@ -67,8 +69,12 @@ export default function AdminManagePlace({ params }: { params: Promise<{ slug: s
               </AdminCard>
             ) : null}
             <AdminCard>
-              <p className="text-body font-semibold">{t("admin.manageDuplicate")}</p>
-              <MergeForm fromId={place.id} />
+              <MergeForm
+                fromId={place.id}
+                fromSlug={place.slug}
+                fromName={place.nameBn}
+                candidates={await mergeCandidates(place)}
+              />
             </AdminCard>
             <AdminCard>
               <div className="flex items-center gap-3">

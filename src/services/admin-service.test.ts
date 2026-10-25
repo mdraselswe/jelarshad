@@ -159,6 +159,14 @@ describe("updatePlace", () => {
     expect(place?.nameBn).toBe("নমুনা দই ঘর");
   });
 
+  it("sets the English name people search with, and clears it when emptied", async () => {
+    const { repos, service } = setup();
+    await service.updatePlace({ placeId, nameEn: "  Ideal  Sweets " });
+    expect((await repos.places.byId(placeId))?.nameEn).toBe("Ideal Sweets");
+    await service.updatePlace({ placeId, nameEn: "" });
+    expect((await repos.places.byId(placeId))?.nameEn).toBeNull();
+  });
+
   it("refuses an empty name, a bad phone number and an unknown kind", async () => {
     const { service } = setup();
     expect(await service.updatePlace({ placeId, nameBn: "  " })).toMatchObject({ ok: false });

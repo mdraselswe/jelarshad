@@ -13,6 +13,7 @@ import { adminAct } from "../actions";
 export type PlaceEditValues = {
   placeId: string;
   nameBn: string;
+  nameEn: string;
   type: string;
   address: string;
   phone: string;
@@ -56,6 +57,7 @@ export function PlaceEditForm({
         kind: "place-update",
         placeId: values.placeId,
         nameBn: values.nameBn,
+        nameEn: values.nameEn,
         type: values.type,
         address: values.address,
         phone: values.phone,
@@ -86,6 +88,7 @@ export function PlaceEditForm({
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       {field("nameBn", t("admin.editName"))}
+      {field("nameEn", t("admin.editNameEn"))}
       <label className="flex flex-col gap-1 text-meta font-semibold">
         {t("admin.editType")}
         <select
