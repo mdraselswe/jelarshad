@@ -574,10 +574,30 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         return target?.slug ?? null;
       },
       async update(id, patch) {
+        // A new name must stay findable: rebuild the search fields from both names and the slug.
+        let search: { search_text: string; search_key: string } | null = null;
+        if (patch.nameBn !== undefined || patch.nameEn !== undefined) {
+          const current = checkOne<{ name_bn: string; name_en: string | null; slug: string }>(
+            await writer(clients)
+              .from("places")
+              .select("name_bn, name_en, slug")
+              .eq("id", id)
+              .single(),
+            "place names",
+          );
+          const fields = buildSearchFields(
+            patch.nameBn ?? current.name_bn,
+            patch.nameEn !== undefined ? patch.nameEn : current.name_en,
+            current.slug,
+          );
+          search = { search_text: fields.searchText, search_key: fields.searchKey };
+        }
         const { error } = await writer(clients)
           .from("places")
           .update({
             ...(patch.nameBn !== undefined ? { name_bn: patch.nameBn } : {}),
+            ...(patch.nameEn !== undefined ? { name_en: patch.nameEn } : {}),
+            ...(search ?? {}),
             ...(patch.address !== undefined ? { address: patch.address } : {}),
             ...(patch.type !== undefined ? { type: patch.type } : {}),
             ...(patch.phone !== undefined ? { phone: patch.phone } : {}),

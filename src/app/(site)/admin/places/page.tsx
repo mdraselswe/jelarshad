@@ -5,7 +5,8 @@ import { EmptyState } from "@/components/layout/empty-state";
 import { routes } from "@/config/routes";
 import { AdminButton } from "@/features/admin/components/admin-button";
 import { AdminCard, AdminFrame } from "@/features/admin/components/admin-frame";
-import { MergeForm } from "@/features/admin/components/admin-forms";
+import { EnglishNameForm, MergeForm } from "@/features/admin/components/admin-forms";
+import { mergeCandidates } from "@/features/admin/merge-candidates";
 import { getServices } from "@/infrastructure/container";
 import { getT } from "@/i18n/server";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -24,10 +25,11 @@ export default function AdminPlaces() {
         const t = getT();
         const places = await getServices().admin.newPlaces();
         if (places.length === 0) return <EmptyState message={t("admin.empty")} />;
+        const candidates = await Promise.all(places.map((place) => mergeCandidates(place)));
         return (
           <>
             <p className="text-meta text-muted-foreground">{t("admin.placesHint")}</p>
-            {places.map((place) => (
+            {places.map((place, index) => (
               <AdminCard key={place.id}>
                 <p className="text-body font-semibold">
                   <Link href={routes.place(place.slug)} className="text-primary-text">
@@ -35,8 +37,10 @@ export default function AdminPlaces() {
                   </Link>
                 </p>
                 <p className="mt-0.5 text-meta text-muted-foreground">
-                  {place.district.nameBn} · {t(`placeType.${place.type}`)} · {place.slug}
+                  {place.area ? `${place.area.nameBn}, ` : ""}
+                  {place.district.nameBn} · {t(`placeType.${place.type}`)}
                 </p>
+                <EnglishNameForm placeId={place.id} current={place.nameEn ?? ""} />
                 <div className="mt-3 flex flex-wrap gap-2">
                   <AdminButton
                     variant="destructive"
@@ -46,7 +50,18 @@ export default function AdminPlaces() {
                     {t("admin.hide")}
                   </AdminButton>
                 </div>
-                <MergeForm fromId={place.id} />
+                <MergeForm
+                  fromId={place.id}
+                  fromSlug={place.slug}
+                  fromName={place.nameBn}
+                  candidates={candidates[index] ?? []}
+                />
+                <Link
+                  href={`/admin/manage/${place.slug}`}
+                  className="mt-3 inline-block text-meta font-semibold text-primary-text underline-offset-4 hover:underline"
+                >
+                  {t("admin.manageAll")}
+                </Link>
               </AdminCard>
             ))}
           </>

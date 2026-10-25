@@ -373,6 +373,7 @@ export function createMockRepositories(): Repositories {
         const place = db.places.find((p) => p.id === id);
         if (!place) return;
         if (patch.nameBn !== undefined) place.nameBn = patch.nameBn;
+        if (patch.nameEn !== undefined) place.nameEn = patch.nameEn;
         if (patch.address !== undefined) place.address = patch.address;
         if (patch.type !== undefined) place.type = patch.type;
         if (patch.phone !== undefined) place.phone = patch.phone;

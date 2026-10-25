@@ -121,6 +121,8 @@ export interface PlaceRepository {
     id: string,
     patch: {
       nameBn?: string;
+      /** The English or Banglish name people may type ("Ideal"); null clears it. */
+      nameEn?: string | null;
       address?: string | null;
       type?: PlaceType;
       phone?: string | null;
