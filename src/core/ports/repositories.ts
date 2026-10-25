@@ -364,6 +364,13 @@ export interface InsightRepository {
     since: Date,
     limit: number,
   ): Promise<{ query: string; searches: number; empty: number }[]>;
+  /** Page views and distinct visits per hour since a date, oldest first (admin pages left out). */
+  hourly(since: Date): Promise<{ hour: Date; views: number; sessions: number }[]>;
+  /** The most opened pages since a date (admin pages left out). */
+  topPaths(
+    since: Date,
+    limit: number,
+  ): Promise<{ path: string; views: number; sessions: number }[]>;
   recentErrors(limit: number): Promise<InsightErrorRow[]>;
   /** Drops events and errors older than this many days; returns the events removed. */
   purge(days: number): Promise<number>;

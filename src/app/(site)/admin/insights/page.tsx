@@ -32,6 +32,71 @@ const isKnown = (name: string): name is Known => (ORDER as readonly string[]).in
 /** A date this many days back; a function of its own so the page body stays free of clock reads. */
 const daysAgo = (days: number) => new Date(Date.now() - days * DAY);
 
+/** "২৫ অক্টো, সন্ধ্যা ৭টা": the hour in Bangladesh time, whatever the server's clock zone is. */
+const HOUR = new Intl.DateTimeFormat("bn-BD", {
+  timeZone: "Asia/Dhaka",
+  day: "numeric",
+  month: "short",
+  hour: "numeric",
+});
+
+/** "/food/দই" rather than its percent-encoded form; the raw path when it does not decode. */
+function readablePath(path: string) {
+  try {
+    return decodeURIComponent(path);
+  } catch {
+    return path;
+  }
+}
+
+/** One labelled bar per row, longest = the largest value. */
+function BarList({
+  title,
+  head,
+  rows,
+}: {
+  title: string;
+  head: [string, string, string];
+  rows: { key: string; label: string; views: number; sessions: number }[];
+}) {
+  const t = getT();
+  const max = Math.max(1, ...rows.map((row) => row.views));
+  return (
+    <AdminCard>
+      <p className="text-body font-semibold">{title}</p>
+      {rows.length === 0 ? (
+        <p className="mt-2 text-meta text-muted-foreground">{t("admin.insightsNone")}</p>
+      ) : (
+        <table className="mt-2 w-full text-left text-meta">
+          <thead className="text-muted-foreground">
+            <tr>
+              <th className="py-1 font-medium">{head[0]}</th>
+              <th className="py-1 text-right font-medium">{head[1]}</th>
+              <th className="py-1 text-right font-medium">{head[2]}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.key} className="border-t border-divider">
+                <td className="py-1.5 pr-3">
+                  <span className="block max-w-[28ch] truncate">{row.label}</span>
+                  <span
+                    aria-hidden
+                    className="mt-1 block h-1.5 rounded-full bg-primary"
+                    style={{ width: `${Math.max(4, (row.views / max) * 100)}%` }}
+                  />
+                </td>
+                <td className="py-1.5 text-right font-semibold">{formatNumber(row.views)}</td>
+                <td className="py-1.5 text-right">{formatNumber(row.sessions)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </AdminCard>
+  );
+}
+
 type Row = { name: string; events: number; sessions: number };
 
 function SummaryTable({ title, rows }: { title: string; rows: Row[] }) {
@@ -78,7 +143,10 @@ export default function AdminInsights() {
       {async () => {
         const t = getT();
         const { insights } = getServices().repos;
-        const [week, month, searches, errors] = await Promise.all([
+        const [day, hourly, paths, week, month, searches, errors] = await Promise.all([
+          insights.summary(daysAgo(1)),
+          insights.hourly(daysAgo(1)),
+          insights.topPaths(daysAgo(7), 15),
           insights.summary(daysAgo(7)),
           insights.summary(daysAgo(30)),
           insights.topSearches(daysAgo(7), 15),
@@ -86,6 +154,36 @@ export default function AdminInsights() {
         ]);
         return (
           <>
+            <p className="text-meta text-muted-foreground">{t("admin.insightsNote")}</p>
+            <SummaryTable title={t("admin.insightsDay")} rows={day} />
+            <BarList
+              title={t("admin.insightsHourly")}
+              head={[
+                t("admin.insightsHour"),
+                t("admin.insightsViews"),
+                t("admin.insightsSessions"),
+              ]}
+              rows={hourly.map((row) => ({
+                key: row.hour.toISOString(),
+                label: HOUR.format(row.hour),
+                views: row.views,
+                sessions: row.sessions,
+              }))}
+            />
+            <BarList
+              title={t("admin.insightsTopPaths")}
+              head={[
+                t("admin.insightsPath"),
+                t("admin.insightsViews"),
+                t("admin.insightsSessions"),
+              ]}
+              rows={paths.map((row) => ({
+                key: row.path,
+                label: readablePath(row.path),
+                views: row.views,
+                sessions: row.sessions,
+              }))}
+            />
             <SummaryTable title={t("admin.insightsWeek")} rows={week} />
             <SummaryTable title={t("admin.insightsMonth")} rows={month} />
             <AdminCard>

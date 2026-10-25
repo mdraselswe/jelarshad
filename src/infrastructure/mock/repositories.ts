@@ -1003,6 +1003,7 @@ export function createMockRepositories(): Repositories {
         const byName = new Map<string, { events: number; sessions: Set<string | null> }>();
         for (const event of db.insights) {
           if (event.at < since) continue;
+          if (event.name === "page_view" && (event.path ?? "").startsWith("/admin")) continue;
           const row = byName.get(event.name) ?? { events: 0, sessions: new Set() };
           row.events += 1;
           row.sessions.add(event.session);
@@ -1026,6 +1027,41 @@ export function createMockRepositories(): Repositories {
         return [...byQuery.entries()]
           .map(([query, row]) => ({ query, ...row }))
           .sort((a, b) => b.searches - a.searches)
+          .slice(0, limit);
+      },
+      hourly: async (since) => {
+        const byHour = new Map<number, { views: number; sessions: Set<string> }>();
+        for (const event of db.insights) {
+          if (event.name !== "page_view" || event.at < since) continue;
+          if ((event.path ?? "").startsWith("/admin")) continue;
+          const hour = Math.floor(event.at.getTime() / 3_600_000) * 3_600_000;
+          const row = byHour.get(hour) ?? { views: 0, sessions: new Set() };
+          row.views += 1;
+          if (event.session) row.sessions.add(event.session);
+          byHour.set(hour, row);
+        }
+        return [...byHour.entries()]
+          .sort(([a], [b]) => a - b)
+          .map(([hour, row]) => ({
+            hour: new Date(hour),
+            views: row.views,
+            sessions: row.sessions.size,
+          }));
+      },
+      topPaths: async (since, limit) => {
+        const byPath = new Map<string, { views: number; sessions: Set<string> }>();
+        for (const event of db.insights) {
+          if (event.name !== "page_view" || event.at < since) continue;
+          const path = event.path ?? "/";
+          if (path.startsWith("/admin")) continue;
+          const row = byPath.get(path) ?? { views: 0, sessions: new Set() };
+          row.views += 1;
+          if (event.session) row.sessions.add(event.session);
+          byPath.set(path, row);
+        }
+        return [...byPath.entries()]
+          .map(([path, row]) => ({ path, views: row.views, sessions: row.sessions.size }))
+          .sort((a, b) => b.views - a.views)
           .slice(0, limit);
       },
       recentErrors: async (limit) => [...db.errors].reverse().slice(0, limit),
