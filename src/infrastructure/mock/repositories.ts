@@ -21,7 +21,7 @@ import type {
 } from "@/core/domain";
 import type { Repositories, SearchHit } from "@/core/ports";
 import { wilsonLowerBound } from "@/lib/ranking/wilson";
-import { buildSearchFields } from "@/lib/text/normalize";
+import { buildSearchFields, toSearchKey } from "@/lib/text/normalize";
 
 import * as fixtures from "./fixtures";
 
@@ -61,6 +61,7 @@ export function createMockRepositories(): Repositories {
     saved: [] as (SavedItem & { userId: string })[],
     placeCreators: new Map<string, string>(),
     foodAliases: new Map<string, string[]>(),
+    placeAliases: new Map<string, string[]>(),
     foodMergedInto: new Map<string, string>(),
     banned: new Set<string>(),
     points: [] as {
@@ -369,6 +370,20 @@ export function createMockRepositories(): Repositories {
         const target = merged && db.places.find((p) => p.id === merged.mergedIntoId);
         return target?.slug ?? null;
       },
+      aliases: async (placeId) => [...(db.placeAliases.get(placeId) ?? [])],
+      addAlias: async (placeId, alias, searchKey) => {
+        const list = db.placeAliases.get(placeId) ?? [];
+        if (!list.some((name) => toSearchKey(name) === searchKey)) {
+          db.placeAliases.set(placeId, [...list, alias]);
+        }
+      },
+      removeAlias: async (placeId, searchKey) => {
+        const list = db.placeAliases.get(placeId) ?? [];
+        db.placeAliases.set(
+          placeId,
+          list.filter((name) => toSearchKey(name) !== searchKey),
+        );
+      },
       update: async (id, patch) => {
         const place = db.places.find((p) => p.id === id);
         if (!place) return;
@@ -643,7 +658,9 @@ export function createMockRepositories(): Repositories {
                 )
                 .map((f) => ({ kind: "food" as const, food: foodWithStats(f) })),
               ...active(db.places)
-                .filter((p) => matches(p.nameBn, p.nameEn, p.slug))
+                .filter((p) =>
+                  matches(p.nameBn, p.nameEn, p.slug, ...(db.placeAliases.get(p.id) ?? [])),
+                )
                 .map((p) => ({ kind: "place" as const, place: clone(p) })),
               ...db.districts
                 .filter((d) => matches(d.nameBn, d.nameEn, d.slug))

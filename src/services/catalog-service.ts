@@ -85,6 +85,8 @@ export type PlaceHeader = {
   slug: string;
   nameBn: string;
   nameEn: string | null;
+  /** Extra names people find the place by (a nickname, an old name). */
+  searchNames: string[];
   type: PlaceType;
   district: DistrictRef;
   areaNameBn: string | null;
@@ -450,6 +452,7 @@ export function createCatalogService({ repos }: Deps) {
         slug: place.slug,
         nameBn: place.nameBn,
         nameEn: place.nameEn,
+        searchNames: await repos.places.aliases(place.id),
         type: place.type,
         district: { slug: place.district.slug, nameBn: place.district.nameBn },
         areaNameBn,

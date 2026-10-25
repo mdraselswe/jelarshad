@@ -235,6 +235,8 @@ describe("merging places", () => {
     expect(result.ok).toBe(true);
     expect(await repos.places.redirectFor(from.slug)).toBe(into.slug);
     expect(await repos.places.dishes(from.id)).toHaveLength(0);
+    // The duplicate's name keeps finding the place it became part of.
+    expect(await repos.places.aliases(into.id)).toContain(from.nameBn);
   });
 
   it("will not merge a place into itself or into a hidden place", async () => {

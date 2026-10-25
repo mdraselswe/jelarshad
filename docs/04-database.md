@@ -81,7 +81,8 @@ create table foods (
   created_at timestamptz not null default now()
 );
 
-create table aliases (                      -- Banglish/variants for foods, places, districts
+create table aliases (                      -- Banglish/variants for foods, places, districts;
+                                            -- places: extra search names people add (0087), found by search_all
   id bigserial primary key,
   entity entity_type not null,
   entity_id text not null,

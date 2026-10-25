@@ -18,6 +18,7 @@ import { containsProfanity } from "@/lib/text/profanity";
 import { slugify } from "@/lib/text/slug";
 
 import { applyPlaceFieldEdit } from "./place-edit";
+import { cleanSearchNames, placeNames, replaceSearchNames } from "./place-names";
 
 import type { RewardService } from "./reward-service";
 
@@ -47,8 +48,13 @@ export type QueueTarget = { label: string; href: string | null };
 export type PlaceUpdate = {
   placeId: string;
   nameBn?: string | undefined;
-  /** The English or Banglish name people search with; "" clears it. */
+  /**
+   * The name in the other script ("Ideal" for "আইডিয়াল", or the Bangla of an English name);
+   * whichever of the two is Bangla is shown. "" clears it.
+   */
   nameEn?: string | undefined;
+  /** The extra names people search the place by; replaces the current list. */
+  searchNames?: string[] | undefined;
   type?: string | undefined;
   address?: string | undefined;
   phone?: string | undefined;
@@ -210,11 +216,29 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
         if (outcome === "invalid") return fail("validation", { fields: { [field]: "invalid" } });
       }
       if (input.nameEn !== undefined) {
-        const nameEn = input.nameEn.replace(/\s+/g, " ").trim();
-        if (containsProfanity(nameEn)) {
+        const other = input.nameEn.replace(/\s+/g, " ").trim();
+        if (containsProfanity(other)) {
           return fail("validation", { fields: { nameEn: "profanity" } });
         }
-        await repos.places.update(place.id, { nameEn: nameEn === "" ? null : nameEn });
+        const shown = (await repos.places.byId(place.id))?.nameBn ?? place.nameBn;
+        if (other === "") {
+          await repos.places.update(place.id, { nameEn: null });
+        } else {
+          const names = placeNames(shown, other);
+          await repos.places.update(place.id, { nameBn: names.nameBn, nameEn: names.nameEn });
+          for (const extra of cleanSearchNames(names.extra) ?? []) {
+            await repos.places.addAlias(place.id, extra.alias, extra.key);
+          }
+        }
+      }
+      if (input.searchNames !== undefined) {
+        const current = await repos.places.byId(place.id);
+        const names = cleanSearchNames(input.searchNames, [
+          current?.nameBn ?? null,
+          current?.nameEn ?? null,
+        ]);
+        if (names === null) return fail("validation", { fields: { searchNames: "profanity" } });
+        await replaceSearchNames(repos.places, place.id, names);
       }
       if (input.areaName !== undefined) {
         await repos.admin.setPlaceArea(place.id, input.areaName.trim() || null);
@@ -271,6 +295,12 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
       ]);
       if (!from || !into || into.status !== "active") return fail("not_found");
       const dishes = await repos.admin.mergePlaces(fromId, intoId);
+      // The duplicate's names keep finding the place it became part of.
+      const carried = cleanSearchNames(
+        [from.nameBn, from.nameEn ?? "", ...(await repos.places.aliases(fromId))],
+        [into.nameBn, into.nameEn, ...(await repos.places.aliases(intoId))],
+      );
+      for (const name of carried ?? []) await repos.places.addAlias(intoId, name.alias, name.key);
       await rewards.revokeFor("place", fromId);
       await cache.invalidate([
         `place:${fromId}`,

@@ -117,6 +117,7 @@ const PAIRS: readonly SkeletonPair[] = [
           slug: "sample-place",
           nameBn: "নমুনা দই ঘর",
           nameEn: null,
+          searchNames: [],
           type: "shop",
           district: { slug: "bogura", nameBn: "বগুড়া" },
           areaNameBn: "সাতমাথা",

@@ -8,6 +8,7 @@ import { isLatinText } from "@/lib/text/to-bangla";
 import { toSearchKey, toSearchQuery } from "@/lib/text/normalize";
 
 import type { ClaimService } from "./claim-service";
+import { cleanSearchNames, placeNames } from "./place-names";
 import type { ExperienceService } from "./experience-service";
 import { mergeRewards, NO_REWARD, type Reward, type RewardService } from "./reward-service";
 
@@ -25,6 +26,10 @@ type Deps = {
 
 export type NewPlaceInput = {
   nameBn: string;
+  /** The same name in the other script ("Ideal" for "আইডিয়াল", or the Bangla of an English name). */
+  otherName?: string | null | undefined;
+  /** Extra names people search the place by (a nickname, an old name). */
+  searchNames?: string[] | undefined;
   districtId: number;
   type: PlaceType;
   areaName?: string | null | undefined;
@@ -154,8 +159,14 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
         place = existing;
       } else {
         const draft = input.place;
-        const nameBn = clean(draft.nameBn).slice(0, appConfig.text.nameMax);
+        const names = placeNames(draft.nameBn, draft.otherName);
+        const nameBn = names.nameBn;
         if (nameBn === "") return fail("validation", { fields: { place: "required" } });
+        const searchNames = cleanSearchNames(
+          [...names.extra, ...(draft.searchNames ?? [])],
+          [names.nameBn, names.nameEn],
+        );
+        if (searchNames === null) return fail("validation", { fields: { place: "profanity" } });
         if (!input.confirmNewPlace) {
           const similar = await repos.places.similar(nameBn, draft.districtId);
           if (similar.length > 0) return fail("conflict");
@@ -172,6 +183,7 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
         place = await repos.places.create(
           {
             nameBn,
+            nameEn: names.nameEn,
             type: draft.type,
             districtId: draft.districtId,
             areaName: draft.areaName
@@ -185,6 +197,7 @@ export function createAddService({ repos, experience, claims, rewards, rateLimit
           },
           user.id,
         );
+        for (const name of searchNames) await repos.places.addAlias(place.id, name.alias, name.key);
         createdPlace = true;
       }
 

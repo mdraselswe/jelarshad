@@ -40,6 +40,27 @@ describe("addService.submit", () => {
     expect(dishes.find((dish) => dish.foodId === fixtureIds.foods.doi)?.experienceCount).toBe(4);
   });
 
+  it("shows the Bangla name of a place typed in English and keeps its search names", async () => {
+    const { repos, service } = setup();
+    const result = await service.submit(user, {
+      food: { id: fixtureIds.foods.doi },
+      place: {
+        nameBn: "Ideal",
+        otherName: "আইডিয়াল",
+        searchNames: ["আইডিয়াল রেস্তোরাঁ", "ideal"],
+        districtId: bogura,
+        type: "restaurant",
+      },
+      reaction: "loved",
+      confirmNewPlace: true,
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const place = await repos.places.bySlug(result.data.placeSlug);
+    expect(place).toMatchObject({ nameBn: "আইডিয়াল", nameEn: "Ideal" });
+    expect(await repos.places.aliases(place?.id ?? "")).toEqual(["আইডিয়াল রেস্তোরাঁ"]);
+  });
+
   it("creates a new food and place with clean slugs, and refreshes search and district tags", async () => {
     const { repos, service, cache } = setup();
     const result = await service.submit(user, {

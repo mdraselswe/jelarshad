@@ -125,7 +125,13 @@
     "editNameEn": "ইংরেজি নাম",
     "editNameEnPlaceholder": "যেমন Ideal",
     "editNameEnHint": "ইংরেজি বা Banglish-এ লিখে খুঁজলেও এই নামে পাওয়া যাবে। পেজের লিংক বদলাবে না।",
-    "manageAll": "সব তথ্য বদলান"
+    "manageAll": "সব তথ্য বদলান",
+    "editNameBangla": "বাংলা নাম",
+    "searchNames": "আরও যে নামে খোঁজা যায়",
+    "searchNamesHint": "ডাকনাম, পুরোনো নাম বা অন্য বানান, সর্বোচ্চ ৫টি। লিখে Enter চাপুন।",
+    "searchNameAdd": "যোগ",
+    "searchNameRemove": "{name} সরান",
+    "editNameBanglaPlaceholder": "যেমন আইডিয়াল"
   },
   "legal": {
     "aboutLink": "আমাদের কথা",
