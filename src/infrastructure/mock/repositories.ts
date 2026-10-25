@@ -804,9 +804,14 @@ export function createMockRepositories(): Repositories {
         clone(
           db.claims.filter((c) => c.status === "disputed" || c.status === "mixed").slice(0, limit),
         ),
-      setPlaceArea: async (placeId, areaName) => {
+      setPlaceArea: async (placeId, area) => {
         const place = db.places.find((p) => p.id === placeId);
         if (!place) return;
+        if (area && "id" in area) {
+          place.area = db.places.find((p) => p.area?.id === area.id)?.area ?? place.area;
+          return;
+        }
+        const areaName = area?.nameBn ?? null;
         const known = db.places.find(
           (p) => p.district.id === place.district.id && p.area?.nameBn === areaName,
         )?.area;

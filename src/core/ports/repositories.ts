@@ -317,7 +317,8 @@ export interface AdminRepository {
   orphanMedia(limit: number): Promise<OrphanMedia[]>;
   deleteMedia(id: string): Promise<void>;
   /** Moves a place to a neighbourhood of its district, creating the neighbourhood if it is new. */
-  setPlaceArea(placeId: string, areaName: string | null): Promise<void>;
+  /** Puts a place in an existing neighbourhood ({ id }), a new one by name ({ nameBn }), or none. */
+  setPlaceArea(placeId: string, area: { id: number } | { nameBn: string } | null): Promise<void>;
   /** Puts a place under a chain (found by slug, or created from a name), or takes it out of one. */
   setPlaceBrand(
     placeId: string,

@@ -1430,9 +1430,10 @@ export function createSupabaseRepositoriesFrom(clients: SupabaseClients): Reposi
         );
         return rows.map(toClaim);
       },
-      async setPlaceArea(placeId, areaName) {
+      async setPlaceArea(placeId, area) {
         const service = writer(clients);
-        let areaId: number | null = null;
+        let areaId: number | null = area && "id" in area ? area.id : null;
+        const areaName = area && "nameBn" in area ? area.nameBn : null;
         if (areaName) {
           const place = check<{ district_id: number } | null>(
             await service.from("places").select("district_id").eq("id", placeId).maybeSingle(),

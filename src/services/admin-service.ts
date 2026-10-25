@@ -17,6 +17,7 @@ import { containsProfanity } from "@/lib/text/profanity";
 
 import { slugify } from "@/lib/text/slug";
 
+import { matchArea } from "./area-match";
 import { applyPlaceFieldEdit } from "./place-edit";
 import { cleanSearchNames, placeNames, replaceSearchNames } from "./place-names";
 
@@ -27,7 +28,7 @@ import type { RewardService } from "./reward-service";
 // only enforces the data rules (valid values, points taken back, caches refreshed). Pure: ports only.
 
 type Deps = {
-  repos: Pick<Repositories, "admin" | "places" | "foods" | "reports">;
+  repos: Pick<Repositories, "admin" | "places" | "foods" | "reports" | "districts">;
   cache: CacheInvalidator;
   rewards: RewardService;
   storage: Pick<StorageProvider, "delete">;
@@ -241,7 +242,14 @@ export function createAdminService({ repos, cache, rewards, storage }: Deps) {
         await replaceSearchNames(repos.places, place.id, names);
       }
       if (input.areaName !== undefined) {
-        await repos.admin.setPlaceArea(place.id, input.areaName.trim() || null);
+        const typed = input.areaName.replace(/\s+/g, " ").trim();
+        if (typed === "") await repos.admin.setPlaceArea(place.id, null);
+        else {
+          // An existing neighbourhood whatever the spacing; a new one only when nothing matches.
+          const areas = await repos.districts.areasOf(place.district.id, 1000);
+          const { area } = matchArea(areas, typed);
+          await repos.admin.setPlaceArea(place.id, area ? { id: area.id } : { nameBn: typed });
+        }
       }
       const brand = input.brand;
       if (brand === null) {
