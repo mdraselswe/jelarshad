@@ -30,7 +30,7 @@ export function TabState({ initial, children }: { initial: SearchTab; children: 
     window.history.replaceState(window.history.state, "", url);
   }, []);
   const value = useMemo(() => ({ tab, setTab }), [tab, setTab]);
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return <Context value={value}>{children}</Context>;
 }
 
 /** Renders its children only while one of `tabs` is the active tab. */

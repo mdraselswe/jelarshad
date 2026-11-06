@@ -5,7 +5,7 @@ import { z } from "zod";
 import { defineAction } from "@/infrastructure/container";
 
 const subscription = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: z.url().max(1000),
   p256dh: z.string().min(1).max(200),
   auth: z.string().min(1).max(100),
 });
@@ -19,7 +19,7 @@ export const subscribePush = defineAction(
 
 /** Turns reminders off on this device. */
 export const unsubscribePush = defineAction(
-  z.object({ endpoint: z.string().url().max(1000) }),
+  z.object({ endpoint: z.url().max(1000) }),
   async (input, { services }) => services.push.unsubscribe(input.endpoint),
   { auth: true },
 );

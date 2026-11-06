@@ -17,7 +17,7 @@ const schema = z
     pricePaid: z.number().int().min(0).max(100_000).nullish(),
   })
   .refine((value) => value.dishId !== undefined || (value.placeId && value.foodId), {
-    message: "dish_required",
+    error: "dish_required",
   });
 
 /** A person takes back one of their own experiences (they cannot remove anyone else's). */
