@@ -17,9 +17,9 @@ jobs:
       # CI tests the real app; the pre-launch gate itself is unit-tested (src/lib/launch-gate.test.ts).
       NEXT_PUBLIC_LAUNCHED: "true"
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with: { node-version: 24, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
@@ -38,7 +38,7 @@ jobs:
         run: pnpm dlx @lhci/cli@0.15.x autorun
         env: { DB_PROVIDER: mock, NEXT_PUBLIC_STORAGE_PROVIDER: mock }
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with: { name: playwright-report, path: playwright-report, retention-days: 7 }
 
   # Repository adapters and SQL against a throwaway local Supabase (Docker on the runner). Never
@@ -47,11 +47,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with: { node-version: 24, cache: pnpm }
-      - uses: supabase/setup-cli@v1
+      - uses: supabase/setup-cli@v3
         with: { version: 2.119.0 } # same CLI as package.json
       - run: pnpm install --frozen-lockfile
       - name: Start local Supabase (applies supabase/migrations)
@@ -66,7 +66,7 @@ jobs:
           diff -u src/infrastructure/supabase/database.types.ts /tmp/database.types.ts \
             || { echo "::error::Run the CI 'database' job and commit the database-types artifact"; exit 1; }
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with: { name: database-types, path: /tmp/database.types.ts, retention-days: 7 }
       - name: Load fixtures (replaces the curated seed; this database is throwaway)
         run: |
